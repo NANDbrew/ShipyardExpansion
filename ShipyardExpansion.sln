@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipyardExpansion", "ShipyardExpansion.csproj", "{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B8710FB-34B9-4846-8EB8-5169C9E3758A}
+	EndGlobalSection
+EndGlobal
