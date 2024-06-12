@@ -25,11 +25,13 @@ namespace ShipyardExpansion
                 var shroudAnchor = container.Find("static_rig_001");
 
                 Mast mizzen_new = Util.CopyMast(mainMast, mizzen_old.localPosition, mizzen_old.localEulerAngles, mainMast.localScale, "mast_mizzen_1", "mizzen mast", 29);
-                mizzen_new.reefWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().reefWinch, mainMast.localPosition, mizzen_new.transform.localPosition + new Vector3(0.2f, 0, 0));
+                mizzen_new.reefWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().reefWinch, mainMast.localPosition, mizzen_new.transform.localPosition + new Vector3(0.47f, -0.2f, 0));
                 mizzen_new.midAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().midAngleWinch, mainMast.localPosition, mainMast.localPosition + new Vector3(-1.45f, 0, 0));
-                mizzen_new.leftAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().leftAngleWinch, Vector3.zero, new Vector3(-6.4f, -1.5f, 1.26f));
-                mizzen_new.leftAngleWinch[0].transform.localEulerAngles = new Vector3(288, 19, 60);
-                mizzen_new.rightAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().rightAngleWinch, Vector3.zero, new Vector3(-6.4f, -1.5f, 1.26f));
+                mizzen_new.leftAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().leftAngleWinch, Vector3.zero, Vector3.zero);
+                mizzen_new.leftAngleWinch[0].transform.localPosition = new Vector3(-6.4f, 1.26f, 1.5f);
+                mizzen_new.leftAngleWinch[0].transform.localEulerAngles = new Vector3(288, 99, 75);
+                mizzen_new.rightAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().rightAngleWinch, Vector3.zero, Vector3.zero);
+                mizzen_new.rightAngleWinch[0].transform.localPosition = new Vector3(-6.4f, 1.26f, -1.5f);
                 mizzen_new.rightAngleWinch[0].transform.localEulerAngles = new Vector3(288, 59, 120);
                 var rope_holder_aft = UnityEngine.Object.Instantiate(container.Find("rope_holder"), mizzen_new.transform);
                 rope_holder_aft.transform.localPosition = mizzen_old.Find("rope_holder_002").localPosition;
