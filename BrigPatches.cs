@@ -22,9 +22,18 @@ namespace ShipyardExpansion
                 Transform structure = container.Find("structure_container");
                 Transform mizzenMast1 = structure.Find("mast_mizzen_0");
                 Transform mizzenMast2 = structure.Find("mast_mizzen_1");
+                Transform backstay1_0top = container.Find("backstay_1-0_top");
+                Transform backstay1_0bottom = container.Find("backstay_1-0_bottom");
 
                 #region adjustments
                 Util.MoveMast(mizzenMast1, new Vector3(-12.43f, mizzenMast1.localPosition.y, mizzenMast1.localPosition.z), true);
+                Util.MoveMast(backstay1_0top, new Vector3(-11.4f, backstay1_0top.localPosition.y, backstay1_0top.localPosition.z), true);
+                Util.MoveMast(backstay1_0bottom, new Vector3(-11.41f, backstay1_0bottom.localPosition.y, backstay1_0bottom.localPosition.z), true);
+
+                backstay1_0top.localScale = new Vector3(1, 1, 1.17f);
+                backstay1_0bottom.localScale = new Vector3(1, 1, 1.17f);
+                backstay1_0top.GetComponent<Mast>().mastHeight = 14;
+                backstay1_0bottom.GetComponent<Mast>().mastHeight = 14;
                 //var mizShroudsBack = UnityEngine.Object.Instantiate(new GameObject() { name = "shrouds_M_default" }, mizzenMast1);
                 //BoatPartOption backOption = Util.CopyPartOption(container.Find("parts_shrouds_F_default").GetComponent<BoatPartOption>(), mizShroudsBack, "mizzen mast shrouds 1");
                 //backOption.childOptions = new GameObject[0];
@@ -63,7 +72,7 @@ namespace ShipyardExpansion
                 sideCol1.localPosition = sideShrouds1.localPosition;
                 sideCol1.localRotation = sideShrouds1.localRotation;
                 var sideShrouds2 = UnityEngine.Object.Instantiate(sideShrouds1, mizzenShroudsSide);
-                var sideCol2 = UnityEngine.Object.Instantiate(sideOption.walkColObject.transform.GetChild(0));
+                var sideCol2 = UnityEngine.Object.Instantiate(sideOption.walkColObject.transform.GetChild(0), sideOption.walkColObject.transform);
                 sideShrouds2.localPosition = new Vector3(-7.9f, 0, 17.35f);
                 sideShrouds2.localScale = new Vector3(1.075f, -1f, 0.798f);
                 sideCol2.localPosition = sideShrouds2.localPosition;
