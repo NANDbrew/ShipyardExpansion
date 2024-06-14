@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrigPatches.cs" />
     <Compile Include="DhowPatches.cs" />
     <Compile Include="SanbuqPatches.cs" />
     <Compile Include="Plugin.cs" />
