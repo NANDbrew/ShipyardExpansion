@@ -88,5 +88,25 @@ namespace ShipyardExpansion
 
             return partOption;
         }
+        public static BoatPartOption CopyPartOption(BoatPartOption source, GameObject target, string prettyName)
+        {
+            //GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
+            //GameObject walkCol = UnityEngine.Object.Instantiate(source.walkColObject, source.walkColObject.transform.parent);
+            //BoatPartOption partOption = part.GetComponent<BoatPartOption>();
+            //part.transform.localPosition = position;
+            //walkCol.transform.localPosition = position;
+            BoatPartOption partOption = target.AddComponent<BoatPartOption>();
+            partOption.optionName = prettyName;
+            partOption.childOptions = source.childOptions;
+            partOption.requires = source.requires;
+            partOption.requiresDisabled = source.requiresDisabled;
+            partOption.walkColObject = source.walkColObject;
+            partOption.basePrice = source.basePrice;
+            partOption.installCost = source.installCost;
+            partOption.mass = source.mass;
+            partOption.childMast = source.childMast;
+            
+            return partOption;
+        }
     }
 }
