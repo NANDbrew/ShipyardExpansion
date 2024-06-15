@@ -65,7 +65,7 @@ namespace ShipyardExpansion
             {
                 source[i].gameObject.SetActive(false);
                 var winch = UnityEngine.Object.Instantiate(source[i], source[i].transform.parent);
-
+                winch.name = source[i].name + "_mod";
                 Vector3 vector = source[i].transform.localPosition - sourcePosition;
                 winch.transform.localPosition = targetPosition + vector;
                 winches[i] = winch;
