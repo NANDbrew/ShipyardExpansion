@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace ShipyardExpansion
 {
@@ -14,15 +15,19 @@ namespace ShipyardExpansion
         public const string PLUGIN_NAME = "Shipyard Expansion";
         public const string PLUGIN_VERSION = "0.0.4";
 
+        public static List<BoatPartOption> modPartOptions;
+        public static List<BoatPart> modParts;
+
         //--settings--
-        //internal ConfigEntry<bool> someSetting;
+        internal static ConfigEntry<bool> cleanSave;
 
 
         private void Awake()
         {
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            //someSetting = Config.Bind("Settings", "Some setting", false);
+            cleanSave = Config.Bind("Settings", "Clean save", false);
+            if (cleanSave.Value) cleanSave.Value = false;
         }
     }
 }

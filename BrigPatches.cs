@@ -113,6 +113,7 @@ namespace ShipyardExpansion
                     category = 1,
                     activeOption = 0 };
                 ___parts.availableParts.Add(shrouds);
+                Plugin.modParts.Add(shrouds);
                 #endregion
 
                 #region longstays
@@ -149,7 +150,7 @@ namespace ShipyardExpansion
                     };
                 mainstayOuterOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
                 ___parts.availableParts[4].partOptions.Add(mainstayOuterOpt);
-
+                Plugin.modPartOptions.Add(mainstayOuterOpt);
 
                 var mainstayInner = Util.CopyMast(forestay_0_mid, new Vector3(0f, 19.44f, 0f), forestay_0_mid.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_bottom", "lower forestay 3", 29);
                 mainstayInner.reefWinch = Util.CopyWinches(mainstayInner.reefWinch, foreMast1.localPosition, newPos);
@@ -186,7 +187,7 @@ namespace ShipyardExpansion
                     };
                 mainstayInnerOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
                 ___parts.availableParts[5].partOptions.Add(mainstayInner.GetComponent<BoatPartOption>());
-
+                Plugin.modPartOptions.Add(mainstayInnerOpt);
                 #endregion
 
                 #region telltale
@@ -291,6 +292,7 @@ namespace ShipyardExpansion
                 foreMast2.GetComponent<BoatPartOption>().childOptions = foreMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_1.gameObject);
 
                 ___parts.availableParts.Add(flag);
+                Plugin.modParts.Add(flag);
                 #endregion
 
             }

@@ -82,6 +82,7 @@
     <Compile Include="DhowPatches.cs" />
     <Compile Include="SanbuqPatches.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="SaveCleaner.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

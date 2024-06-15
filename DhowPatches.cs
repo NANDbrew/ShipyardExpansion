@@ -56,7 +56,7 @@ namespace ShipyardExpansion
                     activeOption = 0
                 };
                 ___parts.availableParts.Add(mizzenPart);
-
+                Plugin.modParts.Add(mizzenPart);
 
                 var mizzenShrouds = UnityEngine.Object.Instantiate(shrouds, mizzen_new.transform);
                 mizzenShrouds.localPosition = new Vector3(-2.3f, -0.01f, -6.3f);

@@ -48,10 +48,12 @@ namespace ShipyardExpansion
                 BoatPartOption forestayNone = Util.CreatePartOption(container, "(empty forestay)", "(no forestay)");
                 ___parts.availableParts[3].partOptions.Add(forestayNone);
                 ___parts.availableParts[3].activeOption = ___parts.availableParts[3].partOptions.Count - 1;
+                Plugin.modPartOptions.Add(mainMastNone);
 
                 BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
                 ___parts.availableParts[2].partOptions.Add(bowspritNone);
                 ___parts.availableParts[2].activeOption = ___parts.availableParts[2].partOptions.Count - 1;
+                Plugin.modPartOptions.Add(bowspritNone);
                 #endregion
 
 
@@ -99,6 +101,7 @@ namespace ShipyardExpansion
                     activeOption = 0
                 };
                 ___parts.availableParts.Add(topmastStayPart);
+                Plugin.modParts.Add(topmastStayPart);
                 ___parts.availableParts[3].partOptions.Remove(topmastStay1.GetComponent<BoatPartOption>());
                 ___parts.availableParts[3].partOptions.Remove(topmastStay2.GetComponent<BoatPartOption>());
                 ___parts.availableParts[3].partOptions.Remove(topmastStay3.GetComponent<BoatPartOption>());
@@ -128,6 +131,7 @@ namespace ShipyardExpansion
                     activeOption = 0
                 };
                 ___parts.availableParts.Add(hammockPart);
+                Plugin.modParts.Add(hammockPart);
                 #endregion
 
                 #region foremast
@@ -150,7 +154,7 @@ namespace ShipyardExpansion
                     category = 0,
                     activeOption = 0 };
                 ___parts.availableParts.Add(foremastPart);
-
+                Plugin.modParts.Add(foremastPart);
 
                 /*var source1 = structure.Find("part_shrouds_main_back").GetChild(0).gameObject;
                 GameObject shrouds_back = UnityEngine.GameObject.Instantiate(source1, foremast.transform);
@@ -236,6 +240,7 @@ namespace ShipyardExpansion
                     category = 1,
                     activeOption = 0 };*/
                 ___parts.availableParts.Add(shrouds);
+                Plugin.modParts.Add(shrouds);
                 #endregion
 
                 #region mizzenMast
@@ -254,6 +259,7 @@ namespace ShipyardExpansion
                 //mizzen2.orderIndex = 25;
                 //mizzen2.Awake();
                 ___parts.availableParts[1].partOptions.Add(mizzen2.GetComponent<BoatPartOption>());
+                Plugin.modPartOptions.Add(mizzen2.GetComponent<BoatPartOption>());
 
                 BoatPartOption mizShrBackOld = mizzenMast1.Find("part_shrouds_mizzen_back").GetComponent<BoatPartOption>();
                 BoatPartOption mizzenShrouds = Util.CreatePartOption(structure, "part_shrouds_mizzen_back", "mizzen shrouds 2");
@@ -308,6 +314,7 @@ namespace ShipyardExpansion
                     mizzenShrouds_1_walkCol.gameObject,
                 };
                 ___parts.availableParts[6].partOptions = new List<BoatPartOption>() { mizzenShrouds2, mizzenShrouds };
+                //Plugin.modPartOptions.Add(mizzenShrouds2);
 
                 UnityEngine.Object.Destroy(mizShrBackOld.GetComponent<BoatPartOption>());
                 UnityEngine.Object.Destroy(mizShrSideOld.GetComponent<BoatPartOption>());
@@ -331,10 +338,11 @@ namespace ShipyardExpansion
                 //forestayOuter.GetComponent<Mast>().orderIndex = 28;
                 //forestayOuter.GetComponent<Mast>().Awake();
                 ___parts.availableParts[3].partOptions.Add(forestayOuterOpt);
+                Plugin.modPartOptions.Add(forestayOuterOpt);
                 #endregion
                 #region forestayInner
                 var src4 = container.Find("forestay_0_short_inner");
-                Mast forestayInner = Util.CopyMast(src4, new Vector3(9.53f, 13f, 0), new Vector3(311, 270, 90), src4.transform.localScale, "foremast_stay_inner", "lower foremast stay", 27);
+                Mast forestayInner = Util.CopyMast(src4, new Vector3(9.53f, 13.09f, 0), new Vector3(311, 270, 90), src4.transform.localScale, "foremast_stay_inner", "lower foremast stay", 27);
                 //Mast forestayInner = Util.CopyMast(src4, new Vector3(9.53f, 13f, 0), new Vector3(300, 270, 90), new Vector3(1, 1, 1.03f), "foremast_stay_inner", "lower foremast stay");
 
                 forestayInner.reefWinch = Util.CopyWinches(forestayInner.reefWinch, src4.localPosition, forestayInner.transform.localPosition);
@@ -349,6 +357,7 @@ namespace ShipyardExpansion
                 //forestayInner.GetComponent<Mast>().orderIndex = 27;
                 //forestayInner.GetComponent<Mast>().Awake();
                 ___parts.availableParts[4].partOptions.Add(forestayInnerOpt);
+                Plugin.modPartOptions.Add(forestayInnerOpt);
                 #endregion
                 #region middleStays
                 var src5 = container.Find("part_stay_mid_0");
@@ -361,6 +370,7 @@ namespace ShipyardExpansion
                 //middlestay_2.Awake();
                 middlestay_2.GetComponent<BoatPartOption>().requires[1] = mizzen2.GetComponent<BoatPartOption>();
                 ___parts.availableParts[8].partOptions.Add(middlestay_2.GetComponent<BoatPartOption>());
+                Plugin.modPartOptions.Add(middlestay_2.GetComponent<BoatPartOption>());
 
                 var middlestay_3 = Util.CopyMast(src5, new Vector3(-9.86f, 14.57f, 0), new Vector3(312f, 270, 90), new Vector3(1, 1, 0.75f), "part_stay_mid_3", "middlestay 2-1", 24);
                 middlestay_3.reefWinch = Util.CopyWinches(middlestay_3.reefWinch, src5.localPosition, new Vector3(-6.55f, src5.localPosition.y, 0));
@@ -371,6 +381,7 @@ namespace ShipyardExpansion
                 //middlestay_3.Awake();
                 middlestay_3.GetComponent<BoatPartOption>().requires[0] = structure.Find("mast_1").GetComponent<BoatPartOption>();
                 ___parts.availableParts[8].partOptions.Add(middlestay_3.GetComponent<BoatPartOption>());
+                Plugin.modPartOptions.Add(middlestay_3.GetComponent<BoatPartOption>());
 
                 var middlestay_fore = Util.CopyMast(src5, new Vector3(0.3f, 17.7f, 0), new Vector3(308.7f, 270, 90), new Vector3(1, 1, 0.71f), "part_stay_mid_fore", "fore middlestay", 23);
                 middlestay_fore.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[1] };
@@ -387,6 +398,7 @@ namespace ShipyardExpansion
                     category = 2,
                     activeOption = 0 };
                 ___parts.availableParts.Add(middlestayF);
+                Plugin.modParts.Add(middlestayF);
                 #endregion
 
                 foreach (BoatPartOption stay in ___parts.availableParts[3].partOptions)
@@ -409,6 +421,7 @@ namespace ShipyardExpansion
                     }
                 }
                 topmastStay1.GetComponent<BoatPartOption>().requiresDisabled.Add(foremast.GetComponent<BoatPartOption>());
+                topmastStay2.GetComponent<BoatPartOption>().requiresDisabled.Add(foremast.GetComponent<BoatPartOption>());
                 topmastStay4_mast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foremast.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
 
 
