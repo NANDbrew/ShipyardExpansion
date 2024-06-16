@@ -17,17 +17,22 @@ namespace ShipyardExpansion
 
         public static List<BoatPartOption> modPartOptions;
         public static List<BoatPart> modParts;
+        public static List<BoatCustomParts> modCustomParts;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
+        internal static ConfigEntry<bool> bruteForce;
 
 
         private void Awake()
         {
+            modPartOptions = new List<BoatPartOption>();
+            modParts = new List<BoatPart>();
+            modCustomParts = new List<BoatCustomParts>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
             cleanSave = Config.Bind("Settings", "Clean save", false);
-            if (cleanSave.Value) cleanSave.Value = false;
+            bruteForce = Config.Bind("Settings", "Brute force", false);
         }
     }
 }

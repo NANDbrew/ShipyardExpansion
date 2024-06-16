@@ -43,12 +43,12 @@ namespace ShipyardExpansion
                 mainMast2.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 2";
                 BoatPartOption mainMastNone = Util.CreatePartOption(container, "(empty mainmast)", "(no main mast)");
                 ___parts.availableParts[0].partOptions.Add(mainMastNone);
-
+                Plugin.modPartOptions.Add(mainMastNone);
 
                 BoatPartOption forestayNone = Util.CreatePartOption(container, "(empty forestay)", "(no forestay)");
                 ___parts.availableParts[3].partOptions.Add(forestayNone);
                 ___parts.availableParts[3].activeOption = ___parts.availableParts[3].partOptions.Count - 1;
-                Plugin.modPartOptions.Add(mainMastNone);
+                Plugin.modPartOptions.Add(forestayNone);
 
                 BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
                 ___parts.availableParts[2].partOptions.Add(bowspritNone);
@@ -314,7 +314,7 @@ namespace ShipyardExpansion
                     mizzenShrouds_1_walkCol.gameObject,
                 };
                 ___parts.availableParts[6].partOptions = new List<BoatPartOption>() { mizzenShrouds2, mizzenShrouds };
-                //Plugin.modPartOptions.Add(mizzenShrouds2);
+                Plugin.modPartOptions.Add(mizzenShrouds2);
 
                 UnityEngine.Object.Destroy(mizShrBackOld.GetComponent<BoatPartOption>());
                 UnityEngine.Object.Destroy(mizShrSideOld.GetComponent<BoatPartOption>());
@@ -401,6 +401,31 @@ namespace ShipyardExpansion
                 Plugin.modParts.Add(middlestayF);
                 #endregion
 
+
+                #region towingCleats
+/*                if (__instance.transform.Find("mooring set prefb").Find("towing set") is Transform towingSet)
+                {
+                    BoatPartOption cleatsNone = Util.CreatePartOption(towingSet.parent, "towing_cleats_none", "(no towing cleats)");
+
+                    BoatPartOption cleatsOption = towingSet.gameObject.AddComponent<BoatPartOption>();
+                    cleatsOption.optionName = "towing cleats";
+                    cleatsOption.name = "towing_cleats";
+                    cleatsOption.childOptions = new GameObject[0];
+                    cleatsOption.requires = new List<BoatPartOption>();
+                    cleatsOption.requiresDisabled = new List<BoatPartOption>();
+                    cleatsOption.walkColObject = towingSet.gameObject;
+
+                    BoatPart towingPart = new BoatPart()
+                    {
+                        partOptions = new List<BoatPartOption> { cleatsNone, cleatsOption },
+                        category = 1, activeOption = 0
+                    };
+                    ___parts.availableParts.Add(towingPart);
+                }*/
+
+                #endregion
+
+
                 foreach (BoatPartOption stay in ___parts.availableParts[3].partOptions)
                 {
                     if (stay.optionName.StartsWith("(no") || stay.optionName.Contains("foremast")) continue;
@@ -424,6 +449,7 @@ namespace ShipyardExpansion
                 topmastStay2.GetComponent<BoatPartOption>().requiresDisabled.Add(foremast.GetComponent<BoatPartOption>());
                 topmastStay4_mast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foremast.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
 
+                if (!Plugin.modCustomParts.Contains(___parts)) Plugin.modCustomParts.Add(___parts); //add boat to list of modified boats
 
             }
         }

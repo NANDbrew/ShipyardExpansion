@@ -7,34 +7,53 @@ using System.Threading.Tasks;
 
 namespace ShipyardExpansion
 {
-    [HarmonyPatch(typeof(SaveableBoatCustomization), "GetData")]
-    internal class SaveCleaner
+
+    [HarmonyPatch(typeof(SaveLoadManager), "DoSaveGame")]
+    internal static class SaveCleaner
     {
         [HarmonyPrefix]
-        internal static void CleanerPatch(BoatCustomParts ___parts)
+        internal static void SavePatch()
         {
             if (!Plugin.cleanSave.Value) return;
-            foreach (BoatPart part in Plugin.modParts)
+            if (Plugin.bruteForce.Value)
             {
-                ___parts.availableParts.Remove(part);
-            }
-            foreach (BoatPart part in ___parts.availableParts)
-            {
-                foreach (BoatPartOption option in part.partOptions)
+                for (int i = 0; i < Plugin.modCustomParts.Count; i++)
                 {
-                    if (Plugin.modPartOptions.Contains(option))
+                    Plugin.modCustomParts[i].availableParts = new List<BoatPart>();
+                }
+                Plugin.cleanSave.Value = false;
+                Plugin.bruteForce.Value = false;
+                return;
+            }
+           
+            for (int i = 0; i < Plugin.modCustomParts.Count; i++)
+            {
+                var parts = Plugin.modCustomParts[i];
+                for (int j = 0; j < parts.availableParts.Count;)
+                {
+                    var part = parts.availableParts[j];
+                    if (Plugin.modParts.Contains(part))
                     {
-                        part.partOptions.Remove(option);
+                        parts.availableParts.Remove(part);
+                        continue;
                     }
-                    part.activeOption = 0;
+                    for (int k = 0; k < part.partOptions.Count;)
+                    {
+                        var option = part.partOptions[k];
+                        if(Plugin.modPartOptions.Contains(option))
+                        { 
+                            part.partOptions.Remove(option);
+                            continue;
+                        }
+                        k++;
+                    }
+                    if (part.activeOption >= part.partOptions.Count) part.activeOption = part.partOptions.Count - 1;
+                    j++;
                 }
             }
+            Plugin.cleanSave.Value = false;
+
         }
-/*        [HarmonyPatch(typeof(SaveLoadManager), "DoSaveGame")]
-        [HarmonyPostfix]
-        internal static void SettingResetter()
-        {
-            if (Plugin.cleanSave.Value == true) Plugin.cleanSave.Value = false;
-        }*/
     }
+
 }

@@ -38,8 +38,8 @@ namespace ShipyardExpansion
                 Util.MoveMast(backstay1_0top, new Vector3(-11.4f, backstay1_0top.localPosition.y, backstay1_0top.localPosition.z), true);
                 Util.MoveMast(backstay1_0bottom, new Vector3(-11.41f, backstay1_0bottom.localPosition.y, backstay1_0bottom.localPosition.z), true);
 
-                backstay1_0top.localScale.Set(1, 1, 1.17f);
-                backstay1_0bottom.localScale.Set(1, 1, 1.17f);
+                backstay1_0top.localScale = new Vector3(1, 1, 1.17f);
+                backstay1_0bottom.localScale = new Vector3(1, 1, 1.17f);
                 backstay1_0top.GetComponent<Mast>().mastHeight = 14;
                 backstay1_0bottom.GetComponent<Mast>().mastHeight = 14;
                 //var mizShroudsBack = UnityEngine.Object.Instantiate(new GameObject() { name = "shrouds_M_default" }, mizzenMast1);
@@ -201,22 +201,22 @@ namespace ShipyardExpansion
                 Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
                 var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
                 flag_main_0_side.name = "flag_main_0_side";
-                flag_main_0_side.localPosition.Set(-5.24f, 8f, 3.19f);
-                flag_main_0_side.localEulerAngles.Set(87, 0, 0);
+                flag_main_0_side.localPosition = new Vector3(-5.24f, 8f, 3.19f);
+                flag_main_0_side.localEulerAngles = new Vector3(87, 0, 0);
                 var flag_main_0_back = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
                 flag_main_0_back.name = "flag_main_0_back";
-                flag_main_0_back.localPosition.Set(-6.53f, 8f, 2.9f);
-                flag_main_0_back.localEulerAngles.Set(79, 340, 0);
+                flag_main_0_back.localPosition = new Vector3(-6.53f, 8f, 2.9f);
+                flag_main_0_back.localEulerAngles = new Vector3(79, 340, 0);
 
                 Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
                 var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
                 flag_main_1_side.name = "flag_main_1_side";
-                flag_main_1_side.localPosition.Set(-0.53f, 8f, 3.22f);
-                flag_main_1_side.localEulerAngles.Set(86, 0, 0);
+                flag_main_1_side.localPosition = new Vector3(-0.53f, 8f, 3.22f);
+                flag_main_1_side.localEulerAngles = new Vector3(86, 0, 0);
                 var flag_main_1_back = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
                 flag_main_1_back.name = "flag_main_1_back";
-                flag_main_1_back.localPosition.Set(-1.62f, 8f, 2.76f);
-                flag_main_1_back.localEulerAngles.Set(80, 340, 0);
+                flag_main_1_back.localPosition = new Vector3(-1.62f, 8f, 2.76f);
+                flag_main_1_back.localEulerAngles = new Vector3(80, 340, 0);
 
 
                 BoatPartOption flags_fore = Util.CreatePartOption(container, "flag_fore", "fore mast telltale");
@@ -224,22 +224,22 @@ namespace ShipyardExpansion
                 Transform flags_fore_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_0" }.transform, flags_fore.transform);
                 var flag_fore_0_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
                 flag_fore_0_side.name = "flag_fore_0_side";
-                flag_fore_0_side.localPosition.Set(6.62f, 8f, 2.76f);
-                flag_fore_0_side.localEulerAngles.Set(87, 0, 0);
+                flag_fore_0_side.localPosition = new Vector3(6.62f, 8f, 2.76f);
+                flag_fore_0_side.localEulerAngles = new Vector3(87, 0, 0);
                 var flag_fore_0_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
                 flag_fore_0_back.name = "flag_fore_0_back";
-                flag_fore_0_back.localPosition.Set(5.53f, 8f, 2.9f);
-                flag_fore_0_back.localEulerAngles.Set(79, 340, 0);
+                flag_fore_0_back.localPosition = new Vector3(5.53f, 8f, 2.9f);
+                flag_fore_0_back.localEulerAngles = new Vector3(79, 340, 0);
 
                 Transform flags_fore_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_1" }.transform, flags_fore.transform);
                 var flag_fore_1_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
                 flag_fore_1_side.name = "flag_fore_1_side";
-                flag_fore_1_side.localPosition.Set(11.02f, 8f, 2.27f);
-                flag_fore_1_side.localEulerAngles.Set(89, 0, 0);
+                flag_fore_1_side.localPosition = new Vector3(11.02f, 8f, 2.27f);
+                flag_fore_1_side.localEulerAngles = new Vector3(89, 0, 0);
                 var flag_fore_1_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
                 flag_fore_1_back.name = "flag_fore_1_back";
-                flag_fore_1_back.localPosition.Set(9.91f, 8f, 2.16f);
-                flag_fore_1_back.localEulerAngles.Set(81, 326, 0);
+                flag_fore_1_back.localPosition = new Vector3(9.91f, 8f, 2.16f);
+                flag_fore_1_back.localEulerAngles = new Vector3(81, 326, 0);
 
 
                 BoatPartOption flags_mizzen = Util.CreatePartOption(container, "flag_mizzen", "mizzen mast telltale");
@@ -247,30 +247,36 @@ namespace ShipyardExpansion
                 Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
                 var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
                 flag_mizzen_0_side.name = "flag_mizzen_0_side";
-                flag_mizzen_0_side.localPosition.Set(-11.8f, 8f, 2.7f);
-                flag_mizzen_0_side.localEulerAngles.Set(87, 0, 0);
+                flag_mizzen_0_side.localPosition = new Vector3(-11.8f, 8f, 2.7f);
+                flag_mizzen_0_side.localEulerAngles = new Vector3(87, 0, 0);
                 var flag_mizzen_0_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
                 flag_mizzen_0_back.name = "flag_mizzen_0_back";
-                flag_mizzen_0_back.localPosition.Set(-12.24f, 8f, 2.45f);
-                flag_mizzen_0_back.localEulerAngles.Set(80, 340, 0);
+                flag_mizzen_0_back.localPosition = new Vector3(-12.24f, 8f, 2.45f);
+                flag_mizzen_0_back.localEulerAngles = new Vector3(80, 340, 0);
 
                 Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
                 var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
                 flag_mizzen_1_side.name = "flag_mizzen_1_side";
-                flag_mizzen_1_side.localPosition.Set(-7.65f, 8f, 3.15f);
-                flag_mizzen_1_side.localEulerAngles.Set(87, 0, 0);
+                flag_mizzen_1_side.localPosition = new Vector3(-7.65f, 8f, 3.15f);
+                flag_mizzen_1_side.localEulerAngles = new Vector3(87, 0, 0);
                 var flag_mizzen_1_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
                 flag_mizzen_1_back.name = "flag_mizzen_1_back";
-                flag_mizzen_1_back.localPosition.Set(-8.15f, 8f, 2.76f);
-                flag_mizzen_1_back.localEulerAngles.Set(80, 350, 0);
+                flag_mizzen_1_back.localPosition = new Vector3(-8.15f, 8f, 2.76f);
+                flag_mizzen_1_back.localEulerAngles = new Vector3(80, 350, 0);
 
-                UnityEngine.Object.Destroy(flagSource);
+                //UnityEngine.Object.Destroy(flagSource);
+
+                flags_fore.requiresDisabled.Add(noForemast);
+                flags_main.requiresDisabled.Add(container.Find("(no mainmast)").GetComponent<BoatPartOption>());
+                flags_mizzen.requiresDisabled.Add(container.Find("(no mizzen mast)").GetComponent<BoatPartOption>());
                 BoatPart flag = new BoatPart()
                 {
-                    partOptions = new List<BoatPartOption>() { noFlag, flags_main, flags_fore, flags_mizzen },
+                    partOptions = new List<BoatPartOption>() { noFlag, flags_fore, flags_main, flags_mizzen },
                     category = 1,
                     activeOption = 0
                 };
+                ___parts.availableParts.Add(flag);
+                Plugin.modParts.Add(flag);
 
                 sideOption.childOptions = sideOption.childOptions.AddRangeToArray(new GameObject[2] { flag_mizzen_1_side.gameObject, flag_mizzen_0_side.gameObject });
                 backOption.childOptions = backOption.childOptions.AddRangeToArray(new GameObject[2] { flag_mizzen_1_back.gameObject, flag_mizzen_0_back.gameObject });
@@ -291,10 +297,8 @@ namespace ShipyardExpansion
                 foreMast1.GetComponent<BoatPartOption>().childOptions = foreMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_0.gameObject);
                 foreMast2.GetComponent<BoatPartOption>().childOptions = foreMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_1.gameObject);
 
-                ___parts.availableParts.Add(flag);
-                Plugin.modParts.Add(flag);
                 #endregion
-
+                if (!Plugin.modCustomParts.Contains(___parts)) Plugin.modCustomParts.Add(___parts); //add boat to list of modified boats
             }
         }
     }

@@ -51,7 +51,7 @@ namespace ShipyardExpansion
                 BoatPartOption emptyMizzen = Util.CreatePartOption(container, "(empty mizzen)", "(no mizzen mast)");
                 BoatPart mizzenPart = new BoatPart
                 {
-                    partOptions = new List<BoatPartOption>(2) { emptyMizzen, mizzen_new.GetComponent<BoatPartOption>() },
+                    partOptions = new List<BoatPartOption> { emptyMizzen, mizzen_new.GetComponent<BoatPartOption>() },
                     category = 0,
                     activeOption = 0
                 };
@@ -65,7 +65,7 @@ namespace ShipyardExpansion
                 mizzenAnchor0.localPosition = new Vector3(1.42f, -1.34f, 0.35f);
                 mizzenAnchor0.localEulerAngles = new Vector3(0, 15, 86);
                 //var mizzenAnchor1 = UnityEngine.Object.Instantiate(shroudAnchor, mizzenShrouds);
-
+                if (!Plugin.modCustomParts.Contains(___parts)) Plugin.modCustomParts.Add(___parts); //add boat to list of modified boats
             }
         }
     }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-    internal static class Util
+    public static class Util
     {
         public static void MoveMast(Transform mast, Vector3 position, bool moveWinches)
         {
@@ -78,16 +78,24 @@ namespace ShipyardExpansion
         public static BoatPartOption CreatePartOption(Transform parent, string name, string prettyName)
         {
             GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
-            BoatPartOption partOption = part.AddComponent<BoatPartOption>();
-            partOption.optionName = prettyName;
-            partOption.name = name;
-            partOption.childOptions = new GameObject[0];
-            partOption.requires = new List<BoatPartOption>();
-            partOption.requiresDisabled = new List<BoatPartOption>();
-            partOption.walkColObject = part;
+            BoatPartOption partOption = AddPartOption(part, prettyName);
+            part.name = name;
 
             return partOption;
         }
+        public static BoatPartOption AddPartOption(GameObject target, string prettyName)
+        {
+            //GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
+            BoatPartOption partOption = target.AddComponent<BoatPartOption>();
+            partOption.optionName = prettyName;
+            partOption.childOptions = new GameObject[0];
+            partOption.requires = new List<BoatPartOption>();
+            partOption.requiresDisabled = new List<BoatPartOption>();
+            partOption.walkColObject = target;
+
+            return partOption;
+        }
+
         public static BoatPartOption CopyPartOption(BoatPartOption source, GameObject target, string prettyName)
         {
             //GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
@@ -107,6 +115,43 @@ namespace ShipyardExpansion
             partOption.childMast = source.childMast;
             
             return partOption;
+        }
+        public static BoatPartOption CopyPartOptionObj(BoatPartOption source, string name, string prettyName)
+        {
+            return CopyPartOptionObj(source, source.transform.localPosition, source.transform.localEulerAngles, source.transform.localScale, name, prettyName);
+        }
+
+        public static BoatPartOption CopyPartOptionObj(BoatPartOption source, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName)
+        {
+            GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
+            part.name = name;
+            GameObject walkCol = UnityEngine.Object.Instantiate(source.walkColObject, source.walkColObject.transform.parent);
+            walkCol.name = name;
+            BoatPartOption partOption = part.GetComponent<BoatPartOption>();
+            partOption.walkColObject = walkCol;
+            part.transform.localPosition = position;
+            part.transform.localEulerAngles = eulerAngles;
+            part.transform.localScale = scale;
+            walkCol.transform.localPosition = position;
+            walkCol.transform.localEulerAngles = eulerAngles;
+            walkCol.transform.localScale = scale;
+            partOption.optionName = prettyName;
+
+
+            return partOption;
+        }
+        public static BoatPart CreateAndAddPart(BoatCustomParts boatCustomParts, int category, List<BoatPartOption> partOptions)
+        {
+            BoatPart newPart = new BoatPart
+            {
+                partOptions = partOptions,
+                category = category,
+                activeOption = 0
+            };
+            boatCustomParts.availableParts.Add(newPart);
+            Plugin.modParts.Add(newPart);
+            if (!Plugin.modCustomParts.Contains(boatCustomParts)) Plugin.modCustomParts.Add(boatCustomParts);
+            return newPart;
         }
     }
 }
