@@ -13,7 +13,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.0.4";
+        public const string PLUGIN_VERSION = "0.0.5";
 
         public static List<BoatPartOption> modPartOptions;
         public static List<BoatPart> modParts;
@@ -22,6 +22,8 @@ namespace ShipyardExpansion
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
         internal static ConfigEntry<bool> bruteForce;
+        internal static ConfigEntry<bool> vertLateens;
+        internal static ConfigEntry<bool> showGizmos;
 
 
         private void Awake()
@@ -33,6 +35,8 @@ namespace ShipyardExpansion
 
             cleanSave = Config.Bind("Settings", "Clean save", false);
             bruteForce = Config.Bind("Settings", "Brute force", false);
+            vertLateens = Config.Bind("Settings", "Keep lateens upright", true);
+            showGizmos = Config.Bind("Dev tools", "Show gizmos", false);
         }
     }
 }

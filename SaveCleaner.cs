@@ -11,21 +11,13 @@ namespace ShipyardExpansion
     [HarmonyPatch(typeof(SaveLoadManager), "DoSaveGame")]
     internal static class SaveCleaner
     {
+        static readonly string[] boats = new string[] { "BOAT medi medium (50)", "BOAT dhow medium (20)", "BOAT junk medium (80)", "BOAT medi small (40)", "BOAT dhow small (10)", "BOAT junk small singleroof (90)" };
+
         [HarmonyPrefix]
         internal static void SavePatch()
         {
             if (!Plugin.cleanSave.Value) return;
-            if (Plugin.bruteForce.Value)
-            {
-                for (int i = 0; i < Plugin.modCustomParts.Count; i++)
-                {
-                    Plugin.modCustomParts[i].availableParts = new List<BoatPart>();
-                }
-                Plugin.cleanSave.Value = false;
-                Plugin.bruteForce.Value = false;
-                return;
-            }
-           
+
             for (int i = 0; i < Plugin.modCustomParts.Count; i++)
             {
                 var parts = Plugin.modCustomParts[i];
@@ -51,6 +43,20 @@ namespace ShipyardExpansion
                     j++;
                 }
             }
+
+            if (Plugin.bruteForce.Value)
+            {
+                foreach (var boat in boats)
+                {
+                    Refs.shiftingWorld.Find(boat).GetComponent<BoatCustomParts>().availableParts = new List<BoatPart>();
+                }
+                /*for (int i = 0; i < Plugin.modCustomParts.Count; i++)
+                {
+                    Plugin.modCustomParts[i].availableParts = new List<BoatPart>();
+                }*/
+            }
+
+            Plugin.bruteForce.Value = false;
             Plugin.cleanSave.Value = false;
 
         }

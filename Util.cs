@@ -153,5 +153,37 @@ namespace ShipyardExpansion
             if (!Plugin.modCustomParts.Contains(boatCustomParts)) Plugin.modCustomParts.Add(boatCustomParts);
             return newPart;
         }
+
+        public static GameObject AddGizmo(Transform transform)
+        {
+            if (!Plugin.showGizmos.Value) return null;
+
+            var pointer1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            pointer1.transform.parent = transform;
+            pointer1.gameObject.GetComponent<Collider>().enabled = false;
+            pointer1.transform.localPosition = Vector3.zero;
+            pointer1.transform.localEulerAngles = Vector3.zero;
+
+            var pointer1up = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            pointer1up.gameObject.transform.parent = pointer1.transform;
+            pointer1up.gameObject.GetComponent<Collider>().enabled = false;
+            pointer1up.transform.localPosition = Vector3.up;
+            pointer1up.transform.localEulerAngles = new Vector3(0, 0, 0);
+            pointer1up.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
+            pointer1up.GetComponent<Renderer>().material.color = Color.green;
+
+            var pointer1fwd = GameObject.Instantiate(pointer1up, pointer1.transform);
+            pointer1fwd.transform.localPosition = Vector3.forward;
+            pointer1fwd.transform.localEulerAngles = new Vector3(90, 0, 0);
+            pointer1fwd.GetComponent<Renderer>().material.color = Color.blue;
+
+            var pointer1right = GameObject.Instantiate(pointer1up, pointer1.transform);
+            pointer1right.transform.localPosition = Vector3.right;
+            pointer1right.transform.localEulerAngles = new Vector3(0, 0, 90);
+            pointer1right.GetComponent<Renderer>().material.color = Color.red;
+
+            pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            return pointer1;
+        }
     }
 }
