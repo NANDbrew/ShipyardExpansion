@@ -9,40 +9,40 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-    internal class SailRefs
-    {
-        public static Dictionary<GameObject, Quaternion> sails = new Dictionary<GameObject, Quaternion>();
 
-    }
     [HarmonyPatch(typeof(Sail), "UpdateInstallPosition")]
     internal static class ShipyardSailPatches
     {
-        static GameObject boatPointer;
-
         [HarmonyPrefix]
         public static void Prefix(Sail __instance)
         {
-            Util.AddGizmo(__instance.transform);
-            if (boatPointer == null)
-            {
-                boatPointer = Util.AddGizmo(__instance.GetComponentInParent<BoatCustomParts>().transform);
-                boatPointer.transform.position += new Vector3(0, 5, 0);
-            }
             if (!Plugin.vertLateens.Value) return;
-            if (__instance.category == SailCategory.lateen && __instance.category == SailCategory.junk)
+
+            float tilt = 270;
+
+            if (__instance.category == SailCategory.lateen || __instance.category == SailCategory.junk || __instance.category == SailCategory.other)
             {
-                /*if(SailRefs.sails.ContainsKey(__instance.gameObject))
-                {
-                    __instance.transform.rotation = SailRefs.sails[__instance.gameObject];
-                    __instance.transform.localEulerAngles = new Vector3(0, __instance.transform.localEulerAngles.y, 0);
-                }*/
-                __instance.transform.eulerAngles = new Vector3(270, 0, 0);
+                Debug.Log("sail \"" + __instance.name + "\" updated install position");
+                if (__instance.prefabIndex == 61) tilt = 275f;
+
+                __instance.transform.eulerAngles = new Vector3(tilt, 0, 0);
                 __instance.transform.localEulerAngles = new Vector3(0, __instance.transform.localEulerAngles.y, 0);
-
             }
-
-
         }
 
     }
+/*    [HarmonyPatch(typeof(Sail), "RunColCheck")]
+    internal static class ShipyardColCheckerPatches
+    {
+        [HarmonyPrefix]
+        public static void Prefix(Sail __instance)
+        {
+            if (!(bool)GameState.currentShipyard) return;
+            if (__instance.GetComponent<SailConnections>() is SailConnections con)
+            { 
+                con.reefController.currentLength = 1; 
+            }
+
+        }
+    }*/
 }
