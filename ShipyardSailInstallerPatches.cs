@@ -25,8 +25,8 @@ namespace ShipyardExpansion
                 Debug.Log("sail \"" + __instance.name + "\" updated install position");
                 if (__instance.prefabIndex == 61) tilt = 275f;
 
-                __instance.transform.eulerAngles = new Vector3(tilt, 0, 0);
-                __instance.transform.localEulerAngles = new Vector3(0, __instance.transform.localEulerAngles.y, 0);
+                __instance.transform.eulerAngles = new Vector3(tilt, __instance.transform.eulerAngles.y, __instance.transform.eulerAngles.z);
+                //__instance.transform.localEulerAngles = new Vector3(0, __instance.transform.localEulerAngles.y, 0);
             }
         }
 

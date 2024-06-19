@@ -7,6 +7,18 @@ using System.Threading.Tasks;
 
 namespace ShipyardExpansion
 {
+    /*    [HarmonyPatch(typeof(SaveableBoatCustomization), "GetData")]
+        internal static class CustomizationCleaner
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref SaveBoatCustomizationData __result)
+            {
+                if (!Plugin.bruteForce.Value) return;
+                __result = new SaveBoatCustomizationData();
+                Plugin.bruteForce.Value = false;
+            }
+        }*/
+
 
     [HarmonyPatch(typeof(SaveLoadManager), "DoSaveGame")]
     internal static class SaveCleaner
@@ -32,8 +44,8 @@ namespace ShipyardExpansion
                     for (int k = 0; k < part.partOptions.Count;)
                     {
                         var option = part.partOptions[k];
-                        if(Plugin.modPartOptions.Contains(option))
-                        { 
+                        if (Plugin.modPartOptions.Contains(option))
+                        {
                             part.partOptions.Remove(option);
                             continue;
                         }
@@ -44,19 +56,19 @@ namespace ShipyardExpansion
                 }
             }
 
-            if (Plugin.bruteForce.Value)
-            {
-                foreach (var boat in boats)
-                {
-                    Refs.shiftingWorld.Find(boat).GetComponent<BoatCustomParts>().availableParts = new List<BoatPart>();
-                }
-                /*for (int i = 0; i < Plugin.modCustomParts.Count; i++)
-                {
-                    Plugin.modCustomParts[i].availableParts = new List<BoatPart>();
-                }*/
-            }
+            /*   if (Plugin.bruteForce.Value)
+               {
+                   foreach (var boat in boats)
+                   {
+                       Refs.shiftingWorld.Find(boat).GetComponent<BoatCustomParts>().availableParts = new List<BoatPart>();
+                   }
+                   *//*for (int i = 0; i < Plugin.modCustomParts.Count; i++)
+                   {
+                       Plugin.modCustomParts[i].availableParts = new List<BoatPart>();
+                   }*//*
+               }*/
 
-            Plugin.bruteForce.Value = false;
+            //Plugin.bruteForce.Value = false;
             Plugin.cleanSave.Value = false;
 
         }

@@ -12,6 +12,7 @@ namespace ShipyardExpansion
     {
         public static void Patch(Transform boat, List<BoatPart> partsList)
         {
+
             //Mast[] masts = boat.GetComponent<BoatRefs>().masts;
             var boatRefs = boat.GetComponent<BoatRefs>();
             Transform container = boat.transform.Find("dhow medium new");
@@ -27,19 +28,6 @@ namespace ShipyardExpansion
             Mast topmastStay1_mast = topmastStay1.GetComponent<Mast>();
             Mast topmastStay2_mast = topmastStay2.GetComponent<Mast>();
             Mast topmastStay3_mast = topmastStay3.GetComponent<Mast>();
-
-/*                mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(topMast1.gameObject);
-            mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(topMast2.gameObject);
-
-            var topmastContainer = Util.CreatePartOption(structure, "main_topmast", "main topmast");
-            topMast1.parent = topmastContainer.transform;
-            topMast2.parent = topmastContainer.transform;
-            topMast1.GetComponent<BoatPartOption>().enabled = false;
-            topMast2.GetComponent<BoatPartOption>().enabled = false;
-            partsList[10].partOptions.RemoveRange(1, 2);
-            partsList[10].partOptions.Add(topmastContainer);
-            mainMast1.GetComponent<BoatPartOption>().childMast = topMast1.GetComponent <Mast>();*/
-
 
             #region adjustments
             // move main mast aft to make room
@@ -57,12 +45,12 @@ namespace ShipyardExpansion
 
             BoatPartOption forestayNone = Util.CreatePartOption(container, "(empty forestay)", "(no forestay)");
             partsList[3].partOptions.Add(forestayNone);
-            partsList[3].activeOption = partsList[3].partOptions.Count - 1;
+            //partsList[3].activeOption = partsList[3].partOptions.Count - 1;
             Plugin.modPartOptions.Add(forestayNone);
 
             BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
             partsList[2].partOptions.Add(bowspritNone);
-            partsList[2].activeOption = partsList[2].partOptions.Count - 1;
+            //partsList[2].activeOption = partsList[2].partOptions.Count - 1;
             Plugin.modPartOptions.Add(bowspritNone);
             #endregion
 

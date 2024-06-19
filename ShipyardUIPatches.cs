@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-    [HarmonyPatch(typeof(ShipyardButton))]
+/*    [HarmonyPatch(typeof(ShipyardButton))]
     internal static class ShipyardButtonPatches
     {
         internal static int menuCategory;
 
-/*        [HarmonyPatch("ExtraLateUpdate")]
+        [HarmonyPatch("ExtraLateUpdate")]
         [HarmonyPostfix]
         public static void Patch(ShipyardButton __instance, int ___index, ShipyardButton.ButtonFunction ___function, ref bool ___overrideEnableOutline)
         {
@@ -25,8 +25,8 @@ namespace ShipyardExpansion
             {
                 ___overrideEnableOutline = false;
             }
-        }*/
-    }
+        }
+    }*/
 
     [HarmonyPatch(typeof(ShipyardUI))]
     internal static class ShipyardUIPatches
@@ -39,6 +39,7 @@ namespace ShipyardExpansion
         [HarmonyPostfix]
         public static void RefreshPatch(ShipyardUI __instance, TextMesh[] ___partOptionsTexts, int category, GameObject ___partsOtherMenu)
         {
+            //if (!Plugin.showGizmos.Value) return;
             BoatCustomParts component = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatCustomParts>();
             int partCount = 0;
             bool extraParts = false;
@@ -57,22 +58,23 @@ namespace ShipyardExpansion
             if (extraParts) extraButton.SetActive(true);
             else extraButton.SetActive(false);
             extraButton.transform.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, 0);
-            ShipyardButtonPatches.menuCategory = category;
+            //ShipyardButtonPatches.menuCategory = category;
         }
 
         [HarmonyPatch("Awake")]
         [HarmonyPostfix]
         public static void AwakePatch(GameObject ___partsOtherMenu, ShipyardUI __instance)
         {
-  /*          buttonList = new List<ShipyardButton>();
-            var buttons = __instance.GetComponentsInChildren<ShipyardButton>();
-            foreach (var button in buttons)
-            {
-                if (button.function == ShipyardButton.ButtonFunction.changeCategory)
-                {
-                    buttonList.Add(button);
-                }
-            }*/
+            //if (!Plugin.showGizmos.Value) return;
+            /*          buttonList = new List<ShipyardButton>();
+                      var buttons = __instance.GetComponentsInChildren<ShipyardButton>();
+                      foreach (var button in buttons)
+                      {
+                          if (button.function == ShipyardButton.ButtonFunction.changeCategory)
+                          {
+                              buttonList.Add(button);
+                          }
+                      }*/
 
             oldButton = __instance.transform.GetChild(0).transform.Find("mode button Parts Other");
             Transform newButton = UnityEngine.Object.Instantiate(oldButton, __instance.transform.GetChild(0));

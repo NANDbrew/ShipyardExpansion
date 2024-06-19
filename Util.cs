@@ -159,7 +159,7 @@ namespace ShipyardExpansion
             return newPart;
         }
 
-        public static GameObject AddGizmo(Transform transform)
+/*        public static GameObject AddGizmo(Transform transform)
         {
             if (!Plugin.showGizmos.Value) return null;
 
@@ -189,6 +189,6 @@ namespace ShipyardExpansion
 
             pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             return pointer1;
-        }
+        }*/
     }
 }
