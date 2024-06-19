@@ -20,13 +20,13 @@ namespace ShipyardExpansion
 
             for (int i = 0; i < Plugin.modCustomParts.Count; i++)
             {
-                var parts = Plugin.modCustomParts[i];
-                for (int j = 0; j < parts.availableParts.Count;)
+                var partsList = Plugin.modCustomParts[i];
+                for (int j = 0; j < partsList.Count;)
                 {
-                    var part = parts.availableParts[j];
+                    var part = partsList[j];
                     if (Plugin.modParts.Contains(part))
                     {
-                        parts.availableParts.Remove(part);
+                        partsList.Remove(part);
                         continue;
                     }
                     for (int k = 0; k < part.partOptions.Count;)

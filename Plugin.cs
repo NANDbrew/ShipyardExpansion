@@ -17,7 +17,7 @@ namespace ShipyardExpansion
 
         public static List<BoatPartOption> modPartOptions;
         public static List<BoatPart> modParts;
-        public static List<BoatCustomParts> modCustomParts;
+        public static List<List<BoatPart>> modCustomParts;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -30,7 +30,7 @@ namespace ShipyardExpansion
         {
             modPartOptions = new List<BoatPartOption>();
             modParts = new List<BoatPart>();
-            modCustomParts = new List<BoatCustomParts>();
+            modCustomParts = new List<List<BoatPart>>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
             cleanSave = Config.Bind("Settings", "Clean save", false);

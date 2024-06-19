@@ -10,207 +10,204 @@ namespace ShipyardExpansion
 {
     internal class CogPatches
     {
-        [HarmonyPatch(typeof(SaveableBoatCustomization))]
-        internal static class PartsPatch
+        public static void Patch(Transform boat, List<BoatPart> partsList)
         {
-            [HarmonyPatch("Awake")]
-            [HarmonyPostfix]
-            public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts)
-            {
-                if (__instance.name != "BOAT medi small (40)") return;
-                Transform container = __instance.transform.Find("medi small");
-                Transform structure = container.Find("structure");
-                var mainMast1 = structure.Find("mast");
-                var mainMast2 = structure.Find("mast_front");
-                var mizzenMast = structure.Find("mast_mizzen");
-                Transform mastWalkCol = mainMast1.GetComponent<Mast>().walkColMast;
-                Transform mastWalkCol2 = mainMast2.GetComponent<Mast>().walkColMast;
-                Transform walkCols = mastWalkCol.parent.parent;
-                #region adjustments
-                mainMast1.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
-                mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
-                mainMast2.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
-                mainMast2.GetComponent<Mast>().extraBottomHeight = 0.1f;
-                mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
-                mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
+            Transform container = boat.transform.Find("medi small");
+            Transform structure = container.Find("structure");
+            var mainMast1 = structure.Find("mast");
+            var mainMast2 = structure.Find("mast_front");
+            var mizzenMast = structure.Find("mast_mizzen");
+            Transform mastWalkCol = mainMast1.GetComponent<Mast>().walkColMast;
+            Transform mastWalkCol2 = mainMast2.GetComponent<Mast>().walkColMast;
+            Transform walkCols = mastWalkCol.parent.parent;
+
+            #region adjustments
+            mainMast1.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
+            mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
+            mainMast2.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
+            mainMast2.GetComponent<Mast>().extraBottomHeight = 0.1f;
+            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
+            mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
 
 
 
-                var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
-                ropeHolderAft.parent = mizzenMast;
-                mizzenMast.GetChild(2).position = ropeHolderAft.GetChild(0).position;
-                mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
-                ropeHolderAft.GetChild(0).gameObject.SetActive(false);
+            var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
+            ropeHolderAft.parent = mizzenMast;
+            mizzenMast.GetChild(2).position = ropeHolderAft.GetChild(0).position;
+            mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
+            ropeHolderAft.GetChild(0).gameObject.SetActive(false);
 
-                #endregion
-                #region shrouds
-                BoatPartOption backOption = Util.CreatePartOption(container, "parts_shrouds_back", "shrouds 1");
-                backOption.transform.localEulerAngles = new Vector3(270, 0, 0);
-                var mainShrouds1 = mainMast1.Find("Cylinder_002");
-                mainShrouds1.parent = backOption.transform;
-                mainMast1.Find("trim_014").parent = mainShrouds1;
-                mainMast1.Find("mast_002").parent = mainShrouds1;
+            partsList[1].category = 2;
 
-                var colContainer1 = UnityEngine.Object.Instantiate(new GameObject(){ name = backOption.name }, walkCols);
-                colContainer1.transform.localEulerAngles = backOption.transform.localEulerAngles;
-                var mainShrouds1Col = mastWalkCol.Find("Cylinder_002");
-                mastWalkCol.Find("trim_014").parent = mainShrouds1Col;
-                mastWalkCol.Find("mast_002").parent = mainShrouds1Col;
-                mainShrouds1Col.parent = colContainer1.transform;
-                backOption.walkColObject = colContainer1;
+            #endregion
+            #region shrouds
+            BoatPartOption backOption = Util.CreatePartOption(container, "parts_shrouds_back", "shrouds 1");
+            backOption.transform.localEulerAngles = new Vector3(270, 0, 0);
+            var mainShrouds1 = mainMast1.Find("Cylinder_002");
+            mainShrouds1.parent = backOption.transform;
+            mainMast1.Find("trim_014").parent = mainShrouds1;
+            mainMast1.Find("mast_002").parent = mainShrouds1;
 
-                BoatPartOption sideOption = Util.CopyPartOptionObj(backOption, "part_shrouds_side", "shrouds 2");
-                var mainShrouds2 = sideOption.transform.GetChild(0);
-                var mainShroudAnchors2 = mainShrouds2.transform.GetChild(0);
-                var mainShroudSpreader2 = mainShrouds2.transform.GetChild(1);
-                mainShrouds2.localPosition = new Vector3(0.4f, 0f, 0.4f);
-                mainShrouds2.localEulerAngles = new Vector3(0f, 7.5f, 0f);
-                mainShrouds2.localScale = new Vector3(-mainShrouds2.localScale.x, mainShrouds2.localScale.y, mainShrouds2.localScale.z);
-                mainShroudAnchors2.localPosition = new Vector3(2.15f, 0f, -0.14f);
-                mainShroudAnchors2.localEulerAngles = new Vector3(0f, 7.5f, 0f);
-                mainShroudSpreader2.localPosition = new Vector3(1.1f, 0f, mainShroudSpreader2.localPosition.z);
-                mainShroudSpreader2.localEulerAngles = new Vector3(90f, 0f, 0f);
-                mainShroudSpreader2.localScale = new Vector3(0.5f, mainShroudSpreader2.localScale.y, mainShroudSpreader2.localScale.z);
+            var colContainer1 = UnityEngine.Object.Instantiate(new GameObject() { name = backOption.name }, walkCols);
+            colContainer1.transform.localEulerAngles = backOption.transform.localEulerAngles;
+            var mainShrouds1Col = mastWalkCol.Find("Cylinder_002");
+            mastWalkCol.Find("trim_014").parent = mainShrouds1Col;
+            mastWalkCol.Find("mast_002").parent = mainShrouds1Col;
+            mainShrouds1Col.parent = colContainer1.transform;
+            backOption.walkColObject = colContainer1;
 
-                var colContainer2 = sideOption.walkColObject;
-                Transform mainShrouds2Col = colContainer2.transform.GetChild(0);
-                mainShrouds2Col.localPosition = mainShrouds2.localPosition;
-                mainShrouds2Col.localEulerAngles = mainShrouds2.localEulerAngles;
-                mainShrouds2Col.localScale = mainShrouds2.localScale;
-                mainShrouds2Col.GetChild(0).localPosition = mainShroudAnchors2.localPosition;
-                mainShrouds2Col.GetChild(0).localEulerAngles = mainShroudAnchors2.localEulerAngles;
-                mainShrouds2Col.GetChild(0).localScale = mainShroudAnchors2.localScale;
-                mainShrouds2Col.GetChild(1).localPosition = mainShroudSpreader2.localPosition;
-                mainShrouds2Col.GetChild(1).localEulerAngles = mainShroudSpreader2.localEulerAngles;
-                mainShrouds2Col.GetChild(1).localScale = mainShroudSpreader2.localScale;
+            BoatPartOption sideOption = Util.CopyPartOptionObj(backOption, "part_shrouds_side", "shrouds 2");
+            var mainShrouds2 = sideOption.transform.GetChild(0);
+            var mainShroudAnchors2 = mainShrouds2.transform.GetChild(0);
+            var mainShroudSpreader2 = mainShrouds2.transform.GetChild(1);
+            mainShrouds2.localPosition = new Vector3(0.4f, 0f, 0.4f);
+            mainShrouds2.localEulerAngles = new Vector3(0f, 7.5f, 0f);
+            mainShrouds2.localScale = new Vector3(-mainShrouds2.localScale.x, mainShrouds2.localScale.y, mainShrouds2.localScale.z);
+            mainShroudAnchors2.localPosition = new Vector3(2.15f, 0f, -0.14f);
+            mainShroudAnchors2.localEulerAngles = new Vector3(0f, 7.5f, 0f);
+            mainShroudSpreader2.localPosition = new Vector3(1.1f, 0f, mainShroudSpreader2.localPosition.z);
+            mainShroudSpreader2.localEulerAngles = new Vector3(90f, 0f, 0f);
+            mainShroudSpreader2.localScale = new Vector3(0.5f, mainShroudSpreader2.localScale.y, mainShroudSpreader2.localScale.z);
 
-
-                var frontShrouds1 = mainMast2.Find("Cylinder_004");
-                mainMast2.Find("trim_016").parent = frontShrouds1;
-                mainMast2.Find("mast_004").parent = frontShrouds1;
-                frontShrouds1.parent = backOption.transform;
-
-                var frontShrouds1Col = mastWalkCol2.Find("Cylinder_004");
-                mastWalkCol2.Find("trim_016").parent = frontShrouds1Col;
-                mastWalkCol2.Find("mast_004").parent = frontShrouds1Col;
-                frontShrouds1Col.parent = colContainer1.transform;
-
-                var frontShrouds2 = UnityEngine.Object.Instantiate(frontShrouds1, sideOption.transform);
-                var frontShroudAnchors2 = frontShrouds2.transform.GetChild(0);
-                var frontShroudSpreader2 = frontShrouds2.transform.GetChild(1);
-                frontShrouds2.localPosition = new Vector3(4.2930f, 0f, 1.0511f);
-                frontShrouds2.localEulerAngles = new Vector3(0f, 8.3f, 0f);
-                frontShrouds2.localScale = new Vector3(-1.05f, 0.86f, 0.96f);
-                frontShroudAnchors2.localPosition = new Vector3(-1.53f, 0f, 0.42f);
-                frontShroudAnchors2.localEulerAngles = new Vector3(0f, 15f, 0f);
-                frontShroudAnchors2.localScale = new Vector3(-1f, frontShroudAnchors2.localScale.y, frontShroudAnchors2.localScale.z);
-                frontShroudSpreader2.localPosition = new Vector3(1.48f, 0f, frontShroudSpreader2.localPosition.z);
-                frontShroudSpreader2.localEulerAngles = new Vector3(90f, 8.3f, 0f);
-                frontShroudSpreader2.localScale = new Vector3(0.4f, frontShroudSpreader2.localScale.y, 1f);
-
-                Transform frontShrouds2Col = UnityEngine.Object.Instantiate(frontShrouds1Col, colContainer2.transform);
-                frontShrouds2Col.localPosition = frontShrouds2.localPosition;
-                frontShrouds2Col.localEulerAngles = frontShrouds2.localEulerAngles;
-                frontShrouds2Col.localScale = frontShrouds2.localScale;
-                frontShrouds2Col.GetChild(0).localPosition = frontShroudAnchors2.localPosition;
-                frontShrouds2Col.GetChild(0).localEulerAngles = frontShroudAnchors2.localEulerAngles;
-                frontShrouds2Col.GetChild(0).localScale = frontShroudAnchors2.localScale;
-                frontShrouds2Col.GetChild(1).localPosition = frontShroudSpreader2.localPosition;
-                frontShrouds2Col.GetChild(1).localEulerAngles = frontShroudSpreader2.localEulerAngles;
-                frontShrouds2Col.GetChild(1).localScale = frontShroudSpreader2.localScale;
-                
-
-                Util.CreateAndAddPart(___parts, 1, new List<BoatPartOption> { backOption, sideOption });
-
-                mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[4] { mainShrouds1.gameObject, mainShrouds1Col.gameObject, mainShrouds2.gameObject, mainShrouds2Col.gameObject });
-                mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[4] { frontShrouds1.gameObject, frontShrouds1Col.gameObject, frontShrouds2.gameObject, frontShrouds2Col.gameObject });
-                #endregion
-
-                #region midstay
-                Transform forestay = container.Find("mast forestay");
-                Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 29);
-                midstay.mastHeight = 10.7f;
-                BoatPartOption midstayOpt = midstay.GetComponent<BoatPartOption>();
-                midstayOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen").GetComponent<BoatPartOption>() };
-                BoatPartOption noMidstay = Util.CreatePartOption(container, "(no_midstay)", "(no middlestay)");
-                midstay.reefWinch[0].transform.localPosition = new Vector3(-7.67f, 0f, -6.8f);
-                midstay.leftAngleWinch = Util.CopyWinches(midstay.leftAngleWinch, midstay.leftAngleWinch[0].transform.localPosition, midstay.leftAngleWinch[0].transform.localPosition + new Vector3(-0.5f, 0, 0));
-                midstay.rightAngleWinch = Util.CopyWinches(midstay.rightAngleWinch, midstay.rightAngleWinch[0].transform.localPosition, midstay.rightAngleWinch[0].transform.localPosition + new Vector3(-0.5f, 0, 0));
-                midstay.leftAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, 1.978f);
-                midstay.rightAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, -1.978f);
-
-                Transform ropeHolder = UnityEngine.Object.Instantiate(midstay.mastReefAtt[0].parent, midstay.transform, true);
-                ropeHolder.localPosition = new Vector3(-0.55f, 0.12f, 2f);
-                midstay.mastReefAtt[0] = ropeHolder.GetChild(0);
+            var colContainer2 = sideOption.walkColObject;
+            Transform mainShrouds2Col = colContainer2.transform.GetChild(0);
+            mainShrouds2Col.localPosition = mainShrouds2.localPosition;
+            mainShrouds2Col.localEulerAngles = mainShrouds2.localEulerAngles;
+            mainShrouds2Col.localScale = mainShrouds2.localScale;
+            mainShrouds2Col.GetChild(0).localPosition = mainShroudAnchors2.localPosition;
+            mainShrouds2Col.GetChild(0).localEulerAngles = mainShroudAnchors2.localEulerAngles;
+            mainShrouds2Col.GetChild(0).localScale = mainShroudAnchors2.localScale;
+            mainShrouds2Col.GetChild(1).localPosition = mainShroudSpreader2.localPosition;
+            mainShrouds2Col.GetChild(1).localEulerAngles = mainShroudSpreader2.localEulerAngles;
+            mainShrouds2Col.GetChild(1).localScale = mainShroudSpreader2.localScale;
 
 
-                Mast innerForestay = Util.CopyMast(forestay, new Vector3(1.513f, 12f, 0f), new Vector3(302f, 270f, 90f), new Vector3(1, 1, 0.94f), "mast_inner_forestay", "bottom forestay", 26);
-                innerForestay.reefWinch[0].transform.localPosition = new Vector3(-6.58f, 0f, -8.55f);
-                innerForestay.reefWinch[0].transform.localEulerAngles = new Vector3(0, 120, 180);
-                innerForestay.leftAngleWinch = Util.CopyWinches(innerForestay.leftAngleWinch, innerForestay.leftAngleWinch[0].transform.localPosition, innerForestay.leftAngleWinch[0].transform.localPosition + new Vector3(0.5f, 0, 0));
-                innerForestay.rightAngleWinch = Util.CopyWinches(innerForestay.rightAngleWinch, innerForestay.rightAngleWinch[0].transform.localPosition, innerForestay.rightAngleWinch[0].transform.localPosition + new Vector3(0.5f, 0, 0));
-                innerForestay.mastHeight = 11.3f;
-                BoatPartOption innerForestayOpt = innerForestay.GetComponent<BoatPartOption>();
-                innerForestayOpt.requiresDisabled = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), forestay.GetComponent<BoatPartOption>() };
+            var frontShrouds1 = mainMast2.Find("Cylinder_004");
+            mainMast2.Find("trim_016").parent = frontShrouds1;
+            mainMast2.Find("mast_004").parent = frontShrouds1;
+            frontShrouds1.parent = backOption.transform;
 
-                Util.CreateAndAddPart(___parts, 2, new List<BoatPartOption>() { noMidstay, midstayOpt, innerForestayOpt });
-                #endregion
+            var frontShrouds1Col = mastWalkCol2.Find("Cylinder_004");
+            mastWalkCol2.Find("trim_016").parent = frontShrouds1Col;
+            mastWalkCol2.Find("mast_004").parent = frontShrouds1Col;
+            frontShrouds1Col.parent = colContainer1.transform;
 
-                #region longsprit
-                var bowspritM = structure.Find("mast (bowsprit)");
-                Transform bowsprit = structure.Find("mast_001");
-                BoatPartOption bowspritOpt = Util.AddPartOption(bowspritM.gameObject, "bowsprit");
-                bowspritOpt.basePrice = 500;
-                bowspritOpt.installCost = 200;
-                bowspritOpt.mass = 20;
-                bowspritOpt.childOptions = new GameObject[1] { bowsprit.gameObject };
-                BoatPartOption bowspritNone = Util.CreatePartOption(bowsprit.parent, "(no_bowsprit)", "(no bowsprit)");
-                Mast bowspritLongM = Util.CopyMast(bowspritM, bowspritM.localPosition + new Vector3(2f, 0f, 1.1f), "bowsprit_long", "long bowsprit", 28);
-                Transform bowspritLong = UnityEngine.Object.Instantiate(bowsprit, bowsprit.parent);
-                bowspritLong.localPosition = bowsprit.localPosition + new Vector3(2f, 0f, 1.1f);
-                bowspritLong.localScale = new Vector3(bowspritLong.localScale.x, bowspritLong.localScale.y, 0.8f);
+            var frontShrouds2 = UnityEngine.Object.Instantiate(frontShrouds1, sideOption.transform);
+            var frontShroudAnchors2 = frontShrouds2.transform.GetChild(0);
+            var frontShroudSpreader2 = frontShrouds2.transform.GetChild(1);
+            frontShrouds2.localPosition = new Vector3(4.2930f, 0f, 1.0511f);
+            frontShrouds2.localEulerAngles = new Vector3(0f, 8.3f, 0f);
+            frontShrouds2.localScale = new Vector3(-1.05f, 0.86f, 0.96f);
+            frontShroudAnchors2.localPosition = new Vector3(-1.53f, 0f, 0.42f);
+            frontShroudAnchors2.localEulerAngles = new Vector3(0f, 15f, 0f);
+            frontShroudAnchors2.localScale = new Vector3(-1f, frontShroudAnchors2.localScale.y, frontShroudAnchors2.localScale.z);
+            frontShroudSpreader2.localPosition = new Vector3(1.48f, 0f, frontShroudSpreader2.localPosition.z);
+            frontShroudSpreader2.localEulerAngles = new Vector3(90f, 8.3f, 0f);
+            frontShroudSpreader2.localScale = new Vector3(0.4f, frontShroudSpreader2.localScale.y, 1f);
 
-                bowspritLongM.walkColMast.transform.localScale = bowspritLong.localScale;
+            Transform frontShrouds2Col = UnityEngine.Object.Instantiate(frontShrouds1Col, colContainer2.transform);
+            frontShrouds2Col.localPosition = frontShrouds2.localPosition;
+            frontShrouds2Col.localEulerAngles = frontShrouds2.localEulerAngles;
+            frontShrouds2Col.localScale = frontShrouds2.localScale;
+            frontShrouds2Col.GetChild(0).localPosition = frontShroudAnchors2.localPosition;
+            frontShrouds2Col.GetChild(0).localEulerAngles = frontShroudAnchors2.localEulerAngles;
+            frontShrouds2Col.GetChild(0).localScale = frontShroudAnchors2.localScale;
+            frontShrouds2Col.GetChild(1).localPosition = frontShroudSpreader2.localPosition;
+            frontShrouds2Col.GetChild(1).localEulerAngles = frontShroudSpreader2.localEulerAngles;
+            frontShrouds2Col.GetChild(1).localScale = frontShroudSpreader2.localScale;
 
-                BoatPartOption bowspritLongOpt = bowspritLongM.GetComponent<BoatPartOption>();
-                bowspritLongOpt.basePrice = 750;
-                bowspritLongOpt.installCost = 200;
-                bowspritLongOpt.mass = 30;
-                bowspritLongOpt.childOptions = new GameObject[1] { bowspritLong.gameObject };
-                BoatPart bowspritPart = Util.CreateAndAddPart(___parts, 0, new List<BoatPartOption>() { bowspritOpt, bowspritLongOpt, bowspritNone });
-                #endregion
 
-                #region forestay3
-                var forestay2 = container.Find("forestay_front_mast");
-                var forestay3 = Util.CopyMast(forestay2, forestay2.localPosition, "forestay_mast_front_long", "forestay 2 long", 27);
-                forestay3.transform.localEulerAngles += new Vector3(10, 0, 0);
-                forestay3.mastHeight = 11.8f;
-                forestay3.reefWinch[0].transform.position = forestay2.GetComponent<Mast>().reefWinch[0].transform.position;
-                forestay3.reefWinch[0].transform.rotation = forestay2.GetComponent<Mast>().reefWinch[0].transform.rotation;
-                var forestay3_opt = forestay3.GetComponent<BoatPartOption>();
-                forestay3_opt.requires.Add(bowspritLongOpt);
-                ___parts.availableParts[1].partOptions.Add(forestay3_opt);
-                Plugin.modPartOptions.Add(forestay3_opt);
+            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { backOption, sideOption });
 
-                
-                ___parts.availableParts[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
-                #endregion
+            mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[4] { mainShrouds1.gameObject, mainShrouds1Col.gameObject, mainShrouds2.gameObject, mainShrouds2Col.gameObject });
+            mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[4] { frontShrouds1.gameObject, frontShrouds1Col.gameObject, frontShrouds2.gameObject, frontShrouds2Col.gameObject });
+            #endregion
 
-                #region forestay4
-                var forestay4 = Util.CopyMast(forestay, new Vector3(2.213f, 13.3f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 1.04f), "forestay_mast_long", "forestay 1 long", 25);
-                //forestay4.transform.localEulerAngles += new Vector3(10, 0, 0);
-                forestay4.mastHeight = 12.8f;
-                forestay4.reefWinch[0].transform.position = forestay.GetComponent<Mast>().reefWinch[0].transform.position;
-                forestay4.reefWinch[0].transform.rotation = forestay.GetComponent<Mast>().reefWinch[0].transform.rotation;
-                var forestay4_opt = forestay4.GetComponent<BoatPartOption>();
-                forestay4_opt.requires.Add(bowspritLongOpt);
-                ___parts.availableParts[1].partOptions.Add(forestay4_opt);
-                Plugin.modPartOptions.Add(forestay4_opt);
+            #region midstay
+            Transform forestay = container.Find("mast forestay");
+            Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 29);
+            midstay.mastHeight = 10.7f;
+            BoatPartOption midstayOpt = midstay.GetComponent<BoatPartOption>();
+            midstayOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen").GetComponent<BoatPartOption>() };
+            BoatPartOption noMidstay = Util.CreatePartOption(container, "(no_midstay)", "(no middlestay)");
+            midstay.reefWinch[0].transform.localPosition = new Vector3(-7.67f, 0f, -6.8f);
+            midstay.leftAngleWinch = Util.CopyWinches(midstay.leftAngleWinch, midstay.leftAngleWinch[0].transform.localPosition, midstay.leftAngleWinch[0].transform.localPosition + new Vector3(-0.5f, 0, 0));
+            midstay.rightAngleWinch = Util.CopyWinches(midstay.rightAngleWinch, midstay.rightAngleWinch[0].transform.localPosition, midstay.rightAngleWinch[0].transform.localPosition + new Vector3(-0.5f, 0, 0));
+            midstay.leftAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, 1.978f);
+            midstay.rightAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, -1.978f);
 
-                #endregion
+            Transform ropeHolder = UnityEngine.Object.Instantiate(midstay.mastReefAtt[0].parent, midstay.transform, true);
+            ropeHolder.localPosition = new Vector3(-0.55f, 0.12f, 2f);
+            midstay.mastReefAtt[0] = ropeHolder.GetChild(0);
 
-                if (!Plugin.modCustomParts.Contains(___parts)) Plugin.modCustomParts.Add(___parts); //add boat to list of modified boats
-            }
+
+            Mast innerForestay = Util.CopyMast(forestay, new Vector3(1.513f, 12f, 0f), new Vector3(302f, 270f, 90f), new Vector3(1, 1, 0.94f), "mast_inner_forestay", "bottom forestay", 26);
+            innerForestay.reefWinch[0].transform.localPosition = new Vector3(-6.58f, 0f, -8.55f);
+            innerForestay.reefWinch[0].transform.localEulerAngles = new Vector3(0, 120, 180);
+            innerForestay.leftAngleWinch = Util.CopyWinches(innerForestay.leftAngleWinch, innerForestay.leftAngleWinch[0].transform.localPosition, innerForestay.leftAngleWinch[0].transform.localPosition + new Vector3(0.5f, 0, 0));
+            innerForestay.rightAngleWinch = Util.CopyWinches(innerForestay.rightAngleWinch, innerForestay.rightAngleWinch[0].transform.localPosition, innerForestay.rightAngleWinch[0].transform.localPosition + new Vector3(0.5f, 0, 0));
+            innerForestay.mastHeight = 11.3f;
+            BoatPartOption innerForestayOpt = innerForestay.GetComponent<BoatPartOption>();
+            innerForestayOpt.requiresDisabled = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), forestay.GetComponent<BoatPartOption>() };
+
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { noMidstay, midstayOpt, innerForestayOpt });
+            #endregion
+
+            #region longsprit
+            var bowspritM = structure.Find("mast (bowsprit)");
+            Transform bowsprit = structure.Find("mast_001");
+            BoatPartOption bowspritOpt = Util.AddPartOption(bowspritM.gameObject, "bowsprit");
+            bowspritOpt.basePrice = 500;
+            bowspritOpt.installCost = 200;
+            bowspritOpt.mass = 20;
+            bowspritOpt.childOptions = new GameObject[1] { bowsprit.gameObject };
+            BoatPartOption bowspritNone = Util.CreatePartOption(bowsprit.parent, "(no_bowsprit)", "(no bowsprit)");
+            Mast bowspritLongM = Util.CopyMast(bowspritM, bowspritM.localPosition + new Vector3(2f, 0f, 1.1f), "bowsprit_long", "long bowsprit", 28);
+            Transform bowspritLong = UnityEngine.Object.Instantiate(bowsprit, bowsprit.parent);
+            bowspritLong.localPosition = bowsprit.localPosition + new Vector3(2f, 0f, 1.1f);
+            bowspritLong.localScale = new Vector3(bowspritLong.localScale.x, bowspritLong.localScale.y, 0.8f);
+
+            bowspritLongM.walkColMast.transform.localScale = bowspritLong.localScale;
+
+            BoatPartOption bowspritLongOpt = bowspritLongM.GetComponent<BoatPartOption>();
+            bowspritLongOpt.basePrice = 750;
+            bowspritLongOpt.installCost = 200;
+            bowspritLongOpt.mass = 30;
+            bowspritLongOpt.childOptions = new GameObject[1] { bowspritLong.gameObject };
+            BoatPart bowspritPart = Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption>() { bowspritOpt, bowspritLongOpt, bowspritNone });
+            #endregion
+
+            #region forestay3
+            var forestay2 = container.Find("forestay_front_mast");
+            var forestay3 = Util.CopyMast(forestay2, forestay2.localPosition, "forestay_mast_front_long", "forestay 2 long", 27);
+            forestay3.transform.localEulerAngles += new Vector3(10, 0, 0);
+            forestay3.mastHeight = 11.8f;
+            forestay3.reefWinch[0].transform.position = forestay2.GetComponent<Mast>().reefWinch[0].transform.position;
+            forestay3.reefWinch[0].transform.rotation = forestay2.GetComponent<Mast>().reefWinch[0].transform.rotation;
+            var forestay3_opt = forestay3.GetComponent<BoatPartOption>();
+            forestay3_opt.requires.Add(bowspritLongOpt);
+            partsList[1].partOptions.Add(forestay3_opt);
+            Plugin.modPartOptions.Add(forestay3_opt);
+
+
+            partsList[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
+            #endregion
+
+            #region forestay4
+            var forestay4 = Util.CopyMast(forestay, new Vector3(2.213f, 13.3f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 1.04f), "forestay_mast_long", "forestay 1 long", 25);
+            //forestay4.transform.localEulerAngles += new Vector3(10, 0, 0);
+            forestay4.mastHeight = 12.8f;
+            forestay4.reefWinch[0].transform.position = forestay.GetComponent<Mast>().reefWinch[0].transform.position;
+            forestay4.reefWinch[0].transform.rotation = forestay.GetComponent<Mast>().reefWinch[0].transform.rotation;
+            var forestay4_opt = forestay4.GetComponent<BoatPartOption>();
+            forestay4_opt.requires.Add(bowspritLongOpt);
+            partsList[1].partOptions.Add(forestay4_opt);
+            Plugin.modPartOptions.Add(forestay4_opt);
+
+            #endregion
+
+            if (!Plugin.modCustomParts.Contains(partsList)) Plugin.modCustomParts.Add(partsList); //add boat to list of modified boats
         }
     }
+
 }
