@@ -86,13 +86,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrigPatches.cs" />
-    <Compile Include="CogPatches.cs" />
-    <Compile Include="DhowPatches.cs" />
-    <Compile Include="JunkPatches.cs" />
-    <Compile Include="KakamPatches.cs" />
+    <Compile Include="ShipPatches\BrigPatches.cs" />
+    <Compile Include="ShipPatches\CogPatches.cs" />
+    <Compile Include="ShipPatches\DhowPatches.cs" />
+    <Compile Include="ShipPatches\JunkPatches.cs" />
+    <Compile Include="ShipPatches\KakamPatches.cs" />
     <Compile Include="Patch.cs" />
-    <Compile Include="SanbuqPatches.cs" />
+    <Compile Include="ShipPatches\SanbuqPatches.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="SaveCleaner.cs" />
     <Compile Include="SaveConvert.cs" />

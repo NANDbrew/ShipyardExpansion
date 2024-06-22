@@ -125,7 +125,7 @@ namespace ShipyardExpansion
 
             #region midstay
             Transform forestay = container.Find("mast forestay");
-            Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 29);
+            Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 31);
             midstay.mastHeight = 10.7f;
             BoatPartOption midstayOpt = midstay.GetComponent<BoatPartOption>();
             midstayOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen").GetComponent<BoatPartOption>() };
@@ -141,7 +141,7 @@ namespace ShipyardExpansion
             midstay.mastReefAtt[0] = ropeHolder.GetChild(0);
 
 
-            Mast innerForestay = Util.CopyMast(forestay, new Vector3(1.513f, 12f, 0f), new Vector3(302f, 270f, 90f), new Vector3(1, 1, 0.94f), "mast_inner_forestay", "bottom forestay", 26);
+            Mast innerForestay = Util.CopyMast(forestay, new Vector3(1.513f, 12f, 0f), new Vector3(302f, 270f, 90f), new Vector3(1, 1, 0.94f), "mast_inner_forestay", "bottom forestay", 34);
             innerForestay.reefWinch[0].transform.localPosition = new Vector3(-6.58f, 0f, -8.55f);
             innerForestay.reefWinch[0].transform.localEulerAngles = new Vector3(0, 120, 180);
             innerForestay.leftAngleWinch = Util.CopyWinches(innerForestay.leftAngleWinch, innerForestay.leftAngleWinch[0].transform.localPosition, innerForestay.leftAngleWinch[0].transform.localPosition + new Vector3(0.5f, 0, 0));
@@ -162,7 +162,7 @@ namespace ShipyardExpansion
             bowspritOpt.mass = 20;
             bowspritOpt.childOptions = new GameObject[1] { bowsprit.gameObject };
             BoatPartOption bowspritNone = Util.CreatePartOption(bowsprit.parent, "(no_bowsprit)", "(no bowsprit)");
-            Mast bowspritLongM = Util.CopyMast(bowspritM, bowspritM.localPosition + new Vector3(2f, 0f, 1.1f), "bowsprit_long", "long bowsprit", 28);
+            Mast bowspritLongM = Util.CopyMast(bowspritM, bowspritM.localPosition + new Vector3(2f, 0f, 1.1f), "bowsprit_long", "long bowsprit", 32);
             Transform bowspritLong = UnityEngine.Object.Instantiate(bowsprit, bowsprit.parent);
             bowspritLong.localPosition = bowsprit.localPosition + new Vector3(2f, 0f, 1.1f);
             bowspritLong.localScale = new Vector3(bowspritLong.localScale.x, bowspritLong.localScale.y, 0.8f);
@@ -179,7 +179,7 @@ namespace ShipyardExpansion
 
             #region forestay3
             var forestay2 = container.Find("forestay_front_mast");
-            var forestay3 = Util.CopyMast(forestay2, forestay2.localPosition, "forestay_mast_front_long", "forestay 2 long", 27);
+            var forestay3 = Util.CopyMast(forestay2, forestay2.localPosition, "forestay_mast_front_long", "forestay 2 long", 33);
             forestay3.transform.localEulerAngles += new Vector3(10, 0, 0);
             forestay3.mastHeight = 11.8f;
             forestay3.reefWinch[0].transform.position = forestay2.GetComponent<Mast>().reefWinch[0].transform.position;
@@ -193,7 +193,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region forestay4
-            var forestay4 = Util.CopyMast(forestay, new Vector3(2.213f, 13.3f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 1.04f), "forestay_mast_long", "forestay 1 long", 25);
+            var forestay4 = Util.CopyMast(forestay, new Vector3(2.213f, 13.3f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 1.04f), "forestay_mast_long", "forestay 1 long", 35);
             //forestay4.transform.localEulerAngles += new Vector3(10, 0, 0);
             forestay4.mastHeight = 12.8f;
             forestay4.reefWinch[0].transform.position = forestay.GetComponent<Mast>().reefWinch[0].transform.position;

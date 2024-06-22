@@ -111,7 +111,7 @@ namespace ShipyardExpansion
             Transform stayAtt2 = UnityEngine.Object.Instantiate(stayAtt.parent, mainMast2).GetChild(0);
             stayAtt2.parent.localPosition = stayAtt.parent.localPosition + new Vector3(0f, 0f, -6.6f);
 
-            var mainstayOuter = Util.CopyMast(forestay_top_src, new Vector3(0f, 25.78f, 0f), forestay_top_src.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_top", "forestay 3", 28);
+            var mainstayOuter = Util.CopyMast(forestay_top_src, new Vector3(0f, 25.78f, 0f), forestay_top_src.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_top", "forestay 3", 32);
             mainstayOuter.reefWinch = Util.CopyWinches(mainstayOuter.reefWinch, foreMast1.localPosition, newPos);
 
             var outerLeft1 = UnityEngine.Object.Instantiate(container.Find("rope_winch_jib_angle_left"), container).GetComponent<GPButtonRopeWinch>();
@@ -140,7 +140,7 @@ namespace ShipyardExpansion
             mainstayOuterOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
             partsList.availableParts[4].partOptions.Add(mainstayOuterOpt);
             
-            var mainstayInner = Util.CopyMast(forestay_0_mid, new Vector3(0f, 19.44f, 0f), forestay_0_mid.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_bottom", "lower forestay 3", 29);
+            var mainstayInner = Util.CopyMast(forestay_0_mid, new Vector3(0f, 19.44f, 0f), forestay_0_mid.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_bottom", "lower forestay 3", 31);
             mainstayInner.reefWinch = Util.CopyWinches(mainstayInner.reefWinch, foreMast1.localPosition, newPos);
 
             mainstayInner.leftAngleWinch = Util.CopyWinches(mainstayOuter.leftAngleWinch, Vector3.zero, new Vector3(-0.67f, 0, 0.1f));

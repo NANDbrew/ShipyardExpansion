@@ -24,7 +24,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region mizzenMast
-            Mast mizzen_new = Util.CopyMast(mainMast, mizzen_old.localPosition, mizzen_old.localEulerAngles, mainMast.localScale, "mast_mizzen_1", "mizzen mast", 29);
+            Mast mizzen_new = Util.CopyMast(mainMast, mizzen_old.localPosition, mizzen_old.localEulerAngles, mainMast.localScale, "mast_mizzen_1", "mizzen mast", 31);
             mizzen_new.reefWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().reefWinch, mainMast.localPosition, mizzen_new.transform.localPosition + new Vector3(0.47f, -0.2f, 0));
             mizzen_new.reefWinch[0].name = "";
             mizzen_new.reefWinch[0].rope = null;
