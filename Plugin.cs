@@ -32,7 +32,7 @@ namespace ShipyardExpansion
         //internal static ConfigEntry<bool> cleanLoad;
         //internal static ConfigEntry<bool> bruteForce;
         internal static ConfigEntry<bool> vertLateens;
-        //internal static ConfigEntry<bool> showGizmos;
+        internal static ConfigEntry<bool> convertSave;
 
 
         private void Awake()
@@ -47,11 +47,11 @@ namespace ShipyardExpansion
             moddedBoats = new List<BoatCustomParts>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            cleanSave = Config.Bind("Settings", "Clean save", false);
             //cleanSave = Config.Bind("Settings", "Clean load", false);
             //bruteForce = Config.Bind("Settings", "Brute force", false);
             vertLateens = Config.Bind("Settings", "Vertical lateens", true);
-            //showGizmos = Config.Bind("Dev tools", "Show gizmos", false);
+            convertSave = Config.Bind("Fixers", "Convert saves", true);
+            cleanSave = Config.Bind("Fixers", "Clean save", false);
         }
     }
 }

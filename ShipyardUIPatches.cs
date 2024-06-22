@@ -63,27 +63,39 @@ namespace ShipyardExpansion
 
         [HarmonyPatch("Awake")]
         [HarmonyPostfix]
-        public static void AwakePatch(GameObject ___partsOtherMenu, ShipyardUI __instance)
+        public static void AwakePatch(GameObject ___partsOtherMenu, ShipyardUI __instance, GameObject ___ui)
         {
-            //if (!Plugin.showGizmos.Value) return;
-            /*          buttonList = new List<ShipyardButton>();
-                      var buttons = __instance.GetComponentsInChildren<ShipyardButton>();
-                      foreach (var button in buttons)
-                      {
-                          if (button.function == ShipyardButton.ButtonFunction.changeCategory)
-                          {
-                              buttonList.Add(button);
-                          }
-                      }*/
-
-            oldButton = __instance.transform.GetChild(0).transform.Find("mode button Parts Other");
-            Transform newButton = UnityEngine.Object.Instantiate(oldButton, __instance.transform.GetChild(0));
+            oldButton = ___ui.transform.Find("mode button Parts Other");
+            Transform newButton = UnityEngine.Object.Instantiate(oldButton, ___ui.transform);
             newButton.localPosition = oldButton.localPosition + new Vector3(0, 1.26f, 0);
             newButton.GetComponent<ShipyardButton>().index = 3;
             newButton.name = "mode button Parts Extra";
-            newButton.GetChild(0).GetComponent<TextMesh>().text = "Extra";
+            newButton.GetComponent<ShipyardButton>().SetText("Extra");
             newButton.gameObject.SetActive(false);
             extraButton = newButton.gameObject;
+        }
+
+        [HarmonyPatch("Awake")]
+        [HarmonyPrefix]
+        public static void AwakePatch2(ShipyardUI __instance, ref GameObject[] ___mastButtons)
+        {
+
+            GameObject[] newButtons = new GameObject[64];
+            for (int i = 0; i < newButtons.Length; i++)
+            {
+                if (i < ___mastButtons.Length)
+                {
+                    newButtons[i] = ___mastButtons[i];
+                }
+                else
+                {
+                    var button = UnityEngine.Object.Instantiate(___mastButtons[0], ___mastButtons[0].transform.parent).gameObject;
+                    button.name = "shipyard ui mast button (" + i + ")";
+                    button.GetComponent<ShipyardButton>().index = i;
+                    newButtons[i] = button;
+                }
+            }
+            ___mastButtons = newButtons;
         }
     }
 }
