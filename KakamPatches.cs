@@ -10,7 +10,7 @@ namespace ShipyardExpansion
 {
     internal class KakamPatches
     {
-        public static void Patch(Transform boat, List<BoatPart> partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             Transform container = boat.Find("junk small");
             Transform structure = container.Find("structure");
@@ -21,8 +21,8 @@ namespace ShipyardExpansion
             //var shroudAnchor = container.Find("static_rig_001");
 
             #region adjustments
-            partsList[1].category = 2;
-            partsList[4].category = 2;
+            partsList.availableParts[1].category = 2;
+            partsList.availableParts[4].category = 2;
             #endregion
 
         }

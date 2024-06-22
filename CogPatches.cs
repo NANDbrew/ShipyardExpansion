@@ -10,7 +10,7 @@ namespace ShipyardExpansion
 {
     internal class CogPatches
     {
-        public static void Patch(Transform boat, List<BoatPart> partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             Transform container = boat.transform.Find("medi small");
             Transform structure = container.Find("structure");
@@ -37,7 +37,7 @@ namespace ShipyardExpansion
             mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
             ropeHolderAft.GetChild(0).gameObject.SetActive(false);
 
-            partsList[1].category = 2;
+            partsList.availableParts[1].category = 2;
 
             #endregion
             #region shrouds
@@ -186,11 +186,10 @@ namespace ShipyardExpansion
             forestay3.reefWinch[0].transform.rotation = forestay2.GetComponent<Mast>().reefWinch[0].transform.rotation;
             var forestay3_opt = forestay3.GetComponent<BoatPartOption>();
             forestay3_opt.requires.Add(bowspritLongOpt);
-            partsList[1].partOptions.Add(forestay3_opt);
-            Plugin.modPartOptions.Add(forestay3_opt);
+            partsList.availableParts[1].partOptions.Add(forestay3_opt);
+            
 
-
-            partsList[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
+            partsList.availableParts[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
             #endregion
 
             #region forestay4
@@ -201,12 +200,11 @@ namespace ShipyardExpansion
             forestay4.reefWinch[0].transform.rotation = forestay.GetComponent<Mast>().reefWinch[0].transform.rotation;
             var forestay4_opt = forestay4.GetComponent<BoatPartOption>();
             forestay4_opt.requires.Add(bowspritLongOpt);
-            partsList[1].partOptions.Add(forestay4_opt);
-            Plugin.modPartOptions.Add(forestay4_opt);
-
+            partsList.availableParts[1].partOptions.Add(forestay4_opt);
+            
             #endregion
 
-            if (!Plugin.modCustomParts.Contains(partsList)) Plugin.modCustomParts.Add(partsList); //add boat to list of modified boats
+ //add boat to list of modified boats
         }
     }
 

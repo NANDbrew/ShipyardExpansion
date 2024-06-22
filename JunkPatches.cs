@@ -10,7 +10,7 @@ namespace ShipyardExpansion
 {
     internal class JunkPatches
     {
-        public static void Patch(Transform boat, List<BoatPart> partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             //Mast[] masts = __instance.GetComponent<BoatRefs>().masts;
             Transform container = boat.Find("junk medium (actual)");
@@ -34,10 +34,10 @@ namespace ShipyardExpansion
             mizzenMast2.GetComponent<Mast>().startSailHeightOffset += 0.8f;//= 12.6f;
             foreMast.GetComponent<Mast>().startSailHeightOffset += 2f;//= 11.6f;
 
-            partsList[4].category = 2;
-            partsList[5].category = 2;
-            partsList[6].category = 2;
-            partsList[7].category = 2;
+            partsList.availableParts[4].category = 2;
+            partsList.availableParts[5].category = 2;
+            partsList.availableParts[6].category = 2;
+            partsList.availableParts[7].category = 2;
 
             #endregion
         }

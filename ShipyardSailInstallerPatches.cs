@@ -23,7 +23,7 @@ namespace ShipyardExpansion
             if (__instance.category == SailCategory.lateen || __instance.category == SailCategory.junk || __instance.category == SailCategory.other)
             {
                 Debug.Log("sail \"" + __instance.name + "\" updated install position");
-                if (__instance.prefabIndex == 61) tilt = 275f;
+                if (__instance.prefabIndex == 61) tilt = 275.4f;
 
                 __instance.transform.eulerAngles = new Vector3(tilt, __instance.transform.eulerAngles.y, __instance.transform.eulerAngles.z);
                 //__instance.transform.localEulerAngles = new Vector3(0, __instance.transform.localEulerAngles.y, 0);

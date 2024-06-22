@@ -10,7 +10,7 @@ namespace ShipyardExpansion
 {
     internal class BrigPatches
     {
-        public static void Patch(Transform boat, List<BoatPart> partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             Transform container = boat.Find("medi medium new");
             Transform structure = container.Find("structure_container");
@@ -138,9 +138,8 @@ namespace ShipyardExpansion
                 noForemast,
                 };
             mainstayOuterOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
-            partsList[4].partOptions.Add(mainstayOuterOpt);
-            Plugin.modPartOptions.Add(mainstayOuterOpt);
-
+            partsList.availableParts[4].partOptions.Add(mainstayOuterOpt);
+            
             var mainstayInner = Util.CopyMast(forestay_0_mid, new Vector3(0f, 19.44f, 0f), forestay_0_mid.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_bottom", "lower forestay 3", 29);
             mainstayInner.reefWinch = Util.CopyWinches(mainstayInner.reefWinch, foreMast1.localPosition, newPos);
 
@@ -175,9 +174,8 @@ namespace ShipyardExpansion
                 noForemast,
                 };
             mainstayInnerOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
-            partsList[5].partOptions.Add(mainstayInner.GetComponent<BoatPartOption>());
-            Plugin.modPartOptions.Add(mainstayInnerOpt);
-            #endregion
+            partsList.availableParts[5].partOptions.Add(mainstayInner.GetComponent<BoatPartOption>());
+                        #endregion
 
             #region telltale
             var flagSource = structure.Find("mast_Front_0").Find("wind_flag");
@@ -281,7 +279,7 @@ namespace ShipyardExpansion
             foreMast2.GetComponent<BoatPartOption>().childOptions = foreMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_1.gameObject);
 
             #endregion
-            if (!Plugin.modCustomParts.Contains(partsList)) Plugin.modCustomParts.Add(partsList); //add boat to list of modified boats
+ //add boat to list of modified boats
         
         }
     }

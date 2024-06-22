@@ -55,8 +55,7 @@ namespace ShipyardExpansion
             mastComp.startSailPrefab = null;
             source.gameObject.SetActive(true);
             mast.gameObject.SetActive(true);
-            Plugin.modPartOptions.Add(mastOption);
-
+            
             //mastComp.Awake();
             return mastComp;
         }
@@ -94,8 +93,7 @@ namespace ShipyardExpansion
             partOption.requires = new List<BoatPartOption>();
             partOption.requiresDisabled = new List<BoatPartOption>();
             partOption.walkColObject = target;
-            Plugin.modPartOptions.Add(partOption);
-
+            
             return partOption;
         }
 
@@ -116,8 +114,7 @@ namespace ShipyardExpansion
             partOption.installCost = source.installCost;
             partOption.mass = source.mass;
             partOption.childMast = source.childMast;
-            Plugin.modPartOptions.Add(partOption);
-
+            
             return partOption;
         }
         public static BoatPartOption CopyPartOptionObj(BoatPartOption source, string name, string prettyName)
@@ -140,12 +137,11 @@ namespace ShipyardExpansion
             walkCol.transform.localEulerAngles = eulerAngles;
             walkCol.transform.localScale = scale;
             partOption.optionName = prettyName;
-            Plugin.modPartOptions.Add(partOption);
-
+            
 
             return partOption;
         }
-        public static BoatPart CreateAndAddPart(List<BoatPart> partsList, int category, List<BoatPartOption> partOptions)
+        public static BoatPart CreateAndAddPart(BoatCustomParts partsList, int category, List<BoatPartOption> partOptions)
         {
             BoatPart newPart = new BoatPart
             {
@@ -153,9 +149,9 @@ namespace ShipyardExpansion
                 category = category,
                 activeOption = 0
             };
-            partsList.Add(newPart);
-            Plugin.modParts.Add(newPart);
-            if (!Plugin.modCustomParts.Contains(partsList)) Plugin.modCustomParts.Add(partsList);
+            partsList.availableParts.Add(newPart);
+
+
             return newPart;
         }
 

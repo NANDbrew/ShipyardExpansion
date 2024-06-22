@@ -94,6 +94,7 @@
     <Compile Include="Patch.cs" />
     <Compile Include="SanbuqPatches.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="SaveBoatCustomizationDataPatch.cs" />
     <Compile Include="SaveCleaner.cs" />
     <Compile Include="ShipyardSailInstallerPatches.cs" />
     <Compile Include="ShipyardUIPatches.cs" />

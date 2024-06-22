@@ -10,7 +10,7 @@ namespace ShipyardExpansion
 {
     internal class DhowPatches
     {
-        public static void Patch(Transform boat, List<BoatPart> partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             Transform container = boat.transform.Find("dhow");
             Transform mainMast = container.Find("mast");
@@ -19,8 +19,8 @@ namespace ShipyardExpansion
             var shroudAnchor = container.Find("static_rig_001");
 
             #region adjustments
-            partsList[1].category = 2;
-            partsList[4].category = 2;
+            partsList.availableParts[1].category = 2;
+            partsList.availableParts[4].category = 2;
             #endregion
 
             #region mizzenMast
