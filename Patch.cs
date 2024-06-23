@@ -32,7 +32,7 @@ namespace ShipyardExpansion
                 }
                 Plugin.moddedBoats.Add(___parts);
 
-                ___refs.masts = ___refs.masts.AddRangeToArray(new Mast[33]);
+                Array.Resize(ref ___refs.masts, 64);// = ___refs.masts.AddRangeToArray(new Mast[33]);
                 //Debug.Log(___refs.masts);
 
                 if (__instance.name == "BOAT dhow small (10)") DhowPatches.Patch(__instance.transform, ___parts);

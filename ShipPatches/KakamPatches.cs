@@ -42,7 +42,7 @@ namespace ShipyardExpansion
             container.Find("Cube_002").parent = mizzenMast;
             container.Find("Cube_003").parent = mizzenMast;
             container.Find("Cube_004").parent = structure.Find("struct_var_1__long_roof_");
-            container.Find("mast_003").parent = container.Find("hammock_001");
+            structure.Find("mast_003").parent = container.Find("hammock_001");
             #endregion
 
             #region midstays

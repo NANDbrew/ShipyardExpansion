@@ -37,9 +37,9 @@ namespace ShipyardExpansion
             mizzenMast2.GetComponent<Mast>().startSailHeightOffset += 0.8f;//= 12.6f;
             foreMast.GetComponent<Mast>().startSailHeightOffset += 3f;//= 11.6f;
 
-            structure.Find("forestay_1").GetComponent<Mast>().mastHeight = 20;
-            structure.Find("forestay_1_lower").GetComponent<Mast>().mastHeight = 14;
-            
+            container.Find("forestay_1").GetComponent<Mast>().mastHeight = 20;
+            container.Find("forestay_1_lower").GetComponent<Mast>().mastHeight = 14;
+
 
 
 
