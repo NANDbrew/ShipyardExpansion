@@ -8,25 +8,6 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-/*    [HarmonyPatch(typeof(ShipyardButton))]
-    internal static class ShipyardButtonPatches
-    {
-        internal static int menuCategory;
-
-        [HarmonyPatch("ExtraLateUpdate")]
-        [HarmonyPostfix]
-        public static void Patch(ShipyardButton __instance, int ___index, ShipyardButton.ButtonFunction ___function, ref bool ___overrideEnableOutline)
-        {
-            if (___function == ShipyardButton.ButtonFunction.changeCategory && ___index == menuCategory)
-            {
-                ___overrideEnableOutline = true;
-            }
-            else
-            {
-                ___overrideEnableOutline = false;
-            }
-        }
-    }*/
 
     [HarmonyPatch(typeof(ShipyardUI))]
     internal static class ShipyardUIPatches
@@ -80,7 +61,7 @@ namespace ShipyardExpansion
         public static void AwakePatch2(ShipyardUI __instance, ref GameObject[] ___mastButtons)
         {
 
-            GameObject[] newButtons = new GameObject[64];
+            GameObject[] newButtons = new GameObject[Plugin.mastListSize];
             for (int i = 0; i < newButtons.Length; i++)
             {
                 if (i < ___mastButtons.Length)

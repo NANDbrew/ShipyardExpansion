@@ -11,20 +11,24 @@ namespace ShipyardExpansion
     [HarmonyPatch(typeof(SaveableBoatCustomization), "LoadData")]
     internal static class SaveConvert
     {
-        static Dictionary<int, int> mastIndices = new Dictionary<int, int>() { { 29, 31 }, { 28, 32 }, { 27, 33 }, { 26, 34 }, { 25, 35 }, { 24, 36 }, { 23, 37 }, { 22, 38 }, { 21, 39 }, { 20, 40 }, { 19, 41 } };
+        static readonly Dictionary<int, int> mastIndices = new Dictionary<int, int>() { { 29, 31 }, { 28, 32 }, { 27, 33 }, { 26, 34 }, { 25, 35 }, { 24, 36 }, { 23, 37 }, { 22, 38 }, { 21, 39 }, { 20, 40 }, { 19, 41 } };
         static int conversionCounter = 0;
 
         [HarmonyPrefix]
         internal static void Convert(SaveBoatCustomizationData data)
         {
-            //if (!Plugin.convertSave.Value) return;
+            if (!Plugin.convertSave.Value) return;
             foreach (SaveSailData sailData in data.sails)
             {
-                mastIndices.TryGetValue(sailData.mastIndex, out sailData.mastIndex);
+                if (mastIndices.ContainsKey(sailData.mastIndex))
+                {
+                    mastIndices.TryGetValue(sailData.mastIndex, out sailData.mastIndex);
+                }
             }
             conversionCounter++;
             Debug.Log("ShipyardExpansion converted " + conversionCounter + " ships");
             //Plugin.convertSave.Value = false;
         }
     }
+
 }

@@ -45,5 +45,15 @@ namespace ShipyardExpansion
             }
 
         }
+
+        [HarmonyPatch(typeof(SaveBoatCustomizationData), MethodType.Constructor)]
+        internal class GetDataPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(SaveBoatCustomizationData __instance)
+            {
+                __instance.masts = new bool[Plugin.mastListSize];
+            }
+        }
     }
 }

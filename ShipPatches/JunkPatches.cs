@@ -20,24 +20,37 @@ namespace ShipyardExpansion
             Transform mizzenMast1 = structure.Find("mast_mizzen_0");
             Transform mizzenMast2 = structure.Find("mast_mizzen_1");
             Transform foreMast = structure.Find("mast_front_");
+           
+
 
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight += 1f;//= 17.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 1.8f;//= 18.5f;
-            mizzenMast1.GetComponent<Mast>().mastHeight += 3f;//= 12.6f;
+            mainMast2.GetComponent<Mast>().extraBottomHeight = 3f;//= 18.5f;
+            mizzenMast1.GetComponent<Mast>().mastHeight += 2f;//= 12.6f;
             mizzenMast2.GetComponent<Mast>().mastHeight += 0.8f;//= 12.6f;
             foreMast.GetComponent<Mast>().mastHeight += 2f;//= 11.6f;
 
             mainMast1.GetComponent<Mast>().startSailHeightOffset += 1f;//= 17.5f;
             mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.8f; //= 18.5f;
-            mizzenMast1.GetComponent<Mast>().startSailHeightOffset += 3f;//= 12.6f;
+            mizzenMast1.GetComponent<Mast>().startSailHeightOffset += 4f;//= 12.6f;
             mizzenMast2.GetComponent<Mast>().startSailHeightOffset += 0.8f;//= 12.6f;
-            foreMast.GetComponent<Mast>().startSailHeightOffset += 2f;//= 11.6f;
+            foreMast.GetComponent<Mast>().startSailHeightOffset += 3f;//= 11.6f;
+
+            structure.Find("forestay_1").GetComponent<Mast>().mastHeight = 20;
+            structure.Find("forestay_1_lower").GetComponent<Mast>().mastHeight = 14;
+            
+
+
 
             partsList.availableParts[4].category = 2;
             partsList.availableParts[5].category = 2;
             partsList.availableParts[6].category = 2;
             partsList.availableParts[7].category = 2;
+
+
+
+
 
             #endregion
         }
