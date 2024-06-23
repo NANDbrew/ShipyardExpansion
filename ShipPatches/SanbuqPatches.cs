@@ -188,7 +188,7 @@ namespace ShipyardExpansion
             shrouds_side_opt.requiresDisabled = new List<BoatPartOption>();
             shrouds_side_opt.childOptions = new GameObject[0];
 
-            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { shrouds_side_opt, shrouds_back_opt });
+            //Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { shrouds_side_opt, shrouds_back_opt });
             #endregion
             #region foremast2
             var foremast2 = Util.CopyMast(mizzenMast1, new Vector3(11.87f, 0f, 12.565f), new Vector3(0, 15, 0), new Vector3(1f, 1f, 0.975f), "mast_05", "raked foremast", 41);
@@ -211,6 +211,83 @@ namespace ShipyardExpansion
             foremast2.transform.Find("part_shrouds_mizzen_side").gameObject.SetActive(false);
             foremast2.transform.Find("Cylinder_006").gameObject.SetActive(false);
             foremast2.walkColMast.Find("part_shrouds_mizzen_side").gameObject.SetActive(false);
+            
+            Debug.Log("sanbuq foremast3");
+            #region foremast3
+            Mast foremast3 = Util.CopyMast(foremast.transform, new Vector3(12.65f, 0, 15.56f), foremast2.transform.localEulerAngles, foremast.transform.localScale, "mast_05_raked", "tall raked foremast", 42);
+            foremast3.reefWinch = foremast2.reefWinch;
+            var foremast3_shrouds = foremast3.transform.Find("part_shrouds_mizzen_back(Clone)");
+            Debug.Log("did we find a thing?");
+            Debug.Log(foremast3_shrouds.name);
+            foremast3_shrouds.transform.localScale = new Vector3(1, 0.84f, 1.535f);
+            foremast3_shrouds.transform.GetChild(1).localScale = new Vector3(1, 0.9f, 0.99f);
+            var foremast3_shrouds_col = foremast3.GetComponent<BoatPartOption>().walkColObject.transform.Find(foremast3_shrouds.name);
+            foremast3_shrouds_col.transform.localScale = foremast3_shrouds.localScale;
+            foremast3_shrouds_col.transform.GetChild(1).localScale = foremast3_shrouds.GetChild(1).localScale;
+
+            Debug.Log("did we find another thing?");
+            var foremast3_shrouds_s = foremast3.transform.Find("part_shrouds_0_side(Clone)");
+            Debug.Log(foremast3_shrouds_s.name);
+            foremast3_shrouds_s.transform.localEulerAngles = new Vector3(5.5f, 175f, 347f);
+            foremast3_shrouds_s.transform.localScale = new Vector3(1.1f, 1.1f, 1.16f);
+            foremast3_shrouds_s.transform.GetChild(0).localPosition = new Vector3(8.34f, 2.9f, 16.3f);
+            foremast3_shrouds_s.transform.GetChild(0).localEulerAngles = new Vector3(0f, 174.2f, 88f);
+            foremast3_shrouds_s.transform.GetChild(0).localScale = new Vector3(1.1f, 1f, 1.15f);
+
+            Debug.Log("side shrouds");
+            var foremast3_shrouds_s_col = foremast3.walkColMast.Find(foremast3_shrouds_s.name);
+            foremast3_shrouds_s_col.transform.localEulerAngles = foremast3_shrouds_s.localEulerAngles;
+            foremast3_shrouds_s_col.transform.localScale = foremast3_shrouds_s.localScale;
+            foremast3_shrouds_s_col.transform.GetChild(0).localPosition = foremast3_shrouds_s.GetChild(0).localPosition;
+            foremast3_shrouds_s_col.transform.GetChild(0).localEulerAngles = foremast3_shrouds_s.GetChild(0).localEulerAngles;
+            foremast3_shrouds_s_col.transform.GetChild(0).localScale = foremast3_shrouds_s.GetChild(0).localScale;
+
+
+            foremastPart.partOptions.Add(foremast3.GetComponent<BoatPartOption>());
+
+            Debug.Log("sanbuq foremast shrouds");
+            #region foremast shrouds2
+
+            shrouds_back_opt.enabled = false;
+            shrouds_side_opt.enabled = false;
+
+            BoatPartOption fore_shrouds_back = Util.CreatePartOption(structure, "part_shrouds_fore_back", "foremast shrouds 2");
+            fore_shrouds_back.basePrice = 1100;
+            fore_shrouds_back.installCost = 400;
+            fore_shrouds_back.mass = 30;
+
+            shrouds_back.transform.parent = fore_shrouds_back.transform;
+            foremast3_shrouds.transform.parent = fore_shrouds_back.transform;
+
+            Transform fore_shrouds_back_col = UnityEngine.Object.Instantiate(new GameObject(), foremast.walkColMast.transform.parent).transform;
+            fore_shrouds_back_col.name = fore_shrouds_back.name;
+            shrouds_back_opt.walkColObject.transform.parent = fore_shrouds_back_col;
+            foremast3_shrouds_col.parent = fore_shrouds_back_col;
+
+            BoatPartOption fore_shrouds_side = Util.CreatePartOption(structure, "part_shrouds_fore_side", "foremast shrouds 1");
+            fore_shrouds_back.basePrice = 1100;
+            fore_shrouds_back.installCost = 400;
+            fore_shrouds_back.mass = 20;
+
+            shrouds_side.transform.parent = fore_shrouds_side.transform;
+            foremast3_shrouds_s.transform.parent = fore_shrouds_side.transform;
+
+            Transform fore_shrouds_side_col = UnityEngine.Object.Instantiate(new GameObject(), foremast.walkColMast.transform.parent).transform;
+            fore_shrouds_side_col.name = fore_shrouds_side.name;
+            shrouds_side_opt.walkColObject.transform.parent = fore_shrouds_back_col;
+            foremast3_shrouds_s_col.parent = fore_shrouds_side_col;
+
+            foremast.GetComponent<BoatPartOption>().childOptions = new GameObject[4] { shrouds_side.gameObject, shrouds_back.gameObject, shrouds_side_opt.walkColObject, shrouds_back_opt.walkColObject };
+            foremast3.GetComponent<BoatPartOption>().childOptions = new GameObject[4] { foremast3_shrouds_s.gameObject, foremast3_shrouds.gameObject, foremast3_shrouds_col.gameObject, foremast3_shrouds_s_col.gameObject };
+
+            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { fore_shrouds_side, fore_shrouds_back });
+            Debug.Log("sanbuq foremast shrouds DONE");
+
+            #endregion
+
+            #endregion
+
+
 
             //To do: add foremast 2 shroud cols
             var foremast2_shrouds_col = foremast2.walkColMast.Find("part_shrouds_mizzen_back");
@@ -332,6 +409,14 @@ namespace ShipyardExpansion
             forestayOuter.mastReefAtt[0] = foremast.transform.Find("rope_holder_jibs_front").Find("att");
             forestayOuter.mastReefAtt[1] = foremast.transform.Find("rope_holder_jibs_front").Find("att");
             partsList.availableParts[3].partOptions.Add(forestayOuterOpt);
+            #endregion
+
+            #region raked forestay
+            Mast foremast_stay_raked = Util.CopyMast(forestayOuter.transform, new Vector3(13.53f, 17.41f, 0f), new Vector3(298.8f, 270f, 90f), new Vector3(1f, 1f, 0.81f), "forestay_raked", "foremast stay 2", 43);
+            foremast_stay_raked.mastHeight = 13.7f;
+            BoatPartOption foremast_stay_raked_opt = foremast_stay_raked.GetComponent<BoatPartOption>();
+            foremast_stay_raked_opt.requires = new List<BoatPartOption> { foremast3.GetComponent<BoatPartOption>(), container.Find("part_bowsprit_long_gfx").GetComponent<BoatPartOption>() };
+            partsList.availableParts[3].partOptions.Add(foremast_stay_raked_opt);
             #endregion
 
             #region forestayInner
