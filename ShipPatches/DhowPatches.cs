@@ -63,9 +63,6 @@ namespace ShipyardExpansion
             #region mizzenMast
             Mast mizzen_new = Util.CopyMast(mainMast, mizzen_old.localPosition, mizzen_old.localEulerAngles, mainMast.localScale, "mast_mizzen_1", "mizzen mast", 31);
             mizzen_new.reefWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().reefWinch, mainMast.localPosition, mizzen_new.transform.localPosition + new Vector3(0.47f, -0.2f, 0));
-            //mizzen_new.reefWinch[0].name = "";
-            //mizzen_new.reefWinch[0].rope = null;
-            //mizzen_new.reefWinch[1].name = "";
             mizzen_new.midAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().midAngleWinch, mainMast.localPosition, mainMast.localPosition + new Vector3(-1.45f, 0, 0));
             mizzen_new.leftAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().leftAngleWinch, Vector3.zero, Vector3.zero);
             mizzen_new.leftAngleWinch[0].transform.localPosition = new Vector3(-6.4f, 1.26f, 1.5f);
@@ -79,10 +76,7 @@ namespace ShipyardExpansion
             mizzen_new.midRopeAtt[0] = UnityEngine.Object.Instantiate(container.Find("rope_att_angle_extension"), rope_holder_aft.transform);
             mizzen_new.midRopeAtt[0].transform.localPosition = Vector3.zero;
             mizzen_new.midRopeAtt[1] = mizzen_new.midRopeAtt[0];
-            //var mizzenReefAtt = UnityEngine.Object.Instantiate(container.Find("rope_holder_001"), mizzen_new.transform);
             var mizzenReefAtt = mizzen_new.transform.Find("rope_holder_001");
-            //mizzenReefAtt.transform.localPosition = new Vector3(-0.2f, 0.03f, 0.6f);
-            //mizzenReefAtt.transform.localEulerAngles = new Vector3(90, 97, 0);
             mizzen_new.mastReefAtt[0] = mizzenReefAtt.Find("att");
             mizzen_new.mastReefAtt[1] = mizzenReefAtt.Find("att");
 

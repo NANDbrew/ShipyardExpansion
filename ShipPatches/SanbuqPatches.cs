@@ -223,7 +223,8 @@ namespace ShipyardExpansion
             foremast3_shrouds.transform.GetChild(1).localScale = new Vector3(1, 0.9f, 0.99f);
             var foremast3_shrouds_col = foremast3.GetComponent<BoatPartOption>().walkColObject.transform.Find(foremast3_shrouds.name);
             foremast3_shrouds_col.transform.localScale = foremast3_shrouds.localScale;
-            foremast3_shrouds_col.transform.GetChild(1).localScale = foremast3_shrouds.GetChild(1).localScale;
+            foremast3_shrouds_col.transform.GetChild(1).localScale = new Vector3(1f, 0.84f, 1.42f);
+            foremast3_shrouds_col.transform.GetChild(1).localPosition = new Vector3(-0.04f, 0f, -0.4f);
 
             Debug.Log("did we find another thing?");
             var foremast3_shrouds_s = foremast3.transform.Find("part_shrouds_0_side(Clone)");
@@ -250,6 +251,8 @@ namespace ShipyardExpansion
 
             shrouds_back_opt.enabled = false;
             shrouds_side_opt.enabled = false;
+            foremast3_shrouds.GetComponent<BoatPartOption>().enabled = false;
+            foremast3_shrouds_s.GetComponent<BoatPartOption>().enabled = false;
 
             BoatPartOption fore_shrouds_back = Util.CreatePartOption(structure, "part_shrouds_fore_back", "foremast shrouds 2");
             fore_shrouds_back.basePrice = 1100;
@@ -263,19 +266,20 @@ namespace ShipyardExpansion
             fore_shrouds_back_col.name = fore_shrouds_back.name;
             shrouds_back_opt.walkColObject.transform.parent = fore_shrouds_back_col;
             foremast3_shrouds_col.parent = fore_shrouds_back_col;
+            fore_shrouds_back.walkColObject = fore_shrouds_back_col.gameObject;
 
             BoatPartOption fore_shrouds_side = Util.CreatePartOption(structure, "part_shrouds_fore_side", "foremast shrouds 1");
-            fore_shrouds_back.basePrice = 1100;
-            fore_shrouds_back.installCost = 400;
-            fore_shrouds_back.mass = 20;
-
+            fore_shrouds_side.basePrice = 1100;
+            fore_shrouds_side.installCost = 400;
+            fore_shrouds_side.mass = 20;
             shrouds_side.transform.parent = fore_shrouds_side.transform;
             foremast3_shrouds_s.transform.parent = fore_shrouds_side.transform;
 
             Transform fore_shrouds_side_col = UnityEngine.Object.Instantiate(new GameObject(), foremast.walkColMast.transform.parent).transform;
             fore_shrouds_side_col.name = fore_shrouds_side.name;
-            shrouds_side_opt.walkColObject.transform.parent = fore_shrouds_back_col;
+            shrouds_side_opt.walkColObject.transform.parent = fore_shrouds_side_col;
             foremast3_shrouds_s_col.parent = fore_shrouds_side_col;
+            fore_shrouds_side.walkColObject = fore_shrouds_side_col.gameObject;
 
             foremast.GetComponent<BoatPartOption>().childOptions = new GameObject[4] { shrouds_side.gameObject, shrouds_back.gameObject, shrouds_side_opt.walkColObject, shrouds_back_opt.walkColObject };
             foremast3.GetComponent<BoatPartOption>().childOptions = new GameObject[4] { foremast3_shrouds_s.gameObject, foremast3_shrouds.gameObject, foremast3_shrouds_col.gameObject, foremast3_shrouds_s_col.gameObject };
