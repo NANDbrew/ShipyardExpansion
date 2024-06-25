@@ -96,6 +96,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="SaveCleaner.cs" />
     <Compile Include="SaveConvert.cs" />
+    <Compile Include="ShipyardPatches.cs" />
     <Compile Include="ShipyardSailInstallerPatches.cs" />
     <Compile Include="ShipyardUIPatches.cs" />
     <Compile Include="Util.cs" />

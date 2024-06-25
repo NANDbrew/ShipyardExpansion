@@ -22,6 +22,7 @@ namespace ShipyardExpansion
             Transform mizzen_old = container.Find("mast_mizzen");
             Transform shortForestay = container.Find("forestay_low");
             Transform highForestay = container.Find("forestay_tall");
+            Transform lowForestay = container.Find("forestay");
 
             Debug.Log("Dhow adjustments");
             #region adjustments
@@ -45,6 +46,8 @@ namespace ShipyardExpansion
 
             container.Find("Cylinder").gameObject.SetActive(false);
             mainMast.GetComponent<Mast>().reefWinch[0].rope = null;
+            mainMast.GetComponent<Mast>().midAngleWinch[0].rope = null;
+            mainMast.GetComponent<Mast>().midAngleWinch[1].rope = null;
             container.Find("rope_holder_001").parent = mainMast;
             container.Find("flag").parent = mainMast;
 
@@ -57,13 +60,15 @@ namespace ShipyardExpansion
             var tallMastReefAtt = UnityEngine.Object.Instantiate(mainMast.Find("rope_holder_001"), mainMastTall, false).GetChild(0);
             mainMastTall.GetComponent<Mast>().mastReefAtt[0] = tallMastReefAtt;
             mainMastTall.GetComponent<Mast>().mastReefAtt[1] = tallMastReefAtt;
+
+            shortForestay.GetComponent<Mast>().mastReefAtt = lowForestay.GetComponent<Mast>().mastReefAtt;
             #endregion
 
             Debug.Log("Dhow mizzenMast");
             #region mizzenMast
-            Mast mizzen_new = Util.CopyMast(mainMast, mizzen_old.localPosition, mizzen_old.localEulerAngles, mainMast.localScale, "mast_mizzen_1", "mizzen mast", 31);
+            Mast mizzen_new = Util.CopyMast(mainMast, new Vector3(-4.87f, 6.16f, 0), mizzen_old.localEulerAngles, mainMast.localScale, "mast_mizzen_1", "mizzen mast", 31);
             mizzen_new.reefWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().reefWinch, mainMast.localPosition, mizzen_new.transform.localPosition + new Vector3(0.47f, -0.2f, 0));
-            mizzen_new.midAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().midAngleWinch, mainMast.localPosition, mainMast.localPosition + new Vector3(-1.45f, 0, 0));
+            mizzen_new.midAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().midAngleWinch, mainMast.localPosition, mainMast.localPosition + new Vector3(-1.44f, 0, 0));
             mizzen_new.leftAngleWinch = Util.CopyWinches(mainMast.GetComponent<Mast>().leftAngleWinch, Vector3.zero, Vector3.zero);
             mizzen_new.leftAngleWinch[0].transform.localPosition = new Vector3(-6.4f, 1.26f, 1.5f);
             mizzen_new.leftAngleWinch[0].transform.localEulerAngles = new Vector3(288, 99, 75);
@@ -86,9 +91,9 @@ namespace ShipyardExpansion
 
             Debug.Log("Dhow mizzen shrouds");
             var mizzenShrouds = mizzen_new.transform.Find(newCont.name);
-            mizzenShrouds.localPosition = new Vector3(-0.1f, -0.02f, -0.07f);
-            mizzenShrouds.localEulerAngles = new Vector3(0, 10, 0);
-            mizzenShrouds.localScale = new Vector3(-1, 1, 1);
+            mizzenShrouds.localPosition = new Vector3(-0.07f, 0f, 0f);
+            mizzenShrouds.localEulerAngles = new Vector3(359.5f, 10, 0);
+            mizzenShrouds.localScale = new Vector3(-1, 1, 0.95f);
             var mizShroudsCols = mizzen_new.walkColMast.GetChild(0);
             mizShroudsCols.localPosition = mizzenShrouds.localPosition;
             mizShroudsCols.localEulerAngles = mizzenShrouds.localEulerAngles;
@@ -106,9 +111,11 @@ namespace ShipyardExpansion
             rakedMain.reefWinch[1].transform.localEulerAngles = new Vector3(0, 0, 90);
             partsList.availableParts[0].partOptions.Add(rakedMain.GetComponent<BoatPartOption>());
             var rakedShrouds = rakedMain.transform.Find(newCont2.name);
-            rakedShrouds.localPosition = new Vector3(0.03f, -0.01f, -3.9f);
-            rakedShrouds.localEulerAngles = new Vector3(2, 354, 9);
-            rakedShrouds.Find("static_rig").localEulerAngles = new Vector3(359.4f, 343.62f, 91.478f);
+            rakedShrouds.localPosition = new Vector3(0.04f, -0.01f, -3.2f);
+            rakedShrouds.localEulerAngles = new Vector3(2, 352.4f, 9);
+            rakedShrouds.Find("static_rig").localPosition = new Vector3(0.0643f, -1.5089f, -5.6900f);
+            rakedShrouds.Find("static_rig").localEulerAngles = new Vector3(359.16f, 345.62f, 91.4780f);
+            rakedShrouds.Find("static_rig_001").localPosition = new Vector3(-0.47f, -1.523f, -5.82f);
             rakedShrouds.Find("static_rig_001").localEulerAngles = new Vector3(359.16f, 343.67f, 87.42f);
             var rakedShroudsCols = rakedMain.walkColMast.GetChild(0);
             rakedShroudsCols.localPosition = rakedShrouds.localPosition;
@@ -120,17 +127,35 @@ namespace ShipyardExpansion
 
             Debug.Log("Dhow forestay");
             #region raked forestay
-            Mast rakedForestay = Util.CopyMast(highForestay, new Vector3(5.4f, 9.7f, 0f), new Vector3(309f, 270f, 90f), new Vector3(1f, 1f, 0.78f), "forestay_raked", "high forestay", 33);
+            Mast rakedForestay = Util.CopyMast(highForestay, new Vector3(5.4f, 9.7f, 0f), new Vector3(309f, 270f, 90f), new Vector3(1f, 1f, 0.78f), "forestay_raked", "high forestay 2", 33);
             rakedForestay.reefWinch = Util.CopyWinches(rakedForestay.reefWinch, Vector3.zero, Vector3.zero);
-            rakedForestay.reefWinch[0].transform.localPosition = new Vector3(2.65f, 0.76f, 0.21f);
+            rakedForestay.reefWinch[0].transform.localPosition = new Vector3(2.65f, 0.76f, -0.21f);
             rakedForestay.mastHeight = 9f;
             rakedForestay.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { rakedMain.GetComponent<BoatPartOption>(), container.Find("bowsprit").GetComponent<BoatPartOption>() };
-            partsList.availableParts[4].partOptions.Add(rakedForestay.GetComponent<BoatPartOption>());
+            partsList.availableParts[1].partOptions.Add(rakedForestay.GetComponent<BoatPartOption>());
             #endregion
 
+            #region midstay
+            Mast midstay = Util.CopyMast(lowForestay, new Vector3(-4.88f, 7.1f, 0f), new Vector3(324.18f, 270f, 90f), new Vector3(1f, 1f, 0.83f), "midstay", "middlestay", 34);
+            midstay.reefWinch = Util.CopyWinches(midstay.reefWinch, mainMast.localPosition + new Vector3(-0.45f, 0, 0), mizzen_new.transform.localPosition);
+            //midstay.reefWinch[0].transform.localPosition = new Vector3(2.65f, 0.76f, -0.21f);
+            midstay.mastHeight = 9f;
+            midstay.leftAngleWinch = new GPButtonRopeWinch[1] { mainMast.GetComponent<Mast>().leftAngleWinch[1] };
+            midstay.rightAngleWinch = new GPButtonRopeWinch[1] { mainMast.GetComponent<Mast>().rightAngleWinch[1] };
+            var midstayOpt = midstay.GetComponent<BoatPartOption>();
+            midstayOpt.requires = new List<BoatPartOption> { mizzen_new.GetComponent<BoatPartOption>() };
+            midstayOpt.requiresDisabled = new List<BoatPartOption> { rakedMain.GetComponent<BoatPartOption>() };
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "(no midstay)", "(no middlestay)"), midstayOpt});
+            #endregion
+
+            #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
             container.Find("forestay").GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
             container.Find("forestay_low").GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
+
+            Array.Resize(ref mainMast.GetComponent<Mast>().leftAngleWinch, 1);
+            Array.Resize(ref mainMast.GetComponent<Mast>().rightAngleWinch, 1);
+            #endregion
         }
 
     }

@@ -24,9 +24,12 @@ namespace ShipyardExpansion
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
-        //internal static ConfigEntry<bool> cleanLoad;
-        internal static ConfigEntry<bool> vertLateens;
         internal static ConfigEntry<bool> convertSave;
+        internal static ConfigEntry<bool> lenientLateens;
+        internal static ConfigEntry<bool> lenientSquares;
+        internal static ConfigEntry<bool> vertLateens;
+
+        internal static ConfigEntry<bool> unrollSails;
 
 
         private void Awake()
@@ -36,16 +39,16 @@ namespace ShipyardExpansion
             stockParts = new Dictionary<BoatPart, int>();
             stockMasts = new List<Mast>();
 
-            //modPartOptions = new List<BoatPartOption>();
-            //modParts = new List<BoatPart>();
             moddedBoats = new List<BoatCustomParts>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            //cleanSave = Config.Bind("Settings", "Clean load", false);
-            //bruteForce = Config.Bind("Settings", "Brute force", false);
-            vertLateens = Config.Bind("Settings", "Vertical lateens", true);
-            convertSave = Config.Bind("Fixers", "Convert saves", true);
-            cleanSave = Config.Bind("Fixers", "Clean save", false);
+            convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.1.0"));
+            cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
+
+            vertLateens = Config.Bind("Settings", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
+            lenientLateens = Config.Bind("Settings", "Lenient lateens", false, new ConfigDescription("Ignore collisions with the back edge of lateen sails"));
+            lenientSquares = Config.Bind("Settings", "Lenient squares", false, new ConfigDescription("Ignore collisions with the sides of square sails"));
+            unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
         }
     }
 }

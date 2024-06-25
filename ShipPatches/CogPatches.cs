@@ -189,7 +189,6 @@ namespace ShipyardExpansion
             partsList.availableParts[1].partOptions.Add(forestay3_opt);
             
 
-            partsList.availableParts[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
             #endregion
 
             Debug.Log("Cog: forestay4");
@@ -237,6 +236,8 @@ namespace ShipyardExpansion
             {
                 option.requiresDisabled.Add(foremast_opt);
             }
+            partsList.availableParts[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
+
             #endregion
 
         }
