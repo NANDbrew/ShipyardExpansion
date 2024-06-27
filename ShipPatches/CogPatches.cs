@@ -29,6 +29,12 @@ namespace ShipyardExpansion
             mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
             mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
 
+            var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
+            ropeHolderAft.parent = mizzenMast;
+            mizzenMast.GetChild(2).position = ropeHolderAft.GetChild(0).position;
+            mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
+            ropeHolderAft.GetChild(0).gameObject.SetActive(false);
+
 
             #endregion
             Debug.Log("Cog: shrouds");
@@ -122,13 +128,16 @@ namespace ShipyardExpansion
             Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 31);
             midstay.mastHeight = 10.7f;
             BoatPartOption midstayOpt = midstay.GetComponent<BoatPartOption>();
-            midstayOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen").GetComponent<BoatPartOption>() };
+            midstayOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), mizzenMast.GetComponent<BoatPartOption>() };
             BoatPartOption noMidstay = Util.CreatePartOption(container, "(no_midstay)", "(no middlestay)");
-            midstay.reefWinch[0].transform.localPosition = new Vector3(-7.67f, 0f, -6.8f);
-            midstay.leftAngleWinch = Util.CopyWinches(midstay.leftAngleWinch, midstay.leftAngleWinch[0].transform.localPosition, midstay.leftAngleWinch[0].transform.localPosition + new Vector3(-0.5f, 0, 0));
-            midstay.rightAngleWinch = Util.CopyWinches(midstay.rightAngleWinch, midstay.rightAngleWinch[0].transform.localPosition, midstay.rightAngleWinch[0].transform.localPosition + new Vector3(-0.5f, 0, 0));
-            midstay.leftAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, 1.978f);
-            midstay.rightAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, -1.978f);
+            midstay.reefWinch[0].transform.localPosition = new Vector3(-7.78f, 0.22f, -6.6f);
+            midstay.reefWinch[0].transform.localEulerAngles = new Vector3(270f, 312f, 0f);
+            midstay.reefWinch[0].transform.parent = container;
+            midstay.reefWinch[0].transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            midstay.leftAngleWinch = Util.CopyWinches(mainMast1.GetComponent<Mast>().leftAngleWinch, Vector3.zero, new Vector3(-0.4f, 0f, 0f));
+            midstay.rightAngleWinch = Util.CopyWinches(mainMast1.GetComponent<Mast>().rightAngleWinch, Vector3.zero, new Vector3(-0.4f, 0f, 0f));
+            //midstay.leftAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, 1.978f);
+            //midstay.rightAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, -1.978f);
 
             Transform ropeHolder = UnityEngine.Object.Instantiate(midstay.mastReefAtt[0].parent, midstay.transform, true);
             ropeHolder.localPosition = new Vector3(-0.55f, 0.12f, 2f);
@@ -144,7 +153,7 @@ namespace ShipyardExpansion
             BoatPartOption innerForestayOpt = innerForestay.GetComponent<BoatPartOption>();
             innerForestayOpt.requiresDisabled = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), forestay.GetComponent<BoatPartOption>() };
 
-            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { noMidstay, midstayOpt, innerForestayOpt });
+            BoatPart newStays = Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { noMidstay, midstayOpt, innerForestayOpt });
             #endregion
 
             Debug.Log("Cog: bowsprit");
@@ -222,14 +231,26 @@ namespace ShipyardExpansion
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { foremast_none, foremast_opt });
             #endregion
 
+            #region mizzen2
+            var mizzen2 = Util.CopyMast(mizzenMast, mizzenMast.localPosition + new Vector3(1.5f, 0, 0), "mizzen_mast_2", "mizzen mast 2", 37);
+            mizzen2.transform.Find("mast_003").localPosition += new Vector3(-1.5f, 0, 0);
+            mizzen2.transform.GetChild(2).localPosition += new Vector3(-1.5f, 0, 0);
+            var mizzen2_opt = mizzen2.GetComponent<BoatPartOption>();
+            partsList.availableParts[2].partOptions.Add(mizzen2_opt);
+            #endregion
+
+            #region midstay 2
+            Mast midstay2 = Util.CopyMast(midstay.transform, new Vector3(-2.55f, 11, 0), new Vector3(307, 270, 90), new Vector3(1, 1, 0.85f), "midstay_2", "midstay 2", 38);
+            midstay2.mastHeight = 10.2f;
+            midstay2.reefWinch = Util.CopyWinches(midstay2.reefWinch, Vector3.zero, new Vector3(1.4f, 0, 0));
+            //midstay2.reefWinch[0].transform.localEulerAngles = new Vector3(270f, 307f, 0f);
+            BoatPartOption midstay2_opt = midstay2.GetComponent<BoatPartOption>();
+            midstay2_opt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), mizzen2_opt };
+            newStays.partOptions.Add(midstay2_opt);
+            #endregion
+
             Debug.Log("Cog: late adjustments");
             #region late adjustments
-            var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
-            ropeHolderAft.parent = mizzenMast;
-            mizzenMast.GetChild(2).position = ropeHolderAft.GetChild(0).position;
-            mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
-            ropeHolderAft.GetChild(0).gameObject.SetActive(false);
-
 
             partsList.availableParts[1].category = 2;
             foreach (var option in partsList.availableParts[1].partOptions)

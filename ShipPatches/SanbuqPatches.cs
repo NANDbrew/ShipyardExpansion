@@ -194,7 +194,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region foreTopmast
-            Mast foreTopmast = Util.CopyMast(topMast1, new Vector3(9.256f, 0, 23.7f), topMast1.localEulerAngles, new Vector3(1, 1, 0.85f), "mast_04_extension", "fore topmast", 44);
+            Mast foreTopmast = Util.CopyMast(topMast1, (topMast1.localPosition - mainMast1.localPosition) + foremast.transform.localPosition, "mast_04_extension", "fore topmast", 44);
             foreTopmast.mastHeight = 5f;
             //foreTopmast.extraBottomHeight = 0.6f;
             BoatPartOption foreTopmastNone = Util.CreatePartOption(structure, "(no fore topmast)", "(no fore topmast)");
@@ -244,6 +244,9 @@ namespace ShipyardExpansion
             #region foremast3
             Debug.Log("sanbuq foremast3");
             Mast foremast3 = Util.CopyMast(foremast.transform, new Vector3(12.65f, 0, 15.56f), new Vector3(0, 15, 0), foremast.transform.localScale, "mast_05_raked", "raked foremast", 42);
+            var rakedBrace = UnityEngine.Object.Instantiate(foremast3.transform.Find("mast_003"), foremast3.transform);
+            rakedBrace.localPosition += new Vector3(0, 0, -2.544f);
+            rakedBrace.localScale = new Vector3(0.98f, 0.99f, -2.544f);
             foremast3.reefWinch = Util.CopyWinches(foremast.reefWinch, Vector3.zero, Vector3.zero);
             foremast3.reefWinch[0].transform.localPosition = new Vector3(8.63f, 2.217f, 0);
             foremast3.reefWinch[0].transform.localEulerAngles = new Vector3(345, 270, 270);
@@ -327,8 +330,11 @@ namespace ShipyardExpansion
             #endregion
 
             #region mizzenMast
-            Mast mizzen2 = Util.CopyMast(mainMast2, mainMast2.localPosition + new Vector3(-7, 0, 0), "mast_003", "mizzen mast 2", 35);
+            Mast mizzen2 = Util.CopyMast(mainMast2, mainMast2.localPosition + new Vector3(-7, 0, 0), mainMast1.localEulerAngles, new Vector3(1, 1, 0.965f), "mast_003", "mizzen mast 2", 35);
             UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("Cylinder_006"), mizzen2.transform, true);
+            var brace = UnityEngine.Object.Instantiate(mizzen2.transform.Find("mast_004"), mizzen2.transform);
+            brace.localPosition += new Vector3(0, 0, -2.544f);
+            brace.localScale = new Vector3(0.98f, 0.99f, -2.544f);
             var mizzen2_rope_holder = UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("rope_holder"), mizzen2.transform, true).GetChild(0);
             mizzen2.reefWinch = Util.CopyWinches(mainMast2.GetComponent<Mast>().reefWinch, mainMast2.localPosition, mizzen2.transform.localPosition + new Vector3(0, 0.6f, 0));
             mizzen2.midAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().midAngleWinch, mizzenMast1.localPosition, new Vector3(mizzen2.transform.localPosition.x - 1, mizzenMast1.localPosition.y, mizzenMast1.localPosition.z));
@@ -410,7 +416,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region mizzenTopmast
-            Mast mizzenTopmast = Util.CopyMast(topMast2, new Vector3(-6.796f, 0.01f, 23.7f), topMast2.localEulerAngles, new Vector3(1, 1, 0.85f), "mast_003_extension", "mizzen topmast", 39);
+            Mast mizzenTopmast = Util.CopyMast(topMast2, (topMast2.localPosition - mainMast2.localPosition) + mizzen2.transform.localPosition, "mast_003_extension", "mizzen topmast", 39);
             mizzenTopmast.mastHeight = 5f;
             //mizzenTopmast.extraBottomHeight = 0.6f;
             BoatPartOption mizzenTopmastNone = Util.CreatePartOption(structure, "(no mizzen topmast)", "(no mizzen topmast)");
