@@ -100,6 +100,7 @@
     <Compile Include="ShipyardSailInstallerPatches.cs" />
     <Compile Include="ShipyardUIPatches.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="VersionPatch.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets" Condition="Exists('packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets')" />
