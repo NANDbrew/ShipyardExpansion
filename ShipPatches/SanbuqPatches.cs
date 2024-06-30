@@ -544,19 +544,19 @@ namespace ShipyardExpansion
             flag_main_0_back.name = "flag_main_0_back";
             flag_main_0_back.localPosition = new Vector3(4.4f, 3.3f, 2.28f);
             flag_main_0_back.localEulerAngles = new Vector3(79, 340, 0);
-            //flag_main_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_main_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
             Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
             var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_side.name = "flag_main_1_side";
             flag_main_1_side.localPosition = new Vector3(0.7f, 3.3f, 2.28f);
             flag_main_1_side.localEulerAngles = new Vector3(80, 20, 0);
-            //flag_main_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_main_1_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             var flag_main_1_back = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_back.name = "flag_main_1_back";
             flag_main_1_back.localPosition = new Vector3(-0.63f, 3.3f, 2.4f);
             flag_main_1_back.localEulerAngles = new Vector3(80, 340, 0);
-            //flag_main_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_main_1_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
 
             BoatPartOption flags_fore = Util.CreatePartOption(container, "flag_fore", "foremast telltale");
@@ -567,24 +567,24 @@ namespace ShipyardExpansion
             flag_fore_0_side.name = "flag_fore_0_side";
             flag_fore_0_side.localPosition = new Vector3(9.93f, 3.5f, 1.05f);
             flag_fore_0_side.localEulerAngles = new Vector3(272, 190, 0);
-            //flag_fore_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_fore_0_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             var flag_fore_0_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
             flag_fore_0_back.name = "flag_fore_0_back";
             flag_fore_0_back.localPosition = new Vector3(8.63f, 3.5f, 1.7f);
             flag_fore_0_back.localEulerAngles = new Vector3(82, 340, 0);
-            //flag_fore_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_fore_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
             Transform flags_fore_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_1" }.transform, flags_fore.transform);
             var flag_fore_1_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
             flag_fore_1_side.name = "flag_fore_1_side";
             flag_fore_1_side.localPosition = new Vector3(10.6f, 3.5f, 1.1f);
             flag_fore_1_side.localEulerAngles = new Vector3(80, 300, 0);
-            //flag_fore_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_fore_1_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             var flag_fore_1_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
             flag_fore_1_back.name = "flag_fore_1_back";
             flag_fore_1_back.localPosition = new Vector3(9.1f, 3.5f, 1.74f);
             flag_fore_1_back.localEulerAngles = new Vector3(70, 302, 0);
-            //flag_fore_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_fore_1_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
             BoatPartOption flags_mizzen = Util.CreatePartOption(container, "flag_mizzen", "mizzen telltale");
             flags_mizzen.basePrice = 10;
@@ -594,24 +594,24 @@ namespace ShipyardExpansion
             flag_mizzen_0_side.name = "flag_mizzen_0_side";
             flag_mizzen_0_side.localPosition = new Vector3(-10.2f, 3.3f, 2.45f);
             flag_mizzen_0_side.localEulerAngles = new Vector3(290, 180, 150);
-            //flag_mizzen_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_mizzen_0_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             var flag_mizzen_0_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
             flag_mizzen_0_back.name = "flag_mizzen_0_back";
             flag_mizzen_0_back.localPosition = new Vector3(-10.2f, 3.3f, 2.45f);
             flag_mizzen_0_back.localEulerAngles = new Vector3(290, 180, 150);
-            //flag_mizzen_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_mizzen_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
             Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
             var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_side.name = "flag_mizzen_1_side";
             flag_mizzen_1_side.localPosition = new Vector3(-8.36f, 3.3f, 2.6f);
             flag_mizzen_1_side.localEulerAngles = new Vector3(280, 160, 150);
-            //flag_mizzen_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_mizzen_1_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             var flag_mizzen_1_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_back.name = "flag_mizzen_1_back";
             flag_mizzen_1_back.localPosition = new Vector3(-8.68f, 3.3f, 2.58f);
             flag_mizzen_1_back.localEulerAngles = new Vector3(80, 333, 0);
-            //flag_mizzen_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+            flag_mizzen_1_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
             //UnityEngine.Object.Destroy(flagSource);
 

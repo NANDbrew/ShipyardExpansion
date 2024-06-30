@@ -117,6 +117,7 @@ namespace ShipyardExpansion
             //foreMast.GetComponent<BoatPartOption>().childOptions = foreMast.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_0.gameObject);
 
             #endregion
+
             #region flatsprit
             Mast flatsprit = Util.CopyMast(bowsprit, new Vector3(20.75f, 0f, 5.6f), new Vector3(0, 67, 0), Vector3.one, "bowsprit_2", "bowsprit 2", 31);
             var mastCont = UnityEngine.Object.Instantiate(new GameObject(), flatsprit.transform);
