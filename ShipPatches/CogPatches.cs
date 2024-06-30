@@ -33,11 +33,6 @@ namespace ShipyardExpansion
 /*            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
             mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;*/
 
-            var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
-            ropeHolderAft.parent = mizzenMast;
-            mizzenMast.GetChild(2).position = ropeHolderAft.GetChild(0).position;
-            mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
-            ropeHolderAft.GetChild(0).gameObject.SetActive(false);
 
 
             #endregion
@@ -235,24 +230,6 @@ namespace ShipyardExpansion
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { foremast_none, foremast_opt });
             #endregion
 
-            #region mizzen2
-            var mizzen2 = Util.CopyMast(mizzenMast, mizzenMast.localPosition + new Vector3(1.5f, 0, 0), "mizzen_mast_2", "mizzen mast 2", 37);
-            mizzen2.transform.Find("mast_003").localPosition += new Vector3(-1.5f, 0, 0);
-            mizzen2.transform.GetChild(2).localPosition += new Vector3(-1.5f, 0, 0);
-            var mizzen2_opt = mizzen2.GetComponent<BoatPartOption>();
-            partsList.availableParts[2].partOptions.Add(mizzen2_opt);
-            #endregion
-
-            #region midstay 2
-            Mast midstay2 = Util.CopyMast(midstay.transform, new Vector3(-2.55f, 11, 0), new Vector3(307, 270, 90), new Vector3(1, 1, 0.85f), "midstay_2", "midstay 2", 38);
-            midstay2.mastHeight = 10.2f;
-            midstay2.reefWinch = Util.CopyWinches(midstay2.reefWinch, Vector3.zero, new Vector3(1.4f, 0, 0));
-            //midstay2.reefWinch[0].transform.localEulerAngles = new Vector3(270f, 307f, 0f);
-            BoatPartOption midstay2_opt = midstay2.GetComponent<BoatPartOption>();
-            midstay2_opt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), mizzen2_opt };
-            newStays.partOptions.Add(midstay2_opt);
-            #endregion
-
             #region telltale
             var flagSource = mainMast1.Find("wind_cloth");
             BoatPartOption noFlag = Util.CreatePartOption(container, "(flag empty)", "(no telltale)");
@@ -307,6 +284,11 @@ namespace ShipyardExpansion
 
             Debug.Log("Cog: late adjustments");
             #region late adjustments
+            var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
+            ropeHolderAft.parent = mizzenMast;
+            mizzenMast.GetChild(2).position = ropeHolderAft.GetChild(0).position;
+            mizzenMast.GetChild(2).rotation = ropeHolderAft.GetChild(0).rotation;
+            ropeHolderAft.GetChild(0).gameObject.SetActive(false);
 
             partsList.availableParts[1].category = 2;
             foreach (var option in partsList.availableParts[1].partOptions)
@@ -317,6 +299,23 @@ namespace ShipyardExpansion
 
             #endregion
 
+            #region mizzen2
+            var mizzen2 = Util.CopyMast(mizzenMast, mizzenMast.localPosition + new Vector3(1.5f, 0, 0), "mizzen_mast_2", "mizzen mast 2", 37);
+            mizzen2.transform.Find("mast_003").localPosition += new Vector3(-1.5f, 0, 0);
+            mizzen2.transform.GetChild(2).localPosition += new Vector3(-1.5f, 0, 0);
+            var mizzen2_opt = mizzen2.GetComponent<BoatPartOption>();
+            partsList.availableParts[2].partOptions.Add(mizzen2_opt);
+            #endregion
+
+           #region midstay 2
+            Mast midstay2 = Util.CopyMast(midstay.transform, new Vector3(-2.55f, 11, 0), new Vector3(307, 270, 90), new Vector3(1, 1, 0.85f), "midstay_2", "midstay 2", 38);
+            midstay2.mastHeight = 10.2f;
+            midstay2.reefWinch = Util.CopyWinches(midstay2.reefWinch, Vector3.zero, new Vector3(1.4f, 0, 0));
+            //midstay2.reefWinch[0].transform.localEulerAngles = new Vector3(270f, 307f, 0f);
+            BoatPartOption midstay2_opt = midstay2.GetComponent<BoatPartOption>();
+            midstay2_opt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), mizzen2_opt };
+            newStays.partOptions.Add(midstay2_opt);
+            #endregion        
         }
     }
 
