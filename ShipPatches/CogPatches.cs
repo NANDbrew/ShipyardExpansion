@@ -20,6 +20,10 @@ namespace ShipyardExpansion
             Transform mastWalkCol = mainMast1.GetComponent<Mast>().walkColMast;
             Transform mastWalkCol2 = mainMast2.GetComponent<Mast>().walkColMast;
             Transform walkCols = mastWalkCol.parent.parent;
+            var bowspritM = structure.Find("mast (bowsprit)");
+            Transform bowsprit = structure.Find("mast_001");
+            Plugin.spritRef = bowsprit;
+            Plugin.spritColRef = mainMast1.GetComponent<Mast>().walkColMast.parent.Find(bowsprit.name);
             Debug.Log("Cog: adjustments");
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
@@ -158,8 +162,6 @@ namespace ShipyardExpansion
 
             Debug.Log("Cog: bowsprit");
             #region longsprit
-            var bowspritM = structure.Find("mast (bowsprit)");
-            Transform bowsprit = structure.Find("mast_001");
             BoatPartOption bowspritOpt = Util.AddPartOption(bowspritM.gameObject, "bowsprit");
             bowspritOpt.basePrice = 500;
             bowspritOpt.installCost = 200;

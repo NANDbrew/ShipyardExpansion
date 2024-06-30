@@ -1,6 +1,9 @@
 ﻿using HarmonyLib;
+using Mono.Cecil;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +13,11 @@ namespace ShipyardExpansion
 {
     internal class BrigPatches
     {
+        static Transform mast_001;
+        static Transform mast_001_col;
+        static Mast spritTopmast1;
+        static Mast spritTopmast2;
+
         public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             Transform container = boat.Find("medi medium new");
@@ -26,11 +34,11 @@ namespace ShipyardExpansion
             Transform forestay_0_mid = container.Find("forestay_0_mid");
             BoatPartOption noForemast = container.Find("(no foremast)").GetComponent<BoatPartOption>();
             BoatPartOption noBowsprit = container.Find("(no bowsprit)").GetComponent<BoatPartOption>();
-
+            Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent;
             #region adjustments
             Util.MoveMast(mizzenMast1, new Vector3(-12.43f, mizzenMast1.localPosition.y, mizzenMast1.localPosition.z), true);
             Util.MoveMast(backstay1_0top, new Vector3(-11.4f, backstay1_0top.localPosition.y, backstay1_0top.localPosition.z), true);
-            Util.MoveMast(backstay1_0bottom, new Vector3(-11.41f, backstay1_0bottom.localPosition.y, backstay1_0bottom.localPosition.z), true);
+            Util.MoveMast(backstay1_0bottom, new Vector3(-11.41f, 14.6f, backstay1_0bottom.localPosition.z), true);
 
             backstay1_0top.localScale = new Vector3(1, 1, 1.17f);
             backstay1_0bottom.localScale = new Vector3(1, 1, 1.17f);
@@ -183,73 +191,87 @@ namespace ShipyardExpansion
             //flagSource.GetComponent<MeshRenderer>().material.color = Color.green;
             BoatPartOption noFlag = Util.CreatePartOption(container, "(flag empty)", "(no telltale)");
 
-            BoatPartOption flags_main = Util.CreatePartOption(container, "flag_main", "main mast telltale");
+            BoatPartOption flags_main = Util.CreatePartOption(container, "flag_main", "mainmast telltale");
+            flags_main.basePrice = 10;
 
             Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_side.name = "flag_main_0_side";
-            flag_main_0_side.localPosition = new Vector3(-5.24f, 8f, 3.19f);
+            flag_main_0_side.localPosition = new Vector3(-5.25f, 6f, 3.28f);
             flag_main_0_side.localEulerAngles = new Vector3(87, 0, 0);
+            flag_main_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
             var flag_main_0_back = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_back.name = "flag_main_0_back";
-            flag_main_0_back.localPosition = new Vector3(-6.53f, 8f, 2.9f);
+            flag_main_0_back.localPosition = new Vector3(-6.78f, 6f, 3.26f);
             flag_main_0_back.localEulerAngles = new Vector3(79, 340, 0);
+            flag_main_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
             Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
             var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_side.name = "flag_main_1_side";
-            flag_main_1_side.localPosition = new Vector3(-0.53f, 8f, 3.22f);
+            flag_main_1_side.localPosition = new Vector3(-0.55f, 6f, 3.33f);
             flag_main_1_side.localEulerAngles = new Vector3(86, 0, 0);
+            flag_main_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
             var flag_main_1_back = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_back.name = "flag_main_1_back";
-            flag_main_1_back.localPosition = new Vector3(-1.62f, 8f, 2.76f);
+            flag_main_1_back.localPosition = new Vector3(-1.84f, 6f, 3.07f);
             flag_main_1_back.localEulerAngles = new Vector3(80, 340, 0);
+            flag_main_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
 
-            BoatPartOption flags_fore = Util.CreatePartOption(container, "flag_fore", "fore mast telltale");
+            BoatPartOption flags_fore = Util.CreatePartOption(container, "flag_fore", "foremast telltale");
+            flags_fore.basePrice = 10;
 
             Transform flags_fore_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_0" }.transform, flags_fore.transform);
             var flag_fore_0_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
             flag_fore_0_side.name = "flag_fore_0_side";
-            flag_fore_0_side.localPosition = new Vector3(6.62f, 8f, 2.76f);
+            flag_fore_0_side.localPosition = new Vector3(6.76f, 5f, 3.05f);
             flag_fore_0_side.localEulerAngles = new Vector3(87, 0, 0);
+            flag_fore_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
             var flag_fore_0_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
             flag_fore_0_back.name = "flag_fore_0_back";
-            flag_fore_0_back.localPosition = new Vector3(5.53f, 8f, 2.9f);
+            flag_fore_0_back.localPosition = new Vector3(5.55f, 5f, 3.05f);
             flag_fore_0_back.localEulerAngles = new Vector3(79, 340, 0);
+            flag_fore_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
             Transform flags_fore_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_1" }.transform, flags_fore.transform);
             var flag_fore_1_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
             flag_fore_1_side.name = "flag_fore_1_side";
-            flag_fore_1_side.localPosition = new Vector3(11.02f, 8f, 2.27f);
+            flag_fore_1_side.localPosition = new Vector3(10.95f, 5f, 2.4f);
             flag_fore_1_side.localEulerAngles = new Vector3(89, 0, 0);
+            flag_fore_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
             var flag_fore_1_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
             flag_fore_1_back.name = "flag_fore_1_back";
-            flag_fore_1_back.localPosition = new Vector3(9.91f, 8f, 2.16f);
+            flag_fore_1_back.localPosition = new Vector3(9.55f, 5f, 2.6f);
             flag_fore_1_back.localEulerAngles = new Vector3(81, 326, 0);
+            flag_fore_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-
-            BoatPartOption flags_mizzen = Util.CreatePartOption(container, "flag_mizzen", "mizzen mast telltale");
+            BoatPartOption flags_mizzen = Util.CreatePartOption(container, "flag_mizzen", "mizzen telltale");
+            flags_mizzen.basePrice = 10;
 
             Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
             var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
             flag_mizzen_0_side.name = "flag_mizzen_0_side";
             flag_mizzen_0_side.localPosition = new Vector3(-11.8f, 8f, 2.7f);
             flag_mizzen_0_side.localEulerAngles = new Vector3(87, 0, 0);
+            flag_mizzen_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
             var flag_mizzen_0_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
             flag_mizzen_0_back.name = "flag_mizzen_0_back";
             flag_mizzen_0_back.localPosition = new Vector3(-12.24f, 8f, 2.45f);
             flag_mizzen_0_back.localEulerAngles = new Vector3(80, 340, 0);
+            flag_mizzen_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
             Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
             var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_side.name = "flag_mizzen_1_side";
             flag_mizzen_1_side.localPosition = new Vector3(-7.65f, 8f, 3.15f);
             flag_mizzen_1_side.localEulerAngles = new Vector3(87, 0, 0);
+            flag_mizzen_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
             var flag_mizzen_1_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_back.name = "flag_mizzen_1_back";
             flag_mizzen_1_back.localPosition = new Vector3(-8.15f, 8f, 2.76f);
             flag_mizzen_1_back.localEulerAngles = new Vector3(80, 350, 0);
+            flag_mizzen_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
             //UnityEngine.Object.Destroy(flagSource);
 
@@ -279,8 +301,89 @@ namespace ShipyardExpansion
             foreMast2.GetComponent<BoatPartOption>().childOptions = foreMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_1.gameObject);
 
             #endregion
- //add boat to list of modified boats
-        
+
+            /*Mast bowsprit = structure.Find("bowsprit_standard").GetChild(0).GetComponent<Mast>();
+            //var spritTopmast = Util.CreatePartOption(structure, "sprit_topmast", "sprit topmast");
+            var spritTopmast = UnityEngine.Object.Instantiate(Plugin.spritRef, structure);
+            var partOption = Util.CopyPartOption(bowsprit.GetComponent<BoatPartOption>(), spritTopmast.gameObject, "sprit topmast");
+            //Mast spritTopmastM = Util.CopyMast(bowsprit, )
+            spritTopmast.transform.localPosition = new Vector3(20.6f, 9.3f, 0);
+            Mast stmM = spritTopmast.gameObject.AddComponent<Mast>();
+            stmM.orderIndex = 33;
+            stmM.mastHeight = 5;
+            stmM.maxSails = 1;
+            stmM.startingSailColor = 0;
+            stmM.shipRigidbody = boat.GetComponent<Rigidbody>();
+            stmM.reefWinch = Util.CopyWinches(bowsprit.reefWinch, bowsprit.reefWinch[0].transform.localPosition, bowsprit.reefWinch[0].transform.localPosition + new Vector3(1, 0, 0));
+            stmM.leftAngleWinch = Util.CopyWinches(bowsprit.leftAngleWinch, bowsprit.leftAngleWinch[0].transform.localPosition, bowsprit.leftAngleWinch[0].transform.localPosition + new Vector3(1, 0, 0));
+            stmM.rightAngleWinch = Util.CopyWinches(bowsprit.rightAngleWinch, bowsprit.rightAngleWinch[0].transform.localPosition, bowsprit.rightAngleWinch[0].transform.localPosition + new Vector3(1, 0, 0));
+            stmM.Awake();
+            BoatPartOption stmNone = Util.CreatePartOption(container, "(no-sprit_topmast)", "(no sprit topmast)");
+            BoatPart part = Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption });*/
+
+            #region sprit topmast
+            Debug.Log("trying to add part");
+            BoatPartOption bowsprit = structure.Find("bowsprit_standard").GetComponent<BoatPartOption>();
+            BoatPartOption bowspritLong = structure.Find("bowsprit_long").GetComponent<BoatPartOption>();
+            spritTopmast1 = Util.CopyMast(bowsprit.transform.GetChild(0), structure, walkCol, new Vector3(20.1f, 0f, 9.3f), Vector3.zero, Vector3.one, "sprit_topmast", "sprit topmast", 33);
+            spritTopmast1.mastHeight = 4;
+            spritTopmast1.reefWinch = Util.CopyWinches(spritTopmast1.reefWinch, spritTopmast1.reefWinch[0].transform.localPosition, new Vector3(20.37f, 7.6f, 0));
+            spritTopmast1.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 0);
+            spritTopmast1.leftAngleWinch = Util.CopyWinches(spritTopmast1.leftAngleWinch, spritTopmast1.leftAngleWinch[0].transform.localPosition, new Vector3(12.4f, 3.12f, 1.5f));
+            spritTopmast1.rightAngleWinch = Util.CopyWinches(spritTopmast1.rightAngleWinch, spritTopmast1.rightAngleWinch[0].transform.localPosition, new Vector3(12.4f, 3.12f, -1.5f));
+
+            var stmFlag = UnityEngine.Object.Instantiate(flagSource, spritTopmast1.transform);
+            stmFlag.transform.localPosition = new Vector3(0.3f, 0, 1);
+
+            BoatPartOption partOption = Util.CopyPartOption(bowsprit, spritTopmast1.gameObject, "sprit topmast 1");
+            partOption.mass = 20;
+            partOption.basePrice /= 2;
+            partOption.installCost /= 2;
+
+
+            spritTopmast2 = Util.CopyMast(spritTopmast1.transform, new Vector3(23.5f, 0, 10.9f), "sprit_topmast_2", "sprit topmast 2", 34);
+            spritTopmast2.reefWinch = Util.CopyWinches(spritTopmast2.reefWinch, spritTopmast1.reefWinch[0].transform.localPosition, new Vector3(23.76f, 9.2f, 0));
+            BoatPartOption spritTopmast2_opt = spritTopmast2.GetComponent<BoatPartOption>();
+            partOption.requires = new List<BoatPartOption> { bowsprit };
+            spritTopmast2_opt.requires = new List<BoatPartOption> { bowspritLong };
+
+            BoatPartOption stmNone = Util.CreatePartOption(structure, "(no-sprit_topmast)", "(no sprit topmast)");
+            Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption, spritTopmast2_opt });
+            bowspritLong.transform.GetChild(0).localPosition += new Vector3(0, 0, -1f);
+            bowsprit.transform.GetChild(0).localPosition += new Vector3(0, 0, -1f);
+            partsList.StartCoroutine(AddCopiedPart(spritTopmast1.transform, walkCol));
+            #endregion
+        }
+
+        private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol)
+        {
+            Debug.Log("trying to add part");
+            yield return new WaitUntil(() => Plugin.spritRef != null);
+            mast_001 = UnityEngine.Object.Instantiate(Plugin.spritRef, parent, false);
+            mast_001.localPosition = new Vector3(0, 0, 1.6f);
+            mast_001.localScale = new Vector3(0.4f, 0.4f, 0.5f);
+            mast_001.localEulerAngles = Vector3.zero;
+            mast_001.GetComponent<MeshRenderer>().material.color = new Color(0.875f, 1, 1);
+
+            var mast2 = UnityEngine.Object.Instantiate(mast_001, spritTopmast2.transform, false);
+            //mast2.localPosition = spritTopmast2.transform.localPosition;
+
+            yield return new WaitUntil(() => Plugin.spritColRef != null);
+            var mast_001_col_parent = UnityEngine.Object.Instantiate(new GameObject(), walkCol).transform;
+            mast_001_col = UnityEngine.Object.Instantiate(Plugin.spritColRef, mast_001_col_parent, false);
+            mast_001_col.localPosition = mast_001.localPosition;
+            mast_001_col.localScale = mast_001.localScale;
+            mast_001_col.localEulerAngles = mast_001.localEulerAngles;
+            mast_001_col_parent.localPosition = spritTopmast1.transform.localPosition;
+
+            var mastCol2 = UnityEngine.Object.Instantiate(mast_001_col_parent, walkCol, false);
+            mastCol2.localPosition = spritTopmast2.transform.localPosition;
+
+            spritTopmast1.walkColMast = mast_001_col_parent;
+            spritTopmast1.GetComponent<BoatPartOption>().walkColObject = mast_001_col_parent.gameObject;
+            spritTopmast2.walkColMast = mastCol2;
+            spritTopmast2.GetComponent<BoatPartOption>().walkColObject = mastCol2.gameObject;
+
         }
     }
 }
