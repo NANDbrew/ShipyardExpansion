@@ -4,6 +4,7 @@ using HarmonyLib;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ShipyardExpansion
 {
@@ -21,6 +22,10 @@ namespace ShipyardExpansion
         public static List<BoatPartOption> stockPartOptions;
         public static Dictionary<BoatPart, int> stockParts;
         public static List<Mast> stockMasts;
+
+        public static Transform topmastRef;
+        public static Transform spritRef;
+        public static Transform spritColRef;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;

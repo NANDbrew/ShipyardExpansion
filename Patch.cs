@@ -10,11 +10,9 @@ namespace ShipyardExpansion
 {
     internal class Patch
     {
-        [HarmonyPatch(typeof(SaveableBoatCustomization))]
+        [HarmonyPatch(typeof(SaveableBoatCustomization),"Awake")]
         internal static class PartsPatch
         {
-
-            [HarmonyPatch("Awake")]
             [HarmonyPostfix]
             public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts, BoatRefs ___refs)
             {

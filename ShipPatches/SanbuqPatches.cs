@@ -12,9 +12,8 @@ namespace ShipyardExpansion
     {
         public static void Patch(Transform boat, BoatCustomParts partsList)
         {
-
             //Mast[] masts = boat.GetComponent<BoatRefs>().masts;
-            var boatRefs = boat.GetComponent<BoatRefs>();
+            //var boatRefs = boat.GetComponent<BoatRefs>();
             Transform container = boat.transform.Find("dhow medium new");
             Transform structure = container.Find("structure");
             Transform mainMast1 = structure.Find("mast");
@@ -28,6 +27,9 @@ namespace ShipyardExpansion
             Mast topmastStay1_mast = topmastStay1.GetComponent<Mast>();
             Mast topmastStay2_mast = topmastStay2.GetComponent<Mast>();
             Mast topmastStay3_mast = topmastStay3.GetComponent<Mast>();
+            Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
+
+            Plugin.topmastRef = topMast1;
 
             #region adjustments
             // move main mast aft to make room
@@ -49,7 +51,7 @@ namespace ShipyardExpansion
             BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
             partsList.availableParts[2].partOptions.Add(bowspritNone);
             //partsList.availableParts[2].activeOption = partsList.availableParts[2].partOptions.Count - 1;
-                        #endregion
+            #endregion
 
             #region topmastStay
             BoatPartOption topmastStayNone = Util.CreatePartOption(container, "(no topmast stay)", "(no topmast forestay");
@@ -102,13 +104,13 @@ namespace ShipyardExpansion
             BoatPartOption hammock = Util.AddPartOption(container.Find("hammock").gameObject, "hammock");
 
             hammock.optionName = "hammock";
-            hammock.childOptions = new GameObject[2] { container.Find("hammock_001").gameObject, boatRefs.walkCol.Find("hammock_001").gameObject };
+            hammock.childOptions = new GameObject[2] { container.Find("hammock_001").gameObject, walkCol.Find("hammock_001").gameObject };
             hammock.basePrice = 200;
             hammock.installCost = 100;
             hammock.mass = 5;
             hammock.requires = new List<BoatPartOption>();
             hammock.requiresDisabled = new List<BoatPartOption>();
-            hammock.walkColObject = boatRefs.walkCol.Find("hammock").gameObject;
+            hammock.walkColObject = walkCol.Find("hammock").gameObject;
 
             BoatPart hammockPart = Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>(2) { hammock, hammockNone });
             #endregion
@@ -210,35 +212,35 @@ namespace ShipyardExpansion
                 foreTopmast.midRopeAtt[i] = foremast.midRopeAtt[i];
             }
             #endregion
-            #region foremast2
-            /*var foremast2 = Util.CopyMast(mizzenMast1, new Vector3(11.87f, 0f, 12.565f), new Vector3(0, 15, 0), new Vector3(1f, 1f, 0.975f), "mast_05", "raked foremast", 41);
-            foremast2.reefWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().reefWinch, mizzenMast1.localPosition, foremast2.transform.localPosition + new Vector3(-3.62f, 0, 0));
-            foremast2.reefWinch[0].transform.localPosition = new Vector3(9.2f, 2.59f, 0.36f);
-            foremast2.reefWinch[1].transform.localPosition = new Vector3(9.2f, 2.59f, -0.36f);
-            foremast2.reefWinch[1].transform.localEulerAngles = new Vector3(0, 180, 0);
-            foremast2.midAngleWinch = foremast.midAngleWinch;
-            foremast2.leftAngleWinch = foremast.leftAngleWinch;
-            foremast2.rightAngleWinch = foremast.rightAngleWinch;
-            var foremast2_ropeHolder = foremast2.transform.Find("rope_holder");
-            foremast2_ropeHolder.localPosition = new Vector3(-3.2f, 0f, -12.65f);
-            foremast2_ropeHolder.localEulerAngles = new Vector3(270f, 350f, 0f);
-            var foremast2_shrouds = foremast2.transform.Find("part_shrouds_mizzen_back");
-            foremast2_shrouds.GetChild(0).localPosition = new Vector3(-7.76f, 0f, -14.84f);
-            foremast2_shrouds.GetChild(0).localEulerAngles = new Vector3(0, 5, 90);
-            foremast2_shrouds.GetChild(0).localScale = new Vector3(1f, -1f, 1f);
-            foremast2_shrouds.localScale = new Vector3(1.1f, 0.86f, 1.17f);
-            foremast2_shrouds.GetComponent<BoatPartOption>().enabled = false;
-            foremast2.transform.Find("part_shrouds_mizzen_side").gameObject.SetActive(false);
-            foremast2.transform.Find("Cylinder_006").gameObject.SetActive(false);
-            foremast2.walkColMast.Find("part_shrouds_mizzen_side").gameObject.SetActive(false);
-            //foremast2_shrouds.tag = "foremast_shrouds";
+            #region foremast3
+            /*var foremast3 = Util.CopyMast(mizzenMast1, new Vector3(11.87f, 0f, 12.565f), new Vector3(0, 15, 0), new Vector3(1f, 1f, 0.975f), "mast_05", "raked foremast", 41);
+            foremast3.reefWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().reefWinch, mizzenMast1.localPosition, foremast3.transform.localPosition + new Vector3(-3.62f, 0, 0));
+            foremast3.reefWinch[0].transform.localPosition = new Vector3(9.2f, 2.59f, 0.36f);
+            foremast3.reefWinch[1].transform.localPosition = new Vector3(9.2f, 2.59f, -0.36f);
+            foremast3.reefWinch[1].transform.localEulerAngles = new Vector3(0, 180, 0);
+            foremast3.midAngleWinch = foremast.midAngleWinch;
+            foremast3.leftAngleWinch = foremast.leftAngleWinch;
+            foremast3.rightAngleWinch = foremast.rightAngleWinch;
+            var foremast3_ropeHolder = foremast3.transform.Find("rope_holder");
+            foremast3_ropeHolder.localPosition = new Vector3(-3.2f, 0f, -12.65f);
+            foremast3_ropeHolder.localEulerAngles = new Vector3(270f, 350f, 0f);
+            var foremast3_shrouds = foremast3.transform.Find("part_shrouds_mizzen_back");
+            foremast3_shrouds.GetChild(0).localPosition = new Vector3(-7.76f, 0f, -14.84f);
+            foremast3_shrouds.GetChild(0).localEulerAngles = new Vector3(0, 5, 90);
+            foremast3_shrouds.GetChild(0).localScale = new Vector3(1f, -1f, 1f);
+            foremast3_shrouds.localScale = new Vector3(1.1f, 0.86f, 1.17f);
+            foremast3_shrouds.GetComponent<BoatPartOption>().enabled = false;
+            foremast3.transform.Find("part_shrouds_mizzen_side").gameObject.SetActive(false);
+            foremast3.transform.Find("Cylinder_006").gameObject.SetActive(false);
+            foremast3.walkColMast.Find("part_shrouds_mizzen_side").gameObject.SetActive(false);
+            //foremast3_shrouds.tag = "foremast_shrouds";
             //To do: add foremast 2 shroud cols
-            var foremast2_shrouds_col = foremast2.walkColMast.Find("part_shrouds_mizzen_back");
-            foremast2_shrouds_col.gameObject.SetActive(true);
-            foremast2_shrouds_col.localScale = foremast2_shrouds.localScale;
+            var foremast3_shrouds_col = foremast3.walkColMast.Find("part_shrouds_mizzen_back");
+            foremast3_shrouds_col.gameObject.SetActive(true);
+            foremast3_shrouds_col.localScale = foremast3_shrouds.localScale;
 
-            var foremast2_opt = foremast2.GetComponent<BoatPartOption>();
-            foremastPart.partOptions.Add(foremast2_opt);*/
+            var foremast3_opt = foremast3.GetComponent<BoatPartOption>();
+            foremastPart.partOptions.Add(foremast3_opt);*/
             #endregion
 
             #region foremast3
@@ -330,31 +332,31 @@ namespace ShipyardExpansion
             #endregion
 
             #region mizzenMast
-            Mast mizzen2 = Util.CopyMast(mainMast2, mainMast2.localPosition + new Vector3(-7, 0, 0), mainMast1.localEulerAngles, new Vector3(1, 1, 0.965f), "mast_003", "mizzen mast 2", 35);
-            UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("Cylinder_006"), mizzen2.transform, true);
-            var brace = UnityEngine.Object.Instantiate(mizzen2.transform.Find("mast_004"), mizzen2.transform);
+            Mast mizzenMast2 = Util.CopyMast(mainMast2, mainMast2.localPosition + new Vector3(-7, 0, 0), mainMast1.localEulerAngles, new Vector3(1, 1, 0.965f), "mast_003", "mizzen mast 2", 35);
+            UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("Cylinder_006"), mizzenMast2.transform, true);
+            var brace = UnityEngine.Object.Instantiate(mizzenMast2.transform.Find("mast_004"), mizzenMast2.transform);
             brace.localPosition += new Vector3(0, 0, -2.544f);
             brace.localScale = new Vector3(0.98f, 0.99f, -2.544f);
-            var mizzen2_rope_holder = UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("rope_holder"), mizzen2.transform, true).GetChild(0);
-            mizzen2.reefWinch = Util.CopyWinches(mainMast2.GetComponent<Mast>().reefWinch, mainMast2.localPosition, mizzen2.transform.localPosition + new Vector3(0, 0.6f, 0));
-            mizzen2.midAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().midAngleWinch, mizzenMast1.localPosition, new Vector3(mizzen2.transform.localPosition.x - 1, mizzenMast1.localPosition.y, mizzenMast1.localPosition.z));
-            mizzen2.midAngleWinch = mizzen2.midAngleWinch.AddToArray(UnityEngine.Object.Instantiate(mizzen2.midAngleWinch[1], container));
-            mizzen2.midAngleWinch[2].transform.localPosition = mizzen2.midAngleWinch[1].transform.localPosition + new Vector3(0, 0, 0.376f);
-            mizzen2.midAngleWinch[2].transform.localEulerAngles = new Vector3(1, 306, 358);
-            mizzen2.midAngleWinch[1].transform.localEulerAngles = new Vector3(1, 246, 358);
-            mizzen2.midAngleWinch[0].transform.localEulerAngles = mainMast1.GetComponent<Mast>().midAngleWinch[0].transform.localEulerAngles;
-            mizzen2.midAngleWinch[0].transform.localPosition = mainMast1.GetComponent<Mast>().midAngleWinch[0].transform.localPosition + new Vector3(-0.36f, 0, 0);
-            mizzen2.leftAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().leftAngleWinch, mizzenMast1.GetComponent<Mast>().leftAngleWinch[0].transform.localPosition, mizzenMast1.GetComponent<Mast>().leftAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.06f, 0));
-            mizzen2.rightAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().rightAngleWinch, mizzenMast1.GetComponent<Mast>().rightAngleWinch[0].transform.localPosition, mizzenMast1.GetComponent<Mast>().rightAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.06f, 0));
-            mizzen2.midRopeAtt[0].transform.parent.gameObject.SetActive(false);
+            var mizzenMast2_rope_holder = UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("rope_holder"), mizzenMast2.transform, true).GetChild(0);
+            mizzenMast2.reefWinch = Util.CopyWinches(mainMast2.GetComponent<Mast>().reefWinch, mainMast2.localPosition, mizzenMast2.transform.localPosition + new Vector3(0, 0.6f, 0));
+            mizzenMast2.midAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().midAngleWinch, mizzenMast1.localPosition, new Vector3(mizzenMast2.transform.localPosition.x - 1, mizzenMast1.localPosition.y, mizzenMast1.localPosition.z));
+            mizzenMast2.midAngleWinch = mizzenMast2.midAngleWinch.AddToArray(UnityEngine.Object.Instantiate(mizzenMast2.midAngleWinch[1], container));
+            mizzenMast2.midAngleWinch[2].transform.localPosition = mizzenMast2.midAngleWinch[1].transform.localPosition + new Vector3(0, 0, 0.376f);
+            mizzenMast2.midAngleWinch[2].transform.localEulerAngles = new Vector3(1, 306, 358);
+            mizzenMast2.midAngleWinch[1].transform.localEulerAngles = new Vector3(1, 246, 358);
+            mizzenMast2.midAngleWinch[0].transform.localEulerAngles = mainMast1.GetComponent<Mast>().midAngleWinch[0].transform.localEulerAngles;
+            mizzenMast2.midAngleWinch[0].transform.localPosition = mainMast1.GetComponent<Mast>().midAngleWinch[0].transform.localPosition + new Vector3(-0.36f, 0, 0);
+            mizzenMast2.leftAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().leftAngleWinch, mizzenMast1.GetComponent<Mast>().leftAngleWinch[0].transform.localPosition, mizzenMast1.GetComponent<Mast>().leftAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.06f, 0));
+            mizzenMast2.rightAngleWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().rightAngleWinch, mizzenMast1.GetComponent<Mast>().rightAngleWinch[0].transform.localPosition, mizzenMast1.GetComponent<Mast>().rightAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.06f, 0));
+            mizzenMast2.midRopeAtt[0].transform.parent.gameObject.SetActive(false);
             
-            for (int i = 0; i < mizzen2.midRopeAtt.Length; i++)
+            for (int i = 0; i < mizzenMast2.midRopeAtt.Length; i++)
             {
-                mizzen2.midRopeAtt[i] = mizzen2_rope_holder;
+                mizzenMast2.midRopeAtt[i] = mizzenMast2_rope_holder;
             }
-            //mizzen2.orderIndex = 25;
-            //mizzen2.Awake();
-            partsList.availableParts[1].partOptions.Add(mizzen2.GetComponent<BoatPartOption>());
+            //mizzenMast2.orderIndex = 25;
+            //mizzenMast2.Awake();
+            partsList.availableParts[1].partOptions.Add(mizzenMast2.GetComponent<BoatPartOption>());
             
 
             BoatPartOption mizShrBackOld = mizzenMast1.Find("part_shrouds_mizzen_back").GetComponent<BoatPartOption>();
@@ -363,11 +365,11 @@ namespace ShipyardExpansion
             mizzenShrouds.installCost = mizShrBackOld.installCost;
             mizzenShrouds.mass = mizShrBackOld.mass;
             var mizzenShrouds_1 = UnityEngine.Object.Instantiate(structure.Find("part_shrouds_main_back").Find("part_shrouds_1_back"), mizzenShrouds.transform);
-            mizzenShrouds_1.localPosition = new Vector3(mizzen2.transform.localPosition.x, 0.01f, 17.1f);
+            mizzenShrouds_1.localPosition = new Vector3(mizzenMast2.transform.localPosition.x, 0.01f, 17.1f);
             mizzenShrouds_1.localScale = new Vector3(1.1f, 1.1f, 1.04f);
             mizShrBackOld.transform.parent = mizzenShrouds.transform;
 
-            var mizzenShrouds_walkCols = UnityEngine.Object.Instantiate(new GameObject(), mizzen2.walkColMast.parent);
+            var mizzenShrouds_walkCols = UnityEngine.Object.Instantiate(new GameObject(), mizzenMast2.walkColMast.parent);
             mizzenShrouds_walkCols.name = mizzenShrouds.name;
             var mizzenShrouds_1_walkCol = UnityEngine.Object.Instantiate(structure.Find("part_shrouds_main_back").GetComponent<BoatPartOption>().walkColObject.transform.Find("part_shrouds_1_back"), mizzenShrouds_walkCols.transform);
             mizzenShrouds_1_walkCol.localPosition = mizzenShrouds_1.localPosition;
@@ -383,12 +385,12 @@ namespace ShipyardExpansion
             mizzenShrouds2.installCost = mizShrSideOld.installCost;
             mizzenShrouds2.mass = mizShrSideOld.mass;
             var mizzenShrouds2_1 = UnityEngine.Object.Instantiate(structure.Find("part_shrouds_main_side").Find("part_shrouds_1_side"), mizzenShrouds2.transform);
-            mizzenShrouds2_1.localPosition = new Vector3(mizzen2.transform.localPosition.x, 0.05f, 17.1f);
+            mizzenShrouds2_1.localPosition = new Vector3(mizzenMast2.transform.localPosition.x, 0.05f, 17.1f);
             mizzenShrouds2_1.localScale = new Vector3(1.1f, 1.1f, 1.05f);
             mizzenShrouds2_1.localEulerAngles = new Vector3(11.4f, 174.96f, 4f);
             mizShrSideOld.transform.parent = mizzenShrouds2.transform;
 
-            var mizzenShrouds2_walkCols = UnityEngine.Object.Instantiate(new GameObject(), mizzen2.walkColMast.parent);
+            var mizzenShrouds2_walkCols = UnityEngine.Object.Instantiate(new GameObject(), mizzenMast2.walkColMast.parent);
             mizzenShrouds2_walkCols.name = mizzenShrouds2.name;
             var mizzenShrouds2_1_walkCol = UnityEngine.Object.Instantiate(structure.Find("part_shrouds_main_side").GetComponent<BoatPartOption>().walkColObject.transform.Find("part_shrouds_1_side"), mizzenShrouds2_walkCols.transform);
             mizzenShrouds2_1_walkCol.localPosition = mizzenShrouds2_1.localPosition;
@@ -403,7 +405,7 @@ namespace ShipyardExpansion
                 mizShrBackOld.gameObject,
                 mizShrBackOld.walkColObject,
             };
-            mizzen2.GetComponent<BoatPartOption>().childOptions = new GameObject[4] {
+            mizzenMast2.GetComponent<BoatPartOption>().childOptions = new GameObject[4] {
                 mizzenShrouds2_1.gameObject,
                 mizzenShrouds2_1_walkCol.gameObject,
                 mizzenShrouds_1.gameObject,
@@ -411,25 +413,25 @@ namespace ShipyardExpansion
             };
             partsList.availableParts[6].partOptions = new List<BoatPartOption>() { mizzenShrouds2, mizzenShrouds };
             
-            UnityEngine.Object.Destroy(mizShrBackOld.GetComponent<BoatPartOption>());
-            UnityEngine.Object.Destroy(mizShrSideOld.GetComponent<BoatPartOption>());
+            mizShrBackOld.GetComponent<BoatPartOption>().enabled = false;
+            mizShrSideOld.GetComponent<BoatPartOption>().enabled = false;
             #endregion
 
             #region mizzenTopmast
-            Mast mizzenTopmast = Util.CopyMast(topMast2, (topMast2.localPosition - mainMast2.localPosition) + mizzen2.transform.localPosition, "mast_003_extension", "mizzen topmast", 39);
+            Mast mizzenTopmast = Util.CopyMast(topMast2, (topMast2.localPosition - mainMast2.localPosition) + mizzenMast2.transform.localPosition, "mast_003_extension", "mizzen topmast", 39);
             mizzenTopmast.mastHeight = 5f;
             //mizzenTopmast.extraBottomHeight = 0.6f;
             BoatPartOption mizzenTopmastNone = Util.CreatePartOption(structure, "(no mizzen topmast)", "(no mizzen topmast)");
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { mizzenTopmastNone, mizzenTopmast.GetComponent<BoatPartOption>() });
-            mizzenTopmast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzen2.GetComponent<BoatPartOption>() };
-            mizzenTopmast.reefWinch = Util.CopyWinches(mizzenTopmast.reefWinch, mainMast2.localPosition, mizzen2.transform.localPosition + new Vector3(0, 1, 0));
+            mizzenTopmast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenMast2.GetComponent<BoatPartOption>() };
+            mizzenTopmast.reefWinch = Util.CopyWinches(mizzenTopmast.reefWinch, mainMast2.localPosition, mizzenMast2.transform.localPosition + new Vector3(0, 1, 0));
             mizzenTopmast.midAngleWinch = Util.CopyWinches(topMast1.GetComponent<Mast>().midAngleWinch, topMast1.GetComponent<Mast>().midAngleWinch[0].transform.localPosition, new Vector3(-12.39f, 2.81f, 0f));
             mizzenTopmast.midAngleWinch[0].transform.localEulerAngles = new Vector3(274, 90, 0);
             mizzenTopmast.leftAngleWinch = mizzenMast1.GetComponent<Mast>().leftAngleWinch;
             mizzenTopmast.rightAngleWinch = mizzenMast1.GetComponent<Mast>().rightAngleWinch;
             for (int i = 0; i < mizzenTopmast.midRopeAtt.Length; i++)
             {
-                mizzenTopmast.midRopeAtt[i] = mizzen2_rope_holder;
+                mizzenTopmast.midRopeAtt[i] = mizzenMast2_rope_holder;
             }
             #endregion
 
@@ -488,7 +490,7 @@ namespace ShipyardExpansion
             middlestay_2.mastHeight = 15;
             //middlestay_2.orderIndex = 26;
             //middlestay_2.Awake();
-            middlestay_2.GetComponent<BoatPartOption>().requires[1] = mizzen2.GetComponent<BoatPartOption>();
+            middlestay_2.GetComponent<BoatPartOption>().requires[1] = mizzenMast2.GetComponent<BoatPartOption>();
             partsList.availableParts[8].partOptions.Add(middlestay_2.GetComponent<BoatPartOption>());
             
             var middlestay_3 = Util.CopyMast(src5, new Vector3(-9.86f, 14.57f, 0), new Vector3(312f, 270, 90), new Vector3(1, 1, 0.75f), "part_stay_mid_3", "middlestay 2-1", 36);
@@ -515,11 +517,129 @@ namespace ShipyardExpansion
             // topmast midstay
             var middlestayTopmast = Util.CopyMast(middlestay_2.transform, middlestay_2.transform.localPosition + new Vector3(0, 7.7f, 0), "part_stay_mid_topmast", "topmast middlestay", 40);
             middlestayTopmast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenTopmast.GetComponent<BoatPartOption>(), mainMast1.GetComponent<BoatPartOption>() };
-            middlestayTopmast.reefWinch = Util.CopyWinches(middlestayTopmast.reefWinch, mizzen2.transform.localPosition, mizzen2.transform.localPosition + new Vector3(0f, 0.6f, 0f));
+            middlestayTopmast.reefWinch = Util.CopyWinches(middlestayTopmast.reefWinch, mizzenMast2.transform.localPosition, mizzenMast2.transform.localPosition + new Vector3(0f, 0.6f, 0f));
             middlestayTopmast.leftAngleWinch = Util.CopyWinches(middlestayTopmast.leftAngleWinch, middlestayTopmast.leftAngleWinch[0].transform.localPosition, middlestayTopmast.leftAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.05f, 0));
             middlestayTopmast.rightAngleWinch = Util.CopyWinches(middlestayTopmast.rightAngleWinch, middlestayTopmast.rightAngleWinch[0].transform.localPosition, middlestayTopmast.rightAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.05f, 0));
 
             Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { Util.CreatePartOption(container, "(empty fore midstay)", "(no fore middlestay)"), middlestay_fore.GetComponent<BoatPartOption>(), middlestayTopmast.GetComponent<BoatPartOption>() });
+            #endregion
+
+
+            #region telltale
+            var flagSource = mizzenMast1.Find("flag");
+            //flagSource.localScale = new Vector3(0.8f, 1f, 0.5f);
+            //flagSource.GetComponent<MeshRenderer>().material.color = Color.green;
+            BoatPartOption noFlag = Util.CreatePartOption(container, "(flag empty)", "(no telltale)");
+
+            BoatPartOption flags_main = Util.CreatePartOption(container, "flag_main", "mainmast telltale");
+            flags_main.basePrice = 10;
+
+            Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
+            var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
+            flag_main_0_side.name = "flag_main_0_side";
+            flag_main_0_side.localPosition = new Vector3(6.15f, 3.3f, 2.02f);
+            flag_main_0_side.localEulerAngles = new Vector3(80, 20, 0);
+            //flag_main_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            var flag_main_0_back = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
+            flag_main_0_back.name = "flag_main_0_back";
+            flag_main_0_back.localPosition = new Vector3(4.4f, 3.3f, 2.28f);
+            flag_main_0_back.localEulerAngles = new Vector3(79, 340, 0);
+            //flag_main_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+
+            Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
+            var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
+            flag_main_1_side.name = "flag_main_1_side";
+            flag_main_1_side.localPosition = new Vector3(0.7f, 3.3f, 2.28f);
+            flag_main_1_side.localEulerAngles = new Vector3(80, 20, 0);
+            //flag_main_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            var flag_main_1_back = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
+            flag_main_1_back.name = "flag_main_1_back";
+            flag_main_1_back.localPosition = new Vector3(-0.63f, 3.3f, 2.4f);
+            flag_main_1_back.localEulerAngles = new Vector3(80, 340, 0);
+            //flag_main_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+
+
+            BoatPartOption flags_fore = Util.CreatePartOption(container, "flag_fore", "foremast telltale");
+            flags_fore.basePrice = 10;
+
+            Transform flags_fore_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_0" }.transform, flags_fore.transform);
+            var flag_fore_0_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
+            flag_fore_0_side.name = "flag_fore_0_side";
+            flag_fore_0_side.localPosition = new Vector3(9.93f, 3.5f, 1.05f);
+            flag_fore_0_side.localEulerAngles = new Vector3(272, 190, 0);
+            //flag_fore_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            var flag_fore_0_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
+            flag_fore_0_back.name = "flag_fore_0_back";
+            flag_fore_0_back.localPosition = new Vector3(8.63f, 3.5f, 1.7f);
+            flag_fore_0_back.localEulerAngles = new Vector3(82, 340, 0);
+            //flag_fore_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+
+            Transform flags_fore_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_1" }.transform, flags_fore.transform);
+            var flag_fore_1_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
+            flag_fore_1_side.name = "flag_fore_1_side";
+            flag_fore_1_side.localPosition = new Vector3(10.6f, 3.5f, 1.1f);
+            flag_fore_1_side.localEulerAngles = new Vector3(80, 300, 0);
+            //flag_fore_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            var flag_fore_1_back = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
+            flag_fore_1_back.name = "flag_fore_1_back";
+            flag_fore_1_back.localPosition = new Vector3(9.1f, 3.5f, 1.74f);
+            flag_fore_1_back.localEulerAngles = new Vector3(70, 302, 0);
+            //flag_fore_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+
+            BoatPartOption flags_mizzen = Util.CreatePartOption(container, "flag_mizzen", "mizzen telltale");
+            flags_mizzen.basePrice = 10;
+
+            Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
+            var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
+            flag_mizzen_0_side.name = "flag_mizzen_0_side";
+            flag_mizzen_0_side.localPosition = new Vector3(-10.2f, 3.3f, 2.45f);
+            flag_mizzen_0_side.localEulerAngles = new Vector3(290, 180, 150);
+            //flag_mizzen_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            var flag_mizzen_0_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
+            flag_mizzen_0_back.name = "flag_mizzen_0_back";
+            flag_mizzen_0_back.localPosition = new Vector3(-10.2f, 3.3f, 2.45f);
+            flag_mizzen_0_back.localEulerAngles = new Vector3(290, 180, 150);
+            //flag_mizzen_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+
+            Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
+            var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
+            flag_mizzen_1_side.name = "flag_mizzen_1_side";
+            flag_mizzen_1_side.localPosition = new Vector3(-8.36f, 3.3f, 2.6f);
+            flag_mizzen_1_side.localEulerAngles = new Vector3(280, 160, 150);
+            //flag_mizzen_1_side.localScale = new Vector3(0.8f, 1f, 0.5f);
+            var flag_mizzen_1_back = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
+            flag_mizzen_1_back.name = "flag_mizzen_1_back";
+            flag_mizzen_1_back.localPosition = new Vector3(-8.68f, 3.3f, 2.58f);
+            flag_mizzen_1_back.localEulerAngles = new Vector3(80, 333, 0);
+            //flag_mizzen_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
+
+            //UnityEngine.Object.Destroy(flagSource);
+
+            flags_fore.requiresDisabled.Add(foremastNone);
+            flags_main.requiresDisabled.Add(mainMastNone);
+            flags_mizzen.requiresDisabled.Add(structure.Find("(empty mizzen)").GetComponent<BoatPartOption>());
+            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { noFlag, flags_fore, flags_main, flags_mizzen });
+
+
+            mizzenShrouds.childOptions = mizzenShrouds.childOptions.AddRangeToArray(new GameObject[2] { flag_mizzen_1_side.gameObject, flag_mizzen_0_side.gameObject });
+            mizzenShrouds2.childOptions = mizzenShrouds2.childOptions.AddRangeToArray(new GameObject[2] { flag_mizzen_1_back.gameObject, flag_mizzen_0_back.gameObject });
+            mizzenMast1.GetComponent<BoatPartOption>().childOptions = mizzenMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_mizzen_0.gameObject);
+            mizzenMast2.GetComponent<BoatPartOption>().childOptions = mizzenMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_mizzen_1.gameObject);
+
+            var mainSideOption = structure.Find("part_shrouds_main_side").gameObject.GetComponent<BoatPartOption>();
+            var mainBackOption = structure.Find("part_shrouds_main_back").gameObject.GetComponent<BoatPartOption>();
+            mainSideOption.childOptions = mainSideOption.childOptions.AddRangeToArray(new GameObject[2] { flag_main_1_side.gameObject, flag_main_0_side.gameObject });
+            mainBackOption.childOptions = mainBackOption.childOptions.AddRangeToArray(new GameObject[2] { flag_main_1_back.gameObject, flag_main_0_back.gameObject });
+            mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_main_0.gameObject);
+            mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_main_1.gameObject);
+
+            var foreSideOption = structure.Find("part_shrouds_fore_side").gameObject.GetComponent<BoatPartOption>();
+            var foreBackOption = structure.Find("part_shrouds_fore_back").gameObject.GetComponent<BoatPartOption>();
+            foreSideOption.childOptions = foreSideOption.childOptions.AddRangeToArray(new GameObject[2] { flag_fore_1_side.gameObject, flag_fore_0_side.gameObject });
+            foreBackOption.childOptions = foreBackOption.childOptions.AddRangeToArray(new GameObject[2] { flag_fore_1_back.gameObject, flag_fore_0_back.gameObject });
+            foremast.GetComponent<BoatPartOption>().childOptions = foremast.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_0.gameObject);
+            foremast3.GetComponent<BoatPartOption>().childOptions = foremast3.GetComponent<BoatPartOption>().childOptions.AddToArray(flags_fore_1.gameObject);
+
             #endregion
 
             // partsList.availableParts[3].category = 2;

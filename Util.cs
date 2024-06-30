@@ -30,29 +30,36 @@ namespace ShipyardExpansion
         }
         public static Mast CopyMast(Transform source, Vector3 position, string name, string prettyName, int index)
         {
-            return CopyMast(source, position, source.localEulerAngles, source.localScale, name, prettyName, index);
+            return CopyMast(source, source.parent, source.GetComponent<Mast>().walkColMast.parent, position, source.localEulerAngles, source.localScale, name, prettyName, index);
         }
         public static Mast CopyMast(Transform source, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName, int index)
         {
+            return CopyMast(source, source.parent, source.GetComponent<Mast>().walkColMast.parent, position, eulerAngles, scale, name, prettyName, index);
+        }
+        public static Mast CopyMast(Transform source, Transform parent, Transform walkColParent, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName, int index)
+        {
             source.gameObject.SetActive(false);
-            Transform mast = UnityEngine.Object.Instantiate(source, source.parent);
+            Transform mast = UnityEngine.Object.Instantiate(source, parent);
             Mast mastComp = mast.GetComponent<Mast>();
             mastComp.orderIndex = index;
             mast.name = name;
             mast.localPosition = position;
             mast.localEulerAngles = eulerAngles;
             mast.localScale = scale;
-            BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
-            mastOption.optionName = prettyName;
-            mastOption.childOptions = new GameObject[0];
-            mastComp.walkColMast = UnityEngine.Object.Instantiate(source.GetComponent<Mast>().walkColMast, source.GetComponent<Mast>().walkColMast.parent);
+            mastComp.walkColMast = UnityEngine.Object.Instantiate(source.GetComponent<Mast>().walkColMast, walkColParent);
             mastComp.walkColMast.name = name;
             mastComp.walkColMast.transform.localPosition = position;
             mastComp.walkColMast.transform.localEulerAngles = eulerAngles;
             mastComp.walkColMast.transform.localScale = scale;
-            mastOption.walkColObject = mastComp.walkColMast.gameObject;
-            //mastComp.orderIndex = 29;
             mastComp.startSailPrefab = null;
+            mastComp.shipRigidbody = parent.GetComponentInParent<Rigidbody>();
+            BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
+            if (mastOption != null)
+            {
+                mastOption.optionName = prettyName;
+                mastOption.childOptions = new GameObject[0];
+                mastOption.walkColObject = mastComp.walkColMast.gameObject;
+            }
             source.gameObject.SetActive(true);
             mast.gameObject.SetActive(true);
             
