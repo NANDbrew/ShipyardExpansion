@@ -76,12 +76,29 @@
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\UnityEngine.Core.2018.1.0\lib\net35\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrigPatches.cs" />
-    <Compile Include="DhowPatches.cs" />
-    <Compile Include="SanbuqPatches.cs" />
+    <Compile Include="ShipPatches\BrigPatches.cs" />
+    <Compile Include="ShipPatches\CogPatches.cs" />
+    <Compile Include="ShipPatches\DhowPatches.cs" />
+    <Compile Include="ShipPatches\JunkPatches.cs" />
+    <Compile Include="ShipPatches\KakamPatches.cs" />
+    <Compile Include="Patch.cs" />
+    <Compile Include="ShipPatches\SanbuqPatches.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="SaveCleaner.cs" />
+    <Compile Include="SaveConvert.cs" />
+    <Compile Include="ShipyardPatches.cs" />
+    <Compile Include="ShipyardSailInstallerPatches.cs" />
+    <Compile Include="ShipyardUIPatches.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

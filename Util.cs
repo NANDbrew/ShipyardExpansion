@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-    internal static class Util
+    public static class Util
     {
         public static void MoveMast(Transform mast, Vector3 position, bool moveWinches)
         {
@@ -30,31 +30,39 @@ namespace ShipyardExpansion
         }
         public static Mast CopyMast(Transform source, Vector3 position, string name, string prettyName, int index)
         {
-            return CopyMast(source, position, source.localEulerAngles, source.localScale, name, prettyName, index);
+            return CopyMast(source, source.parent, source.GetComponent<Mast>().walkColMast.parent, position, source.localEulerAngles, source.localScale, name, prettyName, index);
         }
         public static Mast CopyMast(Transform source, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName, int index)
         {
+            return CopyMast(source, source.parent, source.GetComponent<Mast>().walkColMast.parent, position, eulerAngles, scale, name, prettyName, index);
+        }
+        public static Mast CopyMast(Transform source, Transform parent, Transform walkColParent, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName, int index)
+        {
             source.gameObject.SetActive(false);
-            Transform mast = UnityEngine.Object.Instantiate(source, source.parent);
+            Transform mast = UnityEngine.Object.Instantiate(source, parent);
             Mast mastComp = mast.GetComponent<Mast>();
             mastComp.orderIndex = index;
             mast.name = name;
             mast.localPosition = position;
             mast.localEulerAngles = eulerAngles;
             mast.localScale = scale;
-            BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
-            mastOption.optionName = prettyName;
-            mastOption.childOptions = new GameObject[0];
-            mastComp.walkColMast = UnityEngine.Object.Instantiate(source.GetComponent<Mast>().walkColMast, source.GetComponent<Mast>().walkColMast.parent);
+            mastComp.walkColMast = UnityEngine.Object.Instantiate(source.GetComponent<Mast>().walkColMast, walkColParent);
             mastComp.walkColMast.name = name;
             mastComp.walkColMast.transform.localPosition = position;
             mastComp.walkColMast.transform.localEulerAngles = eulerAngles;
             mastComp.walkColMast.transform.localScale = scale;
-            mastOption.walkColObject = mastComp.walkColMast.gameObject;
-            //mastComp.orderIndex = 29;
             mastComp.startSailPrefab = null;
+            mastComp.shipRigidbody = parent.GetComponentInParent<Rigidbody>();
+            BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
+            if (mastOption != null)
+            {
+                mastOption.optionName = prettyName;
+                mastOption.childOptions = new GameObject[0];
+                mastOption.walkColObject = mastComp.walkColMast.gameObject;
+            }
             source.gameObject.SetActive(true);
             mast.gameObject.SetActive(true);
+            
             //mastComp.Awake();
             return mastComp;
         }
@@ -68,26 +76,47 @@ namespace ShipyardExpansion
                 winch.name = source[i].name + "_mod";
                 Vector3 vector = source[i].transform.localPosition - sourcePosition;
                 winch.transform.localPosition = targetPosition + vector;
+                winch.rope = null;
                 winches[i] = winch;
                 source[i].gameObject.SetActive(true);
                 winch.gameObject.SetActive(true);
             }
             return winches;
         }
+        public static GPButtonRopeWinch CopyWinch(GPButtonRopeWinch source, Vector3 targetPosition)
+        {
 
+            source.gameObject.SetActive(false);
+            var winch = UnityEngine.Object.Instantiate(source, source.transform.parent);
+            winch.name = source.name + "_mod";
+            winch.transform.localPosition = targetPosition;
+            winch.rope = null;
+            source.gameObject.SetActive(true);
+            winch.gameObject.SetActive(true);
+            
+            return winch;
+        }
         public static BoatPartOption CreatePartOption(Transform parent, string name, string prettyName)
         {
             GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
-            BoatPartOption partOption = part.AddComponent<BoatPartOption>();
-            partOption.optionName = prettyName;
-            partOption.name = name;
-            partOption.childOptions = new GameObject[0];
-            partOption.requires = new List<BoatPartOption>();
-            partOption.requiresDisabled = new List<BoatPartOption>();
-            partOption.walkColObject = part;
+            BoatPartOption partOption = AddPartOption(part, prettyName);
+            part.name = name;
 
             return partOption;
         }
+        public static BoatPartOption AddPartOption(GameObject target, string prettyName)
+        {
+            //GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
+            BoatPartOption partOption = target.AddComponent<BoatPartOption>();
+            partOption.optionName = prettyName;
+            partOption.childOptions = new GameObject[0];
+            partOption.requires = new List<BoatPartOption>();
+            partOption.requiresDisabled = new List<BoatPartOption>();
+            partOption.walkColObject = target;
+            
+            return partOption;
+        }
+
         public static BoatPartOption CopyPartOption(BoatPartOption source, GameObject target, string prettyName)
         {
             //GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
@@ -108,5 +137,74 @@ namespace ShipyardExpansion
             
             return partOption;
         }
+        public static BoatPartOption CopyPartOptionObj(BoatPartOption source, string name, string prettyName)
+        {
+            return CopyPartOptionObj(source, source.transform.localPosition, source.transform.localEulerAngles, source.transform.localScale, name, prettyName);
+        }
+
+        public static BoatPartOption CopyPartOptionObj(BoatPartOption source, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName)
+        {
+            GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
+            part.name = name;
+            GameObject walkCol = UnityEngine.Object.Instantiate(source.walkColObject, source.walkColObject.transform.parent);
+            walkCol.name = name;
+            BoatPartOption partOption = part.GetComponent<BoatPartOption>();
+            partOption.walkColObject = walkCol;
+            part.transform.localPosition = position;
+            part.transform.localEulerAngles = eulerAngles;
+            part.transform.localScale = scale;
+            walkCol.transform.localPosition = position;
+            walkCol.transform.localEulerAngles = eulerAngles;
+            walkCol.transform.localScale = scale;
+            partOption.optionName = prettyName;
+            
+
+            return partOption;
+        }
+        public static BoatPart CreateAndAddPart(BoatCustomParts partsList, int category, List<BoatPartOption> partOptions)
+        {
+            BoatPart newPart = new BoatPart
+            {
+                partOptions = partOptions,
+                category = category,
+                activeOption = 0
+            };
+            partsList.availableParts.Add(newPart);
+
+
+            return newPart;
+        }
+
+/*        public static GameObject AddGizmo(Transform transform)
+        {
+            if (!Plugin.showGizmos.Value) return null;
+
+            var pointer1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            pointer1.transform.parent = transform;
+            pointer1.gameObject.GetComponent<Collider>().enabled = false;
+            pointer1.transform.localPosition = Vector3.zero;
+            pointer1.transform.localEulerAngles = Vector3.zero;
+
+            var pointer1up = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            pointer1up.gameObject.transform.parent = pointer1.transform;
+            pointer1up.gameObject.GetComponent<Collider>().enabled = false;
+            pointer1up.transform.localPosition = Vector3.up;
+            pointer1up.transform.localEulerAngles = new Vector3(0, 0, 0);
+            pointer1up.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
+            pointer1up.GetComponent<Renderer>().material.color = Color.green;
+
+            var pointer1fwd = GameObject.Instantiate(pointer1up, pointer1.transform);
+            pointer1fwd.transform.localPosition = Vector3.forward;
+            pointer1fwd.transform.localEulerAngles = new Vector3(90, 0, 0);
+            pointer1fwd.GetComponent<Renderer>().material.color = Color.blue;
+
+            var pointer1right = GameObject.Instantiate(pointer1up, pointer1.transform);
+            pointer1right.transform.localPosition = Vector3.right;
+            pointer1right.transform.localEulerAngles = new Vector3(0, 0, 90);
+            pointer1right.GetComponent<Renderer>().material.color = Color.red;
+
+            pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            return pointer1;
+        }*/
     }
 }

@@ -3,6 +3,8 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using System;
 using System.Reflection;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace ShipyardExpansion
 {
@@ -12,17 +14,46 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.0.4";
+        public const string PLUGIN_VERSION = "0.1.0";
+
+        internal const int mastListSize = 64;
+
+        public static List<BoatCustomParts> moddedBoats;
+        public static List<BoatPartOption> stockPartOptions;
+        public static Dictionary<BoatPart, int> stockParts;
+        public static List<Mast> stockMasts;
+
+        public static Transform topmastRef;
+        public static Transform spritRef;
+        public static Transform spritColRef;
 
         //--settings--
-        //internal ConfigEntry<bool> someSetting;
+        internal static ConfigEntry<bool> cleanSave;
+        internal static ConfigEntry<bool> convertSave;
+        internal static ConfigEntry<bool> lenientLateens;
+        internal static ConfigEntry<bool> lenientSquares;
+        internal static ConfigEntry<bool> vertLateens;
+
+        internal static ConfigEntry<bool> unrollSails;
 
 
         private void Awake()
         {
+
+            stockPartOptions = new List<BoatPartOption>();
+            stockParts = new Dictionary<BoatPart, int>();
+            stockMasts = new List<Mast>();
+
+            moddedBoats = new List<BoatCustomParts>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            //someSetting = Config.Bind("Settings", "Some setting", false);
+            convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.1.0"));
+            cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
+
+            vertLateens = Config.Bind("Settings", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
+            lenientLateens = Config.Bind("Settings", "Lenient lateens", false, new ConfigDescription("Ignore collisions with the back edge of lateen sails"));
+            lenientSquares = Config.Bind("Settings", "Lenient squares", false, new ConfigDescription("Ignore collisions with the sides of square sails"));
+            unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
         }
     }
 }
