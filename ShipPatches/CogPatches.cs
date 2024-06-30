@@ -24,14 +24,14 @@ namespace ShipyardExpansion
             Transform bowsprit = structure.Find("mast_001");
             Plugin.spritRef = bowsprit;
             Plugin.spritColRef = mainMast1.GetComponent<Mast>().walkColMast.parent.Find(bowsprit.name);
-            Debug.Log("Cog: adjustments");
+            //Debug.Log("Cog: adjustments");
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
             mainMast2.GetComponent<Mast>().extraBottomHeight = 0.1f;
-            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
-            mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
+/*            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
+            mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;*/
 
             var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
             ropeHolderAft.parent = mizzenMast;
@@ -41,7 +41,7 @@ namespace ShipyardExpansion
 
 
             #endregion
-            Debug.Log("Cog: shrouds");
+            //Debug.Log("Cog: shrouds");
             #region shrouds
             BoatPartOption backOption = Util.CreatePartOption(container, "parts_shrouds_back", "shrouds 1");
             backOption.transform.localEulerAngles = new Vector3(270, 0, 0);
@@ -127,7 +127,7 @@ namespace ShipyardExpansion
             mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[4] { frontShrouds1.gameObject, frontShrouds1Col.gameObject, frontShrouds2.gameObject, frontShrouds2Col.gameObject });
             #endregion
 
-            Debug.Log("Cog: midstay");
+            //Debug.Log("Cog: midstay");
             #region midstay
             Transform forestay = container.Find("mast forestay");
             Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 31);
@@ -162,7 +162,7 @@ namespace ShipyardExpansion
             BoatPart newStays = Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { noMidstay, midstayOpt, innerForestayOpt });
             #endregion
 
-            Debug.Log("Cog: bowsprit");
+            //Debug.Log("Cog: bowsprit");
             #region longsprit
             BoatPartOption bowspritOpt = Util.AddPartOption(bowspritM.gameObject, "bowsprit");
             bowspritOpt.basePrice = 500;
@@ -189,7 +189,7 @@ namespace ShipyardExpansion
             BoatPart bowspritPart = Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption>() { bowspritOpt, bowspritLongOpt, bowspritNone });
             #endregion
 
-            Debug.Log("Cog: forestay3");
+            //Debug.Log("Cog: forestay3");
             #region forestay3
             var forestay2 = container.Find("forestay_front_mast");
             var forestay3 = Util.CopyMast(forestay2, forestay2.localPosition, "forestay_mast_front_long", "forestay 2 long", 33);
@@ -204,7 +204,7 @@ namespace ShipyardExpansion
 
             #endregion
 
-            Debug.Log("Cog: forestay4");
+            //Debug.Log("Cog: forestay4");
             #region forestay4
             var forestay4 = Util.CopyMast(forestay, new Vector3(2.213f, 13.3f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 1.04f), "forestay_mast_long", "forestay 1 long", 35);
             //forestay4.transform.localEulerAngles += new Vector3(10, 0, 0);
@@ -216,7 +216,7 @@ namespace ShipyardExpansion
             partsList.availableParts[1].partOptions.Add(forestay4_opt);
 
             #endregion
-            Debug.Log("Cog: foremast");
+            //Debug.Log("Cog: foremast");
             #region foremast
             var mizzenMast_mast = mizzenMast.GetComponent<Mast>();
             var foremast = Util.CopyMast(mizzenMast, new Vector3(8.8f, 0f, 9.8f), new Vector3(0f, 17f, 0f), new Vector3(1f, 1f, 0.91f), "foremast", "foremast", 36);

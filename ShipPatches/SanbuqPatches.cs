@@ -212,7 +212,7 @@ namespace ShipyardExpansion
                 foreTopmast.midRopeAtt[i] = foremast.midRopeAtt[i];
             }
             #endregion
-            #region foremast3
+            #region foremast2
             /*var foremast3 = Util.CopyMast(mizzenMast1, new Vector3(11.87f, 0f, 12.565f), new Vector3(0, 15, 0), new Vector3(1f, 1f, 0.975f), "mast_05", "raked foremast", 41);
             foremast3.reefWinch = Util.CopyWinches(mizzenMast1.GetComponent<Mast>().reefWinch, mizzenMast1.localPosition, foremast3.transform.localPosition + new Vector3(-3.62f, 0, 0));
             foremast3.reefWinch[0].transform.localPosition = new Vector3(9.2f, 2.59f, 0.36f);
@@ -244,7 +244,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region foremast3
-            Debug.Log("sanbuq foremast3");
+            //Debug.Log("sanbuq foremast3");
             Mast foremast3 = Util.CopyMast(foremast.transform, new Vector3(12.65f, 0, 15.56f), new Vector3(0, 15, 0), foremast.transform.localScale, "mast_05_raked", "raked foremast", 42);
             var rakedBrace = UnityEngine.Object.Instantiate(foremast3.transform.Find("mast_003"), foremast3.transform);
             rakedBrace.localPosition += new Vector3(0, 0, -2.544f);
@@ -258,8 +258,8 @@ namespace ShipyardExpansion
             var foremast3_shrouds = foremast3.transform.GetChild(0);// Find("part_shrouds_mizzen_back(Clone)");
             foremast3.midRopeAtt[0].parent.localPosition = new Vector3(-6.6f, 0f, -17.05f);
 
-            Debug.Log("did we find a thing?");
-            Debug.Log(foremast3_shrouds.name);
+            //Debug.Log("did we find a thing?");
+            //Debug.Log(foremast3_shrouds.name);
             foremast3_shrouds.transform.localScale = new Vector3(1, 0.84f, 1.535f);
             foremast3_shrouds.transform.GetChild(1).localScale = new Vector3(1, 0.9f, 0.99f);
             var foremast3_shrouds_col = foremast3.walkColMast.GetChild(0);// Find(foremast3_shrouds.name);
@@ -267,7 +267,7 @@ namespace ShipyardExpansion
             foremast3_shrouds_col.transform.GetChild(1).localScale = new Vector3(1f, 0.84f, 1.42f);
             foremast3_shrouds_col.transform.GetChild(1).localPosition = new Vector3(-0.04f, 0f, -0.4f);
 
-            Debug.Log("did we find another thing?");
+            //Debug.Log("did we find another thing?");
             var foremast3_shrouds_s = foremast3.transform.GetChild(1);// Find("part_shrouds_0_side(Clone)");
             Debug.Log(foremast3_shrouds_s.name);
             foremast3_shrouds_s.transform.localEulerAngles = new Vector3(5.5f, 175f, 347f);
@@ -276,7 +276,7 @@ namespace ShipyardExpansion
             foremast3_shrouds_s.transform.GetChild(0).localEulerAngles = new Vector3(0f, 174.2f, 88f);
             foremast3_shrouds_s.transform.GetChild(0).localScale = new Vector3(1.1f, 1f, 1.15f);
 
-            Debug.Log("side shrouds");
+            //Debug.Log("side shrouds");
             var foremast3_shrouds_s_col = foremast3.walkColMast.Find(foremast3_shrouds_s.name);
             foremast3_shrouds_s_col.transform.localEulerAngles = foremast3_shrouds_s.localEulerAngles;
             foremast3_shrouds_s_col.transform.localScale = foremast3_shrouds_s.localScale;
@@ -287,7 +287,7 @@ namespace ShipyardExpansion
 
             foremastPart.partOptions.Add(foremast3.GetComponent<BoatPartOption>());
 
-            Debug.Log("sanbuq foremast shrouds");
+            //Debug.Log("sanbuq foremast shrouds");
             #region foremast shrouds2
 
             shrouds_back_opt.enabled = false;

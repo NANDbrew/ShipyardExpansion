@@ -34,11 +34,11 @@ namespace ShipyardExpansion
             mizzenMast2M.mastHeight += 0.8f;//= 12.6f;
             foreMast.GetComponent<Mast>().mastHeight += 2f;//= 11.6f;
 
-            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1f;//= 17.5f;
+/*            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1f;//= 17.5f;
             mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.8f; //= 18.5f;
-            mizzenMast1.GetComponent<Mast>().startSailHeightOffset += 4f;//= 12.6f;
+            mizzenMast1.GetComponent<Mast>().startSailHeightOffset = -1.5f;//= 12.6f;
             mizzenMast2M.startSailHeightOffset += 0.8f;//= 12.6f;
-            foreMast.GetComponent<Mast>().startSailHeightOffset += 3f;//= 11.6f;
+            foreMast.GetComponent<Mast>().startSailHeightOffset = -1.5f;//= 11.6f;*/
 
             container.Find("forestay_1").GetComponent<Mast>().mastHeight = 20;
             container.Find("forestay_1_lower").GetComponent<Mast>().mastHeight = 14;
@@ -126,6 +126,7 @@ namespace ShipyardExpansion
             flatsprit.enabled = false;
             mastCont.gameObject.SetActive(false);
             Mast newMast = mastCont.AddComponent<Mast>();
+            newMast.gameObject.name = "bowsprit_2_mast";
             newMast.mastCols = flatsprit.mastCols;
             newMast.walkColMast = flatsprit.walkColMast;
             newMast.mastHeight = flatsprit.mastHeight;
@@ -140,7 +141,7 @@ namespace ShipyardExpansion
             newMast.shipRigidbody = flatsprit.shipRigidbody;
             newMast.startSailPrefabs = flatsprit.startSailPrefabs;
             newMast.onlySquareSails = true;
-            newMast.transform.localEulerAngles = new Vector3(0, 335, 0);
+            newMast.transform.localEulerAngles = new Vector3(0, 328, 0);
             newMast.orderIndex = 31;
             UnityEngine.Object.Destroy(flatsprit);
             mastCont.gameObject.SetActive(true);
@@ -148,11 +149,26 @@ namespace ShipyardExpansion
             #endregion
 
             #region forestay flatsprit
-            var forestaySource = structure.Find("forestay_foremast");
+            var forestaySource = container.Find("forestay_foremast");
             Mast forestayF = Util.CopyMast(forestaySource, forestaySource.localPosition, new Vector3(309.873f, 270f, 90f), new Vector3(1, 1, 1.24f), "forestay_foremast_flat", "foremast forestay 2", 34);
             forestayF.mastHeight = 13.5f;
-            forestayF.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foreMast.GetComponent<BoatPartOption>(), flatsprit.GetComponent<BoatPartOption>() };
+            forestayF.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
+            forestayF.GetComponent<BoatPartOption>().requires.Add(flatsprit.GetComponent<BoatPartOption>());
             partsList.availableParts[4].partOptions.Add(forestayF.GetComponent<BoatPartOption>());
+
+            var forestaySource2 = container.Find("forestay_1");
+            Mast forestayF2 = Util.CopyMast(forestaySource2, forestaySource2.localPosition, new Vector3(310.2f, 270f, 90f), new Vector3(1, 1, 1.14f), "forestay_1_flat", "forestay 3", 35);
+            forestayF2.mastHeight = 21f;
+            forestayF2.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
+            forestayF2.GetComponent<BoatPartOption>().requires.Add(flatsprit.GetComponent<BoatPartOption>());
+            partsList.availableParts[4].partOptions.Add(forestayF2.GetComponent<BoatPartOption>());
+
+            var forestaySource3 = container.Find("forestay_1_lower");
+            Mast forestayF3 = Util.CopyMast(forestaySource3, forestaySource3.localPosition, forestaySource3.localEulerAngles, new Vector3(1, 1, 1.043f), "forestay_1_lower_flat", "lower forestay 3", 36);
+            forestayF3.mastHeight = 14.5f;
+            forestayF3.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
+            forestayF3.GetComponent<BoatPartOption>().requires.Add(flatsprit.GetComponent<BoatPartOption>());
+            partsList.availableParts[6].partOptions.Add(forestayF3.GetComponent<BoatPartOption>());
             #endregion
 
             #region foreward midstay
@@ -183,23 +199,21 @@ namespace ShipyardExpansion
             topMast1.reefWinch = Util.CopyWinches(mizzenMast2M.reefWinch, Vector3.zero, Vector3.zero);
             topMast1.reefWinch[0].transform.localPosition = new Vector3(-0.3f, 0, -13.793f);
             topMast1.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);
-            topMast1.midAngleWinch = Util.CopyWinches(mizzenMast2M.midAngleWinch, Vector3.zero, Vector3.forward);
-            topMast1.midAngleWinch[0].transform.localPosition = new Vector3(-9f, 2.52f, -1.46f);
-            topMast1.midAngleWinch[1].transform.localPosition = new Vector3(-9f, 2.52f, 1.46f);
+            topMast1.midAngleWinch = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast2M.midAngleWinch[1], new Vector3(-9f, 2.52f, 1.46f)) };
             topMast1.leftAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.leftAngleWinch[1] };
             topMast1.rightAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.rightAngleWinch[1] };
             topMast1.midRopeAtt = mizzenMast2M.midRopeAtt;
 
             topMast1.GetComponent<MeshRenderer>().material.color = new Color(0.65f, 0.7f, 0.7f);
 
-            Debug.Log("copied topmast");
+            //Debug.Log("copied topmast");
             BoatPartOption topMast1None = Util.CreatePartOption(structure, "empty_topmast", "(no topmast)");
             BoatPart topmastPart = Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { topMast1None, topMast1.GetComponent<BoatPartOption>() });
             topMast1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenMast2M.GetComponent<BoatPartOption>() };
-
+            topmastPart.SetOptionEnabled(1, false);
             mizzenMast2M.leftAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.leftAngleWinch[0] };
             mizzenMast2M.rightAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.rightAngleWinch[0] };
-            Debug.Log("hacked winches");
+            //Debug.Log("hacked winches");
         }
     }
 

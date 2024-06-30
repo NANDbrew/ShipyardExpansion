@@ -76,13 +76,26 @@ namespace ShipyardExpansion
                 winch.name = source[i].name + "_mod";
                 Vector3 vector = source[i].transform.localPosition - sourcePosition;
                 winch.transform.localPosition = targetPosition + vector;
+                winch.rope = null;
                 winches[i] = winch;
                 source[i].gameObject.SetActive(true);
                 winch.gameObject.SetActive(true);
             }
             return winches;
         }
+        public static GPButtonRopeWinch CopyWinch(GPButtonRopeWinch source, Vector3 targetPosition)
+        {
 
+            source.gameObject.SetActive(false);
+            var winch = UnityEngine.Object.Instantiate(source, source.transform.parent);
+            winch.name = source.name + "_mod";
+            winch.transform.localPosition = targetPosition;
+            winch.rope = null;
+            source.gameObject.SetActive(true);
+            winch.gameObject.SetActive(true);
+            
+            return winch;
+        }
         public static BoatPartOption CreatePartOption(Transform parent, string name, string prettyName)
         {
             GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);

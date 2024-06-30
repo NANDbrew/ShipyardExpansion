@@ -29,11 +29,11 @@ namespace ShipyardExpansion
             partsList.availableParts[0].category = 2;
             partsList.availableParts[7].category = 2;
             mainMast1.GetComponent<Mast>().mastHeight += 0.4f;
-            mainMast1.GetComponent<Mast>().startSailHeightOffset += 0.4f;
+            //mainMast1.GetComponent<Mast>().startSailHeightOffset -= 0.4f;
             mizzenMastM.leftAngleWinch = new GPButtonRopeWinch[1] { mizzenMastM.leftAngleWinch[1] };
             mizzenMastM.rightAngleWinch = new GPButtonRopeWinch[1] { mizzenMastM.rightAngleWinch[1] };
             mizzenMastM.GetComponent<Mast>().mastHeight += 0.75f;
-            mizzenMastM.GetComponent<Mast>().startSailHeightOffset += 0.75f;
+            //mizzenMastM.GetComponent<Mast>().startSailHeightOffset -= 0.5f;
             var ropeHolder_003 = mainMast1.Find("rope_holder_003");
             mainMast1.GetComponent<Mast>().midRopeAtt[0].parent = ropeHolder_003;
             ropeHolder_003.localPosition = new Vector3(-3f, 0f, -11.3f);
@@ -54,6 +54,7 @@ namespace ShipyardExpansion
             midstay_lower.reefWinch = new GPButtonRopeWinch[1] { midstayReefs[0] };
             midstay_lower.reefWinch[0].transform.localPosition = new Vector3(-2.87f, midstayReefs[0].transform.localPosition.y, 0f);
             midstay_lower.reefWinch[0].transform.localEulerAngles = new Vector3(0, 90, 90);
+            midstay_lower.reefWinch[0].rope = null;
             midstay_lower.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
             midstay_lower.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches[1] };
             midstay_lower.mastHeight = 7.5f;
@@ -65,6 +66,7 @@ namespace ShipyardExpansion
             midstay_upper.reefWinch = new GPButtonRopeWinch[1] { midstayReefs[1] };
             midstay_upper.reefWinch[0].transform.localPosition = new Vector3(-3.27f, midstayReefs[1].transform.localPosition.y, 0f);
             midstay_upper.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);
+            midstay_upper.reefWinch[0].rope = null;
             midstay_upper.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches2[0] };
             midstay_upper.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches2[1] };
             midstay_upper.mastHeight = 7.5f;
