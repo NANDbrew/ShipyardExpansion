@@ -14,7 +14,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.1.0";
+        public const string PLUGIN_VERSION = "0.2.1";
 
         internal const int mastListSize = 64;
 
@@ -47,7 +47,7 @@ namespace ShipyardExpansion
             moddedBoats = new List<BoatCustomParts>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.1.0"));
+            convertSave = Config.Bind("Fixers", "Convert saves", false, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.1.0"));
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
 
             vertLateens = Config.Bind("Settings", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
