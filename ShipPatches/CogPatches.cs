@@ -114,6 +114,7 @@ namespace ShipyardExpansion
             frontShrouds2Col.GetChild(0).localEulerAngles = frontShroudAnchors2.localEulerAngles;
             frontShrouds2Col.GetChild(0).localScale = frontShroudAnchors2.localScale;
 
+
             // if we want these we have to re-parent mastWalkCol2's mast_004 instead of just disabling it
 /*            frontShrouds2Col.GetChild(1).localPosition = frontShroudSpreader2.localPosition;
             frontShrouds2Col.GetChild(1).localEulerAngles = frontShroudSpreader2.localEulerAngles;
@@ -138,6 +139,7 @@ namespace ShipyardExpansion
             midstay.reefWinch[0].transform.localEulerAngles = new Vector3(270f, 312f, 0f);
             midstay.reefWinch[0].transform.parent = container;
             midstay.reefWinch[0].transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            midstay.reefWinch[0].rope = null;
             midstay.leftAngleWinch = Util.CopyWinches(mainMast1.GetComponent<Mast>().leftAngleWinch, Vector3.zero, new Vector3(-0.4f, 0f, 0f));
             midstay.rightAngleWinch = Util.CopyWinches(mainMast1.GetComponent<Mast>().rightAngleWinch, Vector3.zero, new Vector3(-0.4f, 0f, 0f));
             //midstay.leftAngleWinch[0].transform.localPosition = new Vector3(-2.16f, 1.3f, 1.978f);
@@ -256,7 +258,8 @@ namespace ShipyardExpansion
             BoatPartOption noFlag = Util.CreatePartOption(container, "(flag empty)", "(no telltale)");
 
             BoatPartOption flags_main = Util.CreatePartOption(container, "flag_main", "mainmast telltale");
-            flags_main.basePrice = 10;
+            flags_main.basePrice = 30;
+            flags_main.installCost = 6;
 
             Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
@@ -264,14 +267,14 @@ namespace ShipyardExpansion
             flag_main_0_side.localPosition = new Vector3(0, 2, 2.1f);
             flag_main_0_side.localEulerAngles = new Vector3(84, 0, 0);
             flag_main_0_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            flag_main_0_side.GetComponent<MeshRenderer>().material.color = new Color(0, 1, 0);
+            flag_main_0_side.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
 
             var flag_main_0_back = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_back.name = "flag_main_0_back";
             flag_main_0_back.localPosition = new Vector3(-1.6f, 2, 2.15f);
             flag_main_0_back.localEulerAngles = new Vector3(81, 330, 0);
             flag_main_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            flag_main_0_back.GetComponent<MeshRenderer>().material.color = new Color(0, 1, 0);
+            flag_main_0_back.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
 
 
             Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
@@ -280,17 +283,17 @@ namespace ShipyardExpansion
             flag_main_1_side.localPosition = new Vector3(4.06f, 2.5f, 1.6f);
             flag_main_1_side.localEulerAngles = new Vector3(84, 0, 0);
             flag_main_1_side.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            flag_main_1_side.GetComponent<MeshRenderer>().material.color = new Color(0, 1, 0);
+            flag_main_1_side.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
 
             var flag_main_1_back = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_back.name = "flag_main_1_back";
-            flag_main_1_back.localPosition = new Vector3(2.29f, 2.5f, 1.95f);
-            flag_main_1_back.localEulerAngles = new Vector3(78, 0, 320);
-            flag_main_1_back.GetComponent<MeshRenderer>().material.color = new Color(0, 1, 0);
+            flag_main_1_back.localPosition = new Vector3(2.29f, 2.5f, 1.88f);
+            flag_main_1_back.localEulerAngles = new Vector3(83, 0, 330);
+            flag_main_1_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+            flag_main_1_back.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
 
 
             Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { noFlag, flags_main });
-            flag_main_1_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
             sideOption.childOptions = sideOption.childOptions.AddRangeToArray(new GameObject[2] { flag_main_1_side.gameObject, flag_main_0_side.gameObject });
             backOption.childOptions = backOption.childOptions.AddRangeToArray(new GameObject[2] { flag_main_1_back.gameObject, flag_main_0_back.gameObject });

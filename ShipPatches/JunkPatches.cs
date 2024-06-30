@@ -58,7 +58,8 @@ namespace ShipyardExpansion
             BoatPartOption noFlag = Util.CreatePartOption(container, "(flag empty)", "(no telltale)");
 
             BoatPartOption flags_main = Util.CreatePartOption(container, "flag_main", "mainmast telltale");
-            flags_main.basePrice = 10;
+            flags_main.basePrice = 50;
+            flags_main.installCost = 10;
 
             Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
@@ -85,7 +86,8 @@ namespace ShipyardExpansion
             //flag_fore_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
 
             BoatPartOption flags_mizzen = Util.CreatePartOption(container, "flag_mizzen", "mizzen mast telltale");
-            flags_mizzen.basePrice = 10;
+            flags_mizzen.basePrice = 50;
+            flags_mizzen.installCost = 10;
 
             Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
             var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
