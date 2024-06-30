@@ -18,6 +18,7 @@ namespace ShipyardExpansion
         internal static void Convert(SaveBoatCustomizationData data, BoatRefs ___refs)
         {
             if (!Plugin.convertSave.Value) return;
+            //if (!GameState.justStarted) return;
             foreach (SaveSailData sailData in data.sails)
             {
                 if (mastIndices.ContainsKey(sailData.mastIndex) && ___refs.masts[mastIndices[sailData.mastIndex]] != null && ___refs.masts[sailData.mastIndex] == null)
