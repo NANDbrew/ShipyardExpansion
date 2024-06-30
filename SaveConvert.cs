@@ -15,12 +15,12 @@ namespace ShipyardExpansion
         static int conversionCounter = 0;
 
         [HarmonyPrefix]
-        internal static void Convert(SaveBoatCustomizationData data)
+        internal static void Convert(SaveBoatCustomizationData data, BoatRefs ___refs)
         {
             if (!Plugin.convertSave.Value) return;
             foreach (SaveSailData sailData in data.sails)
             {
-                if (mastIndices.ContainsKey(sailData.mastIndex))
+                if (mastIndices.ContainsKey(sailData.mastIndex) && ___refs.masts[mastIndices[sailData.mastIndex]] != null && ___refs.masts[sailData.mastIndex] == null)
                 {
                     mastIndices.TryGetValue(sailData.mastIndex, out sailData.mastIndex);
                 }
