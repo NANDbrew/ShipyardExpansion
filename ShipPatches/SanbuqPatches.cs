@@ -247,8 +247,8 @@ namespace ShipyardExpansion
             //Debug.Log("sanbuq foremast3");
             Mast foremast3 = Util.CopyMast(foremast.transform, new Vector3(12.65f, 0, 15.56f), new Vector3(0, 15, 0), foremast.transform.localScale, "mast_05_raked", "raked foremast", 42);
             var rakedBrace = UnityEngine.Object.Instantiate(foremast3.transform.Find("mast_003"), foremast3.transform);
-            rakedBrace.localPosition += new Vector3(0, 0, -2.544f);
-            rakedBrace.localScale = new Vector3(0.98f, 0.99f, -2.544f);
+            rakedBrace.localPosition = new Vector3(-0.005f, -0.01f, -19.11f);
+            rakedBrace.localScale = new Vector3(0.98f, 0.99f, 1.2f);
             foremast3.reefWinch = Util.CopyWinches(foremast.reefWinch, Vector3.zero, Vector3.zero);
             foremast3.reefWinch[0].transform.localPosition = new Vector3(8.63f, 2.217f, 0);
             foremast3.reefWinch[0].transform.localEulerAngles = new Vector3(345, 270, 270);
@@ -335,7 +335,7 @@ namespace ShipyardExpansion
             Mast mizzenMast2 = Util.CopyMast(mainMast2, mainMast2.localPosition + new Vector3(-7, 0, 0), mainMast1.localEulerAngles, new Vector3(1, 1, 0.965f), "mast_003", "mizzen mast 2", 35);
             UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("Cylinder_006"), mizzenMast2.transform, true);
             var brace = UnityEngine.Object.Instantiate(mizzenMast2.transform.Find("mast_004"), mizzenMast2.transform);
-            brace.localPosition += new Vector3(0, 0, -2.544f);
+            brace.localPosition = new Vector3(0, 0, -2.544f);
             brace.localScale = new Vector3(0.98f, 0.99f, -2.544f);
             var mizzenMast2_rope_holder = UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("rope_holder"), mizzenMast2.transform, true).GetChild(0);
             mizzenMast2.reefWinch = Util.CopyWinches(mainMast2.GetComponent<Mast>().reefWinch, mainMast2.localPosition, mizzenMast2.transform.localPosition + new Vector3(0, 0.6f, 0));
