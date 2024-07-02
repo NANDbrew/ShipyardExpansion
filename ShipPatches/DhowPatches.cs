@@ -24,6 +24,9 @@ namespace ShipyardExpansion
             Transform highForestay = container.Find("forestay_tall");
             Transform lowForestay = container.Find("forestay");
 
+            PartRefs.dhow = container;
+            PartRefs.dhowCol = walkCols;
+
             Debug.Log("Dhow adjustments");
             #region adjustments
             partsList.availableParts[1].category = 2;

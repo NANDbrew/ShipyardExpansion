@@ -24,6 +24,10 @@ namespace ShipyardExpansion
             Mast lowerForestayM = lowerForestay.GetComponent<Mast>();
             var angleWinches = new GPButtonRopeWinch[2] { mizzenMastM.leftAngleWinch[0], mizzenMastM.rightAngleWinch[0] };
             //var aftAngleWinches = new GPButtonRopeWinch[2] { mizzenMastM.leftAngleWinch[1], mizzenMastM.rightAngleWinch[1] };
+            Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
+
+            PartRefs.kakam = container;
+            PartRefs.kakamCol = walkCol;
 
             #region adjustments
             partsList.availableParts[0].category = 2;

@@ -26,6 +26,9 @@ namespace ShipyardExpansion
             Transform walkCol = walkColStruct.parent;
             Mast mizzenMast2M = mizzenMast2.GetComponent<Mast>();
 
+            PartRefs.junk = container;
+            PartRefs.junkCol = walkCol;
+
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight += 1f;//= 17.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 1.8f;//= 18.5f;
@@ -193,9 +196,9 @@ namespace ShipyardExpansion
         private static IEnumerator AddTopmast(Mast mizzenMast2M, Transform structure, Transform walkColStruct, BoatCustomParts partsList)
         {
             Debug.Log("waiting for topmast...");
-            yield return new WaitUntil(() => Plugin.topmastRef != null);
+            yield return new WaitUntil(() => PartRefs.sanbuq != null);
             Debug.Log("found topmast");
-            Mast topMast1 = Util.CopyMast(Plugin.topmastRef, structure, walkColStruct, new Vector3(-4.03f, 0f, 23.45f), Vector3.zero, new Vector3(0.75f, 0.75f, 0.75f), "mizzen_topmast", "mizzen topmast", 33);
+            Mast topMast1 = Util.CopyMast(PartRefs.sanbuq.Find("structure").Find("mast_0_extension"), structure, walkColStruct, new Vector3(-4.03f, 0f, 23.45f), Vector3.zero, new Vector3(0.75f, 0.75f, 0.75f), "mizzen_topmast", "mizzen topmast", 33);
             topMast1.reefWinch = Util.CopyWinches(mizzenMast2M.reefWinch, Vector3.zero, Vector3.zero);
             topMast1.reefWinch[0].transform.localPosition = new Vector3(-0.3f, 0, -13.793f);
             topMast1.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);

@@ -35,6 +35,10 @@ namespace ShipyardExpansion
             BoatPartOption noForemast = container.Find("(no foremast)").GetComponent<BoatPartOption>();
             BoatPartOption noBowsprit = container.Find("(no bowsprit)").GetComponent<BoatPartOption>();
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent;
+
+            PartRefs.brig = container;
+            PartRefs.brigCol = walkCol;
+
             #region adjustments
             Util.MoveMast(mizzenMast1, new Vector3(-12.43f, mizzenMast1.localPosition.y, mizzenMast1.localPosition.z), true);
             Util.MoveMast(backstay1_0top, new Vector3(-11.4f, backstay1_0top.localPosition.y, backstay1_0top.localPosition.z), true);
@@ -361,8 +365,8 @@ namespace ShipyardExpansion
         private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol)
         {
             Debug.Log("trying to add part");
-            yield return new WaitUntil(() => Plugin.spritRef != null);
-            mast_001 = UnityEngine.Object.Instantiate(Plugin.spritRef, parent, false);
+            yield return new WaitUntil(() => PartRefs.cog != null);
+            mast_001 = UnityEngine.Object.Instantiate(PartRefs.cog.Find("structure").Find("mast_001"), parent, false);
             mast_001.localPosition = new Vector3(0, 0, 1.6f);
             mast_001.localScale = new Vector3(0.4f, 0.4f, 0.5f);
             mast_001.localEulerAngles = Vector3.zero;
@@ -371,9 +375,9 @@ namespace ShipyardExpansion
             var mast2 = UnityEngine.Object.Instantiate(mast_001, spritTopmast2.transform, false);
             //mast2.localPosition = spritTopmast2.transform.localPosition;
 
-            yield return new WaitUntil(() => Plugin.spritColRef != null);
+            yield return new WaitUntil(() => PartRefs.cogCol != null);
             var mast_001_col_parent = UnityEngine.Object.Instantiate(new GameObject(), walkCol).transform;
-            mast_001_col = UnityEngine.Object.Instantiate(Plugin.spritColRef, mast_001_col_parent, false);
+            mast_001_col = UnityEngine.Object.Instantiate(PartRefs.cogCol.Find("structure").Find("mast_001"), mast_001_col_parent, false);
             mast_001_col.localPosition = mast_001.localPosition;
             mast_001_col.localScale = mast_001.localScale;
             mast_001_col.localEulerAngles = mast_001.localEulerAngles;

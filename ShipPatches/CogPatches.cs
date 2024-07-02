@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,20 +23,26 @@ namespace ShipyardExpansion
             Transform walkCols = mastWalkCol.parent.parent;
             var bowspritM = structure.Find("mast (bowsprit)");
             Transform bowsprit = structure.Find("mast_001");
-            Plugin.spritRef = bowsprit;
-            Plugin.spritColRef = mainMast1.GetComponent<Mast>().walkColMast.parent.Find(bowsprit.name);
+            /*Plugin.spritRef = bowsprit;
+            Plugin.spritColRef = mainMast1.GetComponent<Mast>().walkColMast.parent.Find(bowsprit.name);*/
             //Debug.Log("Cog: adjustments");
+
+            PartRefs.cog = container;
+            PartRefs.cogCol = walkCols;
+
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
             mainMast2.GetComponent<Mast>().extraBottomHeight = 0.1f;
-/*            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
-            mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;*/
+            /*            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
+                        mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;*/
 
 
 
             #endregion
+
+
             //Debug.Log("Cog: shrouds");
             #region shrouds
             BoatPartOption backOption = Util.CreatePartOption(container, "parts_shrouds_back", "shrouds 1");
@@ -315,7 +322,54 @@ namespace ShipyardExpansion
             BoatPartOption midstay2_opt = midstay2.GetComponent<BoatPartOption>();
             midstay2_opt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), mizzen2_opt };
             newStays.partOptions.Add(midstay2_opt);
-            #endregion        
+            #endregion 
+            
+
+            #region helm
+            var wheel = container.Find("steering_wheel");
+            var wheelHolder = structure.Find("Cube_004");
+            var wheelHolderCol = walkCols.Find("structure").Find(wheelHolder.name);
+            //wheelHolderCol.parent = wheelHolderCol.parent.parent;
+            //wheel.parent = wheelHolder;
+            BoatPartOption bottomHelm = Util.AddPartOption(wheel.gameObject, "helm 1");
+            bottomHelm.basePrice = 800;
+            bottomHelm.installCost = 450;
+
+            Transform wheel2 = UnityEngine.Object.Instantiate(wheel, container, true);
+            wheel2.localPosition = new Vector3(-3.11f, 3.8f, 0f);// new Vector3(1.1f, 0.91f, 0.05f);
+            BoatPartOption topHelm = wheel2.GetComponent<BoatPartOption>();
+            topHelm.optionName = "helm 2";
+            topHelm.requires = new List<BoatPartOption> { container.Find("struct_var_2__balcony_").GetComponent<BoatPartOption>() };
+            bottomHelm.walkColObject = wheelHolderCol.gameObject;
+            bottomHelm.childOptions = new GameObject[1] { wheelHolder.gameObject };
+            partsList.StartCoroutine(AddCopiedPart(structure, walkCols.Find("structure"), topHelm));
+            Shipyard
+            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { bottomHelm, topHelm });
+            #endregion
+
+        }
+        private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol, BoatPartOption option)
+        {
+            Debug.Log("trying to add part");
+            yield return new WaitUntil(() => PartRefs.sanbuq != null);
+            var holes = UnityEngine.Object.Instantiate(PartRefs.sanbuq.Find("structure").Find("Cube_005"), parent, false);
+            holes.localPosition = new Vector3(-1.46f, 2.3224f, -1.81f);
+            holes.localScale = new Vector3(1.155f, 1.155f, 1.1f);
+            var ropes = UnityEngine.Object.Instantiate(PartRefs.sanbuq.Find("steering_ropes"), holes, false);
+            ropes.localPosition = new Vector3(-1.37f, -2.01f, 1.9f);
+            ropes.localEulerAngles = Vector3.zero;
+            //ropes.localScale = new Vector3(0.4f, 0.4f, 0.5f);
+            //ropes.GetComponent<MeshRenderer>().material.color = new Color(0.875f, 1, 1);
+
+            yield return new WaitUntil(() => PartRefs.sanbuqCol != null);
+            var holesCol = UnityEngine.Object.Instantiate(PartRefs.sanbuqCol.Find("structure").Find("Cube_005"), walkCol, false);
+            holesCol.localPosition = holes.localPosition;
+            holesCol.localScale = holes.localScale;
+            holesCol.localEulerAngles = holes.localEulerAngles;
+            option.walkColObject = holesCol.gameObject;
+            option.childOptions = new GameObject[1] { holes.gameObject };
+            
+
         }
     }
 

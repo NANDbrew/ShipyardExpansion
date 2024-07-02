@@ -23,9 +23,9 @@ namespace ShipyardExpansion
         public static Dictionary<BoatPart, int> stockParts;
         public static List<Mast> stockMasts;
 
-        public static Transform topmastRef;
+        /*public static Transform topmastRef;
         public static Transform spritRef;
-        public static Transform spritColRef;
+        public static Transform spritColRef;*/
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
