@@ -15,17 +15,16 @@ namespace ShipyardExpansion
         {
             Transform container = boat.transform.Find("medi small");
             Transform structure = container.Find("structure");
-            var mainMast1 = structure.Find("mast");
-            var mainMast2 = structure.Find("mast_front");
-            var mizzenMast = structure.Find("mast_mizzen");
+            Transform mainMast1 = structure.Find("mast");
+            Transform mainMast2 = structure.Find("mast_front");
+            Transform mizzenMast = structure.Find("mast_mizzen");
             Transform mastWalkCol = mainMast1.GetComponent<Mast>().walkColMast;
             Transform mastWalkCol2 = mainMast2.GetComponent<Mast>().walkColMast;
             Transform walkCols = mastWalkCol.parent.parent;
-            var bowspritM = structure.Find("mast (bowsprit)");
+            Transform bowspritM = structure.Find("mast (bowsprit)");
             Transform bowsprit = structure.Find("mast_001");
-            /*Plugin.spritRef = bowsprit;
-            Plugin.spritColRef = mainMast1.GetComponent<Mast>().walkColMast.parent.Find(bowsprit.name);*/
-            //Debug.Log("Cog: adjustments");
+            Transform forestay = container.Find("mast forestay");
+            Transform forestay2 = container.Find("forestay_front_mast");
 
             PartRefs.cog = container;
             PartRefs.cogCol = walkCols;
@@ -35,10 +34,9 @@ namespace ShipyardExpansion
             mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 1.2f;//= 11.5f;
             mainMast2.GetComponent<Mast>().extraBottomHeight = 0.1f;
-            /*            mainMast1.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;
-                        mainMast2.GetComponent<Mast>().startSailHeightOffset += 1.2f;//= 11.5f;*/
 
-
+/*            forestay.GetComponent<Mast>().mastHeight = ;
+            forestay2.GetComponent<Mast>().mastHeight = ;*/
 
             #endregion
 
@@ -131,7 +129,6 @@ namespace ShipyardExpansion
 
             //Debug.Log("Cog: midstay");
             #region midstay
-            Transform forestay = container.Find("mast forestay");
             Mast midstay = Util.CopyMast(forestay, new Vector3(-3.8f, 11f, 0f), new Vector3(312, 270, 90), new Vector3(1f, 1f, 0.9f), "mast midstay", "middlestay", 31);
             midstay.mastHeight = 10.7f;
             BoatPartOption midstayOpt = midstay.GetComponent<BoatPartOption>();
@@ -193,7 +190,6 @@ namespace ShipyardExpansion
 
             //Debug.Log("Cog: forestay3");
             #region forestay3
-            var forestay2 = container.Find("forestay_front_mast");
             var forestay3 = Util.CopyMast(forestay2, forestay2.localPosition, "forestay_mast_front_long", "forestay 2 long", 33);
             forestay3.transform.localEulerAngles += new Vector3(10, 0, 0);
             forestay3.mastHeight = 11.8f;
@@ -329,8 +325,26 @@ namespace ShipyardExpansion
             var wheel = container.Find("steering_wheel");
             var wheelHolder = structure.Find("Cube_004");
             var wheelHolderCol = walkCols.Find("structure").Find(wheelHolder.name);
+
+/*            var tillerCont = UnityEngine.Object.Instantiate(new GameObject(), container);
+            var testTiller = UnityEngine.Object.Instantiate(wheel, tillerCont.transform, false);
+            testTiller.transform.localPosition = Vector3.zero;
+            GPButtonSteeringWheel stsource = testTiller.GetComponent<GPButtonSteeringWheel>();
+            tillerCont.name = "test tiller";
+            tillerCont.transform.localPosition = new Vector3(-6.3f, 0.5f, 0);
+            tillerCont.transform.localEulerAngles = new Vector3(0, 0, 90);
+            var tillerBar = UnityEngine.Object.Instantiate<GameObject>(GameObject.CreatePrimitive(PrimitiveType.Cube), tillerCont.transform);
+            tillerBar.name = "tiller_bar";
+            tillerBar.transform.localScale = new Vector3(0.1f, 0.8f, 0.1f);
+            GPButtonSteeringWheel tillerButt = tillerBar.gameObject.AddComponent<GPButtonSteeringWheel>();
+            tillerButt.attachedRudder = stsource.attachedRudder;
+            tillerButt.gearRatio = 1;
+            tillerButt.rudder = stsource.rudder;
+            tillerButt.rotationTracker = tillerBar.AddComponent<GoPointerMovement>();*/
+
             //wheelHolderCol.parent = wheelHolderCol.parent.parent;
             //wheel.parent = wheelHolder;
+
             BoatPartOption bottomHelm = Util.AddPartOption(wheel.gameObject, "helm 1");
             bottomHelm.basePrice = 800;
             bottomHelm.installCost = 450;
@@ -340,10 +354,11 @@ namespace ShipyardExpansion
             BoatPartOption topHelm = wheel2.GetComponent<BoatPartOption>();
             topHelm.optionName = "helm 2";
             topHelm.requires = new List<BoatPartOption> { container.Find("struct_var_2__balcony_").GetComponent<BoatPartOption>() };
+
             bottomHelm.walkColObject = wheelHolderCol.gameObject;
             bottomHelm.childOptions = new GameObject[1] { wheelHolder.gameObject };
             partsList.StartCoroutine(AddCopiedPart(structure, walkCols.Find("structure"), topHelm));
-            Shipyard
+
             Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { bottomHelm, topHelm });
             #endregion
 
@@ -358,8 +373,7 @@ namespace ShipyardExpansion
             var ropes = UnityEngine.Object.Instantiate(PartRefs.sanbuq.Find("steering_ropes"), holes, false);
             ropes.localPosition = new Vector3(-1.37f, -2.01f, 1.9f);
             ropes.localEulerAngles = Vector3.zero;
-            //ropes.localScale = new Vector3(0.4f, 0.4f, 0.5f);
-            //ropes.GetComponent<MeshRenderer>().material.color = new Color(0.875f, 1, 1);
+
 
             yield return new WaitUntil(() => PartRefs.sanbuqCol != null);
             var holesCol = UnityEngine.Object.Instantiate(PartRefs.sanbuqCol.Find("structure").Find("Cube_005"), walkCol, false);
@@ -369,6 +383,9 @@ namespace ShipyardExpansion
             option.walkColObject = holesCol.gameObject;
             option.childOptions = new GameObject[1] { holes.gameObject };
             
+            holes.gameObject.SetActive(false);
+            holesCol.gameObject.SetActive(false);
+            ropes.gameObject.SetActive(false);
 
         }
     }
