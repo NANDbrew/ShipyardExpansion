@@ -199,7 +199,7 @@ namespace ShipyardExpansion
 
             #region foreTopmast
             Mast foreTopmast = Util.CopyMast(topMast1, (topMast1.localPosition - mainMast1.localPosition) + foremast.transform.localPosition, "mast_04_extension", "fore topmast", 44);
-            foreTopmast.mastHeight = 5f;
+            //foreTopmast.mastHeight = 5f;
             //foreTopmast.extraBottomHeight = 0.6f;
             BoatPartOption foreTopmastNone = Util.CreatePartOption(structure, "(no fore topmast)", "(no fore topmast)");
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { foreTopmastNone, foreTopmast.GetComponent<BoatPartOption>() });
@@ -421,7 +421,7 @@ namespace ShipyardExpansion
 
             #region mizzenTopmast
             Mast mizzenTopmast = Util.CopyMast(topMast2, (topMast2.localPosition - mainMast2.localPosition) + mizzenMast2.transform.localPosition, "mast_003_extension", "mizzen topmast", 39);
-            mizzenTopmast.mastHeight = 5f;
+            //mizzenTopmast.mastHeight = 5f;
             //mizzenTopmast.extraBottomHeight = 0.6f;
             BoatPartOption mizzenTopmastNone = Util.CreatePartOption(structure, "(no mizzen topmast)", "(no mizzen topmast)");
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { mizzenTopmastNone, mizzenTopmast.GetComponent<BoatPartOption>() });
