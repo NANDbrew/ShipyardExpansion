@@ -385,7 +385,7 @@ namespace ShipyardExpansion
             
             holes.gameObject.SetActive(false);
             holesCol.gameObject.SetActive(false);
-            ropes.gameObject.SetActive(false);
+            //ropes.gameObject.SetActive(false);
 
         }
     }

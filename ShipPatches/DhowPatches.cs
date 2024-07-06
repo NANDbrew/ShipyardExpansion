@@ -32,6 +32,9 @@ namespace ShipyardExpansion
             partsList.availableParts[1].category = 2;
             partsList.availableParts[4].category = 2;
 
+            shortForestay.localScale = new Vector3(1, 1, 1.02f);
+            shortForestay.GetComponent<BoatPartOption>().requires.Remove(container.Find("bowsprit").GetComponent<BoatPartOption>());
+            container.Find("empty low forestay").GetComponent<BoatPartOption>().optionName = "(no lower forestay)";
 
             var newCont = UnityEngine.Object.Instantiate(new GameObject(), mainMast).transform;
             newCont.name = "shrouds";
@@ -153,8 +156,8 @@ namespace ShipyardExpansion
 
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
-            container.Find("forestay").GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
-            container.Find("forestay_low").GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
+            lowForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
+            shortForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
 
             Array.Resize(ref mainMast.GetComponent<Mast>().leftAngleWinch, 1);
             Array.Resize(ref mainMast.GetComponent<Mast>().rightAngleWinch, 1);

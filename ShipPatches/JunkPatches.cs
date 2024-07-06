@@ -47,8 +47,6 @@ namespace ShipyardExpansion
             container.Find("forestay_1_lower").GetComponent<Mast>().mastHeight = 14;
 
 
-
-
             partsList.availableParts[4].category = 2;
             partsList.availableParts[5].category = 2;
             partsList.availableParts[6].category = 2;
@@ -124,7 +122,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region flatsprit
-            Mast flatsprit = Util.CopyMast(bowsprit, new Vector3(20.75f, 0f, 5.6f), new Vector3(0, 67, 0), Vector3.one, "bowsprit_2", "bowsprit 2", 31);
+            Mast flatsprit = Util.CopyMast(bowsprit, new Vector3(20.75f, 0f, 5.6f), new Vector3(0, 67, 0), Vector3.one, "bowsprit_2", "bowsprit 2", 63);
             var mastCont = UnityEngine.Object.Instantiate(new GameObject(), flatsprit.transform);
             flatsprit.enabled = false;
             mastCont.gameObject.SetActive(false);
@@ -145,8 +143,8 @@ namespace ShipyardExpansion
             newMast.startSailPrefabs = flatsprit.startSailPrefabs;
             newMast.onlySquareSails = true;
             newMast.transform.localEulerAngles = new Vector3(0, 328, 0);
-            newMast.orderIndex = 31;
             UnityEngine.Object.Destroy(flatsprit);
+            newMast.orderIndex = 31;
             mastCont.gameObject.SetActive(true);
             partsList.availableParts[0].partOptions.Add(flatsprit.GetComponent<BoatPartOption>());
             #endregion
@@ -185,7 +183,6 @@ namespace ShipyardExpansion
             Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { midstayNone, midstayOpt });
             midstayOpt.requires = new List<BoatPartOption> { mizzenMast2.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
             #endregion
-
 
             #region topmast
             partsList.StartCoroutine(AddTopmast(mizzenMast2M, structure, walkColStruct, partsList));
