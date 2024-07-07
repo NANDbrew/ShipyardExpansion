@@ -484,14 +484,16 @@ namespace ShipyardExpansion
 
             #region middleStays
             var src5 = container.Find("part_stay_mid_0");
-            var middlestay_2 = Util.CopyMast(src5, new Vector3(-6.55f, 17.7f, 0), new Vector3(315.8f, 270, 90), new Vector3(1, 1, 0.83f), "part_stay_mid_2", "middlestay 1-2", 34);
+            var middlestay_2 = Util.CopyMast(src5, new Vector3(-6.75f, 17.8f, 0), new Vector3(315.8f, 270, 90), new Vector3(1, 1, 0.845f), "part_stay_mid_2", "middlestay 1-2", 34);
             middlestay_2.reefWinch = Util.CopyWinches(middlestay_2.reefWinch, src5.localPosition, new Vector3(-7.708f, src5.localPosition.y, 0));
             middlestay_2.reefWinch[0].transform.localEulerAngles = new Vector3(0, 90, 0);
             middlestay_2.transform.GetChild(0).localScale = new Vector3(3.6f, 3.24f, 3.8f);
             middlestay_2.transform.GetChild(1).localScale = new Vector3(2.4f, 2.2f, 2.4f);
             middlestay_2.mastHeight = 15;
-            //middlestay_2.orderIndex = 26;
-            //middlestay_2.Awake();
+            middlestay_2.mastReefAtt[0] = mizzenMast2.transform.Find("rope_holder_jibs_center").GetChild(0);
+            middlestay_2.transform.Find("rope_holder_004 (2)").gameObject.SetActive(false);
+
+
             middlestay_2.GetComponent<BoatPartOption>().requires[1] = mizzenMast2.GetComponent<BoatPartOption>();
             partsList.availableParts[8].partOptions.Add(middlestay_2.GetComponent<BoatPartOption>());
             
