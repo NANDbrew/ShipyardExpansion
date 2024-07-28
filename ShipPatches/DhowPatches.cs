@@ -111,9 +111,9 @@ namespace ShipyardExpansion
             #region raked mainMast
             Mast rakedMain = Util.CopyMast(mainMastTall, new Vector3(5.2f, 9.2f, 0f), new Vector3(287, 90, 270), mainMastTall.localScale, "mast_raked", "raked mast", 32);
             rakedMain.reefWinch = Util.CopyWinches(mainMastTall.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
-            rakedMain.reefWinch[0].transform.localPosition = new Vector3(2.43f, 0.76f, 0f);
+            rakedMain.reefWinch[0].transform.localPosition = new Vector3(2.33f, 0.66f, 0f);
             rakedMain.reefWinch[0].transform.localEulerAngles = new Vector3(343, 270, 90);
-            rakedMain.reefWinch[1].transform.localPosition = new Vector3(2.65f, 0.76f, 0.21f);
+            rakedMain.reefWinch[1].transform.localPosition = new Vector3(2.55f, 0.66f, 0.21f);
             rakedMain.reefWinch[1].transform.localEulerAngles = new Vector3(0, 0, 90);
             partsList.availableParts[0].partOptions.Add(rakedMain.GetComponent<BoatPartOption>());
             var rakedShrouds = rakedMain.transform.Find(newCont2.name);
@@ -135,7 +135,7 @@ namespace ShipyardExpansion
             #region raked forestay
             Mast rakedForestay = Util.CopyMast(highForestay, new Vector3(5.4f, 9.7f, 0f), new Vector3(309f, 270f, 90f), new Vector3(1f, 1f, 0.78f), "forestay_raked", "high forestay 2", 33);
             rakedForestay.reefWinch = Util.CopyWinches(rakedForestay.reefWinch, Vector3.zero, Vector3.zero);
-            rakedForestay.reefWinch[0].transform.localPosition = new Vector3(2.65f, 0.76f, -0.21f);
+            rakedForestay.reefWinch[0].transform.localPosition = new Vector3(2.55f, 0.66f, -0.21f);
             rakedForestay.mastHeight = 9f;
             rakedForestay.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { rakedMain.GetComponent<BoatPartOption>(), container.Find("bowsprit").GetComponent<BoatPartOption>() };
             partsList.availableParts[1].partOptions.Add(rakedForestay.GetComponent<BoatPartOption>());
