@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -332,6 +333,7 @@ namespace ShipyardExpansion
             Debug.Log("trying to add part");
             BoatPartOption bowsprit = structure.Find("bowsprit_standard").GetComponent<BoatPartOption>();
             BoatPartOption bowspritLong = structure.Find("bowsprit_long").GetComponent<BoatPartOption>();
+
             spritTopmast1 = Util.CopyMast(bowsprit.transform.GetChild(0), structure, walkCol, new Vector3(20.1f, 0f, 9.3f), Vector3.zero, Vector3.one, "sprit_topmast", "sprit topmast", 33);
             spritTopmast1.mastHeight = 4;
             spritTopmast1.reefWinch = Util.CopyWinches(spritTopmast1.reefWinch, spritTopmast1.reefWinch[0].transform.localPosition, new Vector3(20.37f, 7.6f, 0));
@@ -347,13 +349,11 @@ namespace ShipyardExpansion
             partOption.basePrice /= 2;
             partOption.installCost /= 2;
 
-
             spritTopmast2 = Util.CopyMast(spritTopmast1.transform, new Vector3(23.5f, 0, 10.9f), "sprit_topmast_2", "sprit topmast 2", 34);
             spritTopmast2.reefWinch = Util.CopyWinches(spritTopmast2.reefWinch, spritTopmast1.reefWinch[0].transform.localPosition, new Vector3(23.76f, 9.2f, 0));
             BoatPartOption spritTopmast2_opt = spritTopmast2.GetComponent<BoatPartOption>();
             partOption.requires = new List<BoatPartOption> { bowsprit };
             spritTopmast2_opt.requires = new List<BoatPartOption> { bowspritLong };
-
             BoatPartOption stmNone = Util.CreatePartOption(structure, "(no-sprit_topmast)", "(no sprit topmast)");
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption, spritTopmast2_opt });
             bowspritLong.transform.GetChild(0).localPosition += new Vector3(0, 0, -1f);
@@ -387,8 +387,11 @@ namespace ShipyardExpansion
             mastCol2.localPosition = spritTopmast2.transform.localPosition;
 
             spritTopmast1.walkColMast = mast_001_col_parent;
+            spritTopmast1.GetComponent<BoatPartOption>().walkColObject.SetActive(false);
             spritTopmast1.GetComponent<BoatPartOption>().walkColObject = mast_001_col_parent.gameObject;
+
             spritTopmast2.walkColMast = mastCol2;
+            spritTopmast2.GetComponent<BoatPartOption>().walkColObject.SetActive(false);
             spritTopmast2.GetComponent<BoatPartOption>().walkColObject = mastCol2.gameObject;
 
         }

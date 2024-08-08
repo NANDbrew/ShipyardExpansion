@@ -40,6 +40,7 @@ namespace ShipyardExpansion
         {
             source.gameObject.SetActive(false);
             Transform mast = UnityEngine.Object.Instantiate(source, parent);
+            float scaleFactor = scale.z / source.localScale.z;
             Mast mastComp = mast.GetComponent<Mast>();
             mastComp.orderIndex = index;
             mast.name = name;
@@ -53,9 +54,12 @@ namespace ShipyardExpansion
             mastComp.walkColMast.transform.localScale = scale;
             mastComp.startSailPrefab = null;
             mastComp.shipRigidbody = parent.GetComponentInParent<Rigidbody>();
-            BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
-            if (mastOption != null)
+            mastComp.mastHeight = (float)Math.Round(mastComp.mastHeight * scaleFactor, 1);
+            if (mast.GetComponent<BoatPartOption>() is BoatPartOption mastOption)
             {
+                //BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
+                mastOption.mass = Mathf.RoundToInt(mastOption.mass * scaleFactor);
+                mastOption.basePrice = Mathf.RoundToInt(mastOption.mass * scaleFactor);
                 mastOption.optionName = prettyName;
                 mastOption.childOptions = new GameObject[0];
                 mastOption.walkColObject = mastComp.walkColMast.gameObject;
@@ -174,37 +178,61 @@ namespace ShipyardExpansion
 
             return newPart;
         }
-
-/*        public static GameObject AddGizmo(Transform transform)
+        public static BoatPart CreateAndInsertPart(BoatCustomParts partsList, int category, int index, List<BoatPartOption> partOptions)
         {
-            if (!Plugin.showGizmos.Value) return null;
+            BoatPart newPart = new BoatPart
+            {
+                partOptions = partOptions,
+                category = category,
+                activeOption = 0
+            };
+            partsList.availableParts.Insert(index, newPart);
 
-            var pointer1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            pointer1.transform.parent = transform;
-            pointer1.gameObject.GetComponent<Collider>().enabled = false;
-            pointer1.transform.localPosition = Vector3.zero;
-            pointer1.transform.localEulerAngles = Vector3.zero;
 
-            var pointer1up = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            pointer1up.gameObject.transform.parent = pointer1.transform;
-            pointer1up.gameObject.GetComponent<Collider>().enabled = false;
-            pointer1up.transform.localPosition = Vector3.up;
-            pointer1up.transform.localEulerAngles = new Vector3(0, 0, 0);
-            pointer1up.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
-            pointer1up.GetComponent<Renderer>().material.color = Color.green;
+            return newPart;
+        }
 
-            var pointer1fwd = GameObject.Instantiate(pointer1up, pointer1.transform);
-            pointer1fwd.transform.localPosition = Vector3.forward;
-            pointer1fwd.transform.localEulerAngles = new Vector3(90, 0, 0);
-            pointer1fwd.GetComponent<Renderer>().material.color = Color.blue;
+        public static GPButtonRopeWinch[] SetAltWinches(GPButtonRopeWinch[] main, GPButtonRopeWinch[] alt, Transform altParent)
+        {
+            for (int i = 0; i < main.Length; i++)
+            {
+                alt[i].transform.parent = altParent;
+                alt[i].gameObject.AddComponent<AltWinch>();
+                alt[i].GetComponent<AltWinch>().altWinch = main[i];
+            }
+            return alt;
+        }
 
-            var pointer1right = GameObject.Instantiate(pointer1up, pointer1.transform);
-            pointer1right.transform.localPosition = Vector3.right;
-            pointer1right.transform.localEulerAngles = new Vector3(0, 0, 90);
-            pointer1right.GetComponent<Renderer>().material.color = Color.red;
+        /*        public static GameObject AddGizmo(Transform transform)
+                {
+                    if (!Plugin.showGizmos.Value) return null;
 
-            pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            return pointer1;
-        }*/
+                    var pointer1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    pointer1.transform.parent = transform;
+                    pointer1.gameObject.GetComponent<Collider>().enabled = false;
+                    pointer1.transform.localPosition = Vector3.zero;
+                    pointer1.transform.localEulerAngles = Vector3.zero;
+
+                    var pointer1up = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    pointer1up.gameObject.transform.parent = pointer1.transform;
+                    pointer1up.gameObject.GetComponent<Collider>().enabled = false;
+                    pointer1up.transform.localPosition = Vector3.up;
+                    pointer1up.transform.localEulerAngles = new Vector3(0, 0, 0);
+                    pointer1up.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
+                    pointer1up.GetComponent<Renderer>().material.color = Color.green;
+
+                    var pointer1fwd = GameObject.Instantiate(pointer1up, pointer1.transform);
+                    pointer1fwd.transform.localPosition = Vector3.forward;
+                    pointer1fwd.transform.localEulerAngles = new Vector3(90, 0, 0);
+                    pointer1fwd.GetComponent<Renderer>().material.color = Color.blue;
+
+                    var pointer1right = GameObject.Instantiate(pointer1up, pointer1.transform);
+                    pointer1right.transform.localPosition = Vector3.right;
+                    pointer1right.transform.localEulerAngles = new Vector3(0, 0, 90);
+                    pointer1right.GetComponent<Renderer>().material.color = Color.red;
+
+                    pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    return pointer1;
+                }*/
     }
 }

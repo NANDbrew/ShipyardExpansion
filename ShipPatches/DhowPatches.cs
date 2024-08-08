@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -82,8 +83,8 @@ namespace ShipyardExpansion
             mizzen_new.rightAngleWinch[0].transform.localPosition = new Vector3(-6.4f, 1.26f, -1.5f);
             mizzen_new.rightAngleWinch[0].transform.localEulerAngles = new Vector3(288, 59, 120);
             var rope_holder_aft = UnityEngine.Object.Instantiate(container.Find("rope_holder"), mizzen_new.transform);
-            rope_holder_aft.transform.localPosition = mizzen_old.Find("rope_holder_002").localPosition;
-            rope_holder_aft.transform.localRotation = mizzen_old.Find("rope_holder_002").localRotation;
+            rope_holder_aft.transform.position = mizzen_old.Find("rope_holder_002").position;
+            rope_holder_aft.transform.rotation = mizzen_old.Find("rope_holder_002").rotation;
             mizzen_new.midRopeAtt[0] = UnityEngine.Object.Instantiate(container.Find("rope_att_angle_extension"), rope_holder_aft.transform);
             mizzen_new.midRopeAtt[0].transform.localPosition = Vector3.zero;
             mizzen_new.midRopeAtt[1] = mizzen_new.midRopeAtt[0];
@@ -111,7 +112,7 @@ namespace ShipyardExpansion
             #region raked mainMast
             Mast rakedMain = Util.CopyMast(mainMastTall, new Vector3(5.2f, 9.2f, 0f), new Vector3(287, 90, 270), mainMastTall.localScale, "mast_raked", "raked mast", 32);
             rakedMain.reefWinch = Util.CopyWinches(mainMastTall.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
-            rakedMain.reefWinch[0].transform.localPosition = new Vector3(2.33f, 0.66f, 0f);
+            rakedMain.reefWinch[0].transform.localPosition = new Vector3(2.4f, 0.66f, 0f);
             rakedMain.reefWinch[0].transform.localEulerAngles = new Vector3(343, 270, 90);
             rakedMain.reefWinch[1].transform.localPosition = new Vector3(2.55f, 0.66f, 0.21f);
             rakedMain.reefWinch[1].transform.localEulerAngles = new Vector3(0, 0, 90);
@@ -162,7 +163,110 @@ namespace ShipyardExpansion
             Array.Resize(ref mainMast.GetComponent<Mast>().leftAngleWinch, 1);
             Array.Resize(ref mainMast.GetComponent<Mast>().rightAngleWinch, 1);
             #endregion
+            partsList.StartCoroutine(AddRoof(container, walkCols, partsList));
         }
+        private static IEnumerator AddRoof(Transform structure, Transform walkCols, BoatCustomParts partsList)
+        {
+            Debug.Log("waiting for cog roof...");
+            yield return new WaitUntil(() => PartRefs.cog != null);
+            Debug.Log("found cog roof");
+            #region roof
+            Transform newRoof = UnityEngine.Object.Instantiate(PartRefs.cog.Find("struct_var_1__low_roof_"), structure);
+            newRoof.name = "cabin";
+            newRoof.localScale = new Vector3(0.9f, 0.75f, 1);
+            newRoof.localPosition = new Vector3(0.6f, -0.85f, 0);
+            newRoof.Find("trim_008").gameObject.SetActive(false);
+            newRoof.Find("trim_013").gameObject.SetActive(false);
+            for (int i = 0; i < newRoof.childCount; i++)
+            {
+                newRoof.GetChild(i).GetComponent<Renderer>().material.color = new Color(0.36f, 0.37f, 0.37f);
+                newRoof.GetChild(i).GetComponent<Renderer>().material.SetFloat("_Glossiness", 0.2f);
+            }
+            newRoof.Find("trim_000").GetComponent<Renderer>().material.color = new Color(0.51f, 0.5f, 0.53f);
+            Transform supportsLeft = UnityEngine.Object.Instantiate(new GameObject().transform, newRoof);
+            supportsLeft.name = "supports_left";
+            Transform support_0L = newRoof.Find("trim_018");
+            support_0L.name = "support_0";
+            support_0L.transform.SetParent(supportsLeft);
+            support_0L.localScale = new Vector3(1.85f, 1.22f, 0.6f);
+            support_0L.localEulerAngles = new Vector3(10, 0, 270);
+            support_0L.localPosition = new Vector3(-2.49f, -14.7f, -1.4f);
+            Transform support_1L = UnityEngine.Object.Instantiate(support_0L, supportsLeft);
+            support_1L.name = "support_1";
+            support_1L.localScale = new Vector3(1.85f, 1.22f, 0.53f);
+            support_1L.localEulerAngles = new Vector3(0, 0, 270);
+            support_1L.localPosition = new Vector3(-7.49f, -14.9f, 1.47f);
+            Transform support_2L = UnityEngine.Object.Instantiate(support_0L, supportsLeft);
+            support_2L.name = "support_2";
+            //support_2L.localScale = new Vector3(1.85f, 1.22f, 0.5f);
+            support_2L.localEulerAngles = new Vector3(8, 0, 270);
+            support_2L.localPosition = new Vector3(-3.58f, -14.76f, -0.9f);
+            Transform support_3L = UnityEngine.Object.Instantiate(support_0L, supportsLeft);
+            support_3L.name = "support_3";
+            support_3L.localScale = new Vector3(1.85f, 1.22f, 0.55f);
+            support_3L.localEulerAngles = new Vector3(1, 0, 270);
+            support_3L.localPosition = new Vector3(-5.22f, -14.94f, 0.88f);
+            Transform support_4L = UnityEngine.Object.Instantiate(support_0L, supportsLeft);
+            support_4L.name = "support_4";
+            support_4L.localScale = new Vector3(1.85f, 1.22f, 0.53f);
+            support_4L.localEulerAngles = new Vector3(0, 0, 270);
+            support_4L.localPosition = new Vector3(-6.52f, -14.94f, 1.30f);
+            supportsLeft.localScale = new Vector3(1, 1, 1.03f);
+            supportsLeft.localPosition = new Vector3(0, 0, -0.1f);
+            Transform supportsRight = UnityEngine.Object.Instantiate(supportsLeft, newRoof);
+            supportsRight.name = "supports_right";
+            supportsRight.localScale = new Vector3(supportsLeft.localScale.x, -supportsLeft.localScale.y, supportsLeft.localScale.z);
+            #endregion
 
+            #region walkCol
+            Transform newRoofCol = UnityEngine.Object.Instantiate(PartRefs.cogCol.Find("struct_var_1__low_roof_"), walkCols);
+            newRoofCol.localPosition = newRoof.localPosition;
+            newRoofCol.localScale = newRoof.localScale;
+            newRoofCol.name = newRoof.name;
+            newRoofCol.Find("trim_008").gameObject.SetActive(false);
+            newRoofCol.Find("trim_013").gameObject.SetActive(false);
+/*            newRoofCol.Find("trim_012").localScale = new Vector3(0.94f, 1, 1.05f);
+            newRoofCol.Find("trim_004").localScale = new Vector3(0.95f, 1, 1.05f);
+            newRoofCol.Find("trim_000").localScale = new Vector3(0.94f, 0.97f, 1.05f);
+*/
+            Transform supportColsLeft = UnityEngine.Object.Instantiate(new GameObject().transform, newRoofCol);
+            supportColsLeft.name = supportsLeft.name;
+            Transform supportCol_0L = newRoofCol.Find("trim_018");
+            supportCol_0L.transform.SetParent(supportColsLeft);
+            supportCol_0L.localScale = support_0L.localScale;
+            supportCol_0L.localEulerAngles = support_0L.localEulerAngles;
+            supportCol_0L.localPosition = support_0L.localPosition;
+            Transform supportCol_1L = UnityEngine.Object.Instantiate(supportCol_0L, supportColsLeft);
+            supportCol_1L.localScale = support_1L.localScale;
+            supportCol_1L.localEulerAngles = support_1L.localEulerAngles;
+            supportCol_1L.localPosition = support_1L.localPosition;
+            Transform supportCol_2L = UnityEngine.Object.Instantiate(supportCol_0L, supportColsLeft);
+            supportCol_2L.localScale = support_2L.localScale;
+            supportCol_2L.localEulerAngles = support_2L.localEulerAngles;
+            supportCol_2L.localPosition = support_2L.localPosition;
+            Transform supportCol_3L = UnityEngine.Object.Instantiate(supportCol_0L, supportColsLeft);
+            supportCol_3L.localScale = support_3L.localScale;
+            supportCol_3L.localEulerAngles = support_3L.localEulerAngles;
+            supportCol_3L.localPosition = support_3L.localPosition;
+            Transform supportCol_4L = UnityEngine.Object.Instantiate(supportCol_0L, supportColsLeft);
+            supportCol_4L.localScale = support_4L.localScale;
+            supportCol_4L.localEulerAngles = support_4L.localEulerAngles;
+            supportCol_4L.localPosition = support_4L.localPosition;
+            supportColsLeft.localPosition = supportsLeft.localPosition;
+            supportColsLeft.localScale = supportsLeft.localScale;
+
+            Transform supportColsRight = UnityEngine.Object.Instantiate(supportColsLeft, newRoofCol);
+            supportColsRight.localScale = new Vector3(supportsRight.localScale.x, -supportsRight.localScale.y, supportsRight.localScale.z);
+            supportColsRight.name = supportsRight.name;
+            #endregion
+
+            BoatPartOption newRoofOpt = newRoof.GetComponent<BoatPartOption>();
+            //newRoofOpt.optionName = "hard roof 2";
+            newRoofOpt.walkColObject = newRoofCol.gameObject;
+            newRoofOpt.basePrice = 1400;
+            newRoofOpt.installCost = 300;
+            newRoofOpt.mass = 45;
+            partsList.availableParts[3].partOptions.Add(newRoofOpt);
+        }
     }
 }

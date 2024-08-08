@@ -56,7 +56,7 @@ namespace ShipyardExpansion
 
             #region midstays
             var midstayReefs = Util.CopyWinches(mizzenMast.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
-            var angleWinches2 = Util.CopyWinches(angleWinches, Vector3.zero, new Vector3(0.3f, -0.05f, 0));
+            //var angleWinches2 = Util.CopyWinches(angleWinches, Vector3.zero, new Vector3(0.3f, -0.05f, 0));
 
             /*Mast midstay_lower = Util.CopyMast(lowerForestay, new Vector3(-2f, 7f, 0f), lowerForestay.localEulerAngles, new Vector3(1f, 1f, 1.37f), "midstay_lower", "lower midstay", 31);
             midstay_lower.mastReefAtt = mizzenMastM.mastReefAtt;
