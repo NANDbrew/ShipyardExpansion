@@ -33,8 +33,10 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> lenientLateens;
         internal static ConfigEntry<bool> lenientSquares;
         internal static ConfigEntry<bool> vertLateens;
+        internal static ConfigEntry<bool> vertFins;
 
         internal static ConfigEntry<bool> unrollSails;
+        internal static ConfigEntry<int> tiltOffset;
 
 
         private void Awake()
@@ -51,9 +53,11 @@ namespace ShipyardExpansion
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
 
             vertLateens = Config.Bind("Settings", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
+            vertFins = Config.Bind("Settings", "Vertical fins", true, new ConfigDescription("Keep fin sails vertical instead of slanting with the mast"));
             lenientLateens = Config.Bind("Settings", "Lenient lateens", false, new ConfigDescription("Ignore collisions with the back edge of lateen sails"));
             lenientSquares = Config.Bind("Settings", "Lenient squares", false, new ConfigDescription("Ignore collisions with the sides of square sails"));
             unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
+            tiltOffset = Config.Bind("Settings", "Tilt Offset", 0, new ConfigDescription("", new AcceptableValueRange<int>(-25, 25)));
         }
     }
 }

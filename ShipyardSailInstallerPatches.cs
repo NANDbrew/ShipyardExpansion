@@ -17,17 +17,30 @@ namespace ShipyardExpansion
         public static void Prefix(Sail __instance)
         {
 
-            float tilt = 0;
-            if (!Plugin.vertLateens.Value) return;
+            float tilt = Plugin.tiltOffset.Value;
 
-            if (__instance.category == SailCategory.lateen)
+            if (Plugin.vertLateens.Value && __instance.category == SailCategory.lateen)
             {
-                Debug.Log("sail \"" + __instance.name + "\" updated install position");
+                //Debug.Log("sail \"" + __instance.name + "\" updated install position");
                 if (__instance.prefabIndex == 61) tilt = -5.6f;
 
                 __instance.transform.eulerAngles = new Vector3(270, 0, 0); // new Vector3(tilt, __instance.transform.eulerAngles.y, __instance.transform.eulerAngles.z);
-                __instance.transform.localEulerAngles = new Vector3(0, __instance.transform.localEulerAngles.y + tilt, 0);
+                __instance.transform.localEulerAngles = new Vector3(0, -__instance.transform.parent.localEulerAngles.y + tilt, 0);
                 //__instance.GetComponent<SailConnections>().colChecker.transform.localRotation = __instance.transform.localRotation;
+            }
+            if (Plugin.vertFins.Value && __instance.category == SailCategory.other)
+            {                
+                Transform child = __instance.transform.GetChild(2);
+                Transform child0 = __instance.transform.GetChild(0);
+                Transform child1 = __instance.transform.GetChild(1);
+                child0.parent = child;
+                child1.parent = child;
+                child.localEulerAngles = new Vector3(child.localEulerAngles.x, -__instance.transform.parent.localEulerAngles.y, child.localEulerAngles.z);
+                child0.parent = __instance.transform;
+                child1.parent = __instance.transform;
+                child0.SetSiblingIndex(0);
+                child1.SetSiblingIndex(1);
+                child.SetSiblingIndex(2);
             }
         }
 
@@ -42,6 +55,12 @@ namespace ShipyardExpansion
                 ___initialRot = ___sail.transform.localRotation;
 
                 __instance.transform.Find("col_001").gameObject.SetActive(!Plugin.lenientLateens.Value);
+
+            }
+            else if (___sail.category == SailCategory.other)
+            {
+                ___initialRot = Quaternion.Euler(-___sail.transform.parent.localEulerAngles);
+                //__instance.transform.Find("col_001").gameObject.SetActive(!Plugin.lenientLateens.Value);
 
             }
             else if (___sail.category == SailCategory.square && !___sail.name.Contains("junk"))
