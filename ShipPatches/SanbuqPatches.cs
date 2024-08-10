@@ -336,6 +336,8 @@ namespace ShipyardExpansion
             #region mizzenMast
             Mast mizzenMast2 = Util.CopyMast(mainMast2, mainMast2.localPosition + new Vector3(-7, 0, 0), mainMast1.localEulerAngles, new Vector3(1, 1, 0.965f), "mast_003", "mizzen mast 2", 35);
             UnityEngine.Object.Instantiate(mizzenMast1.transform.Find("Cylinder_006"), mizzenMast2.transform, true);
+            UnityEngine.Object.Instantiate(mizzenMast1.GetComponent<Mast>().walkColMast.Find("Cylinder_006"), mizzenMast2.walkColMast, true);
+
             var brace = UnityEngine.Object.Instantiate(mizzenMast2.transform.Find("mast_004"), mizzenMast2.transform);
             brace.localPosition = new Vector3(-0.005f, -0.01f, -19.11f);
             brace.localScale = new Vector3(0.98f, 0.99f, 1.2f);
