@@ -37,10 +37,13 @@ namespace ShipyardExpansion
             // move main mast aft to make room
             Util.MoveMast(mainMast2, mainMast2.localPosition + new Vector3(-0.2f, 0, 0), true);
             Util.MoveWinches(topmastStay2_mast.reefWinch, mainMast2.localPosition, mainMast2.localPosition + new Vector3(-0.2f, 0, 0));
-            Util.MoveWinches(container.Find("forestay_1_inner").GetComponent<Mast>().reefWinch, mainMast2.localPosition, mainMast2.localPosition + new Vector3(-0.2f, 0, 0));
+            //Util.MoveWinches(container.Find("forestay_1_inner").GetComponent<Mast>().reefWinch, mainMast2.localPosition, mainMast2.localPosition + new Vector3(-0.2f, 0, 0));
+            Util.MoveMast(container.Find("forestay_1_inner"), mainMast2.localPosition + new Vector3(-0.2f, -0.06f, 0), true);
+            Util.MoveMast(container.Find("forestay_1_short"), mainMast2.localPosition + new Vector3(-0.2f, -0.06f, 0), true);
+            Util.MoveMast(topMast2, topMast2.localPosition + new Vector3(-0.2f, 0, 0), true);
+
             //Util.MoveWinches(topmastStay3_mast.reefWinch, mainMast2.localPosition, new Vector3(-0.2f, 0, 0));
 
-            Util.MoveMast(topMast2, topMast2.localPosition + new Vector3(-0.2f, 0, 0), true);
             mainMast1.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 1";
             mainMast2.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 2";
             BoatPartOption mainMastNone = Util.CreatePartOption(container, "(empty mainmast)", "(no main mast)");
@@ -98,6 +101,8 @@ namespace ShipyardExpansion
             partsList.availableParts[3].partOptions.Remove(topmastStay1.GetComponent<BoatPartOption>());
             partsList.availableParts[3].partOptions.Remove(topmastStay2.GetComponent<BoatPartOption>());
             partsList.availableParts[3].partOptions.Remove(topmastStay3.GetComponent<BoatPartOption>());
+
+
 
             #endregion
 
@@ -651,6 +656,15 @@ namespace ShipyardExpansion
 
             #endregion
 
+            #region fore topmast forestay
+            Mast foreTopmastForestay = Util.CopyMast(topmastStay1, new Vector3(9.7f, topmastStay1.localPosition.y, topmastStay1.localPosition.z), new Vector3(297.8f, topmastStay1.localEulerAngles.y, topmastStay1.localEulerAngles.z), new Vector3(1, 1, 0.92f), "forestay_foremast_extension", "fore topmast forestay", 45);
+            BoatPartOption foreTopmastForestayOpt = foreTopmastForestay.GetComponent<BoatPartOption>();
+            foreTopmastForestayOpt.requires.Remove(topMast1.GetComponent<BoatPartOption>());
+            foreTopmastForestayOpt.requires.Add(foreTopmast.GetComponent<BoatPartOption>());
+            partsList.availableParts[11].partOptions.Add(foreTopmastForestayOpt);
+            #endregion
+
+            #region late adjustments
             // partsList.availableParts[3].category = 2;
             foreach (BoatPartOption stay in partsList.availableParts[3].partOptions)
             {
@@ -675,8 +689,8 @@ namespace ShipyardExpansion
             topmastStay1.GetComponent<BoatPartOption>().requires.Add(foremastNone);
             topmastStay2.GetComponent<BoatPartOption>().requires.Add(foremastNone);
             topmastStay4_mast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foremast.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
-
- //add boat to list of modified boats
+            #endregion
+            //add boat to list of modified boats
 
         }
     }
