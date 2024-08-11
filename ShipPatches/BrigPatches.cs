@@ -155,9 +155,10 @@ namespace ShipyardExpansion
             
             var mainstayInner = Util.CopyMast(forestay_0_mid, new Vector3(0f, 19.44f, 0f), forestay_0_mid.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_bottom", "lower forestay 3", 31);
             mainstayInner.reefWinch = Util.CopyWinches(mainstayInner.reefWinch, foreMast1.localPosition, newPos);
+            mainstayInner.reefWinch = new GPButtonRopeWinch[] { mainstayInner.reefWinch[0], Util.CopyWinch(mainstayInner.reefWinch[0], new Vector3(mainstayInner.reefWinch[0].transform.localPosition.x, 3.108f, mainstayInner.reefWinch[0].transform.localPosition.z)) };
 
-            mainstayInner.leftAngleWinch = Util.CopyWinches(mainstayOuter.leftAngleWinch, Vector3.zero, new Vector3(-0.67f, 0, 0.1f));
-            mainstayInner.rightAngleWinch = Util.CopyWinches(mainstayOuter.rightAngleWinch, Vector3.zero, new Vector3(-0.67f, 0, -0.1f));
+            mainstayInner.leftAngleWinch = Util.CopyWinches(mainstayOuter.leftAngleWinch, mainstayOuter.leftAngleWinch[0].transform.localPosition, new Vector3(-1.57f, 2.69f, 3.15f));
+            mainstayInner.rightAngleWinch = Util.CopyWinches(mainstayOuter.rightAngleWinch, mainstayOuter.rightAngleWinch[0].transform.localPosition, new Vector3(-1.57f, 2.69f, -3.15f));
 
 
             /*                var innerLeft1 = UnityEngine.Object.Instantiate(foreMast1.GetComponent<Mast>().leftAngleWinch[0], container);
@@ -358,15 +359,30 @@ namespace ShipyardExpansion
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption, spritTopmast2_opt });
             bowspritLong.transform.GetChild(0).localPosition += new Vector3(0, 0, -1f);
             bowsprit.transform.GetChild(0).localPosition += new Vector3(0, 0, -1f);
-            partsList.StartCoroutine(AddCopiedPart(spritTopmast1.transform, walkCol));
             #endregion
+
+            #region topmasts
+            GPButtonRopeWinch[] topmast0Reef = Util.CopyWinches(new GPButtonRopeWinch[] { foreMast1.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0.67f, 0));
+
+
+            GPButtonRopeWinch[] topmast1Reef = new GPButtonRopeWinch[1] { Util.CopyWinch(container.Find("rope_winch_mastB0_reef (3)").GetComponent<GPButtonRopeWinch>(), new Vector3(-5.1f, 5.93f, 0)) };
+            topmast1Reef[0].transform.localScale = new Vector3(1, 1, -1);
+
+            GPButtonRopeWinch[] topmast1LeftAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mainMast1.GetComponent<Mast>().leftAngleWinch[0], new Vector3(-13.7f, 5.6f, 2.48f)) };
+            GPButtonRopeWinch[] topmast1RightAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mainMast1.GetComponent<Mast>().rightAngleWinch[0], new Vector3(-13.7f, 5.6f, -2.48f)) };
+
+
+            #endregion
+
+            partsList.StartCoroutine(AddCopiedPart(structure, walkCol, partsList, topmast1Reef, topmast1LeftAngle, topmast1RightAngle, topmast0Reef));
+
         }
 
-        private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol)
+        private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol, BoatCustomParts partsList, GPButtonRopeWinch[] extra0, GPButtonRopeWinch[] extra1, GPButtonRopeWinch[] extra2, GPButtonRopeWinch[] extra3 )
         {
             Debug.Log("trying to add part");
-            yield return new WaitUntil(() => PartRefs.cog != null);
-            mast_001 = UnityEngine.Object.Instantiate(PartRefs.cog.Find("structure").Find("mast_001"), parent, false);
+            yield return new WaitUntil(() => PartRefs.cog != null && PartRefs.sanbuq != null);
+            mast_001 = UnityEngine.Object.Instantiate(PartRefs.cog.Find("structure").Find("mast_001"), parent.Find("sprit_topmast"), false);
             mast_001.localPosition = new Vector3(0, 0, 1.6f);
             mast_001.localScale = new Vector3(0.4f, 0.4f, 0.5f);
             mast_001.localEulerAngles = Vector3.zero;
@@ -375,7 +391,27 @@ namespace ShipyardExpansion
             var mast2 = UnityEngine.Object.Instantiate(mast_001, spritTopmast2.transform, false);
             //mast2.localPosition = spritTopmast2.transform.localPosition;
 
-            yield return new WaitUntil(() => PartRefs.cogCol != null);
+            Mast topmast0 = Util.CopyMast(PartRefs.sanbuq.Find("structure").Find("mast_0_extension"), parent, walkCol, new Vector3(6.7f, 0, 30.5f), Vector3.zero, new Vector3(1.2f, 1.2f, 0.75f), "mast_f0_extension_0", "fore topmast 1", 35);
+            var topmast0None = Util.CreatePartOption(parent, "fore_topmast_empty", "(no fore topmast)");
+            Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { topmast0None, topmast0.GetComponent<BoatPartOption>(), });
+            topmast0.leftAngleWinch = new GPButtonRopeWinch[] { parent.parent.Find("rope_winch_sqfront_angle_left_mod").GetComponent<GPButtonRopeWinch>()};
+            topmast0.rightAngleWinch = new GPButtonRopeWinch[] { parent.parent.Find("rope_winch_sqfront_angle_right_mod").GetComponent<GPButtonRopeWinch>() };
+            topmast0.reefWinch = extra3;
+            var foreFlag0 = parent.Find("mast_Front_0").Find("wind_flag");
+            var topmast0Flag = UnityEngine.Object.Instantiate(foreFlag0, topmast0.transform, false);
+            topmast0Flag.transform.localPosition = new Vector3(0.2f, 0, -0.2f);
+            topmast0None.childOptions = new GameObject[] { foreFlag0.gameObject };
+
+            Mast topmast1 = Util.CopyMast(topmast0.transform, new Vector3(-5.4f, 0, 31.6f), "mast_m0_extension_1", "main topmast 1", 36);
+            var topmast1None = Util.CreatePartOption(parent, "main_topmast_empty", "(no main topmast)");
+            Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { topmast1None, topmast1.GetComponent<BoatPartOption>(), });
+            topmast1.reefWinch = extra0;
+            topmast1.leftAngleWinch = extra1;
+            topmast1.rightAngleWinch = extra2;
+            var mainFlag0 = parent.Find("mast_Back_0").Find("wind_flag_001");
+            topmast1None.childOptions = new GameObject[] { mainFlag0.gameObject };
+
+            yield return new WaitUntil(() => PartRefs.cogCol != null && PartRefs.sanbuqCol != null);
             var mast_001_col_parent = UnityEngine.Object.Instantiate(new GameObject(), walkCol).transform;
             mast_001_col = UnityEngine.Object.Instantiate(PartRefs.cogCol.Find("structure").Find("mast_001"), mast_001_col_parent, false);
             mast_001_col.localPosition = mast_001.localPosition;
@@ -393,6 +429,9 @@ namespace ShipyardExpansion
             spritTopmast2.walkColMast = mastCol2;
             spritTopmast2.GetComponent<BoatPartOption>().walkColObject.SetActive(false);
             spritTopmast2.GetComponent<BoatPartOption>().walkColObject = mastCol2.gameObject;
+
+
+
 
         }
     }
