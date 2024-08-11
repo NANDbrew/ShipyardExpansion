@@ -36,13 +36,15 @@ namespace ShipyardExpansion
             #region adjustments
             // move main mast aft to make room
             Util.MoveMast(mainMast2, mainMast2.localPosition + new Vector3(-0.2f, 0, 0), true);
-            Util.MoveWinches(topmastStay2_mast.reefWinch, mainMast2.localPosition, mainMast2.localPosition + new Vector3(-0.2f, 0, 0));
+            //Util.MoveWinches(topmastStay2_mast.reefWinch, mainMast2.localPosition, mainMast2.localPosition + new Vector3(-0.2f, 0, 0));
             //Util.MoveWinches(container.Find("forestay_1_inner").GetComponent<Mast>().reefWinch, mainMast2.localPosition, mainMast2.localPosition + new Vector3(-0.2f, 0, 0));
-            Util.MoveMast(container.Find("forestay_1_inner"), mainMast2.localPosition + new Vector3(-0.2f, -0.06f, 0), true);
-            Util.MoveMast(container.Find("forestay_1_short"), mainMast2.localPosition + new Vector3(-0.2f, -0.06f, 0), true);
+            Util.MoveMast(container.Find("forestay_1_inner"), container.Find("forestay_1_inner").localPosition + new Vector3(-0.2f, -0.06f, 0), true);
+            Util.MoveMast(container.Find("forestay_1_short"), container.Find("forestay_1_short").localPosition + new Vector3(-0.2f, -0.06f, 0), true);
             Util.MoveMast(topMast2, topMast2.localPosition + new Vector3(-0.2f, 0, 0), true);
 
             //Util.MoveWinches(topmastStay3_mast.reefWinch, mainMast2.localPosition, new Vector3(-0.2f, 0, 0));
+            topmastStay3.GetComponent<BoatPartOption>().requiresDisabled.Add(container.Find("forestay_1_long").GetComponent<BoatPartOption>());
+
 
             mainMast1.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 1";
             mainMast2.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 2";
@@ -59,7 +61,6 @@ namespace ShipyardExpansion
             #endregion
 
             #region topmastStay
-            BoatPartOption topmastStayNone = Util.CreatePartOption(container, "(no topmast stay)", "(no topmast forestay");
 
             topmastStay1_mast.reefWinch = Util.CopyWinches(topmastStay1_mast.reefWinch, Vector3.zero, Vector3.up);
             topmastStay1_mast.leftAngleWinch = Util.CopyWinches(topmastStay1_mast.leftAngleWinch, Vector3.zero, new Vector3(-0.2f, -0.2f, -0.17f));
@@ -88,15 +89,7 @@ namespace ShipyardExpansion
             topmastStay3_mast.leftAngleWinch = topmastStay2_mast.leftAngleWinch;
             topmastStay3_mast.rightAngleWinch = topmastStay2_mast.rightAngleWinch;
 
-            Mast topmastStay4_mast = Util.CopyMast(container.Find("forestay_0_long_inner"), new Vector3(0.7f, 25.27f, 0f), new Vector3(318, 270, 90), new Vector3(1, 1, 0.79f), "midstay_f_upper", "topmast midstay", 38);
-            topmastStay4_mast.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[0] };
-            topmastStay4_mast.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.leftAngleWinch[0] };
-            topmastStay4_mast.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.rightAngleWinch[0] };
-            topmastStay4_mast.mastReefAtt = new Transform[1] { topmastStay2_mast.mastReefAtt[0] };
-            topmastStay4_mast.mastHeight = 11;
-
-            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { topmastStayNone, topmastStay1.GetComponent<BoatPartOption>(), topmastStay2.GetComponent<BoatPartOption>(), topmastStay3.GetComponent<BoatPartOption>(), topmastStay4_mast.GetComponent<BoatPartOption>() });
-            topmastStay1.GetComponent<BoatPartOption>().requiresDisabled.Add(container.Find("forestay_1_long").GetComponent<BoatPartOption>());
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "outer_forestay_empty", "(no outer forestay)"), topmastStay1.GetComponent<BoatPartOption>(), topmastStay2.GetComponent<BoatPartOption>(), topmastStay3.GetComponent<BoatPartOption>(), });
 
             partsList.availableParts[3].partOptions.Remove(topmastStay1.GetComponent<BoatPartOption>());
             partsList.availableParts[3].partOptions.Remove(topmastStay2.GetComponent<BoatPartOption>());
@@ -202,7 +195,7 @@ namespace ShipyardExpansion
             //Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { shrouds_side_opt, shrouds_back_opt });
             #endregion
 
-            #region foreTopmast
+            #region foreTopmast // alt pos = (9.256f, 0, 22.9653f), alt scale = (1, 1, 0.7f)
             Mast foreTopmast = Util.CopyMast(topMast1, (topMast1.localPosition - mainMast1.localPosition) + foremast.transform.localPosition, "mast_04_extension", "fore topmast", 44);
             //foreTopmast.mastHeight = 5f;
             //foreTopmast.extraBottomHeight = 0.6f;
@@ -426,7 +419,7 @@ namespace ShipyardExpansion
             mizShrSideOld.GetComponent<BoatPartOption>().enabled = false;
             #endregion
 
-            #region mizzenTopmast
+            #region mizzenTopmast // alt pos = (-6.7964f, 0.01f, 22.9662f), alt scale = (1, 1, 0.7f)
             Mast mizzenTopmast = Util.CopyMast(topMast2, (topMast2.localPosition - mainMast2.localPosition) + mizzenMast2.transform.localPosition, "mast_003_extension", "mizzen topmast", 39);
             //mizzenTopmast.mastHeight = 5f;
             //mizzenTopmast.extraBottomHeight = 0.6f;
@@ -491,7 +484,7 @@ namespace ShipyardExpansion
 
             #region middleStays
             var src5 = container.Find("part_stay_mid_0");
-            var middlestay_2 = Util.CopyMast(src5, new Vector3(-6.75f, 17.8f, 0), new Vector3(315.8f, 270, 90), new Vector3(1, 1, 0.845f), "part_stay_mid_2", "middlestay 1-2", 34);
+            var middlestay_2 = Util.CopyMast(src5, new Vector3(-6.75f, 17.8f, 0), new Vector3(315.8f, 270, 90), new Vector3(1, 1, 0.845f), "part_stay_mid_2", "mizzen stay 1-2", 34);
             middlestay_2.reefWinch = Util.CopyWinches(middlestay_2.reefWinch, src5.localPosition, new Vector3(-7.708f, src5.localPosition.y, 0));
             middlestay_2.reefWinch[0].transform.localEulerAngles = new Vector3(0, 90, 0);
             middlestay_2.transform.GetChild(0).localScale = new Vector3(3.6f, 3.24f, 3.8f);
@@ -504,35 +497,30 @@ namespace ShipyardExpansion
             middlestay_2.GetComponent<BoatPartOption>().requires[1] = mizzenMast2.GetComponent<BoatPartOption>();
             partsList.availableParts[8].partOptions.Add(middlestay_2.GetComponent<BoatPartOption>());
             
-            var middlestay_3 = Util.CopyMast(src5, new Vector3(-9.86f, 14.57f, 0), new Vector3(312f, 270, 90), new Vector3(1, 1, 0.75f), "part_stay_mid_3", "middlestay 2-1", 36);
+            var middlestay_3 = Util.CopyMast(src5, new Vector3(-9.86f, 14.57f, 0), new Vector3(312f, 270, 90), new Vector3(1, 1, 0.75f), "part_stay_mid_3", "mizzen stay 2-1", 36);
             middlestay_3.reefWinch = Util.CopyWinches(middlestay_3.reefWinch, src5.localPosition, new Vector3(-6.55f, src5.localPosition.y, 0));
             middlestay_3.transform.GetChild(0).localScale = new Vector3(4.5f, 3.96f, 4.5f);
             middlestay_3.transform.GetChild(1).localScale = new Vector3(2.28f, 1.99f, 2.33f);
             middlestay_3.mastHeight = 14;
-            //middlestay_3.orderIndex = 24;
-            //middlestay_3.Awake();
             middlestay_3.GetComponent<BoatPartOption>().requires[0] = structure.Find("mast_1").GetComponent<BoatPartOption>();
             partsList.availableParts[8].partOptions.Add(middlestay_3.GetComponent<BoatPartOption>());
-            
-            var middlestay_fore = Util.CopyMast(src5, new Vector3(0.3f, 17.7f, 0), new Vector3(308.7f, 270, 90), new Vector3(1, 1, 0.71f), "part_stay_mid_fore", "fore middlestay", 37);
-            middlestay_fore.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[1] };
-            middlestay_fore.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.leftAngleWinch[1] };
-            middlestay_fore.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.rightAngleWinch[1] };
-            middlestay_fore.transform.GetChild(0).localScale = new Vector3(4.5f, 3.96f, 4.5f);
-            middlestay_fore.transform.GetChild(1).localScale = new Vector3(2.28f, 1.99f, 2.33f);
-            middlestay_fore.mastHeight = 13;
-            //middlestay_fore.orderIndex = 23;
-            //middlestay_fore.Awake();
-            middlestay_fore.GetComponent<BoatPartOption>().requires = new List<BoatPartOption>() {  mainMast2.GetComponent<BoatPartOption>(), foremast.GetComponent<BoatPartOption>() };
 
-            // topmast midstay
-            var middlestayTopmast = Util.CopyMast(middlestay_2.transform, middlestay_2.transform.localPosition + new Vector3(0, 7.7f, 0), "part_stay_mid_topmast", "topmast middlestay", 40);
+            Mast middlestay_4 = Util.CopyMast(middlestay_2.transform, new Vector3(-6.89f, 17.8f, 0f), new Vector3(305, 270, 90), new Vector3(1, 1, 0.6f), "part_stay_mid_4", "mizzen stay 2-2", 46);
+            middlestay_4.GetComponent<BoatPartOption>().requires.Remove(mainMast1.GetComponent<BoatPartOption>());
+            middlestay_4.GetComponent<BoatPartOption>().requires.Add(mainMast2.GetComponent<BoatPartOption>());
+            partsList.availableParts[8].partOptions.Add(middlestay_4.GetComponent<BoatPartOption>());
+
+            // topmast midstay // alt pos = (-6.4f, 0, 22.99f)
+            var middlestayTopmast = Util.CopyMast(middlestay_2.transform, new Vector3(-6.4f, 25.4f, 0), middlestay_2.transform.localEulerAngles, new Vector3(1, 1, 0.818f), "part_stay_mid_topmast", "mizzen topstay 1-2", 40);
             middlestayTopmast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenTopmast.GetComponent<BoatPartOption>(), mainMast1.GetComponent<BoatPartOption>() };
             middlestayTopmast.reefWinch = Util.CopyWinches(middlestayTopmast.reefWinch, mizzenMast2.transform.localPosition, mizzenMast2.transform.localPosition + new Vector3(0f, 0.6f, 0f));
             middlestayTopmast.leftAngleWinch = Util.CopyWinches(middlestayTopmast.leftAngleWinch, middlestayTopmast.leftAngleWinch[0].transform.localPosition, middlestayTopmast.leftAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.05f, 0));
             middlestayTopmast.rightAngleWinch = Util.CopyWinches(middlestayTopmast.rightAngleWinch, middlestayTopmast.rightAngleWinch[0].transform.localPosition, middlestayTopmast.rightAngleWinch[0].transform.localPosition + new Vector3(0.6f, -0.05f, 0));
 
-            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { Util.CreatePartOption(container, "(empty fore midstay)", "(no fore middlestay)"), middlestay_fore.GetComponent<BoatPartOption>(), middlestayTopmast.GetComponent<BoatPartOption>() });
+            Mast middlestayTopmast2 = Util.CopyMast(middlestayTopmast.transform, new Vector3(-6.54f, 25.4f, 0), new Vector3(303.6f, 270, 90), new Vector3(1, 1, 0.59f), "stay_mid_topmast", "mizzen topstay 2-2", 47); // alt pos = (-6.5f, 23, 0)
+            middlestayTopmast2.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenTopmast.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
+            
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption>() { Util.CreatePartOption(container, "(empty fore midstay)", "(no mizzen topstay)"), middlestayTopmast.GetComponent<BoatPartOption>(), middlestayTopmast2.GetComponent<BoatPartOption>() });
             #endregion
 
 
@@ -656,12 +644,38 @@ namespace ShipyardExpansion
 
             #endregion
 
-            #region fore topmast forestay
+            #region fore topmast forestay // alternate pos = (9.7f, 22.624f, 0), alt rot = (301.8f, 270, 90), alt scale = (1, 1, 0.84f)
             Mast foreTopmastForestay = Util.CopyMast(topmastStay1, new Vector3(9.7f, topmastStay1.localPosition.y, topmastStay1.localPosition.z), new Vector3(297.8f, topmastStay1.localEulerAngles.y, topmastStay1.localEulerAngles.z), new Vector3(1, 1, 0.92f), "forestay_foremast_extension", "fore topmast forestay", 45);
+            foreTopmastForestay.reefWinch = Util.CopyWinches(foreTopmastForestay.reefWinch, topmastStay1.localPosition, foreTopmastForestay.transform.localPosition + new Vector3(0.15f, 0, 0));
+            foreTopmastForestay.mastReefAtt = foreTopmast.mastReefAtt;
             BoatPartOption foreTopmastForestayOpt = foreTopmastForestay.GetComponent<BoatPartOption>();
             foreTopmastForestayOpt.requires.Remove(topMast1.GetComponent<BoatPartOption>());
             foreTopmastForestayOpt.requires.Add(foreTopmast.GetComponent<BoatPartOption>());
             partsList.availableParts[11].partOptions.Add(foreTopmastForestayOpt);
+
+            #endregion
+
+            #region main topmast midstay
+            Mast topmastStay4_mast = Util.CopyMast(container.Find("forestay_0_long_inner"), new Vector3(0.7f, 25.27f, 0f), new Vector3(318, 270, 90), new Vector3(1, 1, 0.79f), "midstay_f_upper", "main topstay", 38);
+            topmastStay4_mast.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[0] };
+            topmastStay4_mast.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.leftAngleWinch[0] };
+            topmastStay4_mast.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.rightAngleWinch[0] };
+            topmastStay4_mast.mastReefAtt = new Transform[1] { topmastStay2_mast.mastReefAtt[0] };
+            topmastStay4_mast.mastHeight = 11;
+            BoatPartOption topmastStayNone = Util.CreatePartOption(container, "(no topmast midstay)", "(no main topstay)");
+
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { topmastStayNone, topmastStay4_mast.GetComponent<BoatPartOption>() });
+
+            var middlestay_fore = Util.CopyMast(src5, new Vector3(0.2f, 17.7f, 0), new Vector3(308.7f, 270, 90), new Vector3(1, 1, 0.71f), "part_stay_mid_fore", "mainstay", 37);
+            middlestay_fore.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[1] };
+            middlestay_fore.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.leftAngleWinch[1] };
+            middlestay_fore.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.rightAngleWinch[1] };
+            middlestay_fore.transform.GetChild(0).localScale = new Vector3(4.5f, 3.96f, 4.5f);
+            middlestay_fore.transform.GetChild(1).localScale = new Vector3(2.28f, 1.99f, 2.33f);
+            //middlestay_fore.mastHeight = 13;
+            middlestay_fore.GetComponent<BoatPartOption>().requires = new List<BoatPartOption>() { mainMast2.GetComponent<BoatPartOption>(), foremast.GetComponent<BoatPartOption>() };
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "main_stay_empty", "(no mainstay)"), middlestay_fore.GetComponent<BoatPartOption>() });
+
             #endregion
 
             #region late adjustments
