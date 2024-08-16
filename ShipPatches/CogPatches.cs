@@ -443,6 +443,48 @@ namespace ShipyardExpansion
             }*/
             #endregion
 
+            #region bermuda mast 2
+            /*Mast bermuda2 = Util.CopyMast(bowspritM, new Vector3(-1, 0, 14.5f), new Vector3(0, 340, 0), Vector3.one, "bermuda2", "bermuda mast 2", 42);
+            Transform bermuda2Mesh = UnityEngine.Object.Instantiate(bowsprit, bermuda2.transform, false);
+            bermuda2Mesh.localEulerAngles = Vector3.zero;
+            bermuda2Mesh.localPosition = Vector3.zero;
+            bermuda2Mesh.localScale = new Vector3(1, 1, 1.63f);
+            bermuda2Mesh.GetComponent<Renderer>().material.color = Color.white;
+            bermuda2.walkColMast.parent = UnityEngine.Object.Instantiate(new GameObject { name = bermuda2.name }.transform, bermuda2.walkColMast.parent);
+            bermuda2.walkColMast.localScale = bermuda2Mesh.localScale;
+            bermuda2.walkColMast.localRotation = bermuda2Mesh.localRotation;
+            bermuda2.walkColMast.localPosition = bermuda2Mesh.localPosition;
+            bermuda2.walkColMast = bermuda2.walkColMast.parent;
+            bermuda2.walkColMast.localScale = bermuda2.transform.localScale;
+            bermuda2.walkColMast.localRotation = bermuda2.transform.localRotation;
+            bermuda2.walkColMast.localPosition = bermuda2.transform.localPosition;
+
+            bermuda2.leftAngleWinch = bermudaMast.leftAngleWinch;
+            bermuda2.rightAngleWinch = bermudaMast.rightAngleWinch;
+            bermuda2.mastHeight = 14.5f;
+            bermuda2.onlyStaysails = true;
+            bermuda2.onlySquareSails = false;
+            Transform berm2Att = UnityEngine.Object.Instantiate(bermudaMast.mastReefAtt[0].parent, bermuda2.transform, true);
+            berm2Att.localPosition = new Vector3(-0.24f, 0, 0);
+            bermuda2.mastReefAtt = new Transform[] { berm2Att.GetChild(0) };
+            partsList.availableParts[0].partOptions.Add(bermuda2.GetComponent<BoatPartOption>());
+            var bermFlag = UnityEngine.Object.Instantiate(bermudaMast.transform.Find("wind_cloth"), bermuda2.transform);
+            bermFlag.localPosition = new Vector3(0, 0, 0.3f);
+
+            BoatPartOption bermuda2Opt = bermuda2.GetComponent<BoatPartOption>();
+            bermuda2Opt.basePrice = 800;
+            bermuda2Opt.installCost = 125;
+            bermuda2Opt.mass = 90;
+            bermuda2Opt.walkColObject = bermuda2.walkColMast.gameObject;
+
+            bermuda2.reefWinch = new GPButtonRopeWinch[mainMast1M.reefWinch.Length];
+            for (int i = 0; i < mainMast1M.reefWinch.Length; i++)
+            {
+                var winch = UnityEngine.Object.Instantiate(mainMast1M.reefWinch[i], bermuda2.transform, false);
+                winch.transform.localPosition = new Vector3(winch.transform.localPosition.x, winch.transform.localPosition.y, -14.5f);
+                bermuda2.reefWinch[i] = winch;
+            }*/
+            #endregion
         }
         private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol, BoatPartOption option)
         {
