@@ -89,7 +89,6 @@
     <Compile Include="AltWinch.cs" />
     <Compile Include="BermudaMastStuff.cs" />
     <Compile Include="PartRefs.cs" />
-    <Compile Include="SaveLoadPatches.cs" />
     <Compile Include="ShipPatches\BrigPatches.cs" />
     <Compile Include="ShipPatches\CogPatches.cs" />
     <Compile Include="ShipPatches\DhowPatches.cs" />
