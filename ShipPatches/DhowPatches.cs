@@ -155,6 +155,22 @@ namespace ShipyardExpansion
             Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "(no midstay)", "(no middlestay)"), midstayOpt});
             #endregion
 
+            #region telltales
+            BoatPartOption telltaleNone = Util.CreatePartOption(container, "telltale_none", "no telltale");
+            BoatPartOption telltaleMain = Util.CreatePartOption(container, "telltale_main", "mainmast telltale");
+            telltaleMain.basePrice = 10;
+            BoatPartOption telltaleMizzen = Util.CreatePartOption(container, "telltale_mizzen", "mizzen telltale");
+            telltaleMizzen.basePrice = 10;
+            telltaleMizzen.requires = new List<BoatPartOption> { mizzen_new.GetComponent<BoatPartOption>() };
+            GameObject flagMain0 = mainMast.Find("shrouds").Find("flag_low").gameObject;
+            GameObject flagMain1 = mainMastTall.Find("shrouds").Find("flag_low").gameObject;
+            GameObject flagMain2 = rakedMain.transform.Find("shrouds").Find("flag_low").gameObject;
+            GameObject flagMizzen = mizzenShrouds.Find("flag_low").gameObject;
+            telltaleMain.childOptions = new GameObject[] { flagMain0, flagMain1, flagMain2 };
+            telltaleMizzen.childOptions = new GameObject[] { flagMizzen };
+            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { telltaleMain, telltaleMizzen, telltaleNone });
+            #endregion
+
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
             lowForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
