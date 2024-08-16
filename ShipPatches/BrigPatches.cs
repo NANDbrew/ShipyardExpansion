@@ -382,12 +382,12 @@ namespace ShipyardExpansion
             GPButtonRopeWinch[] topmast1LeftAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mainMast1.GetComponent<Mast>().leftAngleWinch[0], new Vector3(-13.7f, 5.6f, 2.48f)) };
             GPButtonRopeWinch[] topmast1RightAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mainMast1.GetComponent<Mast>().rightAngleWinch[0], new Vector3(-13.7f, 5.6f, -2.48f)) };
 
-            GPButtonRopeWinch[] topmast2Reef = Util.CopyWinches(new GPButtonRopeWinch[] { mizzenMast1.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, -0.66f, -0.642f));
+            GPButtonRopeWinch[] topmast2Reef = Util.CopyWinches(new GPButtonRopeWinch[] { mizzenMast1.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0.1f, -0.66f, -0.62f));
             topmast2Reef[0].transform.localScale = new Vector3(0.9f, 0.9f, -0.9f);
             GPButtonRopeWinch[] topmast21Reef = Util.CopyWinches(new GPButtonRopeWinch[] { mizzenMast2.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0, -0.642f));
             topmast21Reef[0].transform.localScale = new Vector3(0.9f, 0.9f, -0.9f);
-            GPButtonRopeWinch[] topmast2Angle = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast1.GetComponent<Mast>().midAngleWinch.Last(), new Vector3(-15.2f, 5.53f, 0f)) };
-            topmast2Angle[0].transform.localEulerAngles = new Vector3(270, 0, 0);
+            GPButtonRopeWinch[] topmast2Angle = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast1.GetComponent<Mast>().leftAngleWinch.Last(), new Vector3(-15.2f, 5.53f, 0f)) };
+            //topmast2Angle[0].transform.localEulerAngles = new Vector3(270, 0, 0);
             GPButtonRopeWinch[] topmast2LeftAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast1.GetComponent<Mast>().leftAngleWinch[0], new Vector3(-15.3f, 5.726f, 2.27f)) };
             GPButtonRopeWinch[] topmast2RightAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast1.GetComponent<Mast>().rightAngleWinch[0], new Vector3(-15.3f, 5.726f, -2.27f)) };
 
@@ -411,7 +411,7 @@ namespace ShipyardExpansion
             
             var midstayTop01 = container.Find("midstay_0-1_top");
             Mast mainTopstay2 = Util.CopyMast(midstayTop01, new Vector3(0.1f, 32.5f, 0), midstayTop01.localEulerAngles, new Vector3(1, 1, 0.97f), "mainstay_topmast_1-2", "main topmast stay 2", 42);
-            mainTopstay2.reefWinch = Util.CopyWinches(mainTopstay2.reefWinch, Vector3.zero, new Vector3(0f, 0, 0.66f));
+            mainTopstay2.reefWinch = Util.CopyWinches(mainTopstay2.reefWinch, Vector3.zero, new Vector3(0f, 0.66f, 0f));
             mainTopstay2.leftAngleWinch = mainTopstay1.leftAngleWinch;
             mainTopstay2.rightAngleWinch = mainTopstay1.rightAngleWinch;
             mainTopstay2.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foreMast1.GetComponent<BoatPartOption>() };
@@ -566,7 +566,7 @@ namespace ShipyardExpansion
             topmast2Part.partOptions.Add(topmast2.GetComponent<BoatPartOption>());
             topmast2.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenMast1.GetComponent<BoatPartOption>() };
 
-            parent.parent.Find("mizzen_topmast_stay_1-0").GetComponent<BoatPartOption>().requires.Add(topmast2.GetComponent<BoatPartOption>());
+            parent.parent.Find("mizzen_topmast_stay_1-1").GetComponent<BoatPartOption>().requires.Add(topmast2.GetComponent<BoatPartOption>());
 
             Mast topmast21 = Util.CopyMast(topmast2.transform, new Vector3(-7.95f, 0, 27f), "mast_miz1_extension_1", "mizzen topmast 2", 40);
             topmast21.reefWinch = extra12;
@@ -574,7 +574,7 @@ namespace ShipyardExpansion
             topmast2Part.partOptions.Add(topmast21.GetComponent<BoatPartOption>());
             topmast21.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mizzenMast2.GetComponent<BoatPartOption>() };
 
-            parent.parent.Find("mizzen_topmast_stay_1-1").GetComponent<BoatPartOption>().requires.Add(topmast21.GetComponent<BoatPartOption>());
+            parent.parent.Find("mizzen_topmast_stay_1-2").GetComponent<BoatPartOption>().requires.Add(topmast21.GetComponent<BoatPartOption>());
 
             //yield return new WaitUntil(() => PartRefs.cogCol != null && PartRefs.sanbuqCol != null);
             var mast_001_col_parent = UnityEngine.Object.Instantiate(new GameObject(), walkCol).transform;
