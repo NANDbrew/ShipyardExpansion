@@ -255,6 +255,7 @@ namespace ShipyardExpansion
             m3brace.localPosition = new Vector3(0, 0, -17.55f);
 
             UnityEngine.Object.Instantiate(mizzenMast2.Find("mast_front_000"), mizzen3.transform, true);
+            UnityEngine.Object.Instantiate(mizzenMast2M.walkColMast.Find("mast_front_000"), mizzen3.walkColMast, true);
             mizzen3.midRopeAtt[0] = UnityEngine.Object.Instantiate(mizzenMast2M.midRopeAtt[0].parent, mizzen3.transform, true).GetChild(0);
             for (int i = 0; i < mizzen3.midRopeAtt.Length; i++)
             {
@@ -298,7 +299,7 @@ namespace ShipyardExpansion
             #region topmast midstay 2
             Mast midstay2WinchSource = container.Find("midstay_0-0").GetComponent<Mast>();
             Transform midstay2Source = container.Find("midstay_f-0_top");
-            Mast midstay2 = Util.CopyMast(midstay2Source, new Vector3(-8.7f, midstay2Source.localPosition.y, 0f), midstay2Source.localEulerAngles, new Vector3(1f, 1f, 1.16f), "midstay_1-m1_top", "mizzen topstay", 43);
+            Mast midstay2 = Util.CopyMast(midstay2Source, new Vector3(-8.7f, midstay2Source.localPosition.y, 0f), midstay2Source.localEulerAngles, new Vector3(1f, 1f, 1.16f), "midstay_1-m1_top", "mizzen topstay", 45);
             BoatPartOption midstay2Opt = midstay2.GetComponent<BoatPartOption>();
             midstay2.reefWinch = Util.CopyWinches(midstay2WinchSource.reefWinch, midstay2WinchSource.reefWinch[0].transform.localPosition, new Vector3(midstay2WinchSource.reefWinch[0].transform.localPosition.x, -midstay2WinchSource.reefWinch[0].transform.localPosition.y, midstay2WinchSource.reefWinch[0].transform.localPosition.z));
             midstay2.reefWinch[0].transform.localScale = new Vector3(midstay2.reefWinch[0].transform.localScale.x, midstay2.reefWinch[0].transform.localScale.y, -midstay2.reefWinch[0].transform.localScale.z);
@@ -312,7 +313,7 @@ namespace ShipyardExpansion
             #endregion            
             #region topmast midstay 3
             Transform midstay3Source = container.Find("midstay_1-0");
-            Mast midstay3 = Util.CopyMast(midstay3Source, new Vector3(-8.6f, 23.25f, 0f), midstay3Source.localEulerAngles, new Vector3(1f, 1f, 0.97f), "midstay_0-m1_top", "mizzen topstay 2", 44);
+            Mast midstay3 = Util.CopyMast(midstay3Source, new Vector3(-8.6f, 23.25f, 0f), midstay3Source.localEulerAngles, new Vector3(1f, 1f, 0.97f), "midstay_0-m1_top", "mizzen topstay 2", 46);
             BoatPartOption midstay3Opt = midstay3.GetComponent<BoatPartOption>();
             midstay3.reefWinch = midstay2.reefWinch;
             midstay3.leftAngleWinch = midstay2.leftAngleWinch;
