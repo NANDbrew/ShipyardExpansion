@@ -364,6 +364,28 @@ namespace ShipyardExpansion
             BoatPartOption spritTopmast2_opt = spritTopmast2.GetComponent<BoatPartOption>();
             partOption.requires = new List<BoatPartOption> { bowsprit };
             spritTopmast2_opt.requires = new List<BoatPartOption> { bowspritLong };
+
+            var spritBrace20 = spritTopmast2.transform.Find("sprit_brace_R");
+            spritBrace20.localPosition = new Vector3(-1.75f, 0.15f, -3.94f);
+            spritBrace20.localEulerAngles = new Vector3(7, 64.35f, 84.96f);
+            spritBrace20.localScale = new Vector3(0.95f, 0.95f, 1.2f);
+            var spritBrace21 = spritTopmast2.transform.Find("sprit_brace_L");
+            spritBrace21.localPosition = new Vector3(-1.75f, -0.15f, -3.94f);
+            spritBrace21.localEulerAngles = new Vector3(353.3f, 64.35f, 95.04f);
+            spritBrace21.localScale = new Vector3(0.95f, 0.95f, 1.2f);
+
+            var spritBrace20Col = spritBrace20.GetComponent<Mast>().walkColMast;
+            spritBrace20Col.parent = spritTopmast2.walkColMast;
+            spritBrace20Col.localPosition = new Vector3(-1.75f, 0.15f, -3.94f);
+            spritBrace20Col.localEulerAngles = new Vector3(7, 64.35f, 84.96f);
+            spritBrace20Col.localScale = new Vector3(0.95f, 0.95f, 1.2f);
+            var spritBrace21Col = spritBrace21.GetComponent<Mast>().walkColMast;
+            spritBrace21Col.parent = spritTopmast2.walkColMast;
+            spritBrace21Col.localPosition = new Vector3(-1.75f, -0.15f, -3.94f);
+            spritBrace21Col.localEulerAngles = new Vector3(353.3f, 64.35f, 95.04f);
+            spritBrace21Col.localScale = new Vector3(0.95f, 0.95f, 1.2f);
+
+
             BoatPartOption stmNone = Util.CreatePartOption(structure, "(no-sprit_topmast)", "(no sprit topmast)");
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption, spritTopmast2_opt });
             bowspritLong.transform.GetChild(0).localPosition += new Vector3(0, 0, -1f);
