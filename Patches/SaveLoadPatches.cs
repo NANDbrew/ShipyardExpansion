@@ -25,6 +25,9 @@ namespace ShipyardExpansion
         [HarmonyPrefix]
         public static void Prefix(ref SaveBoatCustomizationData data, BoatRefs ___refs, BoatCustomParts ___parts)
         {
+            SaveCleaner.Convert(data, ___refs);
+
+            if (!Plugin.cleanLoad.Value) return;
             data = SaveCleaner.CleanLoad(data, ___refs, ___parts);
         }
     }

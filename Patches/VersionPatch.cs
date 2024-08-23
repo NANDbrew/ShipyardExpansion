@@ -28,13 +28,13 @@ namespace ShipyardExpansion
     internal static class VersionPatch2
     {
         [HarmonyPostfix]
-        public static void Postfix()
+        public static void Prefix()
         {
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
                 string text = new string((from a in GameState.modData[Plugin.PLUGIN_ID] where char.IsNumber(a) select a).ToArray());
                 Debug.Log("save version = " + text);
-                SaveConvert.saveVersion = Convert.ToInt32(text);
+                SaveCleaner.saveVersion = Convert.ToInt32(text);
             }
 
         }

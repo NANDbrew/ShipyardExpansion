@@ -14,7 +14,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.3.0";
+        public const string PLUGIN_VERSION = "0.3.1";
 
         internal const int mastListSize = 64;
 
@@ -38,6 +38,9 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> unrollSails;
         internal static ConfigEntry<int> tiltOffset;
 
+        internal static ConfigEntry<bool> addSails;
+        internal static ConfigEntry<bool> cleanLoad;
+
 
         private void Awake()
         {
@@ -49,16 +52,17 @@ namespace ShipyardExpansion
             moddedBoats = new List<BoatCustomParts>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            //convertSave = Config.Bind("Fixers", "Convert saves", false, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.1.0"));
+            convertSave = Config.Bind("Fixers", "Convert saves", false, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.3.0"));
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
+            cleanLoad = Config.Bind("Fixers", "Clean load", true, new ConfigDescription("Sanitize ship customizations on load"));
 
-
-            vertLateens = Config.Bind("Settings", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
-            vertFins = Config.Bind("Settings", "Vertical fins", true, new ConfigDescription("Keep fin sails vertical instead of slanting with the mast"));
+            vertLateens = Config.Bind("Slant", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
+            vertFins = Config.Bind("Slant", "Vertical fins", true, new ConfigDescription("Keep fin sails vertical instead of slanting with the mast"));
             lenientLateens = Config.Bind("Settings", "Lenient lateens", false, new ConfigDescription("Ignore collisions with the back edge of lateen sails"));
             lenientSquares = Config.Bind("Settings", "Lenient squares", false, new ConfigDescription("Ignore collisions with the sides of square sails"));
             unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
-            tiltOffset = Config.Bind("Settings", "Tilt Offset", 0, new ConfigDescription("", new AcceptableValueRange<int>(-25, 25)));
+            tiltOffset = Config.Bind("Experimental", "Tilt Offset", 0, new ConfigDescription("Tilt for lateens & fins", new AcceptableValueRange<int>(-15, 15), new ConfigurationManagerAttributes { IsAdvanced = true }));
+            addSails = Config.Bind("Experimental", "Add lug sails", false, new ConfigDescription("Adds new sails in the 'Other' category", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
         }
     }
 }

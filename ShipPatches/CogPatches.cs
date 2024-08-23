@@ -379,7 +379,7 @@ namespace ShipyardExpansion
 
             bottomHelm.walkColObject = wheelHolderCol.gameObject;
             bottomHelm.childOptions = new GameObject[] { wheelHolder.gameObject };
-            partsList.StartCoroutine(AddCopiedPart(structure, walkCols.Find("structure"), topHelm));
+            partsList.StartCoroutine(AddCopiedPart(structure, walkCols.Find("structure"), topHelm, partsList));
 
             Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { bottomHelm, topHelm });
             #endregion
@@ -444,7 +444,7 @@ namespace ShipyardExpansion
             #endregion
 
         }
-        private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol, BoatPartOption option)
+        private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol, BoatPartOption option, BoatCustomParts partsList)
         {
             Debug.Log("trying to add part");
             yield return new WaitUntil(() => PartRefs.sanbuq != null);
@@ -467,6 +467,7 @@ namespace ShipyardExpansion
             holes.gameObject.SetActive(false);
             holesCol.gameObject.SetActive(false);
             //ropes.gameObject.SetActive(false);
+            partsList.RefreshParts();
 
         }
     }

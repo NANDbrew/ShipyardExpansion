@@ -45,7 +45,6 @@ namespace ShipyardExpansion
             //Util.MoveWinches(topmastStay3_mast.reefWinch, mainMast2.localPosition, new Vector3(-0.2f, 0, 0));
             topmastStay3.GetComponent<BoatPartOption>().requiresDisabled.Add(container.Find("forestay_1_long").GetComponent<BoatPartOption>());
 
-
             mainMast1.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 1";
             mainMast2.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 2";
             BoatPartOption mainMastNone = Util.CreatePartOption(container, "(empty mainmast)", "(no main mast)");
@@ -664,7 +663,22 @@ namespace ShipyardExpansion
             topmastStay4_mast.mastHeight = 11;
             BoatPartOption topmastStayNone = Util.CreatePartOption(container, "(no topmast midstay)", "(no main topstay)");
 
-            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { topmastStayNone, topmastStay4_mast.GetComponent<BoatPartOption>() });
+            Mast topmastStay6_mast = Util.CopyMast(topmastStay4_mast.transform, new Vector3(0.7f, 25.27f, 0f), new Vector3(322, 270, 90), new Vector3(1, 1, 1.1f), "midstay_f_upper3", "main topstay 2", 40);
+            topmastStay6_mast.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[0] };
+            topmastStay6_mast.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.leftAngleWinch[0] };
+            topmastStay6_mast.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.rightAngleWinch[0] };
+            topmastStay6_mast.mastReefAtt = new Transform[1] { topmastStay2_mast.mastReefAtt[0] };
+
+            Mast topmastStay5_mast = Util.CopyMast(topmastStay4_mast.transform, new Vector3(5.7f, 25.27f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 0.75f), "midstay_f_upper2", "main topstay 3", 39);
+            topmastStay5_mast.reefWinch = new GPButtonRopeWinch[1] { topmastStay1_mast.reefWinch[0] };
+            topmastStay5_mast.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay1_mast.leftAngleWinch[0] };
+            topmastStay5_mast.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay1_mast.rightAngleWinch[0] };
+            topmastStay5_mast.mastReefAtt = new Transform[1] { topmastStay1_mast.mastReefAtt[0] };
+            //topmastStay5_mast.mastHeight = 11;
+            // BoatPartOption topmastStayNone = Util.CreatePartOption(container, "(no topmast midstay)", "(no main topstay)");
+
+
+            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { topmastStayNone, topmastStay4_mast.GetComponent<BoatPartOption>(), topmastStay6_mast.GetComponent<BoatPartOption>(), topmastStay5_mast.GetComponent<BoatPartOption>() });
 
             var middlestay_fore = Util.CopyMast(src5, new Vector3(0.2f, 17.7f, 0), new Vector3(308.7f, 270, 90), new Vector3(1, 1, 0.71f), "part_stay_mid_fore", "mainstay", 37);
             middlestay_fore.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[1] };
@@ -703,6 +717,18 @@ namespace ShipyardExpansion
             topmastStay1.GetComponent<BoatPartOption>().requires.Add(foremastNone);
             topmastStay2.GetComponent<BoatPartOption>().requires.Add(foremastNone);
             topmastStay4_mast.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foremast.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
+
+            var flag1 = UnityEngine.Object.Instantiate(mizzenMast1.Find("flag"), topMast1, false);
+            flag1.localPosition = new Vector3(0, 0, 0.5f);
+            flag1.name = "flagT";
+            UnityEngine.Object.Instantiate(flag1, topMast2, false);
+            UnityEngine.Object.Instantiate(flag1, foreTopmast.transform, false);
+            UnityEngine.Object.Instantiate(flag1, mizzenTopmast.transform, false);
+
+            container.Find("(empty topmast)").GetComponent<BoatPartOption>().childOptions = topMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { mainMast1.Find("flag (2)").gameObject, mainMast2.Find("flag (1)").gameObject });
+            foreTopmastNone.childOptions = foreTopmastNone.childOptions.AddToArray(foremast.transform.Find("flag (2)").gameObject);
+            mizzenTopmastNone.childOptions = mizzenTopmastNone.childOptions.AddToArray(mizzenMast2.transform.Find("flag (1)").gameObject);
+
             #endregion
             //add boat to list of modified boats
 

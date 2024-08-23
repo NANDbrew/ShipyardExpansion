@@ -283,6 +283,8 @@ namespace ShipyardExpansion
             newRoofOpt.installCost = 300;
             newRoofOpt.mass = 45;
             partsList.availableParts[3].partOptions.Add(newRoofOpt);
+            partsList.RefreshParts();
+
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿Squares:
+X and Z must match
+Brig and cog squares work
+Trapezoidals work
+
+Jibs:
+Y and Z must match
+Brig and cog jibs work
+Cutter jibs kinda work
+
+Others:
+all axes must match
+

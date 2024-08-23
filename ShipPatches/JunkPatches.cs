@@ -350,7 +350,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region flying forestay
-            /*Mast outerForestay = Util.CopyMast(forestay, new Vector3(12.7f, 22.2f, 0f), new Vector3(314.5f, 270f, 90f), new Vector3(1, 1, 0.95f), "forestay_outer", "outer forestay", 39);
+      /*      Mast outerForestay = Util.CopyMast(forestay, new Vector3(12.7f, 22.2f, 0f), new Vector3(314.5f, 270f, 90f), new Vector3(1, 1, 0.95f), "forestay_outer", "outer forestay", 39);
             outerForestay.reefWinch = Util.CopyWinches(outerForestay.reefWinch, outerForestay.reefWinch[0].transform.localPosition, new Vector3(outerForestay.reefWinch[0].transform.localPosition.x, outerForestay.reefWinch[0].transform.localPosition.y, -outerForestay.reefWinch[0].transform.localPosition.z));
             outerForestay.mastReefAttExtension = fore1ExtList;
             BoatPartOption outerForestayOpt = outerForestay.GetComponent<BoatPartOption>();
@@ -370,6 +370,13 @@ namespace ShipyardExpansion
             BoatPartOption upperFmastStayOpt = upperForemastStay.GetComponent<BoatPartOption>();
             upperFmastStayOpt.requires = new List<BoatPartOption> { foremast2.GetComponent<BoatPartOption>(), mainMast2.GetComponent<BoatPartOption>() };
             partsList.availableParts[5].partOptions.Add(upperFmastStayOpt);
+
+            Mast foremastForestayR = Util.CopyMast(forestaySource, new Vector3(15.8f, 16f, 0), new Vector3(299f, 270f, 90f), new Vector3(1, 1, 1.05f), "forestay_foremast_3", "foremast forestay 3", 40);
+            //foremastForestayR.mastHeight = 12f;
+            foremastForestayR.mastReefAtt[0] = foremast2.transform.GetChild(4).GetChild(0);
+            foremastForestayR.mastReefAttExtension = new Transform[] { foremast2.transform.GetChild(5).GetChild(0) };
+            foremastForestayR.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foremast2.GetComponent<BoatPartOption>(), flatsprit.GetComponent<BoatPartOption>() };
+            partsList.availableParts[4].partOptions.Add(foremastForestayR.GetComponent<BoatPartOption>());
 
             #region bed
             BoatPartOption bedOpt = Util.AddPartOption(container.Find("bed").gameObject, "bed");
@@ -449,10 +456,11 @@ namespace ShipyardExpansion
             midstay.mastReefAttExtension[0] = topMast1.transform.GetChild(0).GetChild(2);
 */
             topMast1.GetComponent<MeshRenderer>().material.color = new Color(0.65f, 0.7f, 0.7f);
-
-            //Debug.Log("copied topmast");
             topMast1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { parentMast.GetComponent<BoatPartOption>() };
             topmastPart.partOptions.Add(topMast1.GetComponent<BoatPartOption>());
+
+            topMast1.transform.Find("flagT").gameObject.SetActive(false);
+            var wind_flag = UnityEngine.Object.Instantiate(structure.Find("mast_mid_0").Find("flag_cloth (2)"), topMast1.transform, false);
             //mizzenMast2M.leftAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.leftAngleWinch[0] };
             //mizzenMast2M.rightAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.rightAngleWinch[0] };
             //Debug.Log("hacked winches");

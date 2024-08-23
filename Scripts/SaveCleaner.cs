@@ -10,6 +10,7 @@ namespace ShipyardExpansion
 {
     public static class SaveCleaner
     {
+        public static int saveVersion = 0;
         public static void CleanSave(List<BoatCustomParts> boats, Dictionary<BoatPart, int> stockParts, List<BoatPartOption> stockPartOptions, List<Mast> stockMasts)
         {
             for (int i = 0; i < boats.Count; i++)
@@ -98,6 +99,70 @@ namespace ShipyardExpansion
             }
 
             return data;
+        }
+
+        public static void Convert(SaveBoatCustomizationData data, BoatRefs refs)
+        {
+            if (saveVersion == 0 && data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
+            {
+                data.partActiveOptions.AddRange(new int[refs.GetComponent<BoatCustomParts>().availableParts.Count - data.partActiveOptions.Count]);
+
+                if (refs.GetComponent<SaveableObject>().sceneIndex == 20 && data.partActiveOptions[3] > 3)
+                {
+                    data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
+                    data.partActiveOptions[3] = 4;
+                }
+            }
+
+            if (!Plugin.convertSave.Value) return;
+
+            if (saveVersion >= 30) return;
+            if (refs.GetComponent<SaveableObject>().sceneIndex == 80)
+            {
+                bool flag = false;
+                if (data.partActiveOptions[12] == 1)
+                {
+                    data.partActiveOptions[12] = 0;
+                    data.partActiveOptions[3] = 3;
+                    flag = true;
+                }
+                foreach (SaveSailData sailData in data.sails)
+                {
+                    if (sailData.mastIndex == 33)
+                    {
+                        sailData.mastIndex = 37;
+                        sailData.installHeight = 17f;
+                        flag = true;
+                    }
+                    else if (sailData.mastIndex == 13 && flag)
+                    {
+                        sailData.mastIndex = 37;
+                        sailData.installHeight -= 1;
+                    }
+                }
+                //conversionCounter++;
+            }
+            else if (refs.GetComponent<SaveableObject>().sceneIndex == 20)
+            {
+                while (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
+                {
+                    data.partActiveOptions.Add(0);
+                }
+                foreach (SaveSailData sailData in data.sails)
+                {
+                    if (sailData.mastIndex == 38) // main topstay
+                    {
+                        data.partActiveOptions[19] = 1;
+                    }
+                    else if (sailData.mastIndex == 37) // mainstay
+                    {
+                        data.partActiveOptions[20] = 1;
+                    }
+                }
+                //conversionCounter++;
+            }
+            //Debug.Log("ShipyardExpansion converted " + conversionCounter + " ships");
+            //Plugin.convertSave.Value = false;
         }
     }
 }

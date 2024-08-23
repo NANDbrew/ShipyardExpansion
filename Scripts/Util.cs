@@ -66,7 +66,6 @@ namespace ShipyardExpansion
             }
             source.gameObject.SetActive(true);
             mast.gameObject.SetActive(true);
-            
             //mastComp.Awake();
             return mastComp;
         }
@@ -192,16 +191,6 @@ namespace ShipyardExpansion
             return newPart;
         }
 
-        public static GPButtonRopeWinch[] SetAltWinches(GPButtonRopeWinch[] main, GPButtonRopeWinch[] alt, Transform altParent)
-        {
-            for (int i = 0; i < main.Length; i++)
-            {
-                alt[i].transform.parent = altParent;
-                alt[i].gameObject.AddComponent<AltWinch>();
-                alt[i].GetComponent<AltWinch>().altWinch = main[i];
-            }
-            return alt;
-        }
 
         /*        public static GameObject AddGizmo(Transform transform)
                 {

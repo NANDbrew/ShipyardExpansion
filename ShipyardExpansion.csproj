@@ -73,6 +73,10 @@
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\UnityEngine.Core.2018.1.0\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\UnityEngine.Core.2018.1.0\lib\net35\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -86,24 +90,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AltWinch.cs" />
-    <Compile Include="BermudaMastStuff.cs" />
+    <Compile Include="Patches\BermudaMastStuff.cs" />
+    <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\SaveLoadCustomization.cs" />
+    <Compile Include="SailScaleButton.cs" />
+    <Compile Include="Scripts\Parser.cs" />
     <Compile Include="PartRefs.cs" />
+    <Compile Include="Scripts\SailAdder.cs" />
+    <Compile Include="Scripts\SailScaler.cs" />
+    <Compile Include="Patches\SaveLoadPatches.cs" />
     <Compile Include="ShipPatches\BrigPatches.cs" />
     <Compile Include="ShipPatches\CogPatches.cs" />
     <Compile Include="ShipPatches\DhowPatches.cs" />
     <Compile Include="ShipPatches\JunkPatches.cs" />
     <Compile Include="ShipPatches\KakamPatches.cs" />
-    <Compile Include="Patch.cs" />
+    <Compile Include="Patches\Patch.cs" />
     <Compile Include="ShipPatches\SanbuqPatches.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="SaveCleaner.cs" />
-    <Compile Include="SaveConvert.cs" />
-    <Compile Include="ShipyardPatches.cs" />
-    <Compile Include="ShipyardSailInstallerPatches.cs" />
-    <Compile Include="ShipyardUIPatches.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="VersionPatch.cs" />
+    <Compile Include="Scripts\SaveCleaner.cs" />
+    <Compile Include="Patches\ShipyardPatches.cs" />
+    <Compile Include="Patches\ShipyardSailInstallerPatches.cs" />
+    <Compile Include="Patches\ShipyardUIPatches.cs" />
+    <Compile Include="Scripts\Util.cs" />
+    <Compile Include="Patches\VersionPatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SailScalingNotes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets" Condition="Exists('packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets')" />
