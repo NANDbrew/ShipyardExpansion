@@ -61,7 +61,18 @@ namespace ShipyardExpansion
             }
             else if (buttonType == ButtonType.increaseHeight)
             {
+                if (SailUtil.MastNotTallEnough(mast, sail))
+                {
+                    Debug.Log("mast cannot fit taller sail");
+                    return;
+                }
+
                 sail.GetComponent<SailScaler>().IncreaseHeight();
+                if (sail.GetCurrentInstallHeight() < sail.installHeight)
+                {
+                    GameState.currentShipyard.sailInstaller.MoveHeldSail(sail.installHeight - sail.GetCurrentInstallHeight());
+                }
+
             }
             else if (buttonType == ButtonType.decreaseHeight)
             {
