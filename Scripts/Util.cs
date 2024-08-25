@@ -64,7 +64,7 @@ namespace ShipyardExpansion
                 mastOption.childOptions = new GameObject[0];
                 mastOption.walkColObject = mastComp.walkColMast.gameObject;
             }
-            //source.gameObject.SetActive(true);
+            source.gameObject.SetActive(true);
             mast.gameObject.SetActive(true);
             //mastComp.Awake();
             return mastComp;
