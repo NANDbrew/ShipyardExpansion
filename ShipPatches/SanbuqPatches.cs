@@ -497,7 +497,7 @@ namespace ShipyardExpansion
             partsList.availableParts[8].partOptions.Add(middlestay_2.GetComponent<BoatPartOption>());
             
             var middlestay_3 = Util.CopyMast(src5, new Vector3(-9.86f, 14.57f, 0), new Vector3(312f, 270, 90), new Vector3(1, 1, 0.75f), "part_stay_mid_3", "mizzen stay 2-1", 36);
-            middlestay_3.reefWinch = Util.CopyWinches(middlestay_3.reefWinch, src5.localPosition, new Vector3(-6.55f, src5.localPosition.y, 0));
+            //middlestay_3.reefWinch = Util.CopyWinches(middlestay_3.reefWinch, src5.localPosition, new Vector3(-6.55f, src5.localPosition.y, 0));
             middlestay_3.transform.GetChild(0).localScale = new Vector3(4.5f, 3.96f, 4.5f);
             middlestay_3.transform.GetChild(1).localScale = new Vector3(2.28f, 1.99f, 2.33f);
             middlestay_3.mastHeight = 14;
@@ -663,13 +663,13 @@ namespace ShipyardExpansion
             topmastStay4_mast.mastHeight = 11;
             BoatPartOption topmastStayNone = Util.CreatePartOption(container, "(no topmast midstay)", "(no main topstay)");
 
-            Mast topmastStay6_mast = Util.CopyMast(topmastStay4_mast.transform, new Vector3(0.7f, 25.27f, 0f), new Vector3(322, 270, 90), new Vector3(1, 1, 1.1f), "midstay_f_upper3", "main topstay 2", 40);
+            Mast topmastStay6_mast = Util.CopyMast(topmastStay4_mast.transform, new Vector3(0.7f, 25.27f, 0f), new Vector3(322, 270, 90), new Vector3(1, 1, 1.1f), "midstay_f_upper3", "main topstay 2", 48);
             topmastStay6_mast.reefWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.reefWinch[0] };
             topmastStay6_mast.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.leftAngleWinch[0] };
             topmastStay6_mast.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay2_mast.rightAngleWinch[0] };
             topmastStay6_mast.mastReefAtt = new Transform[1] { topmastStay2_mast.mastReefAtt[0] };
 
-            Mast topmastStay5_mast = Util.CopyMast(topmastStay4_mast.transform, new Vector3(5.7f, 25.27f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 0.75f), "midstay_f_upper2", "main topstay 3", 39);
+            Mast topmastStay5_mast = Util.CopyMast(topmastStay4_mast.transform, new Vector3(5.7f, 25.27f, 0f), new Vector3(315, 270, 90), new Vector3(1, 1, 0.75f), "midstay_f_upper2", "main topstay 3", 49);
             topmastStay5_mast.reefWinch = new GPButtonRopeWinch[1] { topmastStay1_mast.reefWinch[0] };
             topmastStay5_mast.leftAngleWinch = new GPButtonRopeWinch[1] { topmastStay1_mast.leftAngleWinch[0] };
             topmastStay5_mast.rightAngleWinch = new GPButtonRopeWinch[1] { topmastStay1_mast.rightAngleWinch[0] };

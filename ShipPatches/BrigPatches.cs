@@ -51,7 +51,8 @@ namespace ShipyardExpansion
             backstay1_0top.GetComponent<Mast>().mastHeight = 14;
             backstay1_0bottom.GetComponent<Mast>().mastHeight = 14;
             mainMast1.GetComponent<Mast>().mastHeight = 18.8f;
- 
+            mizzenMast1.GetComponent<Mast>().mastHeight += 1f;
+            mizzenMast2.GetComponent<Mast>().mastHeight += 1f;
             #endregion
 
             #region mizzenShrouds
@@ -478,7 +479,7 @@ namespace ShipyardExpansion
             topmastForestay1.leftAngleWinch = Util.CopyWinches(topmastForestay1.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay1.rightAngleWinch = Util.CopyWinches(topmastForestay1.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { bowspritLong.GetComponent<BoatPartOption>() };
-            topmastForestay1.mastHeight = 24;
+            //topmastForestay1.mastHeight = 24;
 
             Transform topMForestaySrc2 = container.Find("forestay_1_top_shortsprit");
             Mast topmastForestay2 = Util.CopyMast(topMForestaySrc2, new Vector3(11.67f, 30.363f, 0), new Vector3(298.7f, 270, 90), new Vector3(1, 1, 1.33f), "forestay_topmast_1", "topmast forestay 2", 49);
@@ -488,7 +489,7 @@ namespace ShipyardExpansion
             topmastForestay2.leftAngleWinch = Util.CopyWinches(topmastForestay2.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay2.rightAngleWinch = Util.CopyWinches(topmastForestay2.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay2.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { bowspritLong.GetComponent<BoatPartOption>() };
-            topmastForestay2.mastHeight = 20.7f;
+            //topmastForestay2.mastHeight = 20.7f;
 
             Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "topmast_forestay_none", "(no outer forestay)"), topmastForestay1.GetComponent<BoatPartOption>(), topmastForestay2.GetComponent<BoatPartOption>() });
 

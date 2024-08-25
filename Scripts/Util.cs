@@ -64,7 +64,7 @@ namespace ShipyardExpansion
                 mastOption.childOptions = new GameObject[0];
                 mastOption.walkColObject = mastComp.walkColMast.gameObject;
             }
-            source.gameObject.SetActive(true);
+            //source.gameObject.SetActive(true);
             mast.gameObject.SetActive(true);
             //mastComp.Awake();
             return mastComp;
@@ -223,5 +223,41 @@ namespace ShipyardExpansion
                     pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                     return pointer1;
                 }*/
+    }
+    internal class SailUtil
+    {
+        public static bool MastNotTallEnough(Mast mast, Sail sail)
+        {
+            SailScaler component = sail.GetComponent<SailScaler>();
+            float num = component.GetBaseHeight() * component.scaleStep;
+            float num2 = 0;
+            if (sail.UseExtendedMastHeight())
+            {
+                num2 = mast.extraBottomHeight;
+            }
+
+            if (sail.installHeight + num > mast.mastHeight + num2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        public static float MinInstallHeight(Mast mast, Sail sail)
+        {
+            float num = 0;
+            if (sail.UseExtendedMastHeight())
+            {
+                num += mast.extraBottomHeight;
+            }
+
+            /*if (sail.GetCurrentInstallHeight() <= sail.installHeight - num)
+            {
+                return true;
+            }*/
+
+            return sail.installHeight - num;
+        }
+
     }
 }

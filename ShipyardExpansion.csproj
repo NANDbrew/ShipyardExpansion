@@ -92,7 +92,9 @@
   <ItemGroup>
     <Compile Include="Patches\BermudaMastStuff.cs" />
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Patches\SaveLoadCustomization.cs" />
+    <Compile Include="SailLimits.cs" />
     <Compile Include="SailScaleButton.cs" />
     <Compile Include="Scripts\Parser.cs" />
     <Compile Include="PartRefs.cs" />

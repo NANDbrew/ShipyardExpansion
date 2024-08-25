@@ -11,26 +11,29 @@ namespace ShipyardExpansion
     internal class SailScaler : MonoBehaviour
     {
         Sail sail;
-        Transform scaleablePart;
+        public Transform scaleablePart;
         public Vector3 scale;
         Vector3 startScale;
         float baseHeight;
         float ratio = 1f;
-        float maxRatio = 2f;
-        float minRatio = 0.5f;
-        float maxScale = 2.5f;
-        float minScale = 0.5f;
-        float stepSize = 0.05f;
-        float maxAngle = 15;
-        float minAngle = -15;
+        float[] ratioLimits = new float[2] { 0.5f, 2f };
+        float[] scaleLimits = new float[2] { 0.5f, 2.5f };
+        float[] angleLimits = new float[2] { 340f, 15f };
+        public float scaleStep = 0.05f;
         public float angle = 0;
-        float angleStep = 5;
+        float angleStep = 1;
         Transform shadowCol;
         Transform windCenter;
         Transform colChecker;
         public Transform rotatablePart;
         ScaleType scaleType = ScaleType.Uniform;
 
+        float scaleFactor = 1f;
+        
+        public float GetBaseHeight()
+        {
+            return baseHeight;
+        }
         public ScaleType GetScaleType()
         {
             return scaleType;
@@ -38,8 +41,9 @@ namespace ShipyardExpansion
 
         private void Awake()
         {
-            scaleablePart = GetComponentInChildren<Animator>().transform;
             sail = GetComponent<Sail>();
+            scaleablePart = GetComponentInChildren<Animator>().transform;
+            if (scaleablePart == null) UnityEngine.GameObject.Destroy(this);
             startScale = scaleablePart.localScale;
             scale = startScale;
             baseHeight = sail.installHeight / startScale.y;
@@ -51,37 +55,62 @@ namespace ShipyardExpansion
             {
                 rotatablePart = transform;
             }
-            else if (sail.category == SailCategory.other)
+            else if (sail.category == SailCategory.other && !sail.name.Contains("lug"))
             {
                 rotatablePart = scaleablePart;
             }
 
-            if (ScaleTypes.stretchableSquares.Contains(sail.prefabIndex)) 
+            if (SailLimits.stretchableSquares.Contains(sail.prefabIndex)) 
             {
                 scaleType = ScaleType.Square;
             }
-            else if (ScaleTypes.stretchableJibs.Contains(sail.prefabIndex))
+            else if (SailLimits.stretchableJibs.Contains(sail.prefabIndex))
             {
                 scaleType = ScaleType.Jib;
             }
+            if (SailLimits.angleLimits.ContainsKey(sail.prefabIndex)) angleLimits = SailLimits.angleLimits[sail.prefabIndex];
+            if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
+        }
+        // !!FOR TESTING ONLY!! remove before publishing!
+        public Transform mastCol;
+        public Vector3 mastColPos;
+        public Quaternion mastColRot;
+        public Transform AlignMastCol()
+        {
+            Transform mast = transform.parent;
+            mastCol = mast.GetComponent<Mast>().walkColMast;
+            mastColPos = mastCol.position;
+            mastColRot = mastCol.rotation;
+            mastCol.transform.position = mast.transform.position;
+            mastCol.transform.rotation = mast.transform.rotation;
+            return mastCol;
+        }
+        public void ReturnMastCol()
+        {
+            mastCol.position = mastColPos;
+            mastCol.rotation = mastColRot;
         }
 
         public void SetAngle(float newAngle)
         {
             if (rotatablePart == null) return;
+
+            newAngle = (newAngle + 360) % 360;
+            if (newAngle > angleLimits[1] && newAngle < 180) newAngle = angleLimits[1];
+            else if (newAngle < angleLimits[0] && newAngle > 180) newAngle = angleLimits[0];
+
             shadowCol.parent = scaleablePart;
             windCenter.parent = scaleablePart;
-            
+            rotatablePart.gameObject.SetActive(false);
             rotatablePart.localEulerAngles = new Vector3(rotatablePart.localEulerAngles.x, newAngle, rotatablePart.localEulerAngles.z);
-            angle = newAngle;
-
+            angle = rotatablePart.localEulerAngles.y;
+            rotatablePart.gameObject.SetActive(true);
             shadowCol.parent = transform;
             windCenter.parent = transform;
             if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
             {
-                colChecker.localEulerAngles = rotatablePart.localEulerAngles;
-                float dist = 0;
-                //GameState.currentShipyard.sailInstaller.MoveHeldSail(dist);
+                colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, rotatablePart.localEulerAngles.y, colChecker.localEulerAngles.z);
+                GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
                 //GameState.currentShipyard.sailInstaller.RecheckAllSailsCols();
                 //sail.UpdateInstallPosition();
             }
@@ -89,15 +118,23 @@ namespace ShipyardExpansion
 
         public void RotateFwd()
         {
-            if (angle >= maxAngle) return;
-            angle += angleStep;
-            SetAngle(angle);
+           /* if (angle + angleStep < maxAngle || angle > 270)
+            {
+
+            }*/
+            SetAngle(angle + angleStep);
         }
         public void RotateBkwd()
         {
-            if (angle <= minAngle) return;
-            angle -= angleStep;
-            SetAngle(angle);
+            /*if (angle - angleStep > minAngle || angle < 90)
+            {
+            }*/
+            SetAngle(angle - angleStep);
+        }
+        public Vector3 SetScaleRel(float newScale)
+        {
+            return SetScaleAbs(newScale, newScale * ratio);
+
         }
 
         public Vector3 SetScaleRel(float newScale, float newRatio)
@@ -108,100 +145,94 @@ namespace ShipyardExpansion
 
         public Vector3 SetScaleAbs(float width, float height)
         {
-
-            if (scaleType == ScaleType.Uniform)
+            if (scaleType == ScaleType.Jib)
             {
-                scale = new Vector3(width, width, width);
-                sail.installHeight = baseHeight * width;
+                scale = new Vector3(width, height, height);
             }
-            else if (scaleType == ScaleType.Square)
+            else
             {
                 scale = new Vector3(width, height, width);
-                sail.installHeight = baseHeight * height;
             }
-            else if (scaleType == ScaleType.Jib)
+            if (transform.parent.localScale.y != 1)
             {
-                scale = new Vector3(height, width, width);
-                sail.installHeight = height;
+                sail.installHeight = height * baseHeight * transform.localScale.y - (baseHeight * transform.localScale.y - baseHeight);
             }
+            else
+            {
+                sail.installHeight = height * baseHeight;
+            }
+
             ratio = height / width;
             shadowCol.parent = scaleablePart;
             windCenter.parent = scaleablePart;
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localScale = scale;
             colChecker.localScale = scale;
+            if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs)
+            {
+                scaleablePart.localPosition = new Vector3(locs.forwardOffset * width, scaleablePart.localPosition.y, scaleablePart.localPosition.z);
+            }
             scaleablePart.gameObject.SetActive(true);
             sail.SetSailArea();
             shadowCol.parent = transform;
             windCenter.parent = transform;
-
-            if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
-            {
-                float dist = 0;
-                if (sail.GetCurrentInstallHeight() < sail.installHeight)
-                {
-                    dist = sail.installHeight - sail.GetCurrentInstallHeight();
-                }
-                GameState.currentShipyard.sailInstaller.MoveHeldSail(dist);
-                //sail.UpdateInstallPosition();
-            }
 
             return scale;
         }
 
         public void IncreaseHeight()
         {
-            if (ratio >= maxRatio) 
+            if (ratio >= ratioLimits[1]) 
             {
                 Debug.Log("cannot make sail taller");
                 return;
             }
-            SetScaleAbs(scale.x, scale.y + stepSize);
+            SetScaleAbs(scale.x, scale.y + scaleStep);
         }
         public void IncreaseWidth()
         {
-            if (ratio <= minRatio) 
+            if (ratio <= ratioLimits[0]) 
             {
                 Debug.Log("cannot make sail wider");
                 return;
             }
-            SetScaleAbs(scale.x + stepSize, scale.y);
+            SetScaleAbs(scale.x + scaleStep, scale.y);
         }
         public void DecreaseHeight()
         {
-            if (ratio <= minRatio)
+            if (ratio <= ratioLimits[0])
             {
                 Debug.Log("cannot make sail shorter");
                 return;
             }
-            SetScaleAbs(scale.x, scale.y - stepSize);
+            SetScaleAbs(scale.x, scale.y - scaleStep);
         }
         public void DecreaseWidth()
         {
-            if (ratio >= maxRatio)
+            if (ratio >= ratioLimits[1])
             {
                 Debug.Log("cannot make sail narrower");
                 return;
             }
-            SetScaleAbs(scale.x - stepSize, scale.y);
+            SetScaleAbs(scale.x - scaleStep, scale.y);
         }
         public void ScaleUp()
         {
-            if (scale.x >= maxScale)
+            if (scale.x + scaleStep > scaleLimits[1])
             {
                 Debug.Log("cannot make sail bigger");
                 return;
             }
-            SetScaleRel(scale.x + stepSize, ratio);
+            SetScaleRel(scale.x + scaleStep, ratio);
         }
         public void ScaleDown()
         {
-            if (scale.x <= minScale)
+            if (scale.x - scaleStep < scaleLimits[0])
             {
                 Debug.Log("cannot make sail smaller");
                 return;
             }
-            SetScaleRel(scale.x - stepSize, ratio);
+            SetScaleRel(scale.x - scaleStep, ratio);
         }
 
     }
@@ -211,21 +242,5 @@ namespace ShipyardExpansion
         Square,
         Jib
     }
-    public static class ScaleTypes
-    {
-        public static List<int> stretchableSquares = new List<int> { 4, 32, 48, 49, 50, 51, 52, 59, 80, 113, 114, 115, 116,  };
-        public static List<int> stretchableJibs = new List<int> { 31, 34, 110, 111,  };
 
-
-    }
-
-
-    [HarmonyPatch(typeof(SailConnections), "Awake")]
-    internal static class CompAdder
-    {
-        public static void Postfix(SailConnections __instance)
-        {
-            __instance.gameObject.AddComponent<SailScaler>();
-        }
-    }
 }

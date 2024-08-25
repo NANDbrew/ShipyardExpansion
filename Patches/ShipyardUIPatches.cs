@@ -19,6 +19,8 @@ namespace ShipyardExpansion
         static GameObject scaleDownButton;
         static GameObject increaseHeightButton;
         static GameObject decreaseHeightButton;
+        static GameObject increaseWidthButton;
+        static GameObject decreaseWidthButton;
         static GameObject rotateForwardButton;
         static GameObject rotateBackwardButton;
 
@@ -47,7 +49,7 @@ namespace ShipyardExpansion
             }
             if (extraParts) extraButton.SetActive(true);
             else extraButton.SetActive(false);
-            extraButton.transform.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, 0);
+            //extraButton.transform.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, 0); // altpos = (0f, 1.26f, 0)
             //ShipyardButtonPatches.menuCategory = category;
         }
 
@@ -80,7 +82,7 @@ namespace ShipyardExpansion
         {
             oldButton = ___ui.transform.Find("mode button Parts Other");
             Transform newButton = UnityEngine.Object.Instantiate(oldButton, ___ui.transform);
-            newButton.localPosition = oldButton.localPosition + new Vector3(0, 1.26f, 0);
+            newButton.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, 0);
             newButton.GetComponent<ShipyardButton>().index = 3;
             newButton.name = "mode button Parts Extra";
             newButton.GetComponent<ShipyardButton>().SetText("Extra");
@@ -88,7 +90,7 @@ namespace ShipyardExpansion
             extraButton = newButton.gameObject;
 
             scaleUpButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            scaleUpButton.transform.localPosition = new Vector3(4.2f, ___moveUpButton.transform.localPosition.y, ___moveUpButton.transform.localPosition.z);
+            scaleUpButton.transform.localPosition += new Vector3(-1.54f, 0.02f, 0);
             scaleUpButton.name = "button Scale Up";
             UnityEngine.Object.Destroy(scaleUpButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonUp = scaleUpButton.AddComponent<SailScaleButton>();
@@ -96,7 +98,7 @@ namespace ShipyardExpansion
             buttonUp.SetText("Scale\nUp");
 
             scaleDownButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            scaleDownButton.transform.localPosition = new Vector3(4.2f, ___moveDownButton.transform.localPosition.y, ___moveDownButton.transform.localPosition.z);
+            scaleDownButton.transform.localPosition += new Vector3(-1.54f, 0.02f, 0);
             scaleDownButton.name = "button Scale Down";
             UnityEngine.Object.Destroy(scaleDownButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonDown = scaleDownButton.AddComponent<SailScaleButton>();
@@ -104,7 +106,7 @@ namespace ShipyardExpansion
             buttonDown.SetText("Scale\nDown");
 
             increaseHeightButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            increaseHeightButton.transform.localPosition = new Vector3(2.7f, ___moveUpButton.transform.localPosition.y, ___moveUpButton.transform.localPosition.z);
+            increaseHeightButton.transform.localPosition += new Vector3(-3.08f, 0.04f, 0);
             increaseHeightButton.name = "button Increase Height";
             UnityEngine.Object.Destroy(increaseHeightButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonTaller = increaseHeightButton.AddComponent<SailScaleButton>();
@@ -112,29 +114,45 @@ namespace ShipyardExpansion
             buttonTaller.SetText("Increase\nHeight");
 
             decreaseHeightButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            decreaseHeightButton.transform.localPosition = new Vector3(2.7f, ___moveDownButton.transform.localPosition.y, ___moveDownButton.transform.localPosition.z);
+            decreaseHeightButton.transform.localPosition += new Vector3(-3.08f, 0.04f, 0);
             decreaseHeightButton.name = "button Decrease Height";
             UnityEngine.Object.Destroy(decreaseHeightButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonShorter = decreaseHeightButton.AddComponent<SailScaleButton>();
             buttonShorter.buttonType = SailScaleButton.ButtonType.decreaseHeight;
             buttonShorter.SetText("Decrease\nHeight");
 
+            increaseWidthButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
+            increaseWidthButton.transform.localPosition += new Vector3(-3.08f, 0.04f, 0);
+            increaseWidthButton.name = "button Increase Width";
+            UnityEngine.Object.Destroy(increaseWidthButton.GetComponent<ShipyardButton>());
+            SailScaleButton buttonWider = increaseWidthButton.AddComponent<SailScaleButton>();
+            buttonWider.buttonType = SailScaleButton.ButtonType.increaseWidth;
+            buttonWider.SetText("Increase\nWidth");
+
+            decreaseWidthButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
+            decreaseWidthButton.transform.localPosition += new Vector3(-3.08f, 0.04f, 0);
+            decreaseWidthButton.name = "button Decrease Width";
+            UnityEngine.Object.Destroy(decreaseWidthButton.GetComponent<ShipyardButton>());
+            SailScaleButton buttonNarrower = decreaseWidthButton.AddComponent<SailScaleButton>();
+            buttonNarrower.buttonType = SailScaleButton.ButtonType.decreaseWidth;
+            buttonNarrower.SetText("Decrease\nWidth");
+
 
             rotateForwardButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            rotateForwardButton.transform.localPosition = new Vector3(2.7f, ___moveUpButton.transform.localPosition.y, ___moveUpButton.transform.localPosition.z);
+            rotateForwardButton.transform.localPosition += new Vector3(-3.08f, 0.04f, 0);
             rotateForwardButton.name = "button Rotate Forward";
             UnityEngine.Object.Destroy(rotateForwardButton.GetComponent<ShipyardButton>());
-            SailScaleButton buttonrotBkwd = rotateForwardButton.AddComponent<SailScaleButton>();
-            buttonrotBkwd.buttonType = SailScaleButton.ButtonType.rotateForward;
-            buttonrotBkwd.SetText("Rotate\nForward");
+            SailScaleButton buttonrotFwd = rotateForwardButton.AddComponent<SailScaleButton>();
+            buttonrotFwd.buttonType = SailScaleButton.ButtonType.rotateForward;
+            buttonrotFwd.SetText("Rotate\nForward");
 
             rotateBackwardButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            rotateBackwardButton.transform.localPosition = new Vector3(2.7f, ___moveDownButton.transform.localPosition.y, ___moveDownButton.transform.localPosition.z);
+            rotateBackwardButton.transform.localPosition += new Vector3(-3.08f, 0.04f, 0);
             rotateBackwardButton.name = "button Rotate Backward";
             UnityEngine.Object.Destroy(rotateBackwardButton.GetComponent<ShipyardButton>());
-            SailScaleButton buttonrotFwd = rotateBackwardButton.AddComponent<SailScaleButton>();
-            buttonrotFwd.buttonType = SailScaleButton.ButtonType.rotateBackward;
-            buttonrotFwd.SetText("Rotate\nBackward");
+            SailScaleButton buttonrotBkwd = rotateBackwardButton.AddComponent<SailScaleButton>();
+            buttonrotBkwd.buttonType = SailScaleButton.ButtonType.rotateBackward;
+            buttonrotBkwd.SetText("Rotate\nBackward");
 
         }
         [HarmonyPatch("UpdateMoveButtons")]
@@ -145,12 +163,16 @@ namespace ShipyardExpansion
             SailScaler currentSail = null;
             if (active) currentSail = GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>();
             bool rotatable = active && currentSail != null && currentSail.rotatablePart != null;
-            bool heightable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Square) || currentSail.GetScaleType().Equals(ScaleType.Jib));
+            bool heightable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Square));
+            bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib));
             scaleUpButton.SetActive(active);
             scaleDownButton.SetActive(active);
 
             increaseHeightButton.SetActive(heightable);
             decreaseHeightButton.SetActive(heightable);
+
+            increaseWidthButton.SetActive(widthable);
+            decreaseWidthButton.SetActive(widthable);
 
             rotateForwardButton.SetActive(rotatable);
             rotateBackwardButton.SetActive(rotatable);

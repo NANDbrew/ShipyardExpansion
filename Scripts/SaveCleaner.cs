@@ -46,6 +46,14 @@ namespace ShipyardExpansion
                         mastList[l].RemoveAllSails();
                         mastList[l] = null;
                     }
+                    for (int m = mastList[l].sails.Count - 1; m >= 0; m--)
+                    {
+                        var sail = mastList[l].sails[m].GetComponent<Sail>();
+                        if (sail.prefabIndex > Plugin.stockSailsListSize - 1 || PrefabsDirectory.instance.sails[sail.prefabIndex])
+                        {
+                            mastList[l].DetachSailFromMast(sail.gameObject);
+                        }
+                    }
                 }
             }
         }
@@ -88,7 +96,7 @@ namespace ShipyardExpansion
             for (int i = 0; i < data.sails.Count;)
             {
                 var sail = data.sails[i];
-                if (sail.mastIndex >= boatRefs.masts.Length || boatRefs.masts[sail.mastIndex] == null)
+                if (sail.mastIndex >= boatRefs.masts.Length || boatRefs.masts[sail.mastIndex] == null || sail.prefabIndex >= PrefabsDirectory.instance.sails.Length || PrefabsDirectory.instance.sails[sail.prefabIndex] == null)
                 {
                     Debug.LogWarning("SaveCleaner: removing sail " + sail);
 

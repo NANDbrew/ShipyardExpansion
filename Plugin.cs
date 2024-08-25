@@ -22,6 +22,7 @@ namespace ShipyardExpansion
         public static List<BoatPartOption> stockPartOptions;
         public static Dictionary<BoatPart, int> stockParts;
         public static List<Mast> stockMasts;
+        public static int stockSailsListSize;
 
         /*public static Transform topmastRef;
         public static Transform spritRef;

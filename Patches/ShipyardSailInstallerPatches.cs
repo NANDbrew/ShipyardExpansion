@@ -11,63 +11,48 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-    /*[HarmonyPatch(typeof(ShipyardSailInstaller), "AddNewSail")]
+    [HarmonyPatch(typeof(ShipyardSailInstaller), "AddNewSail")]
     internal static class ShipyardSailInstallerPatches
     {
-        public static bool Prefix(GameObject sailObject, ref Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance)
+        public static void Postfix(GameObject sailObject, ref Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance)
         {
-
-            ___selectedSail = sailObject.GetComponent<Sail>();
-            ___selectedSail.enabled = false;
-            ___selectedSail.SetSailArea();
-            ___selectedSail.GetComponent<Rigidbody>().isKinematic = true;
-            ___selectedSail.ChangeSailColor(___shipyard.availableSailColors[0]);
-            if (!___currentMast.onlySquareSails)
+            SailScaler component = ___selectedSail.GetComponent<SailScaler>();
+            //float tilt = 0;
+            if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen)
             {
-                if (___selectedSail.UseExtendedMastHeight())
-                {
-                    ___selectedSail.ChangeInstallHeight(___selectedSail.installHeight - ___currentMast.extraBottomHeight);
-                }
-                else
-                {
-                    ___selectedSail.ChangeInstallHeight(___selectedSail.installHeight);
-                }
+                //Debug.Log("sail \"" + __instance.name + "\" updated install position");
+                //if (___selectedSail.prefabIndex == 61) tilt = -5.6f;
+                //Debug.Log("sail installer?? " + __instance.GetComponent<SailScaler>().angle);
+                ___selectedSail.transform.eulerAngles = new Vector3(270, 0, 0); // new Vector3(tilt, __instance.transform.eulerAngles.y, __instance.transform.eulerAngles.z);
+                ___selectedSail.transform.localEulerAngles = new Vector3(0, ___selectedSail.transform.localEulerAngles.y, 0);
+                component.SetAngle(___selectedSail.transform.localEulerAngles.y);
             }
-            else
+            if (Plugin.vertFins.Value && ___selectedSail.category == SailCategory.other && !___selectedSail.sailName.Contains("lug"))
             {
-                ___selectedSail.ChangeInstallHeight(___currentMast.mastHeight);
+                Transform child = component.rotatablePart;
+                Vector3 oldRot = child.localEulerAngles;
+                child.eulerAngles = new Vector3(0, 0, 0);
+                child.localEulerAngles = new Vector3(oldRot.x, child.localEulerAngles.y + 90, oldRot.z);
+                component.SetAngle(child.localEulerAngles.y);
             }
 
-            sailObject.transform.position = ___currentMast.transform.position;
-            //sailObject.transform.rotation = ___currentMast.transform.rotation;
-            sailObject.transform.eulerAngles = new Vector3(0, 30, 0);
-            ___currentMast.sails.Add(sailObject);
-            sailObject.transform.parent = ___currentMast.transform;
-            ShipyardUI.instance.UpdateMastSailsList();
-            ShipyardUI.instance.UpdateDescriptionText();
-            ___currentMast.UpdateSailOrder();
-            GameState.currentShipyard.UpdateOrder();
-            ___selectedSail.UpdateInstallPosition();
-            __instance.StartCoroutine(ColPosFix(__instance));
-            return false;
+            if (___selectedSail.installHeight > ___currentMast.mastHeight)
+            {
+                component.SetScaleRel(___currentMast.mastHeight / component.GetBaseHeight());
+            }
         }
-        private static IEnumerator ColPosFix(ShipyardSailInstaller obj)
-        {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForFixedUpdate();
-            AccessTools.Method(obj.GetType(), "ApplySailPosition").Invoke(obj, new object[1]);
-        }
+
     }
-*/
-    [HarmonyPatch(typeof(Sail), "UpdateInstallPosition")]
+
+ /*   [HarmonyPatch(typeof(Sail), "UpdateInstallPosition")]
     internal static class ShipyardSailPatches
     {
         [HarmonyPrefix]
         public static void Prefix(Sail __instance)
         {
 
-            float tilt = Plugin.tiltOffset.Value;
-            //float tilt = __instance.GetComponent<SailScaler>().angle;
+            //float tilt = Plugin.tiltOffset.Value;
+            float tilt = __instance.GetComponent<SailScaler>().angle;
             if (__instance.category == SailCategory.lateen && Plugin.vertLateens.Value)
             {
                 //Debug.Log("sail \"" + __instance.name + "\" updated install position");
@@ -99,60 +84,48 @@ namespace ShipyardExpansion
                 child.SetSiblingIndex(2);
                 //child.tag = "sailObject";
             }
+            __instance.GetComponent<SailScaler>().SetAngle(tilt);
+
         }
 
-    }
+    }*/
     [HarmonyPatch(typeof(ShipyardSailColChecker), "RunColCheck")]
-    internal static class ColRemover
+    internal static class ColCheckPatch
     {
         public static void Prefix(ShipyardSailColChecker __instance, Sail ___sail, ref Quaternion ___initialRot, ref Vector3 ___initialLocalPos, ref Vector3 ___sailModelOffset)
         {
+            if (___sail.GetComponent<SailScaler>().rotatablePart)
+            {
+                ___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().rotatablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
+
+            }
+
             if (___sail.category == SailCategory.lateen)
             {
-                ___initialRot = ___sail.transform.localRotation;
 
                 __instance.transform.Find("col_001").gameObject.SetActive(!Plugin.lenientLateens.Value);
 
             }
-            else if (___sail.category == SailCategory.other)
-            {
-                ___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.transform.GetChild(0).localEulerAngles.y, ___sail.transform.localEulerAngles.z);
-                if (___sail.sailName.Contains("lug"))
-                {
-                    //___sailModelOffset = new Vector3(1.5f, 0.2f, 0);
-                    //__instance.transform.localPosition = new Vector3(1.5f, 0.2f, 0);
-                }
-                //__instance.transform.Find("col_001").gameObject.SetActive(!Plugin.lenientLateens.Value);
-
-            }
             else if (___sail.category == SailCategory.square && !___sail.name.Contains("junk"))
             {
-                for (int i = 0; i < __instance.transform.childCount; i++)
+                foreach (Transform child in ___sail.GetComponentsInChildren<Transform>())
                 {
-                    var child = __instance.transform.GetChild(i);
                     if (child.name != "Cube")
                     {
                         child.gameObject.SetActive(!Plugin.lenientSquares.Value);
                     }
                 }
             }
+
+            if (___sail.name.Contains("lug"))
+            {
+                ___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().scaleablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
+
+                foreach (ShipyardSailColCheckerSub sub in __instance.GetComponentsInChildren<ShipyardSailColCheckerSub>())
+                {
+                    sub.transform.localPosition = __instance.GetComponent<SailPartLocations>().locations[sub.transform.GetSiblingIndex()];
+                }
+            }
         }
     }
- /*    [HarmonyPatch(typeof(Shipyard))]
-    internal static class ShipyardPatch
-    {
-
-    }
-   [HarmonyPatch(typeof(ShipyardSailColChecker), "Awake")]
-    internal static class LugColAdjuster
-    {
-        public static void Postfix(ShipyardSailColChecker __instance, ref Vector3 ___initialLocalPos, ref Quaternion ___initialRot)
-        {
-            //Vector3 baseRot = ___initialRot.eulerAngles = new Vector3(1, 1, 1);
-            ___initialLocalPos = __instance.transform.parent.parent.localPosition;
-            ___initialRot.eulerAngles = new Vector3(___initialRot.eulerAngles.x, __instance.transform.parent.parent.localRotation.y, ___initialRot.eulerAngles.z);
-
-        }
-    }*/
-
 }
