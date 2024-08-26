@@ -100,7 +100,7 @@ namespace ShipyardExpansion
 
             }
 
-            if (___sail.category == SailCategory.lateen)
+            /*if (___sail.category == SailCategory.lateen)
             {
 
                 __instance.transform.Find("col_001").gameObject.SetActive(!Plugin.lenientLateens.Value);
@@ -115,7 +115,7 @@ namespace ShipyardExpansion
                         child.gameObject.SetActive(!Plugin.lenientSquares.Value);
                     }
                 }
-            }
+            }*/
 
             if (___sail.name.Contains("lug"))
             {
