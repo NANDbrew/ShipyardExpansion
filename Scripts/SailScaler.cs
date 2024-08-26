@@ -15,6 +15,7 @@ namespace ShipyardExpansion
         public Vector3 scale;
         Vector3 startScale;
         float baseHeight;
+        Vector3 basePos;
         float ratio = 1f;
         float[] ratioLimits = new float[2] { 0.5f, 2f };
         float[] scaleLimits = new float[2] { 0.5f, 2.5f };
@@ -47,6 +48,7 @@ namespace ShipyardExpansion
             startScale = scaleablePart.localScale;
             scale = startScale;
             baseHeight = sail.installHeight / startScale.y;
+            basePos = scaleablePart.localPosition / startScale.y;
 
             shadowCol = GetComponentInChildren<SailShadowCol>().transform;
             windCenter = sail.windcenter;
@@ -71,26 +73,7 @@ namespace ShipyardExpansion
             if (SailLimits.angleLimits.ContainsKey(sail.prefabIndex)) angleLimits = SailLimits.angleLimits[sail.prefabIndex];
             if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
         }
-        // !!FOR TESTING ONLY!! remove before publishing!
-        public Transform mastCol;
-        public Vector3 mastColPos;
-        public Quaternion mastColRot;
-        public Transform AlignMastCol()
-        {
-            Transform mast = transform.parent;
-            mastCol = mast.GetComponent<Mast>().walkColMast;
-            mastColPos = mastCol.position;
-            mastColRot = mastCol.rotation;
-            mastCol.transform.position = mast.transform.position;
-            mastCol.transform.rotation = mast.transform.rotation;
-            return mastCol;
-        }
-        public void ReturnMastCol()
-        {
-            mastCol.position = mastColPos;
-            mastCol.rotation = mastColRot;
-        }
-
+        #region rotation
         public void SetAngle(float newAngle)
         {
             if (rotatablePart == null) return;
@@ -118,41 +101,40 @@ namespace ShipyardExpansion
 
         public void RotateFwd()
         {
-           /* if (angle + angleStep < maxAngle || angle > 270)
-            {
-
-            }*/
             SetAngle(angle + angleStep);
         }
         public void RotateBkwd()
         {
-            /*if (angle - angleStep > minAngle || angle < 90)
-            {
-            }*/
             SetAngle(angle - angleStep);
         }
-        public Vector3 SetScaleRel(float newScale)
+        #endregion
+
+        #region scaling
+        public void SetScaleAbs(float width, float height)
         {
-            return SetScaleAbs(newScale, newScale * ratio);
-
-        }
-
-        public Vector3 SetScaleRel(float newScale, float newRatio)
-        {
-            return SetScaleAbs(newScale, newScale * newRatio);
-
-        }
-
-        public Vector3 SetScaleAbs(float width, float height)
-        {
+            float newRatio = height / width;
+            if (newRatio < ratioLimits[0] || newRatio > ratioLimits[1]) return;
+            if (height < scaleLimits[0] && scaleType == ScaleType.Jib) return;
+            if (width < scaleLimits[0] && scaleType != ScaleType.Jib) return;
+            if (width > scaleLimits[1] || height > scaleLimits[1]) return;
+            Vector3 colScale;
             if (scaleType == ScaleType.Jib)
             {
                 scale = new Vector3(width, height, height);
+                colScale = scale;
             }
             else
             {
                 scale = new Vector3(width, height, width);
+                float colRot = colChecker.localEulerAngles.x - scaleablePart.localEulerAngles.x;
+                if (colRot < 0) colRot = -colRot;
+                if (colRot == 90)
+                {
+                    colScale = new Vector3(height, width, height);
+                }
+                else colScale = scale;
             }
+            ratio = newRatio;
             if (transform.parent.localScale.y != 1)
             {
                 sail.installHeight = height * baseHeight * transform.localScale.y - (baseHeight * transform.localScale.y - baseHeight);
@@ -161,13 +143,13 @@ namespace ShipyardExpansion
             {
                 sail.installHeight = height * baseHeight;
             }
-
-            ratio = height / width;
             shadowCol.parent = scaleablePart;
             windCenter.parent = scaleablePart;
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localScale = scale;
-            colChecker.localScale = scale;
+            scaleablePart.localPosition = basePos * height;
+
+            colChecker.localScale = colScale;
             if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs)
             {
                 scaleablePart.localPosition = new Vector3(locs.forwardOffset * width, scaleablePart.localPosition.y, scaleablePart.localPosition.z);
@@ -177,64 +159,63 @@ namespace ShipyardExpansion
             shadowCol.parent = transform;
             windCenter.parent = transform;
 
-            return scale;
+        }
+        public void SetScaleRel(float newScale)
+        {
+            SetScaleAbs(newScale, newScale * ratio);
+        }
+        public void SetScaleRel(float newScale, float newRatio)
+        {
+            SetScaleAbs(newScale, newScale * newRatio);
         }
 
         public void IncreaseHeight()
         {
-            if (ratio >= ratioLimits[1]) 
-            {
-                Debug.Log("cannot make sail taller");
-                return;
-            }
             SetScaleAbs(scale.x, scale.y + scaleStep);
         }
         public void IncreaseWidth()
         {
-            if (ratio <= ratioLimits[0]) 
-            {
-                Debug.Log("cannot make sail wider");
-                return;
-            }
             SetScaleAbs(scale.x + scaleStep, scale.y);
         }
         public void DecreaseHeight()
         {
-            if (ratio <= ratioLimits[0])
-            {
-                Debug.Log("cannot make sail shorter");
-                return;
-            }
             SetScaleAbs(scale.x, scale.y - scaleStep);
         }
         public void DecreaseWidth()
         {
-            if (ratio >= ratioLimits[1])
-            {
-                Debug.Log("cannot make sail narrower");
-                return;
-            }
             SetScaleAbs(scale.x - scaleStep, scale.y);
         }
         public void ScaleUp()
         {
-            if (scale.x + scaleStep > scaleLimits[1])
-            {
-                Debug.Log("cannot make sail bigger");
-                return;
-            }
             SetScaleRel(scale.x + scaleStep, ratio);
         }
         public void ScaleDown()
         {
-            if (scale.x - scaleStep < scaleLimits[0])
-            {
-                Debug.Log("cannot make sail smaller");
-                return;
-            }
             SetScaleRel(scale.x - scaleStep, ratio);
         }
+        #endregion
+#if DEBUG
+        // !!FOR TESTING ONLY!! remove before publishing!
+        public Transform mastCol;
+        public Vector3 mastColPos;
+        public Quaternion mastColRot;
+        public Transform AlignMastCol()
+        {
+            Transform mast = transform.parent;
+            mastCol = mast.GetComponent<Mast>().walkColMast;
+            mastColPos = mastCol.position;
+            mastColRot = mastCol.rotation;
+            mastCol.transform.position = mast.transform.position;
+            mastCol.transform.rotation = mast.transform.rotation;
+            return mastCol;
+        }
+        public void ReturnMastCol()
+        {
+            mastCol.position = mastColPos;
+            mastCol.rotation = mastColRot;
+        }
 
+#endif
     }
     public enum ScaleType
     {
