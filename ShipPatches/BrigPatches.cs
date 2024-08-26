@@ -460,7 +460,7 @@ namespace ShipyardExpansion
             mizzenTopstay1.reefWinch[0].transform.localEulerAngles = new Vector3(0, 90, 0);
             mizzenTopstay1.leftAngleWinch = Util.CopyWinches(mizzenTopstay1.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             mizzenTopstay1.rightAngleWinch = Util.CopyWinches(mizzenTopstay1.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
-            mizzenTopstay1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>() };
+            mizzenTopstay1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>() };
 
             var mizzenTSource2 = container.Find("backstay_1-1_top");
             Mast mizzenTopstay2 = Util.CopyMast(mizzenTSource2, new Vector3(-7f, 27.65f, 0), "mizzen_topmast_stay_1-2", "mizzen topmast stay 2", 46);
@@ -479,17 +479,17 @@ namespace ShipyardExpansion
             topmastForestay1.leftAngleWinch = Util.CopyWinches(topmastForestay1.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay1.rightAngleWinch = Util.CopyWinches(topmastForestay1.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { bowspritLong.GetComponent<BoatPartOption>() };
-            //topmastForestay1.mastHeight = 24;
+            topmastForestay1.mastHeight = 24;
 
             Transform topMForestaySrc2 = container.Find("forestay_1_top_shortsprit");
             Mast topmastForestay2 = Util.CopyMast(topMForestaySrc2, new Vector3(11.67f, 30.363f, 0), new Vector3(298.7f, 270, 90), new Vector3(1, 1, 1.33f), "forestay_topmast_1", "topmast forestay 2", 49);
-            topmastForestay2.reefWinch = Util.CopyWinches(topmastForestay2.reefWinch, Vector3.zero, new Vector3(0f, 0, 0.57f));
-            topmastForestay2.reefWinch[0].transform.localEulerAngles = new Vector3(0, 45, 90);
-            topmastForestay2.reefWinch[1].transform.localEulerAngles = new Vector3(0, 45, 90);
+            topmastForestay2.reefWinch = Util.CopyWinches(topmastForestay2.reefWinch, Vector3.zero, new Vector3(-0.46f, 0.66f, 0));
+            topmastForestay2.reefWinch[0].transform.localEulerAngles = new Vector3(0.5f, 211, 85);
+            topmastForestay2.reefWinch[1].transform.localEulerAngles = new Vector3(0.5f, 211, 85);
             topmastForestay2.leftAngleWinch = Util.CopyWinches(topmastForestay2.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay2.rightAngleWinch = Util.CopyWinches(topmastForestay2.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay2.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { bowspritLong.GetComponent<BoatPartOption>() };
-            //topmastForestay2.mastHeight = 20.7f;
+            topmastForestay2.mastHeight = 20.7f;
 
             Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "topmast_forestay_none", "(no outer forestay)"), topmastForestay1.GetComponent<BoatPartOption>(), topmastForestay2.GetComponent<BoatPartOption>() });
 
