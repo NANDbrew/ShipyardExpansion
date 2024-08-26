@@ -24,33 +24,33 @@ namespace ShipyardExpansion
         static GameObject rotateForwardButton;
         static GameObject rotateBackwardButton;
 
-
+        static List<BoatPart>[] partCounts;
+        static bool extraParts;
         //static List<ShipyardButton> buttonList;
 
         [HarmonyPatch("RefreshPartsPanel")]
         [HarmonyPostfix]
-        public static void RefreshPatch(ShipyardUI __instance, TextMesh[] ___partOptionsTexts, int category, GameObject ___partsOtherMenu)
+        public static void RefreshPatch(ShipyardUI __instance, TextMesh[] ___partOptionsTexts, bool freshStart)
         {
-            //if (!Plugin.showGizmos.Value) return;
-            BoatCustomParts component = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatCustomParts>();
-            int partCount = 0;
-            bool extraParts = false;
-            foreach (var part in component.availableParts)
+            if (!Plugin.extra.Value) return;
+            if (freshStart)
             {
-                if (part.category == category)
+                extraParts = false;
+                partCounts = new List<BoatPart>[4] { new List<BoatPart>(), new List<BoatPart>(), new List<BoatPart>(), new List<BoatPart>(), };
+                BoatCustomParts component = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatCustomParts>();
+                foreach (var part in component.availableParts)
                 {
-                    partCount++;
-                    if(partCount > ___partOptionsTexts.Length)
+                    partCounts[part.category].Add(part);
+                    if (partCounts[part.category].Count > ___partOptionsTexts.Length)
                     {
                         part.category = 3;
+                        extraParts = true;
                     }
                 }
-                if (part.category == 3) extraParts = true;
+
             }
-            if (extraParts) extraButton.SetActive(true);
-            else extraButton.SetActive(false);
-            //extraButton.transform.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, 0); // altpos = (0f, 1.26f, 0)
-            //ShipyardButtonPatches.menuCategory = category;
+            if (partCounts[3].Count > 0) extraParts = true;
+            extraButton.SetActive(extraParts);
         }
 
         [HarmonyPatch("Awake")]
