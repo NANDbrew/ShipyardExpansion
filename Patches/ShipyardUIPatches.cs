@@ -25,25 +25,28 @@ namespace ShipyardExpansion
         static GameObject rotateBackwardButton;
 
         static int[] partCounts;
+        static bool extra;
 
         [HarmonyPatch("RefreshPartsPanel")]
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         public static void RefreshPatch(ShipyardUI __instance, TextMesh[] ___partOptionsTexts, bool freshStart)
         {
-            if (!Plugin.extra.Value) return;
             if (freshStart)
             {
+                extra = false;
                 partCounts = new int[4];
                 BoatCustomParts component = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatCustomParts>();
                 foreach (var part in component.availableParts)
                 {
-                    partCounts[part.category]++;
-                    if (partCounts[part.category] > ___partOptionsTexts.Length)
+                    if (partCounts[part.category] >= ___partOptionsTexts.Length)
                     {
                         part.category = 3;
-                    }
-                }
 
+                        //extra = true;
+                    }
+                    partCounts[part.category]++;
+                }
+                //if (partCounts[3] > 0) extra = true;
             }
             extraButton.SetActive(partCounts[3] > 0);
         }
