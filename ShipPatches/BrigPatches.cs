@@ -312,27 +312,8 @@ namespace ShipyardExpansion
 
             #endregion
 
-            /*Mast bowsprit = structure.Find("bowsprit_standard").GetChild(0).GetComponent<Mast>();
-            //var spritTopmast = Util.CreatePartOption(structure, "sprit_topmast", "sprit topmast");
-            var spritTopmast = UnityEngine.Object.Instantiate(Plugin.spritRef, structure);
-            var partOption = Util.CopyPartOption(bowsprit.GetComponent<BoatPartOption>(), spritTopmast.gameObject, "sprit topmast");
-            //Mast spritTopmastM = Util.CopyMast(bowsprit, )
-            spritTopmast.transform.localPosition = new Vector3(20.6f, 9.3f, 0);
-            Mast stmM = spritTopmast.gameObject.AddComponent<Mast>();
-            stmM.orderIndex = 33;
-            stmM.mastHeight = 5;
-            stmM.maxSails = 1;
-            stmM.startingSailColor = 0;
-            stmM.shipRigidbody = boat.GetComponent<Rigidbody>();
-            stmM.reefWinch = Util.CopyWinches(bowsprit.reefWinch, bowsprit.reefWinch[0].transform.localPosition, bowsprit.reefWinch[0].transform.localPosition + new Vector3(1, 0, 0));
-            stmM.leftAngleWinch = Util.CopyWinches(bowsprit.leftAngleWinch, bowsprit.leftAngleWinch[0].transform.localPosition, bowsprit.leftAngleWinch[0].transform.localPosition + new Vector3(1, 0, 0));
-            stmM.rightAngleWinch = Util.CopyWinches(bowsprit.rightAngleWinch, bowsprit.rightAngleWinch[0].transform.localPosition, bowsprit.rightAngleWinch[0].transform.localPosition + new Vector3(1, 0, 0));
-            stmM.Awake();
-            BoatPartOption stmNone = Util.CreatePartOption(container, "(no-sprit_topmast)", "(no sprit topmast)");
-            BoatPart part = Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption });*/
-
             #region sprit topmast
-            Debug.Log("trying to add part");
+            //Debug.Log("trying to add brig sprit topmast");
             BoatPartOption bowsprit = structure.Find("bowsprit_standard").GetComponent<BoatPartOption>();
             BoatPartOption bowspritLong = structure.Find("bowsprit_long").GetComponent<BoatPartOption>();
 
@@ -394,6 +375,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region topmasts
+            //Debug.Log("brig topmasts");
             GPButtonRopeWinch[] topmast0Reef = Util.CopyWinches(new GPButtonRopeWinch[] { foreMast1.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0.66f, 0));
             GPButtonRopeWinch[] topmast01Reef = Util.CopyWinches(new GPButtonRopeWinch[] { foreMast2.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0.66f, 0));
             GPButtonRopeWinch[] topmast0Angle = new GPButtonRopeWinch[1] { Util.CopyWinch(foreMast2.GetComponent<Mast>().midAngleWinch.Last(), new Vector3(-1.22f, 3.15f, -0.27f)) };
@@ -426,6 +408,7 @@ namespace ShipyardExpansion
             #endregion
 
             #region topmast stays
+            //Debug.Log("brig topmast stays");
             Mast mainTopstay1 = Util.CopyMast(midstayTop1, new Vector3(-4.7f, 32.7f, 0), midstayTop1.localEulerAngles, new Vector3(1, 1, 0.99f), "mainstay_topmast_1-1", "main topmast stay 1", 41);
             mainTopstay1.reefWinch = Util.CopyWinches(mainTopstay1.reefWinch, Vector3.zero, new Vector3(0f, 0, 0.66f));
             mainTopstay1.leftAngleWinch = Util.CopyWinches(mainTopstay1.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
@@ -496,15 +479,23 @@ namespace ShipyardExpansion
             #endregion
 
             #region raked foremast
+            Debug.Log("brig raked foremast");
             Mast foreMast2M = foreMast2.GetComponent<Mast>();
-            Mast foremastRaked = Util.CopyMast(mizzenMast1, new Vector3(16.4f, 0, 18.7f), new Vector3(0, 20, 0), mizzenMast1.localScale, "mast_F_raked", "raked foremast", 47);
-            foremastRaked.reefWinch = foreMast2M.reefWinch;
+            Mast foremastRaked = Util.CopyMast(mizzenMast2, new Vector3(16.4f, 0, 18.7f), new Vector3(0, 20, 0), mizzenMast2.localScale, "mast_F_raked", "raked foremast", 47);
+            foremastRaked.reefWinch = Util.CopyWinches(mizzenMast2.GetComponent<Mast>().reefWinch, mizzenMast2.GetComponent<Mast>().reefWinch[0].transform.localPosition, new Vector3(11.1f, 3.7f, 0.32f));
+            foremastRaked.reefWinch[1].transform.localPosition = new Vector3(11.1f, 3.7f, -0.32f);
+            foremastRaked.reefWinch[1].transform.localScale = new Vector3(0.9f, 0.9f, -0.9f);
             foremastRaked.leftAngleWinch = foreMast2M.leftAngleWinch;
             foremastRaked.rightAngleWinch = foreMast2M.rightAngleWinch;
             foremastRaked.midAngleWinch = foreMast2M.midAngleWinch;
             foremastRaked.transform.GetChild(0).localPosition = new Vector3(-1.47f, 0, -24.9f);
             foremastRaked.transform.GetChild(0).localScale = new Vector3(1, 1, 0.65f);
+            var rfMidAtt = UnityEngine.Object.Instantiate(foremastRaked.transform.Find("rope_holder_009"), foremastRaked.transform);
+            rfMidAtt.localPosition = new Vector3(-4f, 0, -23.6f);
+            rfMidAtt.localEulerAngles = new Vector3(270, 350, 0);
+            foremastRaked.midRopeAtt = new Transform[2] { rfMidAtt.GetChild(0), rfMidAtt.GetChild(0) };
             #region shrouds
+            //Debug.Log("brig raked foremast shrouds");
             Transform foreMast3Shrouds = UnityEngine.Object.Instantiate(newCont1.transform, foremastRaked.transform, false);
             foreMast3Shrouds.localPosition = new Vector3(-15.2f, 0, -25.6f);
             foreMast3Shrouds.localEulerAngles = new Vector3(0, 9, 0);
@@ -579,7 +570,7 @@ namespace ShipyardExpansion
             GPButtonRopeWinch[] extra12,
             BoatPart topmast2Part)
         {
-            Debug.Log("trying to add part");
+            Debug.Log("trying to add copied parts to brig");
             var mainMast1 = parent.Find("mast_Back_0");
             var mainMast2 = parent.Find("mast_Back_1");
             var foreMast1 = parent.Find("mast_Front_0");

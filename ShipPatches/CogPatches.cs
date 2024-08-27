@@ -446,7 +446,7 @@ namespace ShipyardExpansion
         }
         private static IEnumerator AddCopiedPart(Transform parent, Transform walkCol, BoatPartOption option, BoatCustomParts partsList)
         {
-            Debug.Log("trying to add part");
+            Debug.Log("trying to add extra parts to cog");
             yield return new WaitUntil(() => PartRefs.sanbuq != null);
             var holes = UnityEngine.Object.Instantiate(PartRefs.sanbuq.Find("structure").Find("Cube_005"), parent, false);
             holes.localPosition = new Vector3(-1.46f, 2.3224f, -1.81f);
