@@ -57,7 +57,7 @@ namespace ShipyardExpansion
             {
                 rotatablePart = transform;
             }
-            else if (sail.category == SailCategory.other && !sail.name.Contains("lug"))
+            else if (sail.category == SailCategory.other)
             {
                 rotatablePart = scaleablePart;
             }
@@ -72,6 +72,7 @@ namespace ShipyardExpansion
             }
             if (SailLimits.angleLimits.ContainsKey(sail.prefabIndex)) angleLimits = SailLimits.angleLimits[sail.prefabIndex];
             if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
+            else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
         }
         #region rotation
         public void SetAngle(float newAngle)

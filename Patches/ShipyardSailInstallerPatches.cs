@@ -119,7 +119,7 @@ namespace ShipyardExpansion
 
             if (___sail.name.Contains("lug"))
             {
-                ___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().scaleablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
+                //___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().scaleablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
 
                 foreach (ShipyardSailColCheckerSub sub in __instance.GetComponentsInChildren<ShipyardSailColCheckerSub>())
                 {

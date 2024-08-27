@@ -39,7 +39,7 @@ namespace ShipyardExpansion
             modSail1.transform.Find("sail M gaff huge").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail1.GetComponent<Sail>().category = SailCategory.other;*/
 
-            var modSail2 = SailAdder.CopySail(___sails, 16, new Vector3(1.55f, 0.25f, 0), new Vector3(90, 354, 0), "lug medium", "balanced lug 6yd", 158);
+            var modSail2 = SailAdder.CopySail(___sails, 30, new Vector3(1.55f, 0.25f, 0), new Vector3(90, 354, 0), "lug medium", "balanced lug 6yd", 158);
             modSail2.transform.Find("sail M small gaff").Find("SAIL_small_gaff").Find("boom_brace").gameObject.SetActive(false);
             modSail2.transform.Find("sail M small gaff").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail2.GetComponent<Sail>().category = SailCategory.other;

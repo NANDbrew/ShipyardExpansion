@@ -28,16 +28,26 @@ namespace ShipyardExpansion
             { 128, new float[2] { 340f, 15f } },
             { 129, new float[2] { 340f, 15f } },
             { 130, new float[2] { 340f, 15f } },
+            { 157, new float[2] { 340f, 8f } },
+            { 158, new float[2] { 340f, 10f } },
 
         };
 
         public static readonly Dictionary<int, float[]> sizeLimits = new Dictionary<int, float[]>
         {
-            //{ 17, new float[2]{ 0.5f, 3.5f } },
+            { -1, new float[2]{ 0.5f, 3.5f } },
 
             { 70, new float[2]{ 0.5f, 3.5f } },
             { 71, new float[2]{ 0.5f, 3.5f } },
             { 72, new float[2]{ 0.5f, 3.5f } },
+        };
+
+        public static readonly Dictionary<int, float[]> ratioLimits = new Dictionary<int, float[]>
+        {
+            //{ 17, new float[2]{ 0.5f, 3.5f } },
+
+            { 110, new float[2]{ 0.6f, 2f } },
+            { 111, new float[2]{ 0.6f, 2f } },
         };
     }
 }
