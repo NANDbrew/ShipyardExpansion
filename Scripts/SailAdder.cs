@@ -33,7 +33,7 @@ namespace ShipyardExpansion
         {
             if (!Plugin.addSails.Value) return;
             Plugin.stockSailsListSize = ___sails.Length;
-            Array.Resize(ref ___sails, 160);
+            Array.Resize(ref ___sails, Plugin.sailListSize);
             /*var modSail1 = SailAdder.CopySail(___sails, 37, new Vector3(2f, 0.25f, 0), new Vector3(90, 356, 0), "lug huge", "balanced lug 10yd", 159);
             modSail1.transform.Find("sail M gaff huge").Find("SAIL_small_gaff").Find("boom_brace").gameObject.SetActive(false);
             modSail1.transform.Find("sail M gaff huge").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
@@ -48,11 +48,11 @@ namespace ShipyardExpansion
             modSail3.transform.Find("sail M small gaff 3").Find("SAIL_small_gaff").Find("boom_brace").gameObject.SetActive(false);
             modSail3.transform.Find("sail M small gaff 3").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail3.GetComponent<Sail>().category = SailCategory.other;
-           /* var modSail4 = SailAdder.CopySail(___sails, 5, new Vector3(1.5f, 0.2f, 0), new Vector3(90, 356, 0), "lug tiny", "balanced lug 4yd", 156);
+            var modSail4 = SailAdder.CopySail(___sails, 5, new Vector3(1.5f, 0.2f, 0), new Vector3(90, 356, 0), "lug tiny", "balanced lug 4yd", 156);
             modSail4.transform.Find("sail A tiny gaff").Find("SAIL_tiny_gaff").Find("boom_brace").gameObject.SetActive(false);
             modSail4.transform.Find("sail A tiny gaff").Find("SAIL_tiny_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail4.GetComponent<Sail>().category = SailCategory.other;
-*/
+
             //var lateen20 = SailAdder.CopySail(___sails, 121, Vector3.zero, new Vector3(90, 0, 0), 1.6f, "M lateen big 1.6", "lateen 20yd", 155);
         }
     }
@@ -97,7 +97,7 @@ namespace ShipyardExpansion
             }
             sail.installHeight = (float)Math.Round(sail.installHeight * (scale / sailObject.localScale.y), 2);
             sailObject.localScale = new Vector3(scale, scale, scale);
-            sailBase.gameObject.SetActive(false);
+            //sailBase.gameObject.SetActive(false);
             sailPrefabs[newIndex] = sailBase.gameObject;
             return sailBase.gameObject;
         }

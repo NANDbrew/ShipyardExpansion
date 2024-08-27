@@ -14,9 +14,10 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.4.0";
+        public const string PLUGIN_VERSION = "0.4.1";
 
         internal const int mastListSize = 64;
+        internal const int sailListSize = 160;
 
         public static List<BoatCustomParts> moddedBoats;
         public static List<BoatPartOption> stockPartOptions;
@@ -41,7 +42,6 @@ namespace ShipyardExpansion
 
         internal static ConfigEntry<bool> addSails;
         internal static ConfigEntry<bool> cleanLoad;
-        internal static ConfigEntry<bool> extra;
 
 
         private void Awake()
@@ -56,7 +56,6 @@ namespace ShipyardExpansion
             convertSave = Config.Bind("Fixers", "Convert saves", false, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.3.0"));
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
             cleanLoad = Config.Bind("Fixers", "Clean load", true, new ConfigDescription("Sanitize ship customizations on load"));
-            extra = Config.Bind("Experimental", "Extra", true, new ConfigDescription("Sanitize ship customizations on load"));
 
             vertLateens = Config.Bind("Slant", "Vertical lateens", true, new ConfigDescription("Keep lateens vertical instead of slanting with the mast"));
             vertFins = Config.Bind("Slant", "Vertical fins", true, new ConfigDescription("Keep fin sails vertical instead of slanting with the mast"));
