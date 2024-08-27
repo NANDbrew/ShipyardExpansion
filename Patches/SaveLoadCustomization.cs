@@ -50,14 +50,14 @@ namespace ShipyardExpansion.Patches
             Debug.Log("attempting to load data");
             if (!GameState.modData.ContainsKey(boat))
             {
-                Debug.LogError("modData does not contain config");
+                Debug.Log("modData does not contain config");
                 return;
             }
             string slug = GameState.modData[boat];
             string[] masts = slug.Split(new char[] { ')' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string mast in masts)
             {
-                Debug.Log($"{mast}");
+                //Debug.Log($"{mast}");
                 string[] foo = mast.Split('(');
                 int mastIndex = Convert.ToInt32(foo[0]);
                 string[] sails = foo[1].Split(new char[] { ']' }, StringSplitOptions.RemoveEmptyEntries);
@@ -72,7 +72,7 @@ namespace ShipyardExpansion.Patches
                         if (sailInfo.Length >= 4)
                         {
                             component.SetAngle(Convert.ToSingle(sailInfo[3]));
-                            Debug.Log("sail angle = " + sailInfo[3]);
+                            //Debug.Log("sail angle = " + sailInfo[3]);
                         }
                     }
                 }
@@ -115,7 +115,7 @@ namespace ShipyardExpansion.Patches
             {
                 GameState.modData.Add(boat, text);
             }
-            Debug.Log("data = " + text);
+            //Debug.Log("data = " + text);
 
         }
     }
