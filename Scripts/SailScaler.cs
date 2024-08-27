@@ -149,8 +149,10 @@ namespace ShipyardExpansion
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localScale = scale;
             scaleablePart.localPosition = basePos * height;
-
-            colChecker.localScale = colScale;
+            if (!sail.IsInstalled())
+            {
+                colChecker.localScale = colScale;
+            }
             if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs)
             {
                 scaleablePart.localPosition = new Vector3(locs.forwardOffset * width, scaleablePart.localPosition.y, scaleablePart.localPosition.z);
