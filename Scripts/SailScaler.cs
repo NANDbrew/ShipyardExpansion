@@ -29,7 +29,7 @@ namespace ShipyardExpansion
         public Transform rotatablePart;
         ScaleType scaleType = ScaleType.Uniform;
 
-        float scaleFactor = 1f;
+        //float scaleFactor = 1f;
         
         public float GetBaseHeight()
         {
@@ -73,6 +73,8 @@ namespace ShipyardExpansion
             if (SailLimits.angleLimits.ContainsKey(sail.prefabIndex)) angleLimits = SailLimits.angleLimits[sail.prefabIndex];
             if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
             else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
+            if (startScale.y < scaleLimits[0]) scaleLimits[0] = startScale.y * 0.8f;
+            if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
         }
         #region rotation
         public void SetAngle(float newAngle)

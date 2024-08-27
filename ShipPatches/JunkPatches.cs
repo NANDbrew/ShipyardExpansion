@@ -461,6 +461,7 @@ namespace ShipyardExpansion
 
             topMast1.transform.Find("flagT").gameObject.SetActive(false);
             var wind_flag = UnityEngine.Object.Instantiate(structure.Find("mast_mid_0").Find("flag_cloth (2)"), topMast1.transform, false);
+            wind_flag.localPosition = new Vector3(0, 0, 0.8f);
             //mizzenMast2M.leftAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.leftAngleWinch[0] };
             //mizzenMast2M.rightAngleWinch = new GPButtonRopeWinch[1] { mizzenMast2M.rightAngleWinch[0] };
             //Debug.Log("hacked winches");
