@@ -29,15 +29,15 @@ namespace ShipyardExpansion
     [HarmonyPatch(typeof(PrefabsDirectory), "Start")]
     internal static class SailAdderPatches
     {
+        public static Transform prefabContainer;
         public static void Postfix(ref GameObject[] ___sails)
         {
             if (!Plugin.addSails.Value) return;
             Plugin.stockSailsListSize = ___sails.Length;
             Array.Resize(ref ___sails, Plugin.sailListSize);
-            /*var modSail1 = SailAdder.CopySail(___sails, 37, new Vector3(2f, 0.25f, 0), new Vector3(90, 356, 0), "lug huge", "balanced lug 10yd", 159);
-            modSail1.transform.Find("sail M gaff huge").Find("SAIL_small_gaff").Find("boom_brace").gameObject.SetActive(false);
-            modSail1.transform.Find("sail M gaff huge").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
-            modSail1.GetComponent<Sail>().category = SailCategory.other;*/
+
+            prefabContainer = new GameObject { name = "SEprefabContainer" }.transform;
+            prefabContainer.gameObject.SetActive(false);
 
             var modSail2 = SailAdder.CopySail(___sails, 30, new Vector3(1.55f, 0.25f, 0), new Vector3(90, 354, 0), "lug medium", "balanced lug 6yd", 158);
             modSail2.transform.Find("sail M small gaff").Find("SAIL_small_gaff").Find("boom_brace").gameObject.SetActive(false);
@@ -67,7 +67,7 @@ namespace ShipyardExpansion
         public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, float scale, string name, string prettyName, int newIndex)
         {
             //Debug.Log("thing");
-            Transform sailBase = UnityEngine.Object.Instantiate(sailPrefabs[prefabIndex]).transform;
+            Transform sailBase = UnityEngine.Object.Instantiate(sailPrefabs[prefabIndex], SailAdderPatches.prefabContainer).transform;
             var sail = sailBase.GetComponent<Sail>();
             sail.prefabIndex = newIndex;
             sail.sailName = prettyName;
@@ -88,12 +88,12 @@ namespace ShipyardExpansion
             UnityEngine.Object.Destroy(col_parent.GetComponent<Rigidbody>());
             var locs = col_parent.gameObject.AddComponent<SailPartLocations>();
 
-            foreach (ShipyardSailColCheckerSub child in col_parent.GetComponentsInChildren<ShipyardSailColCheckerSub>())
+            foreach (Transform child in col_parent.gameObject.GetComponentsInChildren<Transform>(true).Where(go => go.gameObject != col_parent.gameObject))
             {
                 child.transform.localPosition += position;
-                UnityEngine.Object.Destroy(child.GetComponent<Rigidbody>());
+/*                UnityEngine.Object.Destroy(child.GetComponent<Rigidbody>());
                 UnityEngine.Object.Destroy(child.GetComponent<ShipyardSailColCheckerSub>());
-                locs.locations.Add(child.transform.localPosition);
+*/                locs.locations.Add(child.transform.localPosition);
             }
             sail.installHeight = (float)Math.Round(sail.installHeight * (scale / sailObject.localScale.y), 2);
             sailObject.localScale = new Vector3(scale, scale, scale);
