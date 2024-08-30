@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace ShipyardExpansion.Patches
         {
             SaveLoader.SaveSailConfig(___refs);
         }
+
         [HarmonyPatch("LoadData")]
         [HarmonyPostfix]
         public static void LoadDataPatch(BoatRefs ___refs)
@@ -54,6 +56,7 @@ namespace ShipyardExpansion.Patches
                 return;
             }
             string slug = GameState.modData[boat];
+            Debug.Log("loading data: " + slug);
             string[] masts = slug.Split(new char[] { ')' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string mast in masts)
             {
@@ -65,13 +68,13 @@ namespace ShipyardExpansion.Patches
                 {
                     GameObject installedSail = refs.masts[mastIndex].sails[i];
                     string[] sailInfo = sails[i].Split(',');
-                    if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0]))
+                    if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
                     {
                         SailScaler component = installedSail.GetComponent<SailScaler>();
-                        component.SetScaleAbs(Convert.ToSingle(sailInfo[1]), Convert.ToSingle(sailInfo[2]));
+                        component.SetScaleAbs(Convert.ToSingle(sailInfo[1], CultureInfo.InvariantCulture), Convert.ToSingle(sailInfo[2], CultureInfo.InvariantCulture));
                         if (sailInfo.Length >= 4)
                         {
-                            component.SetAngle(Convert.ToSingle(sailInfo[3]));
+                            component.SetAngle(Convert.ToSingle(sailInfo[3], CultureInfo.InvariantCulture));
                             //Debug.Log("sail angle = " + sailInfo[3]);
                         }
                     }
@@ -97,13 +100,13 @@ namespace ShipyardExpansion.Patches
                 {
                     SailScaler component = sail.GetComponent<SailScaler>();
                     Sail component2 = sail.GetComponent<Sail>();
-                    text += component2.prefabIndex.ToString() + ",";
+                    text += component2.prefabIndex.ToString(CultureInfo.InvariantCulture) + ",";
 
                     //text += mast.orderIndex.ToString() + ",";
 
-                    text += component.scale.x.ToString() + ",";
-                    text += component.scale.y.ToString() + ",";
-                    text += component.angle.ToString() + "]";
+                    text += component.scale.x.ToString(CultureInfo.InvariantCulture) + ",";
+                    text += component.scale.y.ToString(CultureInfo.InvariantCulture) + ",";
+                    text += component.angle.ToString(CultureInfo.InvariantCulture) + "]";
                 }
                 text += ")";
             }
@@ -115,7 +118,7 @@ namespace ShipyardExpansion.Patches
             {
                 GameState.modData.Add(boat, text);
             }
-            //Debug.Log("data = " + text);
+            Debug.Log("saving data: " + text);
 
         }
     }

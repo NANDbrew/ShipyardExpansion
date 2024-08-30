@@ -28,6 +28,7 @@ namespace ShipyardExpansion
             { 128, new float[2] { 340f, 15f } },
             { 129, new float[2] { 340f, 15f } },
             { 130, new float[2] { 340f, 15f } },
+            { 156, new float[2] { 340f, 10f } },
             { 157, new float[2] { 340f, 8f } },
             { 158, new float[2] { 340f, 10f } },
 
