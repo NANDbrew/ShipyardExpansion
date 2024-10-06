@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using cakeslice;
+using HarmonyLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -388,7 +389,7 @@ namespace ShipyardExpansion
             bedOpt.basePrice = 500;
             bedOpt.installCost = 100;
             BoatPartOption noBed = Util.CreatePartOption(container, "bed_empty", "(no bed)");
-            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { bedOpt, noBed });
+            var bedPart = Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { bedOpt, noBed });
             #endregion
 
 
@@ -397,9 +398,6 @@ namespace ShipyardExpansion
             #region late Adjustments
             outerFstaySource.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
             #endregion
-
-
-
 
             partsList.StartCoroutine(AddTopmast(foremastM,
                 structure,
@@ -419,8 +417,8 @@ namespace ShipyardExpansion
                 //outerForestay2.GetComponent<BoatPartOption>(),
                 midstay2Opt,
                 topmastPart,
-                topmast2Part/*,
-                jibboomPart*/
+                topmast2Part,
+                bedPart
                 ));
 
         }
@@ -443,10 +441,10 @@ namespace ShipyardExpansion
             //BoatPartOption extra3,
             BoatPartOption extra4,
             BoatPart topmastPart,
-            BoatPart topmast2Part/*,
-            BoatPart jibboomPart*/
-            )
-        {
+            BoatPart topmast2Part,
+            BoatPart bedPart)
+
+            {
             Debug.Log("waiting for topmast...");
             yield return new WaitUntil(() => PartRefs.sanbuq != null);
             Debug.Log("found topmast");
@@ -499,6 +497,30 @@ namespace ShipyardExpansion
             extra3.requires.Add(jibboomOpt);*/
             extra4.requires = new List<BoatPartOption> { topMast2.GetComponent<BoatPartOption>() };
             extra4.GetComponent<Mast>().mastReefAtt = topMast2.mastReefAtt;
+
+            // hammock
+            yield return new WaitUntil(() => PartRefs.kakam != null);
+            var hammock = UnityEngine.Object.Instantiate(PartRefs.kakam.Find("hammock_001"), structure, false);
+            hammock.gameObject.SetActive(false);
+            hammock.localPosition = new Vector3(-5.65f, 1.3f, 1.2f);
+            hammock.localEulerAngles = new Vector3(0, 0, 275);
+            var spar = hammock.Find("mast_003");
+            spar.localPosition = new Vector3(-1.39f, -0.25f, 1.58f);
+            spar.localEulerAngles = new Vector3(0, 90.1f, 240.7f);
+            spar.localScale = new Vector3(0.61f, 0.61f, 1.4f);
+            hammock.GetComponent<HingeJoint>().connectedBody = partsList.gameObject.GetComponent<Rigidbody>();
+            hammock.gameObject.SetActive(true);
+            foreach (var outline in hammock.GetComponents<Outline>())
+            {
+                if (!ReferenceEquals(Traverse.Create(hammock.GetComponent<GPButtonBed>()).Field("outline").GetValue(), outline))
+                {
+                    UnityEngine.Object.Destroy(outline);
+                    break;
+                }
+            }
+            hammock.parent = structure.parent;
+            bedPart.partOptions.Add(hammock.GetComponent<BoatPartOption>());
+
         }
     }
 

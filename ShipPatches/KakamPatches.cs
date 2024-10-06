@@ -55,7 +55,7 @@ namespace ShipyardExpansion
             container.Find("Cube_004").parent = structure.Find("struct_var_1__long_roof_");
             structure.Find("mast_003").parent = container.Find("hammock_001");
             #endregion
-
+            
             #region midstays
             var midstayReefs = Util.CopyWinches(mizzenMast.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
             //var angleWinches2 = Util.CopyWinches(angleWinches, Vector3.zero, new Vector3(0.3f, -0.05f, 0));
