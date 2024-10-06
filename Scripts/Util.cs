@@ -43,7 +43,7 @@ namespace ShipyardExpansion
             float scaleFactor = scale.z / source.localScale.z;
             Mast mastComp = mast.GetComponent<Mast>();
             mastComp.orderIndex = index;
-            mast.name = name;
+            mast.name = "SE_" + name;
             mast.localPosition = position;
             mast.localEulerAngles = eulerAngles;
             mast.localScale = scale;
@@ -54,7 +54,7 @@ namespace ShipyardExpansion
             mastComp.walkColMast.transform.localScale = scale;
             mastComp.startSailPrefab = null;
             mastComp.shipRigidbody = parent.GetComponentInParent<Rigidbody>();
-            mastComp.mastHeight = (float)Math.Round(mastComp.mastHeight * scaleFactor, 1);
+            //mastComp.mastHeight = (float)Math.Round(mastComp.mastHeight * scaleFactor, 1);
             if (mast.GetComponent<BoatPartOption>() is BoatPartOption mastOption)
             {
                 //BoatPartOption mastOption = mast.GetComponent<BoatPartOption>();
