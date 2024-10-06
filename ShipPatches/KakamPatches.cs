@@ -79,7 +79,7 @@ namespace ShipyardExpansion
             midstay_upper.reefWinch[0].rope = null;
             midstay_upper.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
             midstay_upper.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches[1] };
-            midstay_upper.mastHeight = 10f;
+            //midstay_upper.mastHeight = 10f;
             midstay_upper.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>(), mizzenMast.GetComponent<BoatPartOption>() };
             var midstay_upper_none = Util.CreatePartOption(container, "(no top midstay)", "(no top midstay)");
             Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { midstay_upper_none, midstay_upper.GetComponent<BoatPartOption>() });

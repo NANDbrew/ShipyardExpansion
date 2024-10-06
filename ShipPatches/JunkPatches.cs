@@ -66,16 +66,19 @@ namespace ShipyardExpansion
 
             forestaySource.GetComponent<Mast>().mastReefAttExtension = fore1ExtList;
             
-            mainMast1.GetComponent<Mast>().mastHeight += 1f;//= 17.5f;
-            mainMast2.GetComponent<Mast>().mastHeight += 1.8f;//= 18.5f;
-            mainMast2.GetComponent<Mast>().extraBottomHeight = 3f;//= 18.5f;
-            mizzenMast1M.mastHeight += 2f;//= 12.6f;
+            mainMast1.GetComponent<Mast>().mastHeight = 19.3f;//= 17.5f;
+            mainMast1.GetComponent<Mast>().extraBottomHeight = 0f;
+            mainMast2.GetComponent<Mast>().mastHeight = 19.3f;//= 18.5f;
+            mainMast2.GetComponent<Mast>().extraBottomHeight = 0f;//= 18.5f;
+            mizzenMast1M.mastHeight = 12.5f;//= 12.6f;
+            mizzenMast1M.extraBottomHeight = 0.6f;
             mizzenMast2M.mastHeight += 0.8f;//= 12.6f;
             foremastM.mastHeight += 2f;//= 11.6f;
 
-            forestay0Lower.localEulerAngles = new Vector3(305.6f, 270f, 90f);
-            forestay0Lower.localScale = new Vector3(1, 1, 0.945f);
+            forestay0Lower.localEulerAngles = new Vector3(305.2f, 270f, 90f);
+            forestay0Lower.localScale = new Vector3(1, 1, 0.97f);
             forestay0Lower.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
+            forestay0Lower.GetComponent<Mast>().mastHeight = 18.3f;
 
             forestay.GetComponent<Mast>().mastHeight = 20;
             forestay1Lower.GetComponent<Mast>().mastHeight = 14;
@@ -197,7 +200,7 @@ namespace ShipyardExpansion
 
             #region forestay flatsprit
             Mast forestayF = Util.CopyMast(forestaySource, forestaySource.localPosition, new Vector3(309.873f, 270f, 90f), new Vector3(1, 1, 1.24f), "forestay_foremast_flat", "foremast forestay 2", 34);
-            forestayF.mastHeight = 13.5f;
+            //forestayF.mastHeight = 13.5f;
             forestayF.leftAngleWinch = new GPButtonRopeWinch[] { foremastM.leftAngleWinch[1] };
             forestayF.rightAngleWinch = new GPButtonRopeWinch[] { foremastM.rightAngleWinch[1] };
             forestayF.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
@@ -205,13 +208,13 @@ namespace ShipyardExpansion
             partsList.availableParts[4].partOptions.Add(forestayF.GetComponent<BoatPartOption>());
 
             Mast forestayF2 = Util.CopyMast(forestay, forestay.localPosition, new Vector3(310.2f, 270f, 90f), new Vector3(1, 1, 1.14f), "forestay_1_flat", "forestay 2 long", 35);
-            forestayF2.mastHeight = 22.4f;
+            //forestayF2.mastHeight = 22.4f;
             forestayF2.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
             forestayF2.GetComponent<BoatPartOption>().requires.Add(flatsprit.GetComponent<BoatPartOption>());
             partsList.availableParts[4].partOptions.Add(forestayF2.GetComponent<BoatPartOption>());
 
             Mast forestayF3 = Util.CopyMast(forestay1Lower, forestay1Lower.localPosition, forestay1Lower.localEulerAngles, new Vector3(1, 1, 1.043f), "forestay_1_lower_flat", "lower forestay 2 long", 36);
-            forestayF3.mastHeight = 14.5f;
+            //forestayF3.mastHeight = 14.5f;
             forestayF3.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
             forestayF3.GetComponent<BoatPartOption>().requires.Add(flatsprit.GetComponent<BoatPartOption>());
             partsList.availableParts[6].partOptions.Add(forestayF3.GetComponent<BoatPartOption>());
