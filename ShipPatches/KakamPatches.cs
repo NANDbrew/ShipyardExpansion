@@ -34,11 +34,13 @@ namespace ShipyardExpansion
             #region adjustments
             partsList.availableParts[0].category = 2;
             partsList.availableParts[7].category = 2;
-            mainMast1.GetComponent<Mast>().mastHeight += 0.4f;
+            mainMast1.GetComponent<Mast>().mastHeight = 9.7f;
+            mainMast2.GetComponent<Mast>().mastHeight = 9.7f;
             //mainMast1.GetComponent<Mast>().startSailHeightOffset -= 0.4f;
             mizzenMastM.leftAngleWinch = new GPButtonRopeWinch[1] { mizzenMastM.leftAngleWinch[1] };
             mizzenMastM.rightAngleWinch = new GPButtonRopeWinch[1] { mizzenMastM.rightAngleWinch[1] };
-            mizzenMastM.GetComponent<Mast>().mastHeight += 0.75f;
+            mizzenMastM.GetComponent<Mast>().mastHeight = 8.4f;
+            mizzenMastM.GetComponent<Mast>().extraBottomHeight = 0.6f;
             var m1brace = mizzenMast.Find("mast_holder_001");
             m1brace.localPosition = new Vector3(-1.29f, 0, -10.12f);
             m1brace.localScale = new Vector3(0.87f, 0.87f, 0.94f);
