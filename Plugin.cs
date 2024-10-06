@@ -14,7 +14,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.4.2";
+        public const string PLUGIN_VERSION = "0.4.3";
 
         internal const int mastListSize = 64;
         internal const int sailListSize = 160;
@@ -24,10 +24,6 @@ namespace ShipyardExpansion
         public static Dictionary<BoatPart, int> stockParts;
         public static List<Mast> stockMasts;
         public static int stockSailsListSize;
-
-        /*public static Transform topmastRef;
-        public static Transform spritRef;
-        public static Transform spritColRef;*/
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -63,7 +59,7 @@ namespace ShipyardExpansion
             //lenientSquares = Config.Bind("Settings", "Lenient squares", false, new ConfigDescription("Ignore collisions with the sides of square sails"));
             unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
             //tiltOffset = Config.Bind("Experimental", "Tilt Offset", 0, new ConfigDescription("Tilt for lateens & fins", new AcceptableValueRange<int>(-15, 15), new ConfigurationManagerAttributes { IsAdvanced = true }));
-            addSails = Config.Bind("Experimental", "Add lug sails", false, new ConfigDescription("Adds new sails in the 'Other' category"));
+            addSails = Config.Bind("Experimental", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)"));
         }
     }
 }
