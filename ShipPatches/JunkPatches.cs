@@ -73,12 +73,13 @@ namespace ShipyardExpansion
             mizzenMast1M.mastHeight = 12.5f;//= 12.6f;
             mizzenMast1M.extraBottomHeight = 0.6f;
             mizzenMast2M.mastHeight += 0.8f;//= 12.6f;
-            foremastM.mastHeight += 2f;//= 11.6f;
+            foremastM.mastHeight += 2f;//= 11.6f;1
+            foremast.GetComponent<BoatPartOption>().optionName = "foremast 1";
 
             forestay0Lower.localEulerAngles = new Vector3(305.2f, 270f, 90f);
             forestay0Lower.localScale = new Vector3(1, 1, 0.97f);
             forestay0Lower.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>() };
-            forestay0Lower.GetComponent<BoatPartOption>().requiresDisabled.Add(foremast.GetComponent<BoatPartOption>());
+            forestay0Lower.GetComponent<BoatPartOption>().requiresDisabled = new List<BoatPartOption> { foremast.GetComponent<BoatPartOption>() };
             forestay0Lower.GetComponent<Mast>().mastHeight = 18.3f;
 
             forestay.GetComponent<Mast>().mastHeight = 20;
@@ -91,7 +92,7 @@ namespace ShipyardExpansion
             partsList.availableParts[6].category = 2;
             partsList.availableParts[7].category = 2;
 
-            midstaySource.GetComponent<BoatPartOption>().requires = new List<BoatPartOption>();
+            midstaySource.GetComponent<BoatPartOption>().requires.Remove(mizzenMast2.GetComponent<BoatPartOption>());
             midstaySource.GetComponent<BoatPartOption>().requiresDisabled = new List<BoatPartOption> { mizzenMast1.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen_(empty)").GetComponent<BoatPartOption>() };
             forestaySource.GetComponent<BoatPartOption>().requires.Add(bowsprit.GetComponent<BoatPartOption>());
 
@@ -243,7 +244,7 @@ namespace ShipyardExpansion
             }
             mizzen3.reefWinch.Last().transform.localPosition = new Vector3(-0.29f, 0f, -18.26f);
             mizzen3.reefWinch.Last().transform.localEulerAngles = new Vector3(0f, 270f, 0f);
-            mizzen3.mastHeight = 17.5f;
+            mizzen3.mastHeight = 17.3f;
             mizzen3.extraBottomHeight = 0;
             mizzen3.midAngleWinch = mizzenMast2M.midAngleWinch.AddToArray(Util.CopyWinch(mizzenMast2M.midAngleWinch[1], new Vector3(-9f, 2.52f, 1.46f)));
             mizzen3.leftAngleWinch = mizzenMast2M.leftAngleWinch;
@@ -282,7 +283,7 @@ namespace ShipyardExpansion
             BoatPartOption midstayOpt = midstay.GetComponent<BoatPartOption>();
             BoatPartOption midstayNone = Util.CreatePartOption(container, "(no top middlestay)", "(no top middlestay)");
             BoatPart topMidstayPart = Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { midstayNone, midstayOpt });
-            midstayOpt.requires = new List<BoatPartOption> { mizzen3.GetComponent<BoatPartOption>() };
+            midstayOpt.requires = new List<BoatPartOption> { mizzen3.GetComponent<BoatPartOption>(), mainMast1.GetComponent<BoatPartOption>() };
             #endregion
 
             #region topmast
