@@ -124,6 +124,12 @@ namespace ShipyardExpansion
 
             if (!Plugin.convertSave.Value) return;
 
+            if (saveVersion >= 43) return;
+            foreach (SaveSailData sailData in data.sails)
+            {
+                sailData.installHeight /= refs.masts[sailData.mastIndex].transform.localScale.z;
+            }
+
             if (saveVersion >= 30) return;
             if (refs.GetComponent<SaveableObject>().sceneIndex == 80)
             {

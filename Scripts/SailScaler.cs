@@ -138,14 +138,7 @@ namespace ShipyardExpansion
                 else colScale = scale;
             }
             ratio = newRatio;
-            if (transform.parent.localScale.y != 1)
-            {
-                sail.installHeight = height * baseHeight * transform.localScale.y - (baseHeight * transform.localScale.y - baseHeight);
-            }
-            else
-            {
-                sail.installHeight = height * baseHeight;
-            }
+            UpdateInstallHeight();
             shadowCol.parent = scaleablePart;
             windCenter.parent = scaleablePart;
             scaleablePart.gameObject.SetActive(false);
@@ -198,6 +191,17 @@ namespace ShipyardExpansion
         {
             SetScaleRel(scale.x - scaleStep, ratio);
         }
+        public void UpdateInstallHeight()
+        {
+            UpdateInstallHeight(transform.parent);
+        }
+        public void UpdateInstallHeight(Transform mast)
+        {
+            sail.installHeight = scale.y * baseHeight / mast.localScale.z;
+            Debug.Log("adjusting sail scale for resized mast");
+
+        }
+
         #endregion
 #if DEBUG
         // !!FOR TESTING ONLY!! remove before publishing!

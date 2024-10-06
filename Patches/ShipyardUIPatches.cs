@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
@@ -175,5 +176,22 @@ namespace ShipyardExpansion
             rotateForwardButton.SetActive(rotatable);
             rotateBackwardButton.SetActive(rotatable);
         }
+
+
+        [HarmonyPatch("UpdateMastButtons")]
+        [HarmonyPostfix]
+        public static void UpdateMastButtonsPatch2(GameObject[] ___mastButtons)
+        {
+            Mast[] masts = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatRefs>().masts;
+            for (int i = 0; i < ___mastButtons.Length; i++)
+            {
+                if (masts.Length > i && masts[i] != null && ___mastButtons[i].activeInHierarchy)
+                {
+                    ___mastButtons[i].transform.position = masts[i].transform.position - masts[i].transform.forward * (masts[i].mastHeight * masts[i].transform.localScale.z * 0.5f);
+                }
+            }
+
+        }
+
     }
 }

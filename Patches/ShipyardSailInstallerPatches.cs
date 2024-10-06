@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,6 +15,12 @@ namespace ShipyardExpansion
     [HarmonyPatch(typeof(ShipyardSailInstaller), "AddNewSail")]
     internal static class ShipyardSailInstallerPatches
     {
+        public static void Prefix(GameObject sailObject, ref Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance)
+        {
+            SailScaler component = sailObject.GetComponent<SailScaler>();
+            component.UpdateInstallHeight(___currentMast.transform);
+
+        }
         public static void Postfix(GameObject sailObject, ref Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance)
         {
             SailScaler component = ___selectedSail.GetComponent<SailScaler>();
