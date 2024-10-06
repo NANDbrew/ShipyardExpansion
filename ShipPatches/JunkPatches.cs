@@ -66,8 +66,8 @@ namespace ShipyardExpansion
 
             forestaySource.GetComponent<Mast>().mastReefAttExtension = fore1ExtList;
             
-            mainMast1.GetComponent<Mast>().mastHeight = 19.3f;//= 17.5f;
-            mainMast1.GetComponent<Mast>().extraBottomHeight = 0f;
+            mainMast1.GetComponent<Mast>().mastHeight = 18.8f;//= 17.5f;
+            mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
             mainMast2.GetComponent<Mast>().mastHeight = 19.3f;//= 18.5f;
             mainMast2.GetComponent<Mast>().extraBottomHeight = 0f;//= 18.5f;
             mizzenMast1M.mastHeight = 12.5f;//= 12.6f;
@@ -77,7 +77,8 @@ namespace ShipyardExpansion
 
             forestay0Lower.localEulerAngles = new Vector3(305.2f, 270f, 90f);
             forestay0Lower.localScale = new Vector3(1, 1, 0.97f);
-            forestay0Lower.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
+            forestay0Lower.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>() };
+            forestay0Lower.GetComponent<BoatPartOption>().requiresDisabled.Add(foremast.GetComponent<BoatPartOption>());
             forestay0Lower.GetComponent<Mast>().mastHeight = 18.3f;
 
             forestay.GetComponent<Mast>().mastHeight = 20;

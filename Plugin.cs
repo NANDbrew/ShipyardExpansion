@@ -59,7 +59,7 @@ namespace ShipyardExpansion
             //lenientSquares = Config.Bind("Settings", "Lenient squares", false, new ConfigDescription("Ignore collisions with the sides of square sails"));
             unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
             //tiltOffset = Config.Bind("Experimental", "Tilt Offset", 0, new ConfigDescription("Tilt for lateens & fins", new AcceptableValueRange<int>(-15, 15), new ConfigurationManagerAttributes { IsAdvanced = true }));
-            addSails = Config.Bind("Experimental", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)"));
+            addSails = Config.Bind("Settings", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)"));
         }
     }
 }
