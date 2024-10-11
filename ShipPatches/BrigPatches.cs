@@ -57,6 +57,8 @@ namespace ShipyardExpansion
             mizzenMast2.GetComponent<Mast>().extraBottomHeight = 0.8f;
             backstay1_0bottom.GetComponent<Mast>().mastHeight = 12.3f;
             backstay1_0top.GetComponent<Mast>().mastHeight = 12.5f;
+            foreMast1.GetComponent<Mast>().mastHeight = 20f;
+            foreMast1.GetComponent<Mast>().extraBottomHeight = 0.7f;
             #endregion
 
             #region mizzenShrouds
@@ -357,7 +359,7 @@ namespace ShipyardExpansion
 
             #region topmasts
             //Debug.Log("brig topmasts");
-            GPButtonRopeWinch[] topmast0Reef = Util.CopyWinches(new GPButtonRopeWinch[] { foreMast1.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0.66f, 0));
+            GPButtonRopeWinch[] topmast0Reef = Util.CopyWinches(new GPButtonRopeWinch[] { foreMast1.GetComponent<Mast>().reefWinch.Last() }, foreMast1.GetComponent<Mast>().reefWinch.Last().transform.localPosition, new Vector3(6.6f, 3.43f, 0.39f));
             GPButtonRopeWinch[] topmast01Reef = Util.CopyWinches(new GPButtonRopeWinch[] { foreMast2.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0.66f, 0));
             GPButtonRopeWinch[] topmast0Angle = new GPButtonRopeWinch[1] { Util.CopyWinch(foreMast2.GetComponent<Mast>().midAngleWinch.Last(), new Vector3(-1.22f, 3.15f, -0.27f)) };
 
@@ -391,7 +393,8 @@ namespace ShipyardExpansion
             #region topmast stays
             //Debug.Log("brig topmast stays");
             Mast mainTopstay1 = Util.CopyMast(midstayTop1, new Vector3(-4.7f, 32.7f, 0), midstayTop1.localEulerAngles, new Vector3(1, 1, 0.99f), "mainstay_topmast_1-1", "main topmast stay 1", 41);
-            mainTopstay1.reefWinch = Util.CopyWinches(mainTopstay1.reefWinch, Vector3.zero, new Vector3(0f, 0, 0.66f));
+            mainTopstay1.reefWinch = Util.CopyWinches(mainTopstay1.reefWinch, mainTopstay1.reefWinch[0].transform.localPosition, new Vector3(-5.22f, 5.52f, -0.26f));
+            mainTopstay1.reefWinch[0].transform.localEulerAngles = new Vector3(0f, 135f, 90f);
             mainTopstay1.leftAngleWinch = Util.CopyWinches(mainTopstay1.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             mainTopstay1.rightAngleWinch = Util.CopyWinches(mainTopstay1.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             mainTopstay1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { foreMast1.GetComponent<BoatPartOption>() };
@@ -438,8 +441,10 @@ namespace ShipyardExpansion
             Transform topMForestaySrc = container.Find("forestay_0_top_shortsprit");
             Mast topmastForestay1 = Util.CopyMast(topMForestaySrc, new Vector3(7.5f, 31.4f, 0), new Vector3(305, 270, 90), new Vector3(1, 1, 1.276f), "forestay_topmast_0", "topmast forestay 1", 48);
             topmastForestay1.reefWinch = Util.CopyWinches(topmastForestay1.reefWinch, Vector3.zero, new Vector3(0f, 0, 0.57f));
-            topmastForestay1.reefWinch[0].transform.localEulerAngles = new Vector3(0, 45, 90);
-            topmastForestay1.reefWinch[1].transform.localEulerAngles = new Vector3(0, 45, 90);
+            topmastForestay1.reefWinch[0].transform.localEulerAngles = new Vector3(0, 90, 90);
+            topmastForestay1.reefWinch[0].transform.localPosition = new Vector3(6.98f, 3.43f, 0f);
+            topmastForestay1.reefWinch[1].transform.localEulerAngles = new Vector3(0, 180, 90);
+            topmastForestay1.reefWinch[1].transform.localPosition = new Vector3(6.61f, 3.43f, -0.39f);
             topmastForestay1.leftAngleWinch = Util.CopyWinches(topmastForestay1.leftAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay1.rightAngleWinch = Util.CopyWinches(topmastForestay1.rightAngleWinch, Vector3.zero, new Vector3(0.5f, 0, 0));
             topmastForestay1.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { bowspritLong.GetComponent<BoatPartOption>() };
