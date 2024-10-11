@@ -57,7 +57,7 @@ namespace ShipyardExpansion
             #endregion
             
             #region midstays
-            var midstayReefs = Util.CopyWinches(mizzenMast.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
+            //var midstayReefs = Util.CopyWinches(mizzenMast.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
             //var angleWinches2 = Util.CopyWinches(angleWinches, Vector3.zero, new Vector3(0.3f, -0.05f, 0));
 
             /*Mast midstay_lower = Util.CopyMast(lowerForestay, new Vector3(-2f, 7f, 0f), lowerForestay.localEulerAngles, new Vector3(1f, 1f, 1.37f), "midstay_lower", "lower midstay", 31);
@@ -75,8 +75,7 @@ namespace ShipyardExpansion
             //Mast midstay_upper = Util.CopyMast(lowerForestay, new Vector3(-2f, 10.5f, 0f), lowerForestay.localEulerAngles, new Vector3(1f, 1f, 1.654f), "midstay_upper", "top midstay", 32);
             Mast midstay_upper = Util.CopyMast(forestay, new Vector3(-2.4f, 10.6f, 0f), forestay.localEulerAngles, new Vector3(1, 1, 1.14f), "midstay", "middlestay", 32);
             midstay_upper.mastReefAtt = mizzenMastM.mastReefAtt;
-            midstay_upper.reefWinch = new GPButtonRopeWinch[1] { midstayReefs[1] };
-            midstay_upper.reefWinch[0].transform.localPosition = new Vector3(-3.27f, midstayReefs[1].transform.localPosition.y, 0f);
+            midstay_upper.reefWinch = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast.GetComponent<Mast>().reefWinch[1], new Vector3(-3.27f, mizzenMast.GetComponent<Mast>().reefWinch[1].transform.localPosition.y, 0f)) };
             midstay_upper.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);
             midstay_upper.reefWinch[0].rope = null;
             midstay_upper.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
