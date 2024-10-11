@@ -121,6 +121,7 @@ namespace ShipyardExpansion
                     data.partActiveOptions[3] = 4;
                 }
             }
+            if (GameState.currentShipyard != null) return;
 
             if (!Plugin.convertSave.Value) return;
 
