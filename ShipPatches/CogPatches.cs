@@ -32,6 +32,8 @@ namespace ShipyardExpansion
             PartRefs.cog = container;
             PartRefs.cogCol = walkCols;
             Transform winchCont1 = UnityEngine.Object.Instantiate(new GameObject { name = "winch_container_0" }, container).transform;
+
+
             #region adjustments
             mainMast1M.mastHeight += 1.2f;//= 11.5f;
             mainMast1M.extraBottomHeight = 1f;

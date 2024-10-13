@@ -310,15 +310,6 @@ namespace ShipyardExpansion
             var stmFlag = UnityEngine.Object.Instantiate(flagSource, spritTopmast1.transform);
             stmFlag.transform.localPosition = new Vector3(0.3f, 0, 1);
 
-           /* var spritBrace0 = Util.CopyMast(container.Find("backstay_1-1_top"), new Vector3(20, 6.7f, -0.15f), new Vector3(334.82f, 78.3f, 0), new Vector3(0.95f, 0.95f, 1), "sprit_brace_R", "sprit brace R", 63);
-            spritBrace0.GetComponent<Mast>().enabled = false;
-            spritBrace0.GetComponent<BoatPartOption>().enabled = false;
-            //spritBrace0.transform.parent = spritTopmast1.transform;
-            var spritBrace1 = Util.CopyMast(container.Find("backstay_1-1_top"), new Vector3(20, 6.7f, 0.15f), new Vector3(334.82f, 101.7f, 0), new Vector3(0.95f, 0.95f, 1), "sprit_brace_L", "sprit brace L", 63);
-            spritBrace1.GetComponent<Mast>().enabled = false;
-            spritBrace1.GetComponent<BoatPartOption>().enabled = false;*/
-            //spritBrace1.transform.parent = spritTopmast1.transform;
-
             BoatPartOption partOption = Util.CopyPartOption(bowsprit, spritTopmast1.gameObject, "sprit topmast 1");
             partOption.mass = 20;
             partOption.basePrice /= 2;
@@ -329,27 +320,6 @@ namespace ShipyardExpansion
             BoatPartOption spritTopmast2_opt = spritTopmast2.GetComponent<BoatPartOption>();
             partOption.requires = new List<BoatPartOption> { bowsprit };
             spritTopmast2_opt.requires = new List<BoatPartOption> { bowspritLong };
-
-            /*var spritBrace20 = spritTopmast2.transform.Find("sprit_brace_R");
-            spritBrace20.localPosition = new Vector3(-1.75f, 0.15f, -3.94f);
-            spritBrace20.localEulerAngles = new Vector3(7, 64.35f, 84.96f);
-            spritBrace20.localScale = new Vector3(0.95f, 0.95f, 1.2f);
-            var spritBrace21 = spritTopmast2.transform.Find("sprit_brace_L");
-            spritBrace21.localPosition = new Vector3(-1.75f, -0.15f, -3.94f);
-            spritBrace21.localEulerAngles = new Vector3(353.3f, 64.35f, 95.04f);
-            spritBrace21.localScale = new Vector3(0.95f, 0.95f, 1.2f);
-
-            var spritBrace20Col = spritBrace20.GetComponent<Mast>().walkColMast;
-            spritBrace20Col.parent = spritTopmast2.walkColMast;
-            spritBrace20Col.localPosition = new Vector3(-1.75f, 0.15f, -3.94f);
-            spritBrace20Col.localEulerAngles = new Vector3(7, 64.35f, 84.96f);
-            spritBrace20Col.localScale = new Vector3(0.95f, 0.95f, 1.2f);
-            var spritBrace21Col = spritBrace21.GetComponent<Mast>().walkColMast;
-            spritBrace21Col.parent = spritTopmast2.walkColMast;
-            spritBrace21Col.localPosition = new Vector3(-1.75f, -0.15f, -3.94f);
-            spritBrace21Col.localEulerAngles = new Vector3(353.3f, 64.35f, 95.04f);
-            spritBrace21Col.localScale = new Vector3(0.95f, 0.95f, 1.2f);*/
-
 
             BoatPartOption stmNone = Util.CreatePartOption(structure, "(no-sprit_topmast)", "(no sprit topmast)");
             Util.CreateAndAddPart(partsList, 0, new List<BoatPartOption> { stmNone, partOption, spritTopmast2_opt });
@@ -575,7 +545,7 @@ namespace ShipyardExpansion
 
 
             yield return new WaitUntil(() => PartRefs.cog != null && PartRefs.sanbuq != null);
-            mast_001 = UnityEngine.Object.Instantiate(PartRefs.cog.Find("structure").Find("mast_001"), parent.Find("sprit_topmast"), false);
+            mast_001 = UnityEngine.Object.Instantiate(PartRefs.cog.Find("structure").Find("mast_001"), spritTopmast1.transform, false);
             mast_001.localPosition = new Vector3(0, 0, 1.6f);
             mast_001.localScale = new Vector3(0.4f, 0.4f, 0.5f);
             mast_001.localEulerAngles = Vector3.zero;
@@ -669,7 +639,6 @@ namespace ShipyardExpansion
             spritTopmast2.GetComponent<BoatPartOption>().walkColObject.SetActive(false);
             spritTopmast2.GetComponent<BoatPartOption>().walkColObject = mastCol2.gameObject;
 
-            
             partsList.RefreshParts();
 
         }
