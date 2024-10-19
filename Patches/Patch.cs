@@ -32,13 +32,13 @@ namespace ShipyardExpansion
 
                 Array.Resize(ref ___refs.masts, 64);// = ___refs.masts.AddRangeToArray(new Mast[33]);
                 //Debug.Log(___refs.masts);
-
-                if (__instance.name == "BOAT dhow small (10)") DhowPatches.Patch(__instance.transform, ___parts);
-                if (__instance.name == "BOAT dhow medium (20)") SanbuqPatches.Patch(__instance.transform, ___parts);
-                if (__instance.name == "BOAT junk small singleroof(90)") KakamPatches.Patch(__instance.transform, ___parts);
-                if (__instance.name == "BOAT junk medium (80)") JunkPatches.Patch(__instance.transform, ___parts);
-                if (__instance.name == "BOAT medi small (40)") CogPatches.Patch(__instance.transform, ___parts);
-                if (__instance.name == "BOAT medi medium (50)") BrigPatches.Patch(__instance.transform, ___parts);
+                int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
+                if (sceneIndex == 10) DhowPatches.Patch(__instance.transform, ___parts);
+                else if (sceneIndex == 20) SanbuqPatches.Patch(__instance.transform, ___parts);
+                else if (sceneIndex == 90) KakamPatches.Patch(__instance.transform, ___parts);
+                else if (sceneIndex == 80) JunkPatches.Patch(__instance.transform, ___parts);
+                else if (sceneIndex == 40) CogPatches.Patch(__instance.transform, ___parts);
+                else if (sceneIndex == 50) BrigPatches.Patch(__instance.transform, ___parts);
 
             }
 
