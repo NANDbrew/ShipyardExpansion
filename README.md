@@ -19,4 +19,4 @@
 - cleanLoad: Attempt to fix broken saves on load. *on by default*
 - addSails: Add the new sails mentioned above when. *on by default, requres a restart to take effect*
 
-**WARNING!! Any save loaded while this is installed will become dependent on it!**
+**WARNING! Saving while this is installed will make the save dependent on it!**
