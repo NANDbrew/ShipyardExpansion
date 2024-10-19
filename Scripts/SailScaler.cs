@@ -28,7 +28,7 @@ namespace ShipyardExpansion
         Transform colChecker;
         public Transform rotatablePart;
         ScaleType scaleType = ScaleType.Uniform;
-
+        string baseName;
         //float scaleFactor = 1f;
         
         public float GetBaseHeight()
@@ -43,6 +43,7 @@ namespace ShipyardExpansion
         private void Awake()
         {
             sail = GetComponent<Sail>();
+            baseName = sail.sailName;
             scaleablePart = GetComponentInChildren<Animator>().transform;
             if (scaleablePart == null) UnityEngine.GameObject.Destroy(this);
             startScale = scaleablePart.localScale;
@@ -156,7 +157,11 @@ namespace ShipyardExpansion
             sail.SetSailArea();
             shadowCol.parent = transform;
             windCenter.parent = transform;
-
+            if (Plugin.percentSailNames.Value)
+            {
+                sail.sailName = baseName + " " + "(" + Mathf.RoundToInt((height / startScale.y) * 100) + "%)";
+            }
+            else sail.sailName = baseName;
         }
         public void SetScaleRel(float newScale)
         {
