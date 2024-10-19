@@ -37,7 +37,7 @@ namespace ShipyardExpansion
             BoatPartOption noForemast = container.Find("(no foremast)").GetComponent<BoatPartOption>() ?? partsList.availableParts[1].partOptions[2];
             BoatPartOption noBowsprit = container.Find("(no bowsprit)").GetComponent<BoatPartOption>();
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent;
-            
+
             PartRefs.brig = container;
             PartRefs.brigCol = walkCol;
 
@@ -63,7 +63,7 @@ namespace ShipyardExpansion
 
             #region mizzenShrouds
             Transform mizzenShroudsBack = UnityEngine.Object.Instantiate(new GameObject() { name = "parts_shrouds_M_default" }.transform, container);
-            mizzenShroudsBack.transform.localEulerAngles = new Vector3 (270f, 0f, 0f);
+            mizzenShroudsBack.transform.localEulerAngles = new Vector3(270f, 0f, 0f);
             Transform mizzenShroudsSide = UnityEngine.Object.Instantiate(container.Find("parts_shrouds_F_spread"), container);
             BoatPartOption backOption = Util.CopyPartOption(container.Find("parts_shrouds_F_default").GetComponent<BoatPartOption>(), mizzenShroudsBack.gameObject, "mizzen shrouds 1");
             BoatPartOption sideOption = mizzenShroudsSide.GetComponent<BoatPartOption>();
@@ -109,8 +109,8 @@ namespace ShipyardExpansion
             mizMastComp2.walkColMast.transform.Find("static_rig_012").parent = walkCol2.transform;
             mizMastComp2.walkColMast.transform.Find("trim_009").parent = walkCol2.transform;
 
-            mizzenMast1.GetComponent<BoatPartOption>().childOptions = new GameObject[4] { 
-                newCont1, 
+            mizzenMast1.GetComponent<BoatPartOption>().childOptions = new GameObject[4] {
+                newCont1,
                 walkCol1,
                 sideShrouds1.gameObject,
                 sideOption.walkColObject.transform.GetChild(0).gameObject,
@@ -156,7 +156,7 @@ namespace ShipyardExpansion
             mainstayOuterOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), noForemast };
             mainstayOuterOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
             partsList.availableParts[4].partOptions.Add(mainstayOuterOpt);
-            
+
             var mainstayInner = Util.CopyMast(forestay_0_mid, new Vector3(0f, 19.44f, 0f), forestay_0_mid.localEulerAngles, new Vector3(1f, 1f, 1.18f), "mainstay_bottom", "lower forestay 3", 31);
             mainstayInner.reefWinch = Util.CopyWinches(mainstayInner.reefWinch, foreMast1.localPosition, newPos);
             mainstayInner.reefWinch = new GPButtonRopeWinch[] { mainstayInner.reefWinch[0], Util.CopyWinch(mainstayInner.reefWinch[0], new Vector3(mainstayInner.reefWinch[0].transform.localPosition.x, 3.108f, mainstayInner.reefWinch[0].transform.localPosition.z)) };
@@ -173,7 +173,7 @@ namespace ShipyardExpansion
             mainstayInnerOpt.requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>(), noForemast };
             mainstayInnerOpt.requiresDisabled = new List<BoatPartOption> { noBowsprit };
             partsList.availableParts[5].partOptions.Add(mainstayInner.GetComponent<BoatPartOption>());
-                        #endregion
+            #endregion
 
             #region telltale
             var flagSource = structure.Find("mast_Front_0").Find("wind_flag");
@@ -185,7 +185,8 @@ namespace ShipyardExpansion
             flags_main.basePrice = 50;
             flags_main.installCost = 10;
 
-            Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
+            Transform flags_main_0 = new GameObject() { name = "flags_main_0" }.transform;
+            flags_main_0.transform.parent = flags_main.transform;
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_side.name = "flag_main_0_side";
             flag_main_0_side.localPosition = new Vector3(-5.25f, 6f, 3.28f);
@@ -197,7 +198,8 @@ namespace ShipyardExpansion
             flag_main_0_back.localEulerAngles = new Vector3(79, 340, 0);
             flag_main_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-            Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
+            Transform flags_main_1 = new GameObject() { name = "flags_main_1" }.transform;
+            flags_main_1.transform.parent = flags_main.transform;
             var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_side.name = "flag_main_1_side";
             flag_main_1_side.localPosition = new Vector3(-0.55f, 6f, 3.33f);
@@ -214,7 +216,8 @@ namespace ShipyardExpansion
             flags_fore.basePrice = 50;
             flags_fore.installCost = 10;
 
-            Transform flags_fore_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_0" }.transform, flags_fore.transform);
+            Transform flags_fore_0 = new GameObject() { name = "flags_fore_0" }.transform;
+            flags_fore_0.transform.parent = flags_fore.transform;
             var flag_fore_0_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
             flag_fore_0_side.name = "flag_fore_0_side";
             flag_fore_0_side.localPosition = new Vector3(6.76f, 5f, 3.05f);
@@ -226,7 +229,8 @@ namespace ShipyardExpansion
             flag_fore_0_back.localEulerAngles = new Vector3(79, 340, 0);
             flag_fore_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-            Transform flags_fore_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_1" }.transform, flags_fore.transform);
+            Transform flags_fore_1 = new GameObject() { name = "flags_fore_1" }.transform;
+            flags_fore_1.transform.parent = flags_fore.transform;
             var flag_fore_1_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
             flag_fore_1_side.name = "flag_fore_1_side";
             flag_fore_1_side.localPosition = new Vector3(10.95f, 5f, 2.4f);
@@ -242,7 +246,8 @@ namespace ShipyardExpansion
             flags_mizzen.basePrice = 50;
             flags_mizzen.installCost = 10;
 
-            Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
+            Transform flags_mizzen_0 = new GameObject() { name = "flags_mizzen_0" }.transform;
+            flags_mizzen_0.transform.parent = flags_mizzen.transform;
             var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
             flag_mizzen_0_side.name = "flag_mizzen_0_side";
             flag_mizzen_0_side.localPosition = new Vector3(-11.8f, 8f, 2.7f);
@@ -254,7 +259,8 @@ namespace ShipyardExpansion
             flag_mizzen_0_back.localEulerAngles = new Vector3(80, 340, 0);
             flag_mizzen_0_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-            Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
+            Transform flags_mizzen_1 = new GameObject() { name = "flags_mizzen_1" }.transform;
+            flags_mizzen_1.transform.parent = flags_mizzen.transform;
             var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_side.name = "flag_mizzen_1_side";
             flag_mizzen_1_side.localPosition = new Vector3(-7.65f, 8f, 3.15f);
@@ -266,13 +272,10 @@ namespace ShipyardExpansion
             flag_mizzen_1_back.localEulerAngles = new Vector3(80, 350, 0);
             flag_mizzen_1_back.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-            //UnityEngine.Object.Destroy(flagSource);
-
             flags_fore.requiresDisabled.Add(noForemast);
             flags_main.requiresDisabled.Add(container.Find("(no mainmast)").GetComponent<BoatPartOption>());
             flags_mizzen.requiresDisabled.Add(container.Find("(no mizzen mast)").GetComponent<BoatPartOption>());
             Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>() { noFlag, flags_fore, flags_main, flags_mizzen });
-
 
             sideOption.childOptions = sideOption.childOptions.AddRangeToArray(new GameObject[2] { flag_mizzen_1_side.gameObject, flag_mizzen_0_side.gameObject });
             backOption.childOptions = backOption.childOptions.AddRangeToArray(new GameObject[2] { flag_mizzen_1_back.gameObject, flag_mizzen_0_back.gameObject });
