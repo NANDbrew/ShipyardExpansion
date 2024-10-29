@@ -267,8 +267,7 @@ namespace ShipyardExpansion
             flags_main.basePrice = 30;
             flags_main.installCost = 6;
 
-            Transform flags_main_0 = new GameObject() { name = "flags_main_0" }.transform;
-            flags_main_0.transform.parent = flags_main.transform;
+            Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_side.name = "flag_main_0_side";
             flag_main_0_side.localPosition = new Vector3(0, 2, 2.1f);
@@ -284,8 +283,7 @@ namespace ShipyardExpansion
             flag_main_0_back.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
 
 
-            Transform flags_main_1 = new GameObject() { name = "flags_main_1" }.transform;
-            flags_main_1.transform.parent = flags_main.transform;
+            Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
             var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_side.name = "flag_main_1_side";
             flag_main_1_side.localPosition = new Vector3(4.06f, 2.5f, 1.6f);

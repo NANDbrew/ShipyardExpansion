@@ -95,7 +95,7 @@
     <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Patches\SaveLoadCustomization.cs" />
     <Compile Include="SailLimits.cs" />
-    <Compile Include="Scripts\SailScaleButton.cs" />
+    <Compile Include="SailScaleButton.cs" />
     <Compile Include="Scripts\Parser.cs" />
     <Compile Include="PartRefs.cs" />
     <Compile Include="Scripts\SailAdder.cs" />

@@ -108,16 +108,14 @@ namespace ShipyardExpansion
             flags_main.basePrice = 50;
             flags_main.installCost = 10;
 
-            Transform flags_main_0 = new GameObject() { name = "flags_main_0" }.transform;
-            flags_main_0.transform.parent = flags_main.transform;
+            Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_side.name = "flag_main_0_side";
             flag_main_0_side.localPosition = new Vector3(1, 3, 2.9f);
             flag_main_0_side.localEulerAngles = new Vector3(355, 0, 357);
             //flag_main_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-            Transform flags_main_1 = new GameObject() { name = "flags_main_1" }.transform;
-            flags_main_1.transform.parent = flags_main.transform;
+            Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
             var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_side.name = "flag_main_1_side";
             flag_main_1_side.localPosition = new Vector3(4.76f, 3, 2.77f);
@@ -138,23 +136,20 @@ namespace ShipyardExpansion
             flags_mizzen.basePrice = 50;
             flags_mizzen.installCost = 10;
 
-            Transform flags_mizzen_0 = new GameObject() { name = "flags_mizzen_0" }.transform;
-            flags_mizzen_0.parent = flags_mizzen.transform;
+            Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
             var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
             flag_mizzen_0_side.name = "flag_mizzen_0_side";
             flag_mizzen_0_side.localPosition = new Vector3(-10.2f, 3.1f, 1.6f);
             flag_mizzen_0_side.localEulerAngles = new Vector3(356, 0, 357);
             //flag_mizzen_0_side.localScale = new Vector3(0.8f, 1f, 0.5f);
 
-            Transform flags_mizzen_1 = new GameObject() { name = "flags_mizzen_1" }.transform;
-            flags_mizzen_1.parent = flags_mizzen.transform;
+            Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
             var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_side.name = "flag_mizzen_1_side";
             flag_mizzen_1_side.localPosition = new Vector3(-5.17f, 3, 2.61f);
             flag_mizzen_1_side.localEulerAngles = new Vector3(354, 0, 357);
 
-            Transform flags_mizzen_2 = new GameObject() { name = "flags_mizzen_2" }.transform;
-            flags_mizzen_2.parent = flags_mizzen.transform;
+            Transform flags_mizzen_2 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_2" }.transform, flags_mizzen.transform);
             var flag_mizzen_2_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_2);
             flag_mizzen_2_side.name = "flag_mizzen_2_side";
             flag_mizzen_2_side.localPosition = new Vector3(-5.46f, 3, 2.62f);
@@ -211,8 +206,8 @@ namespace ShipyardExpansion
             //forestayF.mastHeight = 13.5f;
             forestayF.leftAngleWinch = new GPButtonRopeWinch[] { foremastM.leftAngleWinch[1] };
             forestayF.rightAngleWinch = new GPButtonRopeWinch[] { foremastM.rightAngleWinch[1] };
-            //forestayF.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
-            forestayF.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { flatsprit.GetComponent<BoatPartOption>(), foremast.GetComponent<BoatPartOption>() };
+            forestayF.GetComponent<BoatPartOption>().requires.Remove(bowsprit.GetComponent<BoatPartOption>());
+            forestayF.GetComponent<BoatPartOption>().requires.Add(flatsprit.GetComponent<BoatPartOption>());
             partsList.availableParts[4].partOptions.Add(forestayF.GetComponent<BoatPartOption>());
 
             Mast forestayF2 = Util.CopyMast(forestay, forestay.localPosition, new Vector3(310.2f, 270f, 90f), new Vector3(1, 1, 1.14f), "forestay_1_flat", "forestay 2 long", 35);

@@ -537,8 +537,7 @@ namespace ShipyardExpansion
             flags_main.basePrice = 50;
             flags_main.installCost = 10;
 
-            Transform flags_main_0 = new GameObject() { name = "flags_main_0" }.transform;
-            flags_main_0.parent = flags_main.transform;
+            Transform flags_main_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_0" }.transform, flags_main.transform);
             var flag_main_0_side = UnityEngine.Object.Instantiate(flagSource, flags_main_0);
             flag_main_0_side.name = "flag_main_0_side";
             flag_main_0_side.localPosition = new Vector3(6.15f, 3.3f, 2.02f);
@@ -550,8 +549,7 @@ namespace ShipyardExpansion
             flag_main_0_back.localEulerAngles = new Vector3(79, 340, 0);
             flag_main_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
-            Transform flags_main_1 = new GameObject() { name = "flags_main_1" }.transform;
-            flags_main_1.parent = flags_main.transform;
+            Transform flags_main_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_main_1" }.transform, flags_main.transform);
             var flag_main_1_side = UnityEngine.Object.Instantiate(flagSource, flags_main_1);
             flag_main_1_side.name = "flag_main_1_side";
             flag_main_1_side.localPosition = new Vector3(0.7f, 3.3f, 2.28f);
@@ -568,8 +566,7 @@ namespace ShipyardExpansion
             flags_fore.basePrice = 50;
             flags_fore.installCost = 10;
 
-            Transform flags_fore_0 = new GameObject() { name = "flags_fore_0" }.transform;
-            flags_fore_0.parent = flags_fore.transform;
+            Transform flags_fore_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_0" }.transform, flags_fore.transform);
             var flag_fore_0_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_0);
             flag_fore_0_side.name = "flag_fore_0_side";
             flag_fore_0_side.localPosition = new Vector3(9.93f, 3.5f, 1.05f);
@@ -581,8 +578,7 @@ namespace ShipyardExpansion
             flag_fore_0_back.localEulerAngles = new Vector3(82, 340, 0);
             flag_fore_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
-            Transform flags_fore_1 = new GameObject() { name = "flags_fore_1" }.transform;
-            flags_fore_1.parent = flags_fore.transform;
+            Transform flags_fore_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_fore_1" }.transform, flags_fore.transform);
             var flag_fore_1_side = UnityEngine.Object.Instantiate(flagSource, flags_fore_1);
             flag_fore_1_side.name = "flag_fore_1_side";
             flag_fore_1_side.localPosition = new Vector3(10.6f, 3.5f, 1.1f);
@@ -598,8 +594,7 @@ namespace ShipyardExpansion
             flags_mizzen.basePrice = 50;
             flags_mizzen.installCost = 10;
 
-            Transform flags_mizzen_0 = new GameObject() { name = "flags_mizzen_0" }.transform;
-            flags_mizzen_0.parent = flags_mizzen.transform;
+            Transform flags_mizzen_0 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_0" }.transform, flags_mizzen.transform);
             var flag_mizzen_0_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_0);
             flag_mizzen_0_side.name = "flag_mizzen_0_side";
             flag_mizzen_0_side.localPosition = new Vector3(-10.2f, 3.3f, 2.45f);
@@ -611,8 +606,7 @@ namespace ShipyardExpansion
             flag_mizzen_0_back.localEulerAngles = new Vector3(290, 180, 150);
             flag_mizzen_0_back.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
-            Transform flags_mizzen_1 = new GameObject() { name = "flags_mizzen_1" }.transform;
-            flags_mizzen_1.parent = flags_mizzen.transform;
+            Transform flags_mizzen_1 = UnityEngine.Object.Instantiate(new GameObject() { name = "flags_mizzen_1" }.transform, flags_mizzen.transform);
             var flag_mizzen_1_side = UnityEngine.Object.Instantiate(flagSource, flags_mizzen_1);
             flag_mizzen_1_side.name = "flag_mizzen_1_side";
             flag_mizzen_1_side.localPosition = new Vector3(-8.36f, 3.3f, 2.6f);
