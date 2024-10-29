@@ -69,37 +69,29 @@ namespace ShipyardExpansion
             //mastComp.Awake();
             return mastComp;
         }
-
         public static GPButtonRopeWinch[] CopyWinches(GPButtonRopeWinch[] source, Vector3 sourcePosition, Vector3 targetPosition)
         {
             GPButtonRopeWinch[] winches = new GPButtonRopeWinch[source.Length];
             for (int i = 0; i < source.Length; i++)
             {
+                source[i].gameObject.SetActive(false);
+                var winch = UnityEngine.Object.Instantiate(source[i], source[i].transform.parent);
+                winch.name = source[i].name + "_mod";
                 Vector3 vector = source[i].transform.localPosition - sourcePosition;
-                winches[i] = CopyWinch(source[i], targetPosition + vector, source[i].name);
+                winch.transform.localPosition = targetPosition + vector;
+                winch.rope = null;
+                winches[i] = winch;
+                source[i].gameObject.SetActive(true);
+                winch.gameObject.SetActive(true);
             }
             return winches;
         }
         public static GPButtonRopeWinch CopyWinch(GPButtonRopeWinch source, Vector3 targetPosition)
         {
-            return CopyWinch(source, targetPosition, source.name);
-        }
 
-        public static GPButtonRopeWinch[] CopyWinches(GPButtonRopeWinch[] source, Vector3 sourcePosition, Vector3 targetPosition, string newName)
-        {
-            GPButtonRopeWinch[] winches = new GPButtonRopeWinch[source.Length];
-            for (int i = 0; i < source.Length; i++)
-            {
-                Vector3 vector = source[i].transform.localPosition - sourcePosition;
-                CopyWinch(source[i], targetPosition + vector, newName + i);
-            }
-            return winches;
-        }
-        public static GPButtonRopeWinch CopyWinch(GPButtonRopeWinch source, Vector3 targetPosition, string newName)
-        {
             source.gameObject.SetActive(false);
             var winch = UnityEngine.Object.Instantiate(source, source.transform.parent);
-            winch.name = "SE_winch_" + newName;
+            winch.name = source.name + "_mod";
             winch.transform.localPosition = targetPosition;
             winch.rope = null;
             source.gameObject.SetActive(true);
@@ -109,8 +101,7 @@ namespace ShipyardExpansion
         }
         public static BoatPartOption CreatePartOption(Transform parent, string name, string prettyName)
         {
-            GameObject part = new GameObject();
-            part.transform.parent = parent;
+            GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
             BoatPartOption partOption = AddPartOption(part, prettyName);
             part.name = name;
 
@@ -183,6 +174,7 @@ namespace ShipyardExpansion
             };
             partsList.availableParts.Add(newPart);
 
+
             return newPart;
         }
         public static BoatPart CreateAndInsertPart(BoatCustomParts partsList, int category, int index, List<BoatPartOption> partOptions)
@@ -195,8 +187,42 @@ namespace ShipyardExpansion
             };
             partsList.availableParts.Insert(index, newPart);
 
+
             return newPart;
         }
+
+
+        /*        public static GameObject AddGizmo(Transform transform)
+                {
+                    if (!Plugin.showGizmos.Value) return null;
+
+                    var pointer1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    pointer1.transform.parent = transform;
+                    pointer1.gameObject.GetComponent<Collider>().enabled = false;
+                    pointer1.transform.localPosition = Vector3.zero;
+                    pointer1.transform.localEulerAngles = Vector3.zero;
+
+                    var pointer1up = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    pointer1up.gameObject.transform.parent = pointer1.transform;
+                    pointer1up.gameObject.GetComponent<Collider>().enabled = false;
+                    pointer1up.transform.localPosition = Vector3.up;
+                    pointer1up.transform.localEulerAngles = new Vector3(0, 0, 0);
+                    pointer1up.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
+                    pointer1up.GetComponent<Renderer>().material.color = Color.green;
+
+                    var pointer1fwd = GameObject.Instantiate(pointer1up, pointer1.transform);
+                    pointer1fwd.transform.localPosition = Vector3.forward;
+                    pointer1fwd.transform.localEulerAngles = new Vector3(90, 0, 0);
+                    pointer1fwd.GetComponent<Renderer>().material.color = Color.blue;
+
+                    var pointer1right = GameObject.Instantiate(pointer1up, pointer1.transform);
+                    pointer1right.transform.localPosition = Vector3.right;
+                    pointer1right.transform.localEulerAngles = new Vector3(0, 0, 90);
+                    pointer1right.GetComponent<Renderer>().material.color = Color.red;
+
+                    pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    return pointer1;
+                }*/
     }
     internal class SailUtil
     {
