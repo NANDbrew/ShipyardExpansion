@@ -14,7 +14,11 @@ namespace ShipyardExpansion
         internal static void SavePatch()
         {
             if (!Plugin.cleanSave.Value) return;
-            SaveCleaner.CleanSave(Plugin.moddedBoats, Plugin.stockParts, Plugin.stockPartOptions, Plugin.stockMasts);
+            foreach (BoatCustomParts parts in Plugin.moddedBoats)
+            {
+                SaveCleaner.CleanSaveData(parts);
+            }
+            //SaveCleaner.CleanSave(Plugin.moddedBoats, Plugin.stockParts, Plugin.stockPartOptions, Plugin.stockMasts);
             Plugin.cleanSave.Value = false;
         }
     }
@@ -31,4 +35,16 @@ namespace ShipyardExpansion
             data = SaveCleaner.CleanLoad(data, ___refs, ___parts);
         }
     }
+/*    [HarmonyPatch(typeof(SaveableBoatCustomization), "GetData")]
+    internal static class CustomizationCleaner2
+    {
+        [HarmonyPrefix]
+        public static void Prefix(BoatCustomParts ___parts)
+        {
+            if (!Plugin.cleanSave.Value) return;
+            SaveCleaner.CleanSaveData(___parts);
+
+        }
+    }*/
+
 }

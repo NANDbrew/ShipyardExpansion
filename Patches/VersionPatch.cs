@@ -28,7 +28,7 @@ namespace ShipyardExpansion
     internal static class VersionPatch2
     {
         [HarmonyPostfix]
-        public static void Prefix()
+        public static void Postfix()
         {
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
@@ -36,7 +36,10 @@ namespace ShipyardExpansion
                 Debug.Log("save version = " + text);
                 SaveCleaner.saveVersion = Convert.ToInt32(text);
             }
-
+            else
+            {
+                SaveCleaner.saveVersion = 0;
+            }
         }
     }
 }

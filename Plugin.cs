@@ -20,10 +20,12 @@ namespace ShipyardExpansion
         internal const int sailListSize = 160;
 
         public static List<BoatCustomParts> moddedBoats;
-        public static List<BoatPartOption> stockPartOptions;
+        //public static List<BoatPartOption> stockPartOptions;
         public static Dictionary<BoatPart, int> stockParts;
-        public static List<Mast> stockMasts;
+        //public static List<Mast> stockMasts;
         public static int stockSailsListSize;
+        //public static Dictionary<int, SaveBoatCustomizationData> stockConfigs;
+        public static Dictionary<GameObject, bool> converted;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -42,10 +44,11 @@ namespace ShipyardExpansion
 
         private void Awake()
         {
-            stockPartOptions = new List<BoatPartOption>();
+            //stockPartOptions = new List<BoatPartOption>();
             stockParts = new Dictionary<BoatPart, int>();
-            stockMasts = new List<Mast>();
+            //stockMasts = new List<Mast>();
             moddedBoats = new List<BoatCustomParts>();
+            converted = new Dictionary<GameObject, bool>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
             convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.4.3"));

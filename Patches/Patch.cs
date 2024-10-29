@@ -19,17 +19,17 @@ namespace ShipyardExpansion
                 foreach (var part in ___parts.availableParts)
                 {
                     Plugin.stockParts.Add(part, part.activeOption);
-                    foreach (var option in part.partOptions)
+                    /*foreach (var option in part.partOptions)
                     {
                         Plugin.stockPartOptions.Add(option);
-                    }
+                    }*/
                 }
-                foreach (var mast in ___refs.GetComponentsInChildren<Mast>())
+                /*foreach (var mast in ___refs.GetComponentsInChildren<Mast>())
                 {
                     Plugin.stockMasts.Add(mast);
-                }
+                }*/
                 Plugin.moddedBoats.Add(___parts);
-
+                //Plugin.stockConfigs.Add(__instance.GetComponent<SaveableObject>().sceneIndex, __instance.GetData());
                 Array.Resize(ref ___refs.masts, 64);// = ___refs.masts.AddRangeToArray(new Mast[33]);
                 //Debug.Log(___refs.masts);
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
