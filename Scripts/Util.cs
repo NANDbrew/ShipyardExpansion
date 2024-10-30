@@ -192,72 +192,48 @@ namespace ShipyardExpansion
         }
 
 
-        /*        public static GameObject AddGizmo(Transform transform)
-                {
-                    if (!Plugin.showGizmos.Value) return null;
-
-                    var pointer1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    pointer1.transform.parent = transform;
-                    pointer1.gameObject.GetComponent<Collider>().enabled = false;
-                    pointer1.transform.localPosition = Vector3.zero;
-                    pointer1.transform.localEulerAngles = Vector3.zero;
-
-                    var pointer1up = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    pointer1up.gameObject.transform.parent = pointer1.transform;
-                    pointer1up.gameObject.GetComponent<Collider>().enabled = false;
-                    pointer1up.transform.localPosition = Vector3.up;
-                    pointer1up.transform.localEulerAngles = new Vector3(0, 0, 0);
-                    pointer1up.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
-                    pointer1up.GetComponent<Renderer>().material.color = Color.green;
-
-                    var pointer1fwd = GameObject.Instantiate(pointer1up, pointer1.transform);
-                    pointer1fwd.transform.localPosition = Vector3.forward;
-                    pointer1fwd.transform.localEulerAngles = new Vector3(90, 0, 0);
-                    pointer1fwd.GetComponent<Renderer>().material.color = Color.blue;
-
-                    var pointer1right = GameObject.Instantiate(pointer1up, pointer1.transform);
-                    pointer1right.transform.localPosition = Vector3.right;
-                    pointer1right.transform.localEulerAngles = new Vector3(0, 0, 90);
-                    pointer1right.GetComponent<Renderer>().material.color = Color.red;
-
-                    pointer1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                    return pointer1;
-                }*/
-    }
-    internal class SailUtil
-    {
-        public static bool MastNotTallEnough(Mast mast, Sail sail)
+        public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, string name, string prettyName, int newIndex)
         {
-            SailScaler component = sail.GetComponent<SailScaler>();
-            float num = component.GetBaseHeight() * component.scaleStep;
-            float num2 = 0;
-            if (sail.UseExtendedMastHeight())
-            {
-                num2 = mast.extraBottomHeight;
-            }
-
-            if (sail.installHeight + num > mast.mastHeight + num2)
-            {
-                return true;
-            }
-
-            return false;
+            Transform sailObject = sailPrefabs[prefabIndex].GetComponentInChildren<Animator>().transform;
+            return CopySail(sailPrefabs, prefabIndex, position, eulerAngles, sailObject.localScale.x, name, prettyName, newIndex);
         }
-        public static float MinInstallHeight(Mast mast, Sail sail)
+        public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, float scale, string name, string prettyName, int newIndex)
         {
-            float num = 0;
-            if (sail.UseExtendedMastHeight())
+            //Debug.Log("thing");
+            Transform sailBase = UnityEngine.Object.Instantiate(sailPrefabs[prefabIndex], Plugin.prefabContainer).transform;
+            var sail = sailBase.GetComponent<Sail>();
+            sail.prefabIndex = newIndex;
+            sail.sailName = prettyName;
+            sailBase.name = newIndex + " SAIL " + name;
+            var windShadow = sailBase.Find("wind shadow col");
+
+            Transform sailObject = sailBase.GetComponentInChildren<Animator>().transform;
+            sail.windcenter.parent = sailObject;
+            windShadow.parent = sailObject;
+            sailObject.localPosition = position;
+            sailObject.localEulerAngles = eulerAngles;
+            sail.windcenter.parent = sailBase;
+            windShadow.parent = sailBase;
+            sailObject.SetAsFirstSibling();
+            SailPartLocations offsetStore = sailObject.gameObject.AddComponent<SailPartLocations>();
+            offsetStore.forwardOffset = position.x / scale;
+            var col_parent = sailBase.GetComponent<SailConnections>().colChecker.transform;
+            UnityEngine.Object.Destroy(col_parent.GetComponent<Rigidbody>());
+            var locs = col_parent.gameObject.AddComponent<SailPartLocations>();
+
+            foreach (Transform child in col_parent.gameObject.GetComponentsInChildren<Transform>(true).Where(go => go.gameObject != col_parent.gameObject))
             {
-                num += mast.extraBottomHeight;
+                child.transform.localPosition += position;
+                /*                UnityEngine.Object.Destroy(child.GetComponent<Rigidbody>());
+                                UnityEngine.Object.Destroy(child.GetComponent<ShipyardSailColCheckerSub>());
+                */
+                locs.locations.Add(child.transform.localPosition);
             }
-
-            /*if (sail.GetCurrentInstallHeight() <= sail.installHeight - num)
-            {
-                return true;
-            }*/
-
-            return sail.installHeight - num;
+            sail.installHeight = (float)Math.Round(sail.installHeight * (scale / sailObject.localScale.y), 2);
+            sailObject.localScale = new Vector3(scale, scale, scale);
+            //sailBase.gameObject.SetActive(false);
+            sailPrefabs[newIndex] = sailBase.gameObject;
+            return sailBase.gameObject;
         }
-
     }
 }

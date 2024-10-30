@@ -26,6 +26,7 @@ namespace ShipyardExpansion
         public static int stockSailsListSize;
         //public static Dictionary<int, SaveBoatCustomizationData> stockConfigs;
         public static Dictionary<GameObject, bool> converted;
+        public static Transform prefabContainer;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -60,6 +61,10 @@ namespace ShipyardExpansion
             unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
             addSails = Config.Bind("Settings", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)"));
             percentSailNames = Config.Bind("Settings", "Show percent scale in sail name", true, new ConfigDescription(""));
+
+            prefabContainer = new GameObject { name = "SEprefabContainer" }.transform;
+            prefabContainer.gameObject.SetActive(false);
+
         }
     }
 }

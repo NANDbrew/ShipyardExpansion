@@ -7,44 +7,9 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using UnityEngine;
 
-namespace ShipyardExpansion.Patches
+namespace ShipyardExpansion
 {
-    [HarmonyPatch(typeof(SaveableBoatCustomization))]
-    internal class SaveablaBoatCustomizationPatches
-    {
-        [HarmonyPatch("GetData")]
-        [HarmonyPostfix]
-        public static void GetDataPatch(BoatRefs ___refs)
-        {
-            SaveLoader.SaveSailConfig(___refs);
-        }
-
-        [HarmonyPatch("LoadData")]
-        [HarmonyPostfix]
-        public static void LoadDataPatch(BoatRefs ___refs)
-        {
-            SaveLoader.LoadSailConfig(___refs);
-        }
-    }
-
-    [HarmonyPatch(typeof(SaveLoadManager), "LoadModData")]
-    internal class SaveLoadPatch00
-    {
-
-        public static void Postfix()
-        {
-            foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("Boat")) 
-            {
-                if (gameObject.GetComponent<BoatRefs>() != null)
-                {
-                    SaveLoader.LoadSailConfig(gameObject.GetComponent<BoatRefs>());
-                }
-            }
-        }
-
-    }
-
-    public static class SaveLoader
+    public static class SailDataManager
     {
         public static void LoadSailConfig(BoatRefs refs)
         {

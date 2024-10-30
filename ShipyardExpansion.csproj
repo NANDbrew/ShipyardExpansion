@@ -93,12 +93,13 @@
     <Compile Include="Patches\BermudaMastStuff.cs" />
     <Compile Include="ConfigurationManagerAttributes.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
-    <Compile Include="Patches\SaveLoadCustomization.cs" />
+    <Compile Include="Scripts\SailDataManager.cs" />
     <Compile Include="SailLimits.cs" />
     <Compile Include="SailScaleButton.cs" />
     <Compile Include="Scripts\Parser.cs" />
     <Compile Include="PartRefs.cs" />
-    <Compile Include="Scripts\SailAdder.cs" />
+    <Compile Include="Patches\SailAdder.cs" />
+    <Compile Include="Scripts\SailPartLocations.cs" />
     <Compile Include="Scripts\SailScaler.cs" />
     <Compile Include="Patches\SaveLoadPatches.cs" />
     <Compile Include="ShipPatches\BrigPatches.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Patches\ShipyardSailInstallerPatches.cs" />
     <Compile Include="Patches\ShipyardUIPatches.cs" />
     <Compile Include="Scripts\Util.cs" />
-    <Compile Include="Patches\VersionPatch.cs" />
+    <Compile Include="Scripts\VersionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SailScalingNotes.txt" />

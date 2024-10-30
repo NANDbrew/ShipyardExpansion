@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,10 +33,10 @@ namespace ShipyardExpansion
             UISoundPlayer.instance.PlayUISound(UISounds.buttonClick, 1f, 1f);
             Mast mast = GameState.currentShipyard.sailInstaller.GetCurrentMast();
             Sail sail = GameState.currentShipyard.sailInstaller.GetCurrentSail();
-
+            
             if (buttonType == ButtonType.scaleUp)
             {
-                if (SailUtil.MastNotTallEnough(mast, sail))
+                if (MastNotTallEnough(mast, sail))
                 {
                     Debug.Log("mast cannot fit bigger sail");
                     return;
@@ -61,7 +62,7 @@ namespace ShipyardExpansion
             }
             else if (buttonType == ButtonType.increaseHeight)
             {
-                if (SailUtil.MastNotTallEnough(mast, sail))
+                if (MastNotTallEnough(mast, sail))
                 {
                     Debug.Log("mast cannot fit taller sail");
                     return;
@@ -98,6 +99,11 @@ namespace ShipyardExpansion
 
             ShipyardUI.instance.RefreshButtons();
 
+        }
+        private bool MastNotTallEnough(Mast mast, Sail sail)
+        {
+            ShipyardSailInstaller sailInstaller = GameState.currentShipyard.sailInstaller;
+            return (bool)AccessTools.Method(sailInstaller.GetType(), "MastNotTallEnough").Invoke(sailInstaller, new object[2] { mast, sail });
         }
     }
 }

@@ -8,11 +8,9 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
-    [HarmonyPatch(typeof(SaveLoadManager), "SaveModData")]
-    internal static class VersionPatch
+    internal static class VersionManager
     {
-        [HarmonyPostfix]
-        public static void Postfix()
+        public static void WriteSaveVersion()
         {
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
@@ -23,12 +21,8 @@ namespace ShipyardExpansion
                 GameState.modData.Add(Plugin.PLUGIN_ID, Plugin.PLUGIN_VERSION);
             }
         }
-    }
-    [HarmonyPatch(typeof(SaveLoadManager), "LoadModData")]
-    internal static class VersionPatch2
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+
+        public static void ReadSaveVersion()
         {
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
