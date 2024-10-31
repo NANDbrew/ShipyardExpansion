@@ -342,8 +342,9 @@ namespace ShipyardExpansion
 
             GPButtonRopeWinch[] topmast2Reef = Util.CopyWinches(new GPButtonRopeWinch[] { mizzenMast1.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0.1f, -0.66f, -0.62f));
             topmast2Reef[0].transform.localScale = new Vector3(0.9f, 0.9f, -0.9f);
-            GPButtonRopeWinch[] topmast21Reef = Util.CopyWinches(new GPButtonRopeWinch[] { mizzenMast2.GetComponent<Mast>().reefWinch.Last() }, Vector3.zero, new Vector3(0, 0, -0.642f));
+            GPButtonRopeWinch[] topmast21Reef = Util.CopyWinches(new GPButtonRopeWinch[] { mizzenMast2.GetComponent<Mast>().reefWinch.Last() }, mizzenMast2.GetComponent<Mast>().reefWinch.Last().transform.localPosition, new Vector3(-8.3f, 5.25f, 0f));
             topmast21Reef[0].transform.localScale = new Vector3(0.9f, 0.9f, -0.9f);
+            topmast21Reef[0].transform.localEulerAngles = new Vector3(0, 90, 0);
             GPButtonRopeWinch[] topmast2Angle = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast1.GetComponent<Mast>().leftAngleWinch.Last(), new Vector3(-15.2f, 5.53f, 0f)) };
             //topmast2Angle[0].transform.localEulerAngles = new Vector3(270, 0, 0);
             GPButtonRopeWinch[] topmast2LeftAngle = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast1.GetComponent<Mast>().leftAngleWinch[0], new Vector3(-15.3f, 5.726f, 2.27f)) };
@@ -401,7 +402,11 @@ namespace ShipyardExpansion
 
             var mizzenTSource2 = container.Find("backstay_1-1_top");
             Mast mizzenTopstay2 = Util.CopyMast(mizzenTSource2, new Vector3(-7f, 27.65f, 0), "mizzen_topmast_stay_1-2", "mizzen topmast stay 2", 46);
-            mizzenTopstay2.reefWinch = Util.CopyWinches(mizzenTopstay2.reefWinch, Vector3.zero, new Vector3(0f, 0.66f, 0));
+            mizzenTopstay2.reefWinch = Util.CopyWinches(mizzenTopstay2.reefWinch, Vector3.zero, new Vector3(-0.3f, 0, 0.3410f));
+            foreach (var winch in mizzenTopstay2.reefWinch)
+            {
+                winch.transform.localEulerAngles = new Vector3(0, 270, 0);
+            }
             mizzenTopstay2.leftAngleWinch = mizzenTopstay1.leftAngleWinch;
             mizzenTopstay2.rightAngleWinch = mizzenTopstay1.rightAngleWinch;
             mizzenTopstay2.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast2.GetComponent<BoatPartOption>() };
