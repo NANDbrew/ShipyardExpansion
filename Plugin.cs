@@ -60,9 +60,9 @@ namespace ShipyardExpansion
             vertLateens = Config.Bind("Slant", "Vertical lateens", true, new ConfigDescription("Install lateens vertical instead of slanting with the mast"));
             vertFins = Config.Bind("Slant", "Vertical fins", true, new ConfigDescription("Install fin sails vertical instead of slanting with the mast"));
             unrollSails = Config.Bind("Settings", "Unfurl sails in shipyard", true, new ConfigDescription("Unfurl existing sails when entering the shipyard"));
-            addSails = Config.Bind("Settings", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)"));
+            addSails = Config.Bind("Settings", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             percentSailNames = Config.Bind("Settings", "Show percent scale in sail name", true, new ConfigDescription(""));
-            autoFit = Config.Bind("Settings", "Downsize sails to fit", true, new ConfigDescription("Automatically scale too-big sails to fit before installing"));
+            autoFit = Config.Bind("Settings", "Auto-fit sails", true, new ConfigDescription("Automatically scale too-big sails to fit the mast before installing"));
 
 
         }
