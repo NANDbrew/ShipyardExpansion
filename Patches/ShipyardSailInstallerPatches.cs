@@ -40,9 +40,10 @@ namespace ShipyardExpansion
                 component.SetAngle(child.localEulerAngles.y);
             }
 
-            if (___selectedSail.installHeight > ___currentMast.mastHeight)
+            if (Plugin.autoFit.Value && ___selectedSail.installHeight > ___currentMast.mastHeight)
             {
-                component.SetScaleRel(___currentMast.mastHeight / component.GetBaseHeight());
+                component.SetScaleRel((___currentMast.mastHeight - 0.1f) / component.GetBaseHeight());
+                __instance.MoveHeldSail(___selectedSail.installHeight - component.GetBaseHeight());
             }
         }
 
