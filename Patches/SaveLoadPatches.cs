@@ -13,11 +13,9 @@ namespace ShipyardExpansion
     [HarmonyPatch(typeof(SaveableBoatCustomization), "LoadData")]
     internal static class CustomizationCleaner
     {
-        [HarmonyPrefix]
         public static void Prefix(ref SaveBoatCustomizationData data, BoatRefs ___refs, BoatCustomParts ___parts)
         {
             SaveCleaner.Convert(data, ___refs);
-            SailDataManager.LoadSailConfig(___refs);
 
             if (Plugin.cleanLoad.Value)
             {
@@ -25,17 +23,20 @@ namespace ShipyardExpansion
             }
             
         }
+        public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
+        {
+            SailDataManager.LoadSailConfig(___refs);
+
+        }
     }
 
     [HarmonyPatch(typeof(SaveableBoatCustomization), "GetData")]
     internal static class CustomizationCleaner2
-    {
-        [HarmonyPrefix]
-        public static void Prefix(BoatRefs ___refs, BoatCustomParts ___parts)
+    { 
+        public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
             SailDataManager.SaveSailConfig(___refs);
-            /*if (!Plugin.cleanSave.Value) return;
-            SaveCleaner.CleanSaveData(___parts);*/
+
 
         }
     }
