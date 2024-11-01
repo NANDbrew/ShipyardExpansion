@@ -100,7 +100,7 @@ namespace ShipyardExpansion
                 var sail = data.sails[i];
                 if (sail.mastIndex >= boatRefs.masts.Length || boatRefs.masts[sail.mastIndex] == null || sail.prefabIndex >= PrefabsDirectory.instance.sails.Length || PrefabsDirectory.instance.sails[sail.prefabIndex] == null)
                 {
-                    Debug.LogWarning("SaveCleaner: removing sail " + sail);
+                    Debug.LogWarning("SaveCleaner: removing sail " + sail.prefabIndex);
 
                     data.sails.Remove(sail);
                     continue;

@@ -21,7 +21,7 @@ namespace ShipyardExpansion
                 return;
             }
             string slug = GameState.modData[boat];
-            Debug.Log("loading data: " + slug);
+            //Debug.Log("loading data: " + slug);
             string[] masts = slug.Split(new char[] { ')' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string mast in masts)
             {
@@ -83,7 +83,7 @@ namespace ShipyardExpansion
             {
                 GameState.modData.Add(boat, text);
             }
-            Debug.Log("saving data: " + text);
+            //Debug.Log("saving data: " + text);
 
         }
     }
