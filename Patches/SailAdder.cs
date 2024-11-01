@@ -34,6 +34,8 @@ namespace ShipyardExpansion
             if (!Plugin.addSails.Value) return;
             Plugin.stockSailsListSize = ___sails.Length;
             Array.Resize(ref ___sails, Plugin.sailListSize);
+            Plugin.prefabContainer = new GameObject { name = "SEprefabContainer" }.transform;
+            Plugin.prefabContainer.gameObject.SetActive(false);
 
 
             var modSail2 = Util.CopySail(___sails, 30, new Vector3(1.55f, 0.25f, 0), new Vector3(90, 354, 0), "lug medium", "balanced lug 6yd", 158);
