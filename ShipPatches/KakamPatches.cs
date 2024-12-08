@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace ShipyardExpansion
 {
     internal class KakamPatches
     {
+        static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
         public static void Patch(Transform boat, BoatCustomParts partsList)
         {
             Transform container = boat.Find("junk small");
@@ -18,18 +20,11 @@ namespace ShipyardExpansion
             Transform mainMast2 = structure.Find("mast_center");
             Transform mizzenMast = structure.Find("mast_001");
             Mast mizzenMastM = mizzenMast.GetComponent<Mast>();
-            //Transform shrouds = container.Find("Cylinder_002");
-            //var shroudAnchor = container.Find("static_rig_001");
-            Transform forestay = container.Find("forestay");
-            Mast forestayM = forestay.GetComponent<Mast>();
-            Transform lowerForestay = container.Find("forestay_002");
-            Mast lowerForestayM = lowerForestay.GetComponent<Mast>();
-            var angleWinches = new GPButtonRopeWinch[2] { mizzenMastM.leftAngleWinch[0], mizzenMastM.rightAngleWinch[0] };
-            //var aftAngleWinches = new GPButtonRopeWinch[2] { mizzenMastM.leftAngleWinch[1], mizzenMastM.rightAngleWinch[1] };
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
 
             PartRefs.kakam = container;
             PartRefs.kakamCol = walkCol;
+            boat.GetComponent<BoatRefs>().walkCol = walkCol; // fix vanilla missing ref
 
             #region adjustments
             partsList.availableParts[0].category = 2;
@@ -46,45 +41,59 @@ namespace ShipyardExpansion
             m1brace.localScale = new Vector3(0.87f, 0.87f, 0.94f);
             //mizzenMastM.GetComponent<Mast>().startSailHeightOffset -= 0.5f;
             var ropeHolder_003 = mainMast1.Find("rope_holder_003");
-            mainMast1.GetComponent<Mast>().midRopeAtt[0].parent = ropeHolder_003;
+            mainMast1.GetComponent<Mast>().midRopeAtt[0].SetParent(ropeHolder_003);
             ropeHolder_003.localPosition = new Vector3(-3f, 0f, -11.3f);
             ropeHolder_003.localEulerAngles = new Vector3(270f, 0f, 0f);
 
-            container.Find("Cube_002").parent = mizzenMast;
-            container.Find("Cube_003").parent = mizzenMast;
-            container.Find("Cube_004").parent = structure.Find("struct_var_1__long_roof_");
-            structure.Find("mast_003").parent = container.Find("hammock_001");
+            container.Find("Cube_002").SetParent(mizzenMast);
+            container.Find("Cube_003").SetParent(mizzenMast);
+            container.Find("Cube_004").SetParent(structure.Find("struct_var_1__long_roof_"));
+            structure.Find("mast_003").SetParent(container.Find("hammock_001"));
             #endregion
-            
+
+            var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_kakam.prefab");
+            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
+            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
+            {
+                mast.gameObject.SetActive(false);
+                mast.shipRigidbody = shipRigidbody;
+            }
+
+            Debug.Log("SE: instanting kakam parts");
+            var thing = UnityEngine.Object.Instantiate(prefab, container, false);
+            Debug.Log("SE: instantiated " + thing);
+
+            modParts = AssetTools.HandleImports(thing, partsList);
+
+            mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].GetComponentInChildren<CapsuleCollider>());
+
+            var modWalkCol = thing.transform.Find("SE_cols_kakam");
+            modWalkCol.SetParent(walkCol, false);
+
+            try
+            {
+                var col = container.Find("embark_col").GetComponent<MeshCollider>();
+                Debug.Log(col);
+                var newMesh = thing.transform.Find("embark_col").GetComponent<MeshFilter>();
+                Debug.Log(newMesh);
+                col.sharedMesh = newMesh.sharedMesh;
+                //col.mesh = newMesh.mesh;
+
+            }
+            catch { Debug.Log("couldn't patch kakam embark"); }
             #region midstays
-            //var midstayReefs = Util.CopyWinches(mizzenMast.GetComponent<Mast>().reefWinch, Vector3.zero, Vector3.zero);
-            //var angleWinches2 = Util.CopyWinches(angleWinches, Vector3.zero, new Vector3(0.3f, -0.05f, 0));
-
-            /*Mast midstay_lower = Util.CopyMast(lowerForestay, new Vector3(-2f, 7f, 0f), lowerForestay.localEulerAngles, new Vector3(1f, 1f, 1.37f), "midstay_lower", "lower midstay", 31);
-            midstay_lower.mastReefAtt = mizzenMastM.mastReefAtt;
-            midstay_lower.reefWinch = new GPButtonRopeWinch[1] { midstayReefs[0] };
-            midstay_lower.reefWinch[0].transform.localPosition = new Vector3(-2.87f, midstayReefs[0].transform.localPosition.y, 0f);
-            midstay_lower.reefWinch[0].transform.localEulerAngles = new Vector3(0, 90, 90);
-            midstay_lower.reefWinch[0].rope = null;
-            midstay_lower.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
-            midstay_lower.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches[1] };
-            midstay_lower.mastHeight = 7.5f;
-            midstay_lower.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>(), mizzenMast.GetComponent<BoatPartOption>() };
-            partsList.availableParts[7].partOptions.Add(midstay_lower.GetComponent<BoatPartOption>());
-*/
-            //Mast midstay_upper = Util.CopyMast(lowerForestay, new Vector3(-2f, 10.5f, 0f), lowerForestay.localEulerAngles, new Vector3(1f, 1f, 1.654f), "midstay_upper", "top midstay", 32);
-            Mast midstay_upper = Util.CopyMast(forestay, new Vector3(-2.4f, 10.6f, 0f), forestay.localEulerAngles, new Vector3(1, 1, 1.14f), "midstay", "middlestay", 32);
-            midstay_upper.mastReefAtt = mizzenMastM.mastReefAtt;
-            midstay_upper.reefWinch = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast.GetComponent<Mast>().reefWinch[1], new Vector3(-3.27f, mizzenMast.GetComponent<Mast>().reefWinch[1].transform.localPosition.y, 0f)) };
-            midstay_upper.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);
-            midstay_upper.reefWinch[0].rope = null;
-            midstay_upper.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
-            midstay_upper.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches[1] };
-            //midstay_upper.mastHeight = 10f;
-            midstay_upper.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>(), mizzenMast.GetComponent<BoatPartOption>() };
-            var midstay_upper_none = Util.CreatePartOption(container, "(no midstay)", "(no middlestay)");
-            Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { midstay_upper_none, midstay_upper.GetComponent<BoatPartOption>() });
-
+            /*            Mast midstay_upper = Util.CopyMast(forestay, new Vector3(-2.4f, 10.6f, 0f), forestay.localEulerAngles, new Vector3(1, 1, 1.14f), "midstay", "middlestay", 32);
+                        midstay_upper.mastReefAtt = mizzenMastM.mastReefAtt;
+                        midstay_upper.reefWinch = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast.GetComponent<Mast>().reefWinch[1], new Vector3(-3.27f, mizzenMast.GetComponent<Mast>().reefWinch[1].transform.localPosition.y, 0f)) };
+                        midstay_upper.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);
+                        midstay_upper.reefWinch[0].rope = null;
+                        midstay_upper.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
+                        midstay_upper.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches[1] };
+                        //midstay_upper.mastHeight = 10f;
+                        midstay_upper.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>(), mizzenMast.GetComponent<BoatPartOption>() };
+                        var midstay_upper_none = Util.CreatePartOption(container, "(no midstay)", "(no middlestay)");
+                        Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { midstay_upper_none, midstay_upper.GetComponent<BoatPartOption>() });
+            */
             #endregion
 
         }
