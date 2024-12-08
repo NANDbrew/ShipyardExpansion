@@ -42,6 +42,7 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> cleanLoad;
         internal static ConfigEntry<bool> percentSailNames;
         internal static ConfigEntry<bool> autoFit;
+        internal static ConfigEntry<bool> skipSailData;
 
 
         private void Awake()
@@ -64,6 +65,7 @@ namespace ShipyardExpansion
             percentSailNames = Config.Bind("Settings", "Show percent scale in sail name", true, new ConfigDescription(""));
             autoFit = Config.Bind("Settings", "Auto-fit sails", true, new ConfigDescription("Automatically scale too-big sails to fit the mast before installing"));
 
+            skipSailData = Config.Bind("Fixers", "skip sail data", false, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
 
         }
     }

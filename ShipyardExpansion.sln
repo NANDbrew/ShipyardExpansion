@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipyardExpansion", "ShipyardExpansion.csproj", "{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE_Bridge", "..\SE_Bridge\SE_Bridge.csproj", "{396A14E9-3DEB-4B83-9E81-E38AB23E6707}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49620984-2B51-46BB-ADD2-A7AF3A9E5A04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{396A14E9-3DEB-4B83-9E81-E38AB23E6707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{396A14E9-3DEB-4B83-9E81-E38AB23E6707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{396A14E9-3DEB-4B83-9E81-E38AB23E6707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{396A14E9-3DEB-4B83-9E81-E38AB23E6707}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,6 +20,8 @@ namespace ShipyardExpansion
                 Debug.Log("modData does not contain config");
                 return;
             }
+            if (Plugin.skipSailData.Value) return;
+
             string slug = GameState.modData[boat];
             //Debug.Log("loading data: " + slug);
             string[] masts = slug.Split(new char[] { ')' }, StringSplitOptions.RemoveEmptyEntries);

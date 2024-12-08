@@ -86,14 +86,14 @@ namespace ShipyardExpansion
             if (newAngle > angleLimits[1] && newAngle < 180) newAngle = angleLimits[1];
             else if (newAngle < angleLimits[0] && newAngle > 180) newAngle = angleLimits[0];
 
-            shadowCol.parent = scaleablePart;
-            windCenter.parent = scaleablePart;
+            shadowCol.SetParent(scaleablePart);
+            windCenter.SetParent(scaleablePart);
             rotatablePart.gameObject.SetActive(false);
             rotatablePart.localEulerAngles = new Vector3(rotatablePart.localEulerAngles.x, newAngle, rotatablePart.localEulerAngles.z);
             angle = rotatablePart.localEulerAngles.y;
             rotatablePart.gameObject.SetActive(true);
-            shadowCol.parent = transform;
-            windCenter.parent = transform;
+            shadowCol.SetParent(transform);
+            windCenter.SetParent(transform);
             if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
             {
                 colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, rotatablePart.localEulerAngles.y, colChecker.localEulerAngles.z);
@@ -140,8 +140,8 @@ namespace ShipyardExpansion
             }
             ratio = newRatio;
             UpdateInstallHeight();
-            shadowCol.parent = scaleablePart;
-            windCenter.parent = scaleablePart;
+            shadowCol.SetParent(scaleablePart);
+            windCenter.SetParent(scaleablePart);
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localScale = scale;
             scaleablePart.localPosition = basePos * height;
@@ -155,8 +155,8 @@ namespace ShipyardExpansion
             }
             scaleablePart.gameObject.SetActive(true);
             sail.SetSailArea();
-            shadowCol.parent = transform;
-            windCenter.parent = transform;
+            shadowCol.SetParent(transform);
+            windCenter.SetParent(transform);
             if (Plugin.percentSailNames.Value)
             {
                 sail.sailName = baseName + " " + "(" + Mathf.RoundToInt((height / startScale.y) * 100) + "%)";
@@ -203,7 +203,9 @@ namespace ShipyardExpansion
         public void UpdateInstallHeight(Transform mast)
         {
             sail.installHeight = scale.y * baseHeight / mast.localScale.z;
-            Debug.Log("adjusting sail scale for resized mast");
+#if DEBUG
+            Debug.Log("adjusting sail \"" + sail.sailName + "\" scale for resized mast \"" + mast.name + "\"");
+#endif
 
         }
 

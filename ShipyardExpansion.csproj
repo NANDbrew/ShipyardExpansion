@@ -77,6 +77,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\UnityEngine.Core.2018.1.0\lib\net35\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -93,6 +97,8 @@
     <Compile Include="Patches\BermudaMastStuff.cs" />
     <Compile Include="ConfigurationManagerAttributes.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
+    <Compile Include="Scripts\AssetTools.cs" />
+    <Compile Include="Scripts\NANDLadder.cs" />
     <Compile Include="Scripts\SailDataManager.cs" />
     <Compile Include="SailLimits.cs" />
     <Compile Include="SailScaleButton.cs" />
@@ -119,6 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SailScalingNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SE_Bridge\SE_Bridge.csproj">
+      <Project>{396a14e9-3deb-4b83-9e81-e38ab23e6707}</Project>
+      <Name>SE_Bridge</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets" Condition="Exists('packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets')" />

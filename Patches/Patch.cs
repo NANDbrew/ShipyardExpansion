@@ -16,23 +16,18 @@ namespace ShipyardExpansion
             [HarmonyPostfix]
             public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts, BoatRefs ___refs)
             {
+                if (!AssetTools.bundle) AssetTools.LoadAssetBundles();
+                
                 foreach (var part in ___parts.availableParts)
                 {
                     Plugin.stockParts.Add(part, part.activeOption);
-                    /*foreach (var option in part.partOptions)
-                    {
-                        Plugin.stockPartOptions.Add(option);
-                    }*/
+
                 }
-                /*foreach (var mast in ___refs.GetComponentsInChildren<Mast>())
-                {
-                    Plugin.stockMasts.Add(mast);
-                }*/
+
                 Plugin.moddedBoats.Add(___parts);
-                //Plugin.stockConfigs.Add(__instance.GetComponent<SaveableObject>().sceneIndex, __instance.GetData());
-                Array.Resize(ref ___refs.masts, 64);// = ___refs.masts.AddRangeToArray(new Mast[33]);
-                //Debug.Log(___refs.masts);
+                Array.Resize(ref ___refs.masts, Plugin.mastListSize);
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
+
                 if (sceneIndex == 10) DhowPatches.Patch(__instance.transform, ___parts);
                 else if (sceneIndex == 20) SanbuqPatches.Patch(__instance.transform, ___parts);
                 else if (sceneIndex == 90) KakamPatches.Patch(__instance.transform, ___parts);
