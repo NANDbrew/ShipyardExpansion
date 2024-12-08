@@ -25,8 +25,10 @@ namespace ShipyardExpansion
         }
         public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
-            SailDataManager.LoadSailConfig(___refs);
-
+            if (___refs.GetComponent<PurchasableBoat>().isPurchased())
+            {
+                SailDataManager.LoadSailConfig(___refs);
+            }
         }
     }
 
@@ -35,8 +37,10 @@ namespace ShipyardExpansion
     { 
         public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
-            SailDataManager.SaveSailConfig(___refs);
-
+            if (___refs.GetComponent<PurchasableBoat>().isPurchased())
+            {
+                SailDataManager.SaveSailConfig(___refs);
+            }
 
         }
     }
