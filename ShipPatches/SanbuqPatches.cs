@@ -46,6 +46,9 @@ namespace ShipyardExpansion
             BoatPartOption forestayNone = Util.CreatePartOption(container, "(empty forestay)", "(no forestay)");
             partsList.availableParts[3].partOptions.Add(forestayNone);
 
+            BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
+            partsList.availableParts[2].partOptions.Add(bowspritNone);
+
             mainMast1.GetComponent<Mast>().mastHeight += 0.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight -= 0.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 0.5f;
@@ -57,13 +60,7 @@ namespace ShipyardExpansion
             Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
             foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
             {
-                mast.gameObject.SetActive(false);
                 mast.shipRigidbody = shipRigidbody;
-            }
-            foreach (BoatEmbarkCollider col in prefab.GetComponentsInChildren<BoatEmbarkCollider>(true))
-            {
-                col.gameObject.SetActive(false);
-                col.walkCollider = walkCol;
             }
             Debug.Log("SE: instanting sanbuq parts");
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
@@ -84,7 +81,7 @@ namespace ShipyardExpansion
             catch { Debug.Log("couldn't patch sambuq embark"); }
 
             #region topmastStay
-
+            Debug.Log("topmast stay rejiggering");
             topmastStay1_mast.reefWinch = Util.CopyWinches(topmastStay1_mast.reefWinch, Vector3.zero, Vector3.up);
             topmastStay1_mast.leftAngleWinch = Util.CopyWinches(topmastStay1_mast.leftAngleWinch, Vector3.zero, new Vector3(-0.2f, -0.2f, -0.17f));
             topmastStay1_mast.rightAngleWinch = Util.CopyWinches(topmastStay1_mast.rightAngleWinch, Vector3.zero, new Vector3(-0.2f, -0.2f, 0.13f));
@@ -117,9 +114,10 @@ namespace ShipyardExpansion
             partsList.availableParts[3].partOptions.Remove(topmastStay1.GetComponent<BoatPartOption>());
             partsList.availableParts[3].partOptions.Remove(topmastStay2.GetComponent<BoatPartOption>());
             partsList.availableParts[3].partOptions.Remove(topmastStay3.GetComponent<BoatPartOption>());
-
-            partsList.availableParts[5].partOptions[0].childOptions = partsList.availableParts[5].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { modParts["crowsnest_empty"].partOptions[1].transform.Find("ladder_shr_0").gameObject, modParts["crowsnest_empty"].partOptions[2].transform.Find("ladder_shr_0").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_0").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_0").gameObject });
-            partsList.availableParts[5].partOptions[1].childOptions = partsList.availableParts[5].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { modParts["crowsnest_empty"].partOptions[1].transform.Find("ladder_shr_1").gameObject, modParts["crowsnest_empty"].partOptions[2].transform.Find("ladder_shr_1").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_1").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_1").gameObject });
+            var mainShrouds0Children = partsList.availableParts[5].partOptions[0];
+            var mainShrouds1Children = partsList.availableParts[5].partOptions[1];
+            mainShrouds0Children.childOptions = mainShrouds0Children.childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_0").Find("ladder_shr_0").gameObject, thing.transform.Find("crowsnest_0").Find("ladder_shr_0").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_0").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_0").gameObject });
+            mainShrouds1Children.childOptions = mainShrouds1Children.childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_0").Find("ladder_shr_1").gameObject, thing.transform.Find("crowsnest_0").Find("ladder_shr_1").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_1").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_1").gameObject });
 
             partsList.availableParts[6].partOptions[0].childOptions = partsList.availableParts[6].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_side").gameObject });
             partsList.availableParts[6].partOptions[1].childOptions = partsList.availableParts[6].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_back").gameObject });
@@ -133,22 +131,16 @@ namespace ShipyardExpansion
             #endregion
 
             #region hammock
-            BoatPartOption hammockNone = Util.CreatePartOption(container, "(empty hammock)", "(no bed)");
-            BoatPartOption hammock = Util.AddPartOption(container.Find("hammock").gameObject, "hammock");
+            Debug.Log("sanbuq hammock");
+            BoatPartOption hammock = modParts["hammock_part"].partOptions[0];//Util.AddPartOption(container.Find("hammock").gameObject, "hammock");
 
-            hammock.optionName = "hammock";
-            hammock.childOptions = new GameObject[2] { container.Find("hammock_001").gameObject, walkCol.Find("hammock_001").gameObject };
-            hammock.basePrice = 200;
-            hammock.installCost = 100;
-            hammock.mass = 5;
-            hammock.requires = new List<BoatPartOption>();
-            hammock.requiresDisabled = new List<BoatPartOption>();
+            hammock.childOptions = new GameObject[3] { container.Find("hammock").gameObject, container.Find("hammock_001").gameObject, walkCol.Find("hammock_001").gameObject };
             hammock.walkColObject = walkCol.Find("hammock").gameObject;
 
-            BoatPart hammockPart = Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption>(2) { hammock, hammockNone });
             #endregion
 
             #region late adjustments
+            Debug.Log("Sanbuq late adjustments");
             partsList.availableParts[3].category = 2;
             foreach (BoatPartOption stay in partsList.availableParts[3].partOptions)
             {
@@ -158,6 +150,7 @@ namespace ShipyardExpansion
                     stay.requiresDisabled.Add(partsList.availableParts[2].partOptions[2]);
                     stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[1]);
                     stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[2]);
+                    stay.requiresDisabled.Add(bowspritNone);
 
                 }
             }

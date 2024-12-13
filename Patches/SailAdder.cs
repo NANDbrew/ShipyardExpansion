@@ -52,6 +52,10 @@ namespace ShipyardExpansion
             modSail4.transform.Find("sail A tiny gaff").Find("SAIL_tiny_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail4.GetComponent<Sail>().category = SailCategory.other;
 
+            if (AssetTools.bundle == null) AssetTools.LoadAssetBundles();
+            ___sails[159] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/testSquare.prefab");
+            ___sails[154] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/testJib.prefab");
+
             //var lateen20 = Util.CopySail(___sails, 121, Vector3.zero, new Vector3(90, 0, 0), 1.6f, "M lateen big 1.6", "lateen 20yd", 155);
         }
     }

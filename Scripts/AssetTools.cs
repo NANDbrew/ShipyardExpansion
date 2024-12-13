@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using SE_Bridge;
 using ShipyardExpansion.Scripts;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace ShipyardExpansion
 {
@@ -64,18 +66,18 @@ namespace ShipyardExpansion
         public static BoatPartOption HandlePartOption(SE_PartOptionData data, Transform walkColParent, BoatCustomParts parts)
         {
             BoatPartOption opt = data.GetComponent<BoatPartOption>();
-/*            if (opt == null)
-            {
-                opt = data.gameObject.AddComponent<BoatPartOption>();
-                opt.optionName = data.optionName;
-                opt.basePrice = data.basePrice;
-                opt.installCost = data.installCost;
-                opt.mass = data.mass;
-                opt.requires = HandlePartOptions(data.requires, walkColParent, parts);
-                opt.requiresDisabled = HandlePartOptions(data.requiresDisabled, walkColParent, parts);
-                opt.walkColObject = walkColParent.transform.Find(data.name).gameObject;
-                opt.childOptions = data.childOptions;
-            }*/
+            /*            if (opt == null)
+                        {
+                            opt = data.gameObject.AddComponent<BoatPartOption>();
+                            opt.optionName = data.optionName;
+                            opt.basePrice = data.basePrice;
+                            opt.installCost = data.installCost;
+                            opt.mass = data.mass;
+                            opt.requires = HandlePartOptions(data.requires, walkColParent, parts);
+                            opt.requiresDisabled = HandlePartOptions(data.requiresDisabled, walkColParent, parts);
+                            opt.walkColObject = walkColParent.transform.Find(data.name).gameObject;
+                            opt.childOptions = data.childOptions;
+                        }*/
             if (data.requiresVanilla1.Length == 2) opt.requires.Add(parts.availableParts[data.requiresVanilla1[0]].partOptions[data.requiresVanilla1[1]]);
             if (data.requiresVanilla2.Length == 2) opt.requires.Add(parts.availableParts[data.requiresVanilla2[0]].partOptions[data.requiresVanilla2[1]]);
 
@@ -101,7 +103,7 @@ namespace ShipyardExpansion
             return opts;
         }
 
-        public static Dictionary<string, BoatPart> HandleImports(GameObject thing, BoatCustomParts partsList)
+        public static Dictionary<string, BoatPart> HandleImportsOld(GameObject thing, BoatCustomParts partsList)
         {
             Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
 
@@ -161,6 +163,105 @@ namespace ShipyardExpansion
             return modParts;
         }
 
+
+        private static void ReqTranslate(SE_PartOptionData optData, BoatPartOption opt, BoatCustomParts partsList)
+        {
+            Debug.Log("Translating partOption requirements for " + opt.name);
+            if (optData.requiresVanilla1.Length == 2)
+            {
+                opt.requires.Add(partsList.availableParts[optData.requiresVanilla1[0]].partOptions[optData.requiresVanilla1[1]]);
+                Debug.Log("did 1");
+            }
+            if (optData.requiresVanilla2.Length == 2)
+            {
+                opt.requires.Add(partsList.availableParts[optData.requiresVanilla2[0]].partOptions[optData.requiresVanilla2[1]]);
+                Debug.Log("did 2");
+            }
+            if (optData.requiresDisabledVanilla1.Length == 2)
+            {
+                opt.requiresDisabled.Add(partsList.availableParts[optData.requiresDisabledVanilla1[0]].partOptions[optData.requiresDisabledVanilla1[1]]);
+                Debug.Log("did anti 1");
+
+            }
+            if (optData.requiresDisabledVanilla2.Length == 2)
+            {
+                opt.requiresDisabled.Add(partsList.availableParts[optData.requiresDisabledVanilla2[0]].partOptions[optData.requiresDisabledVanilla2[1]]);
+                Debug.Log("did anti 2");
+
+            }
+            //optData.enabled = false;
+        }
+        public static Dictionary<string, BoatPart> HandleImports(GameObject thing, BoatCustomParts partsList)
+        {
+            Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
+
+            SE_BoatCustomData boatData = thing.GetComponent<SE_BoatCustomData>();
+
+            foreach (SE_PartData partData in boatData.parts)
+            {
+                BoatPart part = new BoatPart
+                {
+                    //activeOption = data.activeOption,
+                    category = partData.category,
+                    partOptions = partData.partOptions,
+                };
+                partsList.availableParts.Add(part);
+                modParts.Add(partData.name, part);
+                foreach (BoatPartOption opt in part.partOptions)
+                {
+                    if (opt.GetComponent<SE_PartOptionData>() is SE_PartOptionData optData)
+                    {
+                        ReqTranslate(optData, opt, partsList);
+                        optData.enabled = false;
+                    }
+                }
+                partData.enabled = false;
+                Debug.Log(partData.name);
+                Debug.Log(partsList.availableParts.Count);
+            }
+
+            foreach (SE_PartOptionData optData in boatData.options)
+            {
+                Debug.Log(optData.name);
+                if (optData.GetComponent<BoatPartOption>() is BoatPartOption opt && optData.parentPartIndex > -1)
+                {
+                    ReqTranslate(optData, opt, partsList);
+                    partsList.availableParts[optData.parentPartIndex].partOptions.Add(opt);
+                    optData.enabled = false;
+                }
+                else Debug.LogError("huh? " + optData.name);
+
+            }
+            foreach (Transform obj in thing.GetComponentsInChildren<Transform>())
+            {
+              /*  if (obj.GetComponent<Mast>() is Mast mast)
+                {
+                    //obj.gameObject.SetActive(true);
+                    mast.Awake();
+                }*/
+
+                if (obj.GetComponent<SE_LadderData>() is SE_LadderData ladderData)
+                {
+                    Transform target = ladderData.target;
+                    target.SetParent(thing.transform.parent);
+                    var ladder = ladderData.gameObject.AddComponent<NANDLadder>();
+                    ladder.target = target;
+                    ladderData.enabled = false;
+                }
+
+
+                if (obj.GetComponent<WindClothSimple>() is WindClothSimple cloth)
+                {
+                    cloth.shipRigidbody = partsList.GetComponent<Rigidbody>();
+                }
+            }
+
+
+            Debug.Log("modParts.Count = " + modParts.Count);
+            return modParts;
+        }
+    }
+
         /*public static Mast HandleMast(SE_MastData data, Transform walkColParent, Rigidbody shipRigidBody)
         {
             data.gameObject.SetActive(false);
@@ -197,4 +298,4 @@ namespace ShipyardExpansion
             return mast;
         }*/
     }
-}
+

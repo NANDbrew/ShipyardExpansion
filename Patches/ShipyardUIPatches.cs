@@ -105,7 +105,7 @@ namespace ShipyardExpansion
             buttonDown.SetText("Scale\nDown");
 
             increaseHeightButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            increaseHeightButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
+            increaseHeightButton.transform.localPosition += new Vector3(-1.48f, 0.0f, 0.25f);// - 2.96f, 0.0f, 0.46f);
             increaseHeightButton.name = "button Increase Height";
             UnityEngine.Object.Destroy(increaseHeightButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonTaller = increaseHeightButton.AddComponent<SailScaleButton>();
@@ -113,7 +113,7 @@ namespace ShipyardExpansion
             buttonTaller.SetText("Increase\nHeight");
 
             decreaseHeightButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            decreaseHeightButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
+            decreaseHeightButton.transform.localPosition += new Vector3(-1.48f, 0.0f, 0.25f);//-2.96f, 0.0f, 0.46f);
             decreaseHeightButton.name = "button Decrease Height";
             UnityEngine.Object.Destroy(decreaseHeightButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonShorter = decreaseHeightButton.AddComponent<SailScaleButton>();
@@ -163,9 +163,9 @@ namespace ShipyardExpansion
             if (active) currentSail = GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>();
             bool rotatable = active && currentSail != null && currentSail.rotatablePart != null;
             bool heightable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Square));
-            bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib));
-            scaleUpButton.SetActive(active);
-            scaleDownButton.SetActive(active);
+            bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
+            scaleUpButton.SetActive(active && !heightable);
+            scaleDownButton.SetActive(active && !heightable);
 
             increaseHeightButton.SetActive(heightable);
             decreaseHeightButton.SetActive(heightable);

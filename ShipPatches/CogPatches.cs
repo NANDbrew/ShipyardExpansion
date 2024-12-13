@@ -27,14 +27,10 @@ namespace ShipyardExpansion
             prefab.transform.GetComponentInChildren<GPButtonSteeringWheel>().attachedRudder = container.Find("rudder").GetComponent<HingeJoint>();
             foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
             {
-                mast.gameObject.SetActive(false);
+                //mast.gameObject.SetActive(false);
                 mast.shipRigidbody = shipRigidbody;
             }
-            foreach (BoatEmbarkCollider col in prefab.GetComponentsInChildren<BoatEmbarkCollider>(true))
-            {
-                col.gameObject.SetActive(false);
-                col.walkCollider = walkCol;
-            }
+
             Debug.Log("SE: instanting cog parts");
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
@@ -69,7 +65,7 @@ namespace ShipyardExpansion
             mainMast2Col.transform.Find("mast_004").gameObject.SetActive(false);
             mainMast2Col.transform.Find("Cylinder_004").gameObject.SetActive(false);
 
-            partsList.availableParts.Add(new BoatPart { category = 1, activeOption = 0, partOptions = new List<BoatPartOption> { shrouds_back, shrouds_side } });
+            //partsList.availableParts.Add(new BoatPart { category = 1, activeOption = 0, partOptions = new List<BoatPartOption> { shrouds_back, shrouds_side } });
 
             Transform mastWalkCol = mainMast1.GetComponent<Mast>().walkColMast;
             Transform walkCols = mastWalkCol.parent.parent;
@@ -116,7 +112,7 @@ namespace ShipyardExpansion
             ropeHolderAft.GetChild(0).gameObject.SetActive(false);
 
             partsList.availableParts[1].category = 2;
-            partsList.availableParts[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
+            //partsList.availableParts[1].partOptions.Add(Util.CreatePartOption(container, "(no forestay)", "(no forestay)"));
 
             #endregion
             BoatPartOption bottomHelm = Util.AddPartOption(container.GetComponentInChildren<GPButtonSteeringWheel>().gameObject, "helm 1");

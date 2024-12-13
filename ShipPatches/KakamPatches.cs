@@ -55,7 +55,6 @@ namespace ShipyardExpansion
             Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
             foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
             {
-                mast.gameObject.SetActive(false);
                 mast.shipRigidbody = shipRigidbody;
             }
 

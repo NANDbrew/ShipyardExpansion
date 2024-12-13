@@ -33,11 +33,11 @@ namespace ShipyardExpansion
             }
             if (Plugin.vertFins.Value && ___selectedSail.category == SailCategory.other && !___selectedSail.sailName.Contains("lug"))
             {
-                Transform child = component.rotatablePart;
-                Vector3 oldRot = child.localEulerAngles;
-                child.eulerAngles = new Vector3(0, 0, 0);
-                child.localEulerAngles = new Vector3(oldRot.x, child.localEulerAngles.y + 90, oldRot.z);
-                component.SetAngle(child.localEulerAngles.y);
+                //Transform child = component.rotatablePart;
+                //Vector3 oldRot = child.localEulerAngles;
+                //child.eulerAngles = new Vector3(0, 0, 0);
+                //child.localEulerAngles = new Vector3(oldRot.x, child.localEulerAngles.y + 90, oldRot.z);
+                component.SetAngle(component.transform.eulerAngles.y);
             }
 
             if (Plugin.autoFit.Value && ___selectedSail.installHeight > ___currentMast.mastHeight)

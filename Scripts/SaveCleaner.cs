@@ -140,24 +140,61 @@ namespace ShipyardExpansion
 
         public static void Convert(SaveBoatCustomizationData data, BoatRefs refs)
         {
-            //int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
-            Debug.Log("converter: converting index " + refs.gameObject.name);
+            int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
+            // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
             {
                 if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
                 {
                     data.partActiveOptions.AddRange(new int[refs.GetComponent<BoatCustomParts>().availableParts.Count - data.partActiveOptions.Count]);
 
-                    if (refs.GetComponent<SaveableObject>().sceneIndex == 20 && data.partActiveOptions[3] > 3)
+                    if (index == 20 && data.partActiveOptions[3] > 3)
                     {
                         data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
                         data.partActiveOptions[3] = 4;
                     }
                 }
-                Plugin.converted.Add(refs.gameObject, false);
+                Plugin.converted.Add(refs.gameObject, data);
             }
-            if (!Plugin.convertSave.Value || saveVersion < 0) return;
-            if (saveVersion >= 43 || Plugin.converted[refs.gameObject] == true)
+            //if (!Plugin.convertSave.Value || saveVersion < 0) return;
+
+            // convert to SE v0.5
+            if (saveVersion > 50) return;
+            if (Plugin.converted.ContainsKey(refs.gameObject))
+            {
+                //Debug.Log("brig??");
+                foreach (SaveSailData sailData in data.sails)
+                {
+                    Debug.Log("sail data: " + sailData.prefabIndex + ", mast: " + sailData.mastIndex);
+                    if (sailData.mastIndex > 30 && sailData.mastIndex < 50)
+                    {
+                        sailData.mastIndex += 20;
+                        Debug.Log("new mast index = " + sailData.mastIndex);
+                    }
+                }
+                if (index == 20)
+                {
+                    if (data.partActiveOptions[19] > 0)
+                    {
+                        if (data.partActiveOptions[19] == 3) data.partActiveOptions[19] = 0;
+                        else data.partActiveOptions[19] += 1;
+                    }
+                    data.partActiveOptions.Remove(19);
+                    data.partActiveOptions.Remove(15);
+                }
+                else if (index == 40)
+                {
+                    if (data.partActiveOptions[1] == 6) data.partActiveOptions[1] = 5;
+                    if (data.partActiveOptions[6] == 2)
+                    {
+                        data.partActiveOptions[6] = 0;
+                        data.partActiveOptions[11] = 1;
+                    }
+                }
+            }
+
+
+           /* if (saveVersion >= 43 || Plugin.converted[refs.gameObject] == true)
             {
                 Debug.Log("Save converter: skipped-- v" + saveVersion);
             }
@@ -217,7 +254,7 @@ namespace ShipyardExpansion
                     }
                 }
                 Plugin.converted[refs.gameObject] = true;
-            }
+            }*/
             //Debug.Log("ShipyardExpansion converted " + conversionCounter + " ships");
             //Plugin.convertSave.Value = false;
         }

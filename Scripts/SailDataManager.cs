@@ -29,7 +29,18 @@ namespace ShipyardExpansion
             {
                 //Debug.Log($"{mast}");
                 string[] foo = mast.Split('(');
+
                 int mastIndex = Convert.ToInt32(foo[0]);
+                if (mastIndex >= refs.masts.Length) break;
+                if (SaveCleaner.saveVersion < 50 && mastIndex > 30 && mastIndex < 50)
+                {
+                    Debug.Log("mast index? " + mastIndex);
+                    mastIndex += 20;
+                    Debug.Log("mast index! " + mastIndex);
+                }
+
+                if (refs.masts[mastIndex] == null) continue;
+
                 string[] sails = foo[1].Split(new char[] { ']' }, StringSplitOptions.RemoveEmptyEntries);
                 for (int i = 0; i < refs.masts[mastIndex].sails.Count; i++)
                 {

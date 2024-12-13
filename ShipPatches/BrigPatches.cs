@@ -45,14 +45,10 @@ namespace ShipyardExpansion
             Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
             foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
             {
-                mast.gameObject.SetActive(false);
                 mast.shipRigidbody = shipRigidbody;
+                //mast.gameObject.SetActive(false);
             }
-            foreach (BoatEmbarkCollider col in prefab.GetComponentsInChildren<BoatEmbarkCollider>(true))
-            {
-                col.gameObject.SetActive(false);
-                col.walkCollider = walkCol;
-            }
+
             Debug.Log("SE: instanting brig parts");
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
@@ -68,8 +64,8 @@ namespace ShipyardExpansion
             mizzenMast2.GetComponent<BoatPartOption>().childOptions = mizzenMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { modParts["shrouds_mizzen_back"].partOptions[1].transform.GetChild(1).gameObject, modParts["shrouds_mizzen_back"].partOptions[1].walkColObject.transform.GetChild(1).gameObject, thing.transform.Find("shrouds_mizzen_back").transform.GetChild(0).GetChild(1).gameObject });
 
             modParts["shrouds_mizzen_back"].partOptions[0].childOptions = new GameObject[] { mizzenMast1.Find("static_rig_011").gameObject, mizzenMast1.Find("trim_007").gameObject, mizzenMast1.GetComponent<BoatPartOption>().walkColObject.transform.Find("static_rig_011").gameObject, mizzenMast1.GetComponent<BoatPartOption>().walkColObject.transform.Find("trim_007").gameObject, mizzenMast2.Find("static_rig_012").gameObject, mizzenMast2.Find("trim_009").gameObject, mizzenMast2.GetComponent<BoatPartOption>().walkColObject.transform.Find("static_rig_012").gameObject, mizzenMast2.GetComponent<BoatPartOption>().walkColObject.transform.Find("trim_009").gameObject };
-            var tops_main = thing.transform.Find("tops_main");
-            var tops_fore = thing.transform.Find("tops_fore");
+            var tops_main = thing.transform.Find("shrouds_main");
+            var tops_fore = thing.transform.Find("shrouds_fore");
             mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { tops_main.GetChild(0).gameObject, tops_main.GetComponent<BoatPartOption>().walkColObject.transform.GetChild(0).gameObject, thing.transform.Find("telltale_main").Find("telltale_main_cont").GetChild(0).gameObject, thing.transform.Find("telltale_main").Find("telltale_main_cont2").GetChild(0).gameObject });
             mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { tops_main.GetChild(1).gameObject, tops_main.GetComponent<BoatPartOption>().walkColObject.transform.GetChild(1).gameObject, thing.transform.Find("telltale_main").Find("telltale_main_cont").GetChild(1).gameObject, thing.transform.Find("telltale_main").Find("telltale_main_cont2").GetChild(1).gameObject });
             foreMast1.GetComponent<BoatPartOption>().childOptions = foreMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { tops_fore.GetChild(0).gameObject, tops_fore.GetComponent<BoatPartOption>().walkColObject.transform.GetChild(0).gameObject, thing.transform.Find("telltale_fore").Find("telltale_fore_cont").GetChild(0).gameObject, thing.transform.Find("telltale_fore").Find("telltale_fore_cont2").GetChild(0).gameObject });
@@ -87,7 +83,7 @@ namespace ShipyardExpansion
 
             }
             catch { Debug.Log("couldn't patch brig embark"); }
-            
+            partsList.RefreshParts();
         }
     }
 }

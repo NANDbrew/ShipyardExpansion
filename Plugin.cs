@@ -14,9 +14,9 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.4.5";
+        public const string PLUGIN_VERSION = "0.5.0";
 
-        internal const int mastListSize = 64;
+        internal const int mastListSize = 80;
         internal const int sailListSize = 160;
 
         public static List<BoatCustomParts> moddedBoats;
@@ -25,7 +25,7 @@ namespace ShipyardExpansion
         //public static List<Mast> stockMasts;
         public static int stockSailsListSize;
         //public static Dictionary<int, SaveBoatCustomizationData> stockConfigs;
-        public static Dictionary<GameObject, bool> converted;
+        public static Dictionary<GameObject, SaveBoatCustomizationData> converted;
         public static Transform prefabContainer;
 
         //--settings--
@@ -51,7 +51,7 @@ namespace ShipyardExpansion
             stockParts = new Dictionary<BoatPart, int>();
             //stockMasts = new List<Mast>();
             moddedBoats = new List<BoatCustomParts>();
-            converted = new Dictionary<GameObject, bool>();
+            converted = new Dictionary<GameObject, SaveBoatCustomizationData>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
             convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.4.3"));
