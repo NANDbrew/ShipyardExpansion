@@ -140,6 +140,7 @@ namespace ShipyardExpansion
 
         public static void Convert(SaveBoatCustomizationData data, BoatRefs refs)
         {
+            //if (GameState.playing && !GameState.justStarted) return;
             int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
             // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
@@ -156,10 +157,11 @@ namespace ShipyardExpansion
                 }
                 Plugin.converted.Add(refs.gameObject, data);
             }
-            //if (!Plugin.convertSave.Value || saveVersion < 0) return;
+            // if the convert setting is off or we don't know the file version yet, bug out
+            if (!Plugin.convertSave.Value || saveVersion < 0) return;
 
             // convert to SE v0.5
-            if (saveVersion > 50) return;
+            if (saveVersion >= 50) return;
             if (Plugin.converted.ContainsKey(refs.gameObject))
             {
                 //Debug.Log("brig??");
@@ -191,6 +193,8 @@ namespace ShipyardExpansion
                         data.partActiveOptions[11] = 1;
                     }
                 }
+
+                SailDataManager.SaveSailConfig(refs);
             }
 
 
