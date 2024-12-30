@@ -69,31 +69,6 @@ namespace ShipyardExpansion
             var modWalkCol = thing.transform.Find("SE_cols_kakam");
             modWalkCol.SetParent(walkCol, false);
 
-            try
-            {
-                var col = container.Find("embark_col").GetComponent<MeshCollider>();
-                Debug.Log(col);
-                var newMesh = thing.transform.Find("embark_col").GetComponent<MeshFilter>();
-                Debug.Log(newMesh);
-                col.sharedMesh = newMesh.sharedMesh;
-                //col.mesh = newMesh.mesh;
-
-            }
-            catch { Debug.Log("couldn't patch kakam embark"); }
-            #region midstays
-            /*            Mast midstay_upper = Util.CopyMast(forestay, new Vector3(-2.4f, 10.6f, 0f), forestay.localEulerAngles, new Vector3(1, 1, 1.14f), "midstay", "middlestay", 32);
-                        midstay_upper.mastReefAtt = mizzenMastM.mastReefAtt;
-                        midstay_upper.reefWinch = new GPButtonRopeWinch[1] { Util.CopyWinch(mizzenMast.GetComponent<Mast>().reefWinch[1], new Vector3(-3.27f, mizzenMast.GetComponent<Mast>().reefWinch[1].transform.localPosition.y, 0f)) };
-                        midstay_upper.reefWinch[0].transform.localEulerAngles = new Vector3(0, 270, 90);
-                        midstay_upper.reefWinch[0].rope = null;
-                        midstay_upper.leftAngleWinch = new GPButtonRopeWinch[1] { angleWinches[0] };
-                        midstay_upper.rightAngleWinch = new GPButtonRopeWinch[1] { angleWinches[1] };
-                        //midstay_upper.mastHeight = 10f;
-                        midstay_upper.GetComponent<BoatPartOption>().requires = new List<BoatPartOption> { mainMast1.GetComponent<BoatPartOption>(), mizzenMast.GetComponent<BoatPartOption>() };
-                        var midstay_upper_none = Util.CreatePartOption(container, "(no midstay)", "(no middlestay)");
-                        Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { midstay_upper_none, midstay_upper.GetComponent<BoatPartOption>() });
-            */
-            #endregion
 
         }
 

@@ -70,15 +70,6 @@ namespace ShipyardExpansion
             var modWalkCol = thing.transform.Find("SE_cols_sanbuq");
             modWalkCol.SetParent(walkCol, false);
 
-            try
-            {
-                var col = container.Find("embark_col").GetComponent<MeshCollider>();
-                var newMesh = thing.transform.Find("embark_col").GetComponent<MeshFilter>();
-                col.sharedMesh = newMesh.sharedMesh;
-                col.GetComponent<MeshFilter>().mesh = newMesh.mesh;
-
-            }
-            catch { Debug.Log("couldn't patch sambuq embark"); }
 
             #region topmastStay
             Debug.Log("topmast stay rejiggering");
