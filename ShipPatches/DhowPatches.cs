@@ -34,18 +34,6 @@ namespace ShipyardExpansion
             shortForestay.GetComponent<BoatPartOption>().requires.Remove(container.Find("bowsprit").GetComponent<BoatPartOption>());
             container.Find("empty low forestay").GetComponent<BoatPartOption>().optionName = "(no lower forestay)";
 
-            var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_dhow.prefab");
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
-            {
-                mast.shipRigidbody = shipRigidbody;
-            }
-
-            Debug.Log("SE: instanting dhow parts");
-            var thing = UnityEngine.Object.Instantiate(prefab, container, false);
-            Debug.Log("SE: instantiated " + thing);
-
-            modParts = AssetTools.HandleImports(thing, partsList);
 
             var mainFlag = container.Find("flag");
             mainFlag.SetParent(mainMast);
@@ -59,23 +47,32 @@ namespace ShipyardExpansion
             mainMastTall.GetComponent<Mast>().mastReefAtt[0] = tallMastReefAtt;
             mainMastTall.GetComponent<Mast>().mastReefAtt[1] = tallMastReefAtt;
 
+            GameObject winchMount = container.Find("Cylinder").gameObject;
+            GameObject staticRig = container.Find("Cylinder_002").gameObject;
+            GameObject rigCol = container.Find("rig_col").gameObject;
+            mainMast.GetComponent<BoatPartOption>().childOptions = new GameObject[] { staticRig, rigCol, winchMount };
+            mainMastTall.GetComponent<BoatPartOption>().childOptions = new GameObject[] { UnityEngine.Object.Instantiate(staticRig, container, true), UnityEngine.Object.Instantiate(rigCol, container, true), UnityEngine.Object.Instantiate(winchMount, container, true) };
+            mainMastTall.GetComponent<Mast>().mastCols = mainMastTall.GetComponent<Mast>().mastCols.AddToArray(mainMastTall.GetComponent<BoatPartOption>().childOptions[1].GetComponent<CapsuleCollider>());
             shortForestay.GetComponent<Mast>().mastReefAtt = lowForestay.GetComponent<Mast>().mastReefAtt;
             #endregion
+
+            var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_dhow.prefab");
+            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
+            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
+            {
+                mast.shipRigidbody = shipRigidbody;
+            }
+
+            Debug.Log("SE: instanting dhow parts");
+            var thing = UnityEngine.Object.Instantiate(prefab, container, false);
+            Debug.Log("SE: instantiated " + thing);
+
+            modParts = AssetTools.HandleImports(thing, partsList);
 
             var modWalkCol = thing.transform.Find("SE_cols_dhow");
             modWalkCol.SetParent(walkCols, false);
 
-            try
-            {
-                var col = container.Find("embark_col").GetComponent<MeshCollider>();
-                Debug.Log(col);
-                var newMesh = thing.transform.Find("embark_col").GetComponent<MeshFilter>();
-                Debug.Log(newMesh);
-                col.sharedMesh = newMesh.sharedMesh;
-                //col.mesh = newMesh.mesh;
 
-            }
-            catch { Debug.Log("couldn't patch dhow embark"); }
 
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
