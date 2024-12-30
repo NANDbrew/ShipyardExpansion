@@ -32,10 +32,10 @@ namespace ShipyardExpansion
 
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight = 18.8f;
-            mizzenMast1.GetComponent<Mast>().mastHeight = 19.6f;
-            mizzenMast1.GetComponent<Mast>().extraBottomHeight = 0.8f;
-            mizzenMast2.GetComponent<Mast>().mastHeight = 19.6f;
-            mizzenMast2.GetComponent<Mast>().extraBottomHeight = 0.8f;
+            mizzenMast1.GetComponent<Mast>().mastHeight = 19f;
+            mizzenMast1.GetComponent<Mast>().extraBottomHeight = 1f;
+            mizzenMast2.GetComponent<Mast>().mastHeight = 19f;
+            mizzenMast2.GetComponent<Mast>().extraBottomHeight = 1f;
             foreMast1.GetComponent<Mast>().mastHeight = 20f;
             foreMast1.GetComponent<Mast>().extraBottomHeight = 0.7f;
 
@@ -74,16 +74,7 @@ namespace ShipyardExpansion
             partsList.availableParts[12].partOptions[1].childOptions = partsList.availableParts[12].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_main_0").Find("ladder_shr_1").gameObject, thing.transform.Find("crowsnest_main_1").Find("ladder_shr_1").gameObject, thing.transform.Find("telltale_main").GetChild(0).gameObject });
             partsList.availableParts[11].partOptions[0].childOptions = partsList.availableParts[11].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_fore_0").Find("ladder_shr_0").gameObject, thing.transform.Find("crowsnest_fore_1").Find("ladder_shr_0").gameObject, thing.transform.Find("telltale_fore").GetChild(1).gameObject });
             partsList.availableParts[11].partOptions[1].childOptions = partsList.availableParts[11].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_fore_0").Find("ladder_shr_1").gameObject, thing.transform.Find("crowsnest_fore_1").Find("ladder_shr_1").gameObject, thing.transform.Find("telltale_fore").GetChild(0).gameObject });
-            try 
-            {
-                var col = container.Find("walk_col").GetComponent<MeshCollider>();
-                var newMesh = thing.transform.Find("walk_col").GetComponent<MeshFilter>();
-                col.sharedMesh = newMesh.sharedMesh;
-                //col.mesh = newMesh.mesh;
 
-            }
-            catch { Debug.Log("couldn't patch brig embark"); }
-            partsList.RefreshParts();
         }
     }
 }
