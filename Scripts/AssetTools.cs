@@ -2,12 +2,14 @@
 using SE_Bridge;
 using ShipyardExpansion.Scripts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -66,18 +68,7 @@ namespace ShipyardExpansion
         public static BoatPartOption HandlePartOption(SE_PartOptionData data, Transform walkColParent, BoatCustomParts parts)
         {
             BoatPartOption opt = data.GetComponent<BoatPartOption>();
-            /*            if (opt == null)
-                        {
-                            opt = data.gameObject.AddComponent<BoatPartOption>();
-                            opt.optionName = data.optionName;
-                            opt.basePrice = data.basePrice;
-                            opt.installCost = data.installCost;
-                            opt.mass = data.mass;
-                            opt.requires = HandlePartOptions(data.requires, walkColParent, parts);
-                            opt.requiresDisabled = HandlePartOptions(data.requiresDisabled, walkColParent, parts);
-                            opt.walkColObject = walkColParent.transform.Find(data.name).gameObject;
-                            opt.childOptions = data.childOptions;
-                        }*/
+
             if (data.requiresVanilla1.Length == 2) opt.requires.Add(parts.availableParts[data.requiresVanilla1[0]].partOptions[data.requiresVanilla1[1]]);
             if (data.requiresVanilla2.Length == 2) opt.requires.Add(parts.availableParts[data.requiresVanilla2[0]].partOptions[data.requiresVanilla2[1]]);
 
@@ -234,12 +225,6 @@ namespace ShipyardExpansion
             }
             foreach (Transform obj in thing.GetComponentsInChildren<Transform>())
             {
-              /*  if (obj.GetComponent<Mast>() is Mast mast)
-                {
-                    //obj.gameObject.SetActive(true);
-                    mast.Awake();
-                }*/
-
                 if (obj.GetComponent<SE_LadderData>() is SE_LadderData ladderData)
                 {
                     Transform target = ladderData.target;
@@ -255,47 +240,28 @@ namespace ShipyardExpansion
                     cloth.shipRigidbody = partsList.GetComponent<Rigidbody>();
                 }
             }
-
-
+            if (boatData.walkColMesh != null)
+            {
+                var col = partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>();
+                Debug.Log("SE found embarkCol: " + col);
+                col.GetComponent<MeshCollider>().sharedMesh = boatData.walkColMesh;
+                col.GetComponent<MeshFilter>().sharedMesh = boatData.walkColMesh;
+                //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.walkColMesh));
+            }
             Debug.Log("modParts.Count = " + modParts.Count);
             return modParts;
         }
-    }
-
-        /*public static Mast HandleMast(SE_MastData data, Transform walkColParent, Rigidbody shipRigidBody)
+        public static IEnumerator ReplaceEmbarkMesh(BoatEmbarkCollider col, Mesh mesh)
         {
-            data.gameObject.SetActive(false);
-            Mast mast = data.gameObject.AddComponent<Mast>();
-
-            mast.maxSails = data.maxSails;
-            mast.mastHeight = data.mastHeight;
-            mast.extraBottomHeight = data.extraBottomHeight;
-            mast.orderIndex = data.orderIndex;
-            mast.onlyStaysails = data.onlyStaysails;
-            mast.onlySquareSails = data.onlySquareSails;
-            mast.startingSailColor = data.startingSailColor;
-
-            mast.leftAngleWinch = HandleWinches(data.leftAngleWinch);
-            mast.rightAngleWinch = HandleWinches(data.rightAngleWinch);
-            if (data.midAngleWinch != null) mast.midAngleWinch = HandleWinches(data.midAngleWinch);
-            mast.reefWinch = HandleWinches(data.reefWinch);
-
-            mast.midRopeAtt = data.midRopeAtt;
-            mast.mastReefAtt = data.mastReefAtt;
-            mast.mastReefAttExtension = data.mastReefAttExtension;
-            mast.mastCols = data.mastCols;
-
-            mast.startSailPrefab = data.startSailPrefab;
-            mast.startSailPrefabs = data.startSailPrefabs;
-            mast.startSailHeightOffset = data.startSailHeightOffset;
-            mast.startSailsHeightOffsets = data.startSailsHeightOffsets;
-            mast.walkColMast = walkColParent.transform.Find(mast.name).GetComponentInChildren<Collider>().transform;
-            mast.sails = new List<GameObject>();
-            mast.shipRigidbody = shipRigidBody;
-
-            data.gameObject.SetActive(true);
-
-            return mast;
-        }*/
+            yield return new WaitUntil(() => GameState.playing && !GameState.justStarted);
+            Debug.Log("SE found embarkCol: " + col);
+            col.GetComponent<MeshCollider>().sharedMesh = mesh;
+            col.GetComponent<MeshFilter>().sharedMesh = mesh;
+            
+#if DEBUG
+            Debug.Log("Replaced embarkCol mesh: " + col.GetComponentInParent<BoatDamage>().name);
+    #endif
+        }
     }
+}
 
