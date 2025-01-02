@@ -10,7 +10,7 @@ namespace ShipyardExpansion
 {
     public static class SaveCleaner
     {
-        public static int saveVersion = -1;
+        
         public static void CleanSave(List<BoatCustomParts> boats, Dictionary<BoatPart, int> stockParts, List<BoatPartOption> stockPartOptions, List<Mast> stockMasts)
         {
             foreach (BoatCustomParts partsList in boats)
@@ -158,10 +158,10 @@ namespace ShipyardExpansion
                 Plugin.converted.Add(refs.gameObject, data);
             }
             // if the convert setting is off or we don't know the file version yet, bug out
-            if (!Plugin.convertSave.Value || saveVersion < 0) return;
+            if (!Plugin.convertSave.Value || VersionManager.saveVersion < 0) return;
 
             // convert to SE v0.5
-            if (saveVersion >= 50) return;
+            if (VersionManager.saveVersion >= 50) return;
             if (Plugin.converted.ContainsKey(refs.gameObject))
             {
                 //Debug.Log("brig??");
@@ -198,19 +198,19 @@ namespace ShipyardExpansion
             }
 
 
-           /* if (saveVersion >= 43 || Plugin.converted[refs.gameObject] == true)
+           /* if (VersionManager.saveVersion >= 43 || Plugin.converted[refs.gameObject] == true)
             {
-                Debug.Log("Save converter: skipped-- v" + saveVersion);
+                Debug.Log("Save converter: skipped-- v" + VersionManager.saveVersion);
             }
             else
             {
-                Debug.Log("Save converter: converting-- v" + saveVersion + "...");
+                Debug.Log("Save converter: converting-- v" + VersionManager.saveVersion + "...");
                 foreach (SaveSailData sailData in data.sails)
                 {
                     sailData.installHeight /= refs.masts[sailData.mastIndex].transform.localScale.z;
                 }
 
-                if (saveVersion >= 30)
+                if (VersionManager.saveVersion >= 30)
                 {
                     if (refs.GetComponent<SaveableObject>().sceneIndex == 80)
                     {

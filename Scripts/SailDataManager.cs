@@ -32,7 +32,7 @@ namespace ShipyardExpansion
 
                 int mastIndex = Convert.ToInt32(foo[0]);
                 if (mastIndex >= refs.masts.Length) break;
-                if (SaveCleaner.saveVersion < 50 && mastIndex > 30 && mastIndex < 50)
+                if (VersionManager.saveVersion < 50 && mastIndex > 30 && mastIndex < 50)
                 {
                     Debug.Log("mast index? " + mastIndex);
                     mastIndex += 20;

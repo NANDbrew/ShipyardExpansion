@@ -75,6 +75,7 @@ namespace ShipyardExpansion
                     SailDataManager.LoadSailConfig(gameObject.GetComponent<BoatRefs>());
                 }
             }
+            VersionManager.WriteSaveVersion();
         }
 
     }

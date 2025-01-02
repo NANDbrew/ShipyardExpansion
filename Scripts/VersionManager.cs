@@ -10,9 +10,14 @@ namespace ShipyardExpansion
 {
     internal static class VersionManager
     {
-        //public static bool firstLoad = true;
+        public static int saveVersion = -1;
         public static void WriteSaveVersion()
         {
+            //string text = new string((from a in Plugin.PLUGIN_ID where char.IsNumber(a) select a).ToArray());
+            string text = Plugin.PLUGIN_VERSION.Replace(".", string.Empty);
+            Debug.Log("SE save version updated: " + text);
+            saveVersion = Convert.ToInt32(text);
+
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
                 GameState.modData[Plugin.PLUGIN_ID] = Plugin.PLUGIN_VERSION;
@@ -21,6 +26,7 @@ namespace ShipyardExpansion
             {
                 GameState.modData.Add(Plugin.PLUGIN_ID, Plugin.PLUGIN_VERSION);
             }
+            //Debug.Log("SE save version = " + saveVersion);
         }
 
         public static void ReadSaveVersion()
@@ -28,8 +34,8 @@ namespace ShipyardExpansion
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
                 string text = new string((from a in GameState.modData[Plugin.PLUGIN_ID] where char.IsNumber(a) select a).ToArray());
-                Debug.Log("save version = " + text);
-                SaveCleaner.saveVersion = Convert.ToInt32(text);
+                //Debug.Log("SE save version = " + text);
+                saveVersion = Convert.ToInt32(text);
                 foreach (GameObject obj in Plugin.converted.Keys)
                 {
                     obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
@@ -37,9 +43,9 @@ namespace ShipyardExpansion
             }
             else
             {
-                SaveCleaner.saveVersion = 0;
+                saveVersion = 0;
             }
-            //firstLoad = false;
+            Debug.Log("SE save version read: " + saveVersion);
         }
     }
 }
