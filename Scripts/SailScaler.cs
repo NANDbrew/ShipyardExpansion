@@ -30,6 +30,7 @@ namespace ShipyardExpansion
         ScaleType scaleType = ScaleType.Uniform;
         string baseName;
         //float scaleFactor = 1f;
+        Dictionary <BoxCollider, Vector3> colStartCenters;
         
         public float GetBaseHeight()
         {
@@ -76,6 +77,12 @@ namespace ShipyardExpansion
             else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
             if (startScale.y < scaleLimits[0]) scaleLimits[0] = startScale.y * 0.8f;
             if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
+
+            colStartCenters = new Dictionary<BoxCollider, Vector3>();
+            foreach(var col in colChecker.GetComponentsInChildren<BoxCollider>())
+            {
+                colStartCenters.Add(col, col.center);
+            }
         }
         #region rotation
         public void SetAngle(float newAngle)
@@ -134,7 +141,7 @@ namespace ShipyardExpansion
                 if (colRot < 0) colRot = -colRot;
                 if (colRot == 90)
                 {
-                    colScale = new Vector3(height, width, height);
+                    colScale = new Vector3(width, width, height);
                 }
                 else colScale = scale;
             }
@@ -149,6 +156,16 @@ namespace ShipyardExpansion
             {
                 colChecker.localScale = colScale;
             }
+
+            foreach (var col in colStartCenters.Keys)
+            {
+                if (col.gameObject == colChecker.gameObject)
+                {
+                    col.center = Vector3.Scale(colStartCenters[col], colScale);
+                }
+                else col.center = Vector3.Scale(colStartCenters[col], scale);
+            }
+
             if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs)
             {
                 scaleablePart.localPosition = new Vector3(locs.forwardOffset * width, scaleablePart.localPosition.y, scaleablePart.localPosition.z);
@@ -223,12 +240,21 @@ namespace ShipyardExpansion
             mastColRot = mastCol.rotation;
             mastCol.transform.position = mast.transform.position;
             mastCol.transform.rotation = mast.transform.rotation;
+
+            foreach (Renderer rend in mastCol.GetComponentsInChildren<Renderer>())
+            {
+                rend.enabled = true;
+            }
             return mastCol;
         }
         public void ReturnMastCol()
         {
             mastCol.position = mastColPos;
             mastCol.rotation = mastColRot;
+            foreach (Renderer rend in mastCol.GetComponentsInChildren<Renderer>())
+            {
+                rend.enabled = false;
+            }
         }
 
 #endif

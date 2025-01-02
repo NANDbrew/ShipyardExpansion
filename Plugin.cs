@@ -14,7 +14,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.5.3";
+        public const string PLUGIN_VERSION = "0.5.4";
 
         internal const int mastListSize = 80;
         internal const int sailListSize = 160;
@@ -54,7 +54,7 @@ namespace ShipyardExpansion
             converted = new Dictionary<GameObject, SaveBoatCustomizationData>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
 
-            convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.4.3"));
+            convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.5"));
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
             cleanLoad = Config.Bind("Fixers", "Clean load", true, new ConfigDescription("Sanitize ship customizations on load"));
 
