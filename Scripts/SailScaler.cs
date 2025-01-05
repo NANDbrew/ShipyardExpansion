@@ -8,7 +8,7 @@ using HarmonyLib;
 
 namespace ShipyardExpansion
 {
-    internal class SailScaler : MonoBehaviour
+    public class SailScaler : MonoBehaviour
     {
         Sail sail;
         public Transform scaleablePart;
