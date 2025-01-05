@@ -15,13 +15,13 @@ namespace ShipyardExpansion
     [HarmonyPatch(typeof(ShipyardSailInstaller), "AddNewSail")]
     internal static class ShipyardSailInstallerPatches
     {
-        public static void Prefix(GameObject sailObject, ref Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance)
+        public static void Prefix(GameObject sailObject, Mast ___currentMast)
         {
-            SailScaler component = sailObject.GetComponent<SailScaler>();
+            SailScaler component = sailObject.GetComponent<SailScaler>() ?? sailObject.AddComponent<SailScaler>();
             component.UpdateInstallHeight(___currentMast.transform);
 
         }
-        public static void Postfix(GameObject sailObject, ref Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance)
+        public static void Postfix(ref Sail ___selectedSail, Mast ___currentMast, ShipyardSailInstaller __instance)
         {
             SailScaler component = ___selectedSail.GetComponent<SailScaler>();
             //float tilt = 0;
