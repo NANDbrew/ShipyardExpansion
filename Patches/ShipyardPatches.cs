@@ -43,7 +43,7 @@ namespace ShipyardExpansion
             [HarmonyPostfix]
             public static void Patch5(ref GameObject[] ___sailPrefabs)
             {
-                if (___sailPrefabs.Last() != PrefabsDirectory.instance.sails[158])
+                if (!___sailPrefabs.Contains(PrefabsDirectory.instance.sails[158]))
                 {
                     ___sailPrefabs = ___sailPrefabs.AddRangeToArray(new GameObject[3] { PrefabsDirectory.instance.sails[156], PrefabsDirectory.instance.sails[157], PrefabsDirectory.instance.sails[158] });
 
