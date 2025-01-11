@@ -14,7 +14,7 @@ namespace ShipyardExpansion
         public static void LoadSailConfig(BoatRefs refs)
         {
             string boat = "SEboatSails." + refs.GetComponent<SaveableObject>().sceneIndex;
-            Debug.Log("attempting to load data");
+            Debug.Log("attempting to load data for " + refs.name);
             if (!GameState.modData.ContainsKey(boat))
             {
                 Debug.Log("modData does not contain config");

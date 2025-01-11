@@ -46,7 +46,12 @@ namespace ShipyardExpansion
             sail = GetComponent<Sail>();
             baseName = sail.sailName;
             scaleablePart = GetComponentInChildren<Animator>().transform;
-            if (scaleablePart == null) UnityEngine.GameObject.Destroy(this);
+            if (scaleablePart == null)
+            {
+                Debug.LogError("SailScaler: scaleable part is null!");
+                //UnityEngine.GameObject.Destroy(this);
+                this.enabled = false;
+            }
             startScale = scaleablePart.localScale;
             scale = startScale;
             baseHeight = sail.installHeight / startScale.y;
