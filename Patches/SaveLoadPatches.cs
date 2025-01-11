@@ -70,7 +70,7 @@ namespace ShipyardExpansion
             VersionManager.ReadSaveVersion();
             foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("Boat"))
             {
-                if (gameObject.GetComponent<BoatRefs>() != null)
+                if (gameObject.GetComponent<BoatRefs>() != null && gameObject.GetComponent<SaveableObject>().extraSetting)
                 {
                     SailDataManager.LoadSailConfig(gameObject.GetComponent<BoatRefs>());
                 }
