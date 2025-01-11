@@ -17,14 +17,14 @@ namespace ShipyardExpansion
             Transform container = boat.transform.Find("dhow");
             Transform mainMast = container.Find("mast");
             Mast mainMastM = mainMast.GetComponent<Mast>();
-            Transform walkCols = mainMastM.walkColMast.parent;
+            Transform walkCol = mainMastM.walkColMast.parent;
 
             Transform mainMastTall = container.Find("mast_taller");
             Transform shortForestay = container.Find("forestay_low");
             Transform lowForestay = container.Find("forestay");
 
             PartRefs.dhow = container;
-            PartRefs.dhowCol = walkCols;
+            PartRefs.dhowCol = walkCol;
 
             Debug.Log("Dhow adjustments");
             #region adjustments
@@ -47,12 +47,28 @@ namespace ShipyardExpansion
             mainMastTall.GetComponent<Mast>().mastReefAtt[0] = tallMastReefAtt;
             mainMastTall.GetComponent<Mast>().mastReefAtt[1] = tallMastReefAtt;
 
-            GameObject winchMount = container.Find("Cylinder").gameObject;
+            /*GameObject winchMount = container.Find("Cylinder").gameObject;
             GameObject staticRig = container.Find("Cylinder_002").gameObject;
-            GameObject rigCol = container.Find("rig_col").gameObject;
-            mainMast.GetComponent<BoatPartOption>().childOptions = new GameObject[] { staticRig, rigCol, winchMount };
-            mainMastTall.GetComponent<BoatPartOption>().childOptions = new GameObject[] { UnityEngine.Object.Instantiate(staticRig, container, true), UnityEngine.Object.Instantiate(rigCol, container, true), UnityEngine.Object.Instantiate(winchMount, container, true) };
-            mainMastTall.GetComponent<Mast>().mastCols = mainMastTall.GetComponent<Mast>().mastCols.AddToArray(mainMastTall.GetComponent<BoatPartOption>().childOptions[1].GetComponent<CapsuleCollider>());
+            GameObject rigCol = container.Find("rig_col").gameObject;*/
+            container.Find("Cylinder").gameObject.SetActive(false);
+            container.Find("Cylinder_002").gameObject.SetActive(false);
+            container.Find("rig_col").gameObject.SetActive(false);
+            container.Find("static_rig").gameObject.SetActive(false);
+            container.Find("static_rig_001").gameObject.SetActive(false);
+
+            walkCol.Find("Cylinder").gameObject.SetActive(false);
+            walkCol.Find("Cylinder_002").gameObject.SetActive(false);
+            walkCol.Find("rig_col").gameObject.SetActive(false);
+            walkCol.Find("static_rig").gameObject.SetActive(false);
+            walkCol.Find("static_rig_001").gameObject.SetActive(false);
+
+
+            //mainMast.GetComponent<BoatPartOption>().childOptions = new GameObject[] { staticRig, rigCol, winchMount };
+            //GameObject[] TallMastChildren = new GameObject[] { UnityEngine.Object.Instantiate(staticRig, container, true), UnityEngine.Object.Instantiate(rigCol, container, true), UnityEngine.Object.Instantiate(winchMount, container, true) };
+            //mainMastTall.GetComponent<BoatPartOption>().childOptions = TallMastChildren;
+
+
+            //mainMastTall.GetComponent<Mast>().mastCols = mainMastTall.GetComponent<Mast>().mastCols.AddToArray(mainMastTall.GetComponent<BoatPartOption>().childOptions[1].GetComponent<CapsuleCollider>());
             shortForestay.GetComponent<Mast>().mastReefAtt = lowForestay.GetComponent<Mast>().mastReefAtt;
             #endregion
 
@@ -70,8 +86,17 @@ namespace ShipyardExpansion
             modParts = AssetTools.HandleImports(thing, partsList);
 
             var modWalkCol = thing.transform.Find("SE_cols_dhow");
-            modWalkCol.SetParent(walkCols, false);
+            modWalkCol.SetParent(walkCol, false);
 
+            mainMast.GetComponent<BoatPartOption>().childOptions = new GameObject[] { thing.transform.Find("main_shrouds_side").Find("short_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("short_s").gameObject, thing.transform.Find("main_shrouds_back").Find("short_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("short_b").gameObject };
+            mainMastTall.GetComponent<BoatPartOption>().childOptions = new GameObject[] { thing.transform.Find("main_shrouds_side").Find("tall_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("tall_s").gameObject, thing.transform.Find("main_shrouds_back").Find("tall_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("tall_b").gameObject };
+
+            var lowFlag = container.Find("flag_low").gameObject;
+
+            modParts["flag_empty"].partOptions[0].childOptions = modParts["flag_empty"].partOptions[0].childOptions.AddToArray(lowFlag);
+            lowFlag.transform.SetParent(thing.transform.Find("main_shrouds_side").Find("short_s"));
+
+            //modParts["main_shrouds_side"].partOptions[0].childOptions = modParts["main_shrouds_side"].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { staticRig, rigCol, TallMastChildren[0], TallMastChildren[1] });
 
 
             #region late adjustments
