@@ -17,7 +17,7 @@ namespace ShipyardExpansion
     {
         public static void Prefix(GameObject sailObject, Mast ___currentMast)
         {
-            SailScaler component = sailObject.GetComponent<SailScaler>() ?? sailObject.AddComponent<SailScaler>();
+            SailScaler component = sailObject.GetComponent<SailScaler>();// ?? sailObject.AddComponent<SailScaler>();
             component.UpdateInstallHeight(___currentMast.transform);
 
         }

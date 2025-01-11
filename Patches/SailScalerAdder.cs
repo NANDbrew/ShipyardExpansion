@@ -18,12 +18,13 @@ namespace ShipyardExpansion.Patches
 
         }
     }
-
     [HarmonyPatch(typeof(PrefabsDirectory), "Start")]
     internal static class CompAdder2
     {
+        [HarmonyPriority(Priority.Last)]
         public static void Postfix(GameObject[] ___sails)
         {
+
             for (int i = 0; i < ___sails.Length; i++)
             {
                 if (___sails[i] == null || ___sails[i].GetComponent<SailScaler>()) continue;
