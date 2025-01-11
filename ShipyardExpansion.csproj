@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Patches\BermudaMastStuff.cs" />
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\PlayerEmbarkPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />

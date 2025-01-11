@@ -46,8 +46,8 @@ namespace ShipyardExpansion
             BoatPartOption forestayNone = Util.CreatePartOption(container, "(empty forestay)", "(no forestay)");
             partsList.availableParts[3].partOptions.Add(forestayNone);
 
-            BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
-            partsList.availableParts[2].partOptions.Add(bowspritNone);
+            /*BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
+            partsList.availableParts[2].partOptions.Add(bowspritNone);*/
 
             mainMast1.GetComponent<Mast>().mastHeight += 0.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight -= 0.5f;
@@ -141,7 +141,7 @@ namespace ShipyardExpansion
                     stay.requiresDisabled.Add(partsList.availableParts[2].partOptions[2]);
                     stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[1]);
                     stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[2]);
-                    stay.requiresDisabled.Add(bowspritNone);
+                    //stay.requiresDisabled.Add(bowspritNone);
 
                 }
             }
