@@ -38,13 +38,13 @@ namespace ShipyardExpansion
                     mastIndex += 20;
                     Debug.Log("mast index! " + mastIndex);
                 }
-
-                if (refs.masts[mastIndex] == null) continue;
+                Mast mastComp = refs.masts[mastIndex];
+                if (mastComp == null) continue;
 
                 string[] sails = foo[1].Split(new char[] { ']' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < refs.masts[mastIndex].sails.Count; i++)
+                for (int i = 0; i < mastComp.sails.Count; i++)
                 {
-                    GameObject installedSail = refs.masts[mastIndex].sails[i];
+                    GameObject installedSail = mastComp.sails[i];
                     string[] sailInfo = sails[i].Split(',');
                     if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
                     {
@@ -69,7 +69,7 @@ namespace ShipyardExpansion
             Mast[] masts = refs.masts;
             foreach (Mast mast in masts)
             {
-                if (!mast || !mast.gameObject.activeInHierarchy || mast.sails.Count < 1)
+                if (mast == null || mast.sails.Count == 0)
                 {
                     continue;
                 }
