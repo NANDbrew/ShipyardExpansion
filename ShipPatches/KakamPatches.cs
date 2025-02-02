@@ -69,7 +69,33 @@ namespace ShipyardExpansion
             var modWalkCol = thing.transform.Find("SE_cols_kakam");
             modWalkCol.SetParent(walkCol, false);
 
+            modParts["shrouds_main_side"].partOptions[0].childOptions = modParts["shrouds_main_side"].partOptions[0].childOptions.AddRangeToArray(new GameObject[] {
+                mainMast1.Find("Cylinder_002").gameObject,
+                mainMast1.Find("trim_001").gameObject,
+                mainMast1.GetComponent<BoatPartOption>().walkColObject.transform.Find("Cylinder_002").gameObject,
+                mainMast1.GetComponent<BoatPartOption>().walkColObject.transform.Find("trim_001").gameObject,
+                mainMast2.Find("Cylinder_004").gameObject,
+                mainMast2.Find("trim_002").gameObject,
+                mainMast2.GetComponent<BoatPartOption>().walkColObject.transform.Find("Cylinder_004").gameObject,
+                mainMast2.GetComponent<BoatPartOption>().walkColObject.transform.Find("trim_002").gameObject });
 
+            mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { 
+                modParts["shrouds_main_side"].partOptions[1].transform.Find("shrouds_b_main0").gameObject, 
+                modParts["shrouds_main_side"].partOptions[1].walkColObject.transform.Find("shrouds_b_main0").gameObject });
+            mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] { 
+                modParts["shrouds_main_side"].partOptions[1].transform.Find("shrouds_b_main1").gameObject, 
+                modParts["shrouds_main_side"].partOptions[1].walkColObject.transform.Find("shrouds_b_main1").gameObject });
+
+            modParts["shrouds_mizzen_side"].partOptions[0].childOptions = new GameObject[] { 
+                mizzenMast.Find("Cylinder_003").gameObject, 
+                mizzenMast.Find("trim_000").gameObject, 
+                mizzenMastM.walkColMast.Find("Cylinder_003").gameObject, 
+                mizzenMastM.walkColMast.Find("trim_000").gameObject };
+            mizzenMast.GetComponent<BoatPartOption>().childOptions = mizzenMast.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[]
+            {
+                modParts["shrouds_mizzen_side"].partOptions[1].transform.GetChild(0).gameObject, 
+                modParts["shrouds_mizzen_side"].partOptions[1].walkColObject.transform.GetChild(0).gameObject,
+            });
         }
 
     }

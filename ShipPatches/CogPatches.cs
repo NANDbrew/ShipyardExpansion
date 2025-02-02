@@ -113,6 +113,11 @@ namespace ShipyardExpansion
 
             partsList.availableParts[1].category = 2;
 
+            var hammock = thing.GetComponentInChildren<GPButtonBed>(true);
+            hammock.damage = boat.GetComponent<BoatDamage>();
+            hammock.GetComponent<HingeJoint>().connectedBody = boat.GetComponent<Rigidbody>();
+
+
             #endregion
             BoatPartOption bottomHelm = Util.AddPartOption(container.GetComponentInChildren<GPButtonSteeringWheel>().gameObject, "helm 1");
 

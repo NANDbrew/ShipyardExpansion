@@ -99,7 +99,7 @@ namespace ShipyardExpansion
             topmastStay3_mast.reefWinch = topmastStay2_mast.reefWinch;
             topmastStay3_mast.leftAngleWinch = topmastStay2_mast.leftAngleWinch;
             topmastStay3_mast.rightAngleWinch = topmastStay2_mast.rightAngleWinch;
-            modParts["topmast_forestays_part"].partOptions.AddRange(new BoatPartOption[] { topmastStay1.GetComponent<BoatPartOption>(), topmastStay2.GetComponent<BoatPartOption>(), topmastStay3.GetComponent<BoatPartOption>() });
+            modParts["topmast_forestays_part"].partOptions.InsertRange(1, new BoatPartOption[] { topmastStay1.GetComponent<BoatPartOption>(), topmastStay2.GetComponent<BoatPartOption>(), topmastStay3.GetComponent<BoatPartOption>() });
             //Util.CreateAndAddPart(partsList, 2, new List<BoatPartOption> { Util.CreatePartOption(container, "outer_forestay_empty", "(no outer forestay)"), topmastStay1.GetComponent<BoatPartOption>(), topmastStay2.GetComponent<BoatPartOption>(), topmastStay3.GetComponent<BoatPartOption>(), });
 
             partsList.availableParts[3].partOptions.Remove(topmastStay1.GetComponent<BoatPartOption>());
@@ -110,8 +110,9 @@ namespace ShipyardExpansion
             mainShrouds0Children.childOptions = mainShrouds0Children.childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_0").Find("ladder_shr_0").gameObject, thing.transform.Find("crowsnest_0").Find("ladder_shr_0").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_0").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_0").gameObject });
             mainShrouds1Children.childOptions = mainShrouds1Children.childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_0").Find("ladder_shr_1").gameObject, thing.transform.Find("crowsnest_0").Find("ladder_shr_1").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_1").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_1").gameObject });
 
-            partsList.availableParts[6].partOptions[0].childOptions = partsList.availableParts[6].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_side").gameObject });
-            partsList.availableParts[6].partOptions[1].childOptions = partsList.availableParts[6].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_back").gameObject });
+            // mizzen shrouds
+            partsList.availableParts[6].partOptions[0].childOptions = partsList.availableParts[6].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_side").gameObject, thing.transform.Find("mizzen_mast2").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast2").Find("shrouds_mizzen_side").gameObject });
+            partsList.availableParts[6].partOptions[1].childOptions = partsList.availableParts[6].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_back").gameObject, thing.transform.Find("mizzen_mast2").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast2").Find("shrouds_mizzen_back").gameObject });
 
             mizzenMast1.GetComponent<BoatPartOption>().childOptions = mizzenMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_mizzen").GetChild(0).gameObject);
 
