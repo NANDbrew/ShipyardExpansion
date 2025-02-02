@@ -44,6 +44,10 @@ namespace ShipyardExpansion
             else
             {
                 saveVersion = 0;
+                foreach (GameObject obj in Plugin.converted.Keys)
+                {
+                    obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
+                }
             }
             Debug.Log("SE save version read: " + saveVersion);
         }

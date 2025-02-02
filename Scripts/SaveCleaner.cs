@@ -149,16 +149,18 @@ namespace ShipyardExpansion
                 {
                     data.partActiveOptions.AddRange(new int[refs.GetComponent<BoatCustomParts>().availableParts.Count - data.partActiveOptions.Count]);
 
-                    if (index == 20 && data.partActiveOptions[3] > 3)
-                    {
-                        data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
-                        data.partActiveOptions[3] = 4;
-                    }
                 }
                 Plugin.converted.Add(refs.gameObject, data);
             }
+            if (VersionManager.saveVersion < 0) return;
+            if (VersionManager.saveVersion == 0 && index == 20 && data.partActiveOptions[3] > 3)
+            {
+                data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
+                data.partActiveOptions[3] = 4;
+            }
+
             // if the convert setting is off or we don't know the file version yet, bug out
-            if (!Plugin.convertSave.Value || VersionManager.saveVersion < 0) return;
+            if (!Plugin.convertSave.Value) return;
 
             // convert to SE v0.5
             if (VersionManager.saveVersion >= 50) return;
@@ -176,91 +178,28 @@ namespace ShipyardExpansion
                 }
                 if (index == 20)
                 {
-                    if (data.partActiveOptions[19] > 0)
-                    {
-                        if (data.partActiveOptions[19] == 3) data.partActiveOptions[19] = 0;
-                        else data.partActiveOptions[19] += 1;
-                    }
-                    data.partActiveOptions.Remove(19);
-                    data.partActiveOptions.Remove(15);
+                    if (data.partActiveOptions[19] == 3) data.partActiveOptions[19] = 0;
+
                 }
                 else if (index == 40)
                 {
-                    if (data.partActiveOptions[1] == 6) data.partActiveOptions[1] = 5;
+                    if (data.partActiveOptions[1] == 5)
+                    {
+                        data.partActiveOptions[1] = 4;
+                        data.partActiveOptions[11] = 3;
+                    }
+                    //else if (data.partActiveOptions[1] == 6) data.partActiveOptions[1] = 5;
                     if (data.partActiveOptions[6] == 2)
                     {
                         data.partActiveOptions[6] = 0;
                         data.partActiveOptions[11] = 1;
                     }
+                    else if (data.partActiveOptions[6] == 3) data.partActiveOptions[6] = 2;
                 }
 
                 SailDataManager.SaveSailConfig(refs);
             }
 
-
-           /* if (VersionManager.saveVersion >= 43 || Plugin.converted[refs.gameObject] == true)
-            {
-                Debug.Log("Save converter: skipped-- v" + VersionManager.saveVersion);
-            }
-            else
-            {
-                Debug.Log("Save converter: converting-- v" + VersionManager.saveVersion + "...");
-                foreach (SaveSailData sailData in data.sails)
-                {
-                    sailData.installHeight /= refs.masts[sailData.mastIndex].transform.localScale.z;
-                }
-
-                if (VersionManager.saveVersion >= 30)
-                {
-                    if (refs.GetComponent<SaveableObject>().sceneIndex == 80)
-                    {
-                        bool flag = false;
-                        if (data.partActiveOptions[12] == 1)
-                        {
-                            data.partActiveOptions[12] = 0;
-                            data.partActiveOptions[3] = 3;
-                            flag = true;
-                        }
-                        foreach (SaveSailData sailData in data.sails)
-                        {
-                            if (sailData.mastIndex == 33)
-                            {
-                                sailData.mastIndex = 37;
-                                sailData.installHeight = 17f;
-                                flag = true;
-                            }
-                            else if (sailData.mastIndex == 13 && flag)
-                            {
-                                sailData.mastIndex = 37;
-                                sailData.installHeight -= 1;
-                            }
-                        }
-                        //conversionCounter++;
-                    }
-                    else if (refs.GetComponent<SaveableObject>().sceneIndex == 20)
-                    {
-                        while (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
-                        {
-                            data.partActiveOptions.Add(0);
-                        }
-                        foreach (SaveSailData sailData in data.sails)
-                        {
-                            if (sailData.mastIndex == 38) // main topstay
-                            {
-                                data.partActiveOptions[19] = 1;
-                            }
-                            else if (sailData.mastIndex == 37) // mainstay
-                            {
-                                data.partActiveOptions[20] = 1;
-                            }
-                        }
-                        //conversionCounter++;
-                    }
-                }
-                Plugin.converted[refs.gameObject] = true;
-            }*/
-            //Debug.Log("ShipyardExpansion converted " + conversionCounter + " ships");
-            //Plugin.convertSave.Value = false;
         }
     }
 }
