@@ -19,7 +19,7 @@ namespace ShipyardExpansion
             {
                 refMat = ___renderer.material;
             }
-            if (refMat != null && ___renderer.material.name.StartsWith("item empty outline material"))
+            if (refMat != null && (___renderer.material.name.StartsWith("item empty outline material") || ___renderer.material.name.StartsWith("placeholder mat")))
             {
                 ___renderer.material = refMat;
             }
@@ -53,9 +53,10 @@ namespace ShipyardExpansion
             modSail4.GetComponent<Sail>().category = SailCategory.other;
 
             /*if (AssetTools.bundle == null) AssetTools.LoadAssetBundles();
-            ___sails[159] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/testSquare.prefab");
-            ___sails[154] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/testJib.prefab");*/
-
+            ___sails[156] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/156 SAIL M tiny lug.prefab");
+            ___sails[157] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/157 SAIL Am lug full.prefab");
+            ___sails[158] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/158 SAIL M small lug.prefab");
+            ___sails[0] = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/sails/0 SAIL A small square wide.prefab");*/
             //var lateen20 = Util.CopySail(___sails, 121, Vector3.zero, new Vector3(90, 0, 0), 1.6f, "M lateen big 1.6", "lateen 20yd", 155);
         }
     }

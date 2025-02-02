@@ -69,6 +69,10 @@
     <Reference Include="MonoMod.Utils, Version=21.4.21.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MonoMod.Utils.21.4.21.3\lib\net40\MonoMod.Utils.dll</HintPath>
     </Reference>
+    <Reference Include="Oculus.VR, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\Oculus.VR.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\UnityEngine.Core.2018.1.0\lib\net35\UnityEngine.dll</HintPath>
@@ -96,13 +100,14 @@
   <ItemGroup>
     <Compile Include="Patches\BermudaMastStuff.cs" />
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />
     <Compile Include="Scripts\SailDataManager.cs" />
     <Compile Include="SailLimits.cs" />
-    <Compile Include="SailScaleButton.cs" />
+    <Compile Include="Scripts\SailScaleButton.cs" />
     <Compile Include="Scripts\Parser.cs" />
     <Compile Include="PartRefs.cs" />
     <Compile Include="Patches\SailAdder.cs" />
@@ -142,6 +147,6 @@
     <Error Condition="!Exists('packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\BepInEx.Core.5.4.11\build\BepInEx.Core.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "ShipyardExpansion.dll" "C:\Program Files (x86)\Steam\steamapps\common\Sailwind\BepInEx\plugins"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "ShipyardExpansion.dll" "C:\Program Files (x86)\Steam\steamapps\common\Sailwind\BepInEx\plugins\ShipyardExpansion"</PostBuildEvent>
   </PropertyGroup>
 </Project>

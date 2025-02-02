@@ -44,6 +44,7 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> autoFit;
         internal static ConfigEntry<bool> skipSailData;
 
+        internal static ConfigEntry<int> climbSpeed;
 
         private void Awake()
         {
@@ -57,6 +58,7 @@ namespace ShipyardExpansion
             convertSave = Config.Bind("Fixers", "Convert saves", true, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.5"));
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
             cleanLoad = Config.Bind("Fixers", "Clean load", true, new ConfigDescription("Sanitize ship customizations on load"));
+            skipSailData = Config.Bind("Fixers", "skip sail data", false, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
 
             vertLateens = Config.Bind("Slant", "Vertical lateens", true, new ConfigDescription("Install lateens vertical instead of slanting with the mast"));
             vertFins = Config.Bind("Slant", "Vertical fins", true, new ConfigDescription("Install fin sails vertical instead of slanting with the mast"));
@@ -64,8 +66,8 @@ namespace ShipyardExpansion
             addSails = Config.Bind("Settings", "Add lug sails", true, new ConfigDescription("Adds new sails in the 'Other' category. (requires a restart)", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             percentSailNames = Config.Bind("Settings", "Show percent scale in sail name", true, new ConfigDescription(""));
             autoFit = Config.Bind("Settings", "Auto-fit sails", true, new ConfigDescription("Automatically scale too-big sails to fit the mast before installing"));
+            climbSpeed = Config.Bind("Settings", "Climb speed", 10, new ConfigDescription("Speed when climbing up to tops/crow's nests", new AcceptableValueRange<int>(2, 15)));
 
-            skipSailData = Config.Bind("Fixers", "skip sail data", false, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
 
         }
     }
