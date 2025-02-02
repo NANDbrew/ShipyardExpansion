@@ -17,7 +17,7 @@ namespace ShipyardExpansion
         float baseHeight;
         Vector3 basePos;
         float ratio = 1f;
-        float[] ratioLimits = new float[2] { 0.5f, 2f };
+        float[] ratioLimits = new float[2] { 0.3f, 2f };
         float[] scaleLimits = new float[2] { 0.5f, 2.5f };
         float[] angleLimits = new float[2] { 340f, 15f };
         public float scaleStep = 0.05f;
@@ -30,8 +30,10 @@ namespace ShipyardExpansion
         ScaleType scaleType = ScaleType.Uniform;
         string baseName;
         //float scaleFactor = 1f;
-        Dictionary <BoxCollider, Vector3> colStartCenters;
-        
+        Dictionary<BoxCollider, Vector3> colStartCenters;
+        Dictionary<BoxCollider, Vector3> colBaseCenters;
+
+
         public float GetBaseHeight()
         {
             return baseHeight;
@@ -84,9 +86,12 @@ namespace ShipyardExpansion
             if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
 
             colStartCenters = new Dictionary<BoxCollider, Vector3>();
-            foreach(var col in colChecker.GetComponentsInChildren<BoxCollider>())
+            colBaseCenters = new Dictionary<BoxCollider, Vector3>();
+            foreach (var col in colChecker.GetComponentsInChildren<BoxCollider>())
             {
                 colStartCenters.Add(col, col.center);
+                Vector3 cent = new Vector3(col.center.x / startScale.x, col.center.y / startScale.y, col.center.z / startScale.z);
+                colBaseCenters.Add(col, cent);
             }
         }
         #region rotation
@@ -151,31 +156,29 @@ namespace ShipyardExpansion
                 else colScale = scale;
             }
             ratio = newRatio;
-            UpdateInstallHeight();
             shadowCol.SetParent(scaleablePart);
             windCenter.SetParent(scaleablePart);
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localScale = scale;
             scaleablePart.localPosition = basePos * height;
-            if (!sail.IsInstalled())
-            {
-                colChecker.localScale = colScale;
-            }
-
-            foreach (var col in colStartCenters.Keys)
-            {
-                if (col.gameObject == colChecker.gameObject)
-                {
-                    col.center = Vector3.Scale(colStartCenters[col], colScale);
-                }
-                else col.center = Vector3.Scale(colStartCenters[col], scale);
-            }
 
             if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs)
             {
                 scaleablePart.localPosition = new Vector3(locs.forwardOffset * width, scaleablePart.localPosition.y, scaleablePart.localPosition.z);
             }
             scaleablePart.gameObject.SetActive(true);
+            if (!sail.IsInstalled())
+            {
+                colChecker.localScale = colScale;
+            }
+            foreach (var col in colStartCenters.Keys)
+            {
+                if (col.gameObject == colChecker.gameObject)
+                {
+                    col.center = Vector3.Scale(colBaseCenters[col], colScale);
+                }
+                else col.center = Vector3.Scale(colBaseCenters[col], scale);
+            }
             sail.SetSailArea();
             shadowCol.SetParent(transform);
             windCenter.SetParent(transform);
@@ -184,6 +187,7 @@ namespace ShipyardExpansion
                 sail.sailName = baseName + " " + "(" + Mathf.RoundToInt((height / startScale.y) * 100) + "%)";
             }
             else sail.sailName = baseName;
+            UpdateInstallHeight();
         }
         public void SetScaleRel(float newScale)
         {
@@ -224,11 +228,14 @@ namespace ShipyardExpansion
         }
         public void UpdateInstallHeight(Transform mast)
         {
-            sail.installHeight = scale.y * baseHeight / mast.localScale.z;
-#if DEBUG
-            Debug.Log("adjusting sail \"" + sail.sailName + "\" scale for resized mast \"" + mast.name + "\"");
-#endif
+            if (mast.localScale.z != 1)
+            {
+                sail.installHeight = scale.y * baseHeight / mast.localScale.z;
+    #if DEBUG
+                Debug.Log("adjusting sail \"" + sail.sailName + "\" scale for resized mast \"" + mast.name + "\"");
+    #endif
 
+            }
         }
 
         #endregion
