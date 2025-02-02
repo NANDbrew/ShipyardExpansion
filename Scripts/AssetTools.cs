@@ -94,7 +94,7 @@ namespace ShipyardExpansion
             return opts;
         }
 
-        public static Dictionary<string, BoatPart> HandleImportsOld(GameObject thing, BoatCustomParts partsList)
+        /*public static Dictionary<string, BoatPart> HandleImportsOld(GameObject thing, BoatCustomParts partsList)
         {
             Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
 
@@ -153,7 +153,7 @@ namespace ShipyardExpansion
             Debug.Log("modParts.Count = " + modParts.Count);
             return modParts;
         }
-
+*/
 
         private static void ReqTranslate(SE_PartOptionData optData, BoatPartOption opt, BoatCustomParts partsList)
         {
@@ -223,14 +223,21 @@ namespace ShipyardExpansion
                 else Debug.LogError("huh? " + optData.name);
 
             }
+            Debug.Log("working on ladders and flags");
             foreach (Transform obj in thing.GetComponentsInChildren<Transform>())
             {
                 if (obj.GetComponent<SE_LadderData>() is SE_LadderData ladderData)
                 {
-                    Transform target = ladderData.target;
-                    target.SetParent(thing.transform.parent);
+                    Debug.Log("adding ladder: " + ladderData.name);
                     var ladder = ladderData.gameObject.AddComponent<NANDLadder>();
-                    ladder.target = target;
+                    ladder.targets = ladderData.targets;
+                    for (int i = 0; i < ladder.targets.Length; i++)
+                    {
+                        //Transform target = ;
+                        ladder.targets[i].SetParent(thing.transform.parent);
+                        //ladder.targets[i] = target;
+
+                    }
                     ladderData.enabled = false;
                 }
 

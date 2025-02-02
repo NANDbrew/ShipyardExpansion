@@ -12,8 +12,7 @@ namespace ShipyardExpansion.Scripts
     public class NANDLadder : GoPointerButton
     {
         public static bool animating;
-        public Transform target;
-        public static float lerpMult = 0.1f;
+        public Transform[] targets;
         CharacterController player;
         Transform walkCol;
 
@@ -36,22 +35,25 @@ namespace ShipyardExpansion.Scripts
             }
             AccessTools.Method(playerTrig.GetType(), "EnterBoat").Invoke(playerTrig, new object[] { embarkCol.transform.parent, embarkCol.walkCollider });
 */
-            if (player.transform.parent == walkCol)
+            if (player.transform.parent == walkCol && targets.Length >= 1)
             {
-                this.StartCoroutine(HackPlayerPos());
+                Transform target = targets.OrderBy(t => (t.transform.localPosition - player.transform.localPosition).sqrMagnitude).Last();
+                this.StartCoroutine(HackPlayerPos(target));
             }
             else Debug.Log("player is not on the same boat");
         }
-        private IEnumerator HackPlayerPos()
+        private IEnumerator HackPlayerPos(Transform target)
         {
             animating = true;
             player.enabled = false;
             Vector3 start = player.transform.localPosition;
-            float lerpTime = Vector3.Distance(start, target.localPosition) * lerpMult;
+            float lerpTime = Vector3.Distance(start, target.localPosition) * 0.1f;
+            if (start.y < target.localPosition.y || Plugin.climbSpeed.Value > 10) { lerpTime /= Plugin.climbSpeed.Value * 0.1f; }
             for (float t = 0f; t < 1f; t += Time.deltaTime / lerpTime)
             {
                 player.transform.localPosition = Vector3.Lerp(start, target.localPosition, t);
                 yield return new WaitForEndOfFrame();
+                if (GameInput.GetKey(InputName.Activate)) { break; }
             }
             player.enabled = true;
             animating = false;
