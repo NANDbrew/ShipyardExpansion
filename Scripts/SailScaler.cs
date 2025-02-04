@@ -228,9 +228,10 @@ namespace ShipyardExpansion
         }
         public void UpdateInstallHeight(Transform mast)
         {
-            if (mast.localScale.z != 1)
+            sail.installHeight = scale.y * baseHeight;
+            if (mast && mast.localScale.z != 1)
             {
-                sail.installHeight = scale.y * baseHeight / mast.localScale.z;
+                sail.installHeight /= mast.localScale.z;
     #if DEBUG
                 Debug.Log("adjusting sail \"" + sail.sailName + "\" scale for resized mast \"" + mast.name + "\"");
     #endif
