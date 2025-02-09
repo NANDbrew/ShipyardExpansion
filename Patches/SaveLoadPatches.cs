@@ -54,9 +54,9 @@ namespace ShipyardExpansion
             {
                 foreach (BoatCustomParts parts in Plugin.moddedBoats)
                 {
-                    SaveCleaner.CleanSaveData(parts);
+                    SaveCleaner.CleanBoatParts(parts);
                 }
-                //SaveCleaner.CleanSave(Plugin.moddedBoats, Plugin.stockParts, Plugin.stockPartOptions, Plugin.stockMasts);
+                //SaveCleaner.CleanSaveOld(Plugin.moddedBoats, Plugin.stockParts, Plugin.stockPartOptions, Plugin.stockMasts);
                 Plugin.cleanSave.Value = false;
             }
         }

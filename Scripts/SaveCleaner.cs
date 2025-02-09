@@ -11,7 +11,7 @@ namespace ShipyardExpansion
     public static class SaveCleaner
     {
         
-        public static void CleanSave(List<BoatCustomParts> boats, Dictionary<BoatPart, int> stockParts, List<BoatPartOption> stockPartOptions, List<Mast> stockMasts)
+        public static void CleanSaveOld(List<BoatCustomParts> boats, Dictionary<BoatPart, int> stockParts, List<BoatPartOption> stockPartOptions, List<Mast> stockMasts)
         {
             foreach (BoatCustomParts partsList in boats)
             {
@@ -111,7 +111,7 @@ namespace ShipyardExpansion
             return data;
         }
 
-        public static void CleanSaveData(BoatCustomParts parts)
+        public static void CleanBoatParts(BoatCustomParts parts)
         {
             Debug.Log("SaveCleaner: commencing cleaning...");
             for (int i = 0; i < parts.availableParts.Count;)
