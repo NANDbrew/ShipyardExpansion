@@ -18,13 +18,6 @@ namespace ShipyardExpansion
             {
                 if (!AssetTools.bundle) AssetTools.LoadAssetBundles();
                 
-                foreach (var part in ___parts.availableParts)
-                {
-                    Plugin.stockParts.Add(part, part.activeOption);
-
-                }
-
-                Plugin.moddedBoats.Add(___parts);
                 Array.Resize(ref ___refs.masts, Plugin.mastListSize);
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
 

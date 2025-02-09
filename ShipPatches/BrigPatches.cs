@@ -30,6 +30,14 @@ namespace ShipyardExpansion
             PartRefs.brig = container;
             PartRefs.brigCol = walkCol;
 
+            // add references for save cleaner
+            foreach (var part in partsList.availableParts)
+            {
+                Plugin.stockParts.Add(part, part.activeOption);
+            }
+            Plugin.moddedBoats.Add(partsList);
+
+
             #region adjustments
             mainMast1.GetComponent<Mast>().mastHeight = 18.8f;
             mizzenMast1.GetComponent<Mast>().mastHeight = 19f;

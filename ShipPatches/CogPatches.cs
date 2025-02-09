@@ -23,6 +23,13 @@ namespace ShipyardExpansion
             var walkCol = mainMast1.walkColObject.transform.parent.parent;
             Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
 
+            // add references for save cleaner
+            foreach (var part in partsList.availableParts)
+            {
+                Plugin.stockParts.Add(part, part.activeOption);
+            }
+            Plugin.moddedBoats.Add(partsList);
+
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_cog.prefab");
             prefab.transform.GetComponentInChildren<GPButtonSteeringWheel>().attachedRudder = container.Find("rudder").GetComponent<HingeJoint>();
             foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))

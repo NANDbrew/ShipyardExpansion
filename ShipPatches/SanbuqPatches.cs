@@ -35,6 +35,13 @@ namespace ShipyardExpansion
             PartRefs.sanbuq = container;
             PartRefs.sanbuqCol = walkCol;
 
+            // add references for save cleaner
+            foreach (var part in partsList.availableParts)
+            {
+                Plugin.stockParts.Add(part, part.activeOption);
+            }
+            Plugin.moddedBoats.Add(partsList);
+
             #region adjustments
             topmastStay3.GetComponent<BoatPartOption>().requiresDisabled.Add(container.Find("forestay_1_long").GetComponent<BoatPartOption>());
 

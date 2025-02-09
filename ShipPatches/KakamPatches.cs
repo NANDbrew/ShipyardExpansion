@@ -26,6 +26,13 @@ namespace ShipyardExpansion
             PartRefs.kakamCol = walkCol;
             boat.GetComponent<BoatRefs>().walkCol = walkCol; // fix vanilla missing ref
 
+            // add references for save cleaner
+            foreach (var part in partsList.availableParts)
+            {
+                Plugin.stockParts.Add(part, part.activeOption);
+            }
+            Plugin.moddedBoats.Add(partsList);
+
             #region adjustments
             partsList.availableParts[0].category = 2;
             partsList.availableParts[7].category = 2;

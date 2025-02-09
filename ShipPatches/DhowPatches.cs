@@ -27,6 +27,13 @@ namespace ShipyardExpansion
             PartRefs.dhow = container;
             PartRefs.dhowCol = walkCol;
 
+            // add references for save cleaner
+            foreach (var part in partsList.availableParts)
+            {
+                Plugin.stockParts.Add(part, part.activeOption);
+            }
+            Plugin.moddedBoats.Add(partsList);
+
             Debug.Log("Dhow adjustments");
             #region adjustments
             partsList.availableParts[1].category = 2;

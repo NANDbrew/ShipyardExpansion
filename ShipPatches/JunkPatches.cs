@@ -35,6 +35,13 @@ namespace ShipyardExpansion
             var forestay0 = container.Find("forestay_0");
             var forestayMid = container.Find("forestay_0_mid");
 
+            // add references for save cleaner
+            foreach (var part in partsList.availableParts)
+            {
+                Plugin.stockParts.Add(part, part.activeOption);
+            }
+            Plugin.moddedBoats.Add(partsList);
+
 
             Transform ropeExtMain1 = UnityEngine.Object.Instantiate(mainMast1.GetComponent<Mast>().mastReefAttExtension[0].parent, mainMast1);
             ropeExtMain1.localPosition = new Vector3(ropeExtMain1.localPosition.x, -ropeExtMain1.localPosition.y, ropeExtMain1.localPosition.z);
