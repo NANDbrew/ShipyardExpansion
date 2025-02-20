@@ -62,6 +62,7 @@ namespace ShipyardExpansion
                     sail.GetComponent<Sail>().currentUnroll = 1f;
                     //sail.GetComponent<Sail>().enabled = false;
                     sail.transform.localEulerAngles = new Vector3(sail.transform.localEulerAngles.x, sail.transform.localEulerAngles.y, 0f);
+                    sail.GetComponent<ReefEffectAnimUniversal>().RefreshCloth();
                 }
             }
             Debug.Log("unfurled sails on " + ship.name);
