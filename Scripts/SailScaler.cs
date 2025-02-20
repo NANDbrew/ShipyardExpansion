@@ -171,14 +171,14 @@ namespace ShipyardExpansion
             {
                 colChecker.localScale = colScale;
             }
-            foreach (var col in colStartCenters.Keys)
+            /*foreach (var col in colStartCenters.Keys)
             {
                 if (col.gameObject == colChecker.gameObject)
                 {
                     col.center = Vector3.Scale(colBaseCenters[col], colScale);
                 }
                 else col.center = Vector3.Scale(colBaseCenters[col], scale);
-            }
+            }*/
             sail.SetSailArea();
             shadowCol.SetParent(transform);
             windCenter.SetParent(transform);
