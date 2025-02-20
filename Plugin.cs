@@ -5,6 +5,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace ShipyardExpansion
 {
@@ -14,7 +15,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.5.9";
+        public const string PLUGIN_VERSION = "0.5.10";
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
@@ -43,11 +44,13 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> percentSailNames;
         internal static ConfigEntry<bool> autoFit;
         internal static ConfigEntry<bool> skipSailData;
+        internal static ConfigEntry<bool> starterSetFix;
 
         internal static ConfigEntry<int> climbSpeed;
-
+        internal static Plugin instance;
         private void Awake()
         {
+            instance = this;
             //stockPartOptions = new List<BoatPartOption>();
             stockParts = new Dictionary<BoatPart, int>();
             //stockMasts = new List<Mast>();
@@ -59,6 +62,7 @@ namespace ShipyardExpansion
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
             cleanLoad = Config.Bind("Fixers", "Clean load", true, new ConfigDescription("Enable this before loading a broken save"));
             skipSailData = Config.Bind("Fixers", "skip sail data", false, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
+            starterSetFix = Config.Bind("Fixers", "starter set fix", true, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
 
             vertLateens = Config.Bind("Slant", "Vertical lateens", true, new ConfigDescription("Install lateens vertical instead of slanting with the mast"));
             vertFins = Config.Bind("Slant", "Vertical fins", true, new ConfigDescription("Install fin sails vertical instead of slanting with the mast"));
