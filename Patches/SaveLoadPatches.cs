@@ -68,11 +68,11 @@ namespace ShipyardExpansion
         public static void Postfix()
         {
             VersionManager.ReadSaveVersion();
-            foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("Boat"))
+            foreach (BoatRefs boat in GameObject.FindObjectsOfType<BoatRefs>())
             {
-                if (gameObject.GetComponent<BoatRefs>() != null && gameObject.GetComponent<SaveableObject>().extraSetting)
+                if (boat.GetComponent<SaveableObject>().extraSetting)
                 {
-                    SailDataManager.LoadSailConfig(gameObject.GetComponent<BoatRefs>());
+                    SailDataManager.LoadSailConfig(boat);
                 }
             }
             VersionManager.WriteSaveVersion();
