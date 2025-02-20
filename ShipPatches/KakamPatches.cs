@@ -55,7 +55,7 @@ namespace ShipyardExpansion
             container.Find("Cube_002").SetParent(mizzenMast);
             container.Find("Cube_003").SetParent(mizzenMast);
             container.Find("Cube_004").SetParent(structure.Find("struct_var_1__long_roof_"));
-            structure.Find("mast_003").SetParent(container.Find("hammock_001"));
+            container.Find("hammock_001").GetComponent<BoatPartOption>().childOptions = new GameObject[] { structure.Find("mast_003").gameObject };
             #endregion
 
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_kakam.prefab");
@@ -71,7 +71,7 @@ namespace ShipyardExpansion
 
             modParts = AssetTools.HandleImports(thing, partsList);
 
-            mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].GetComponentInChildren<CapsuleCollider>());
+            //mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].GetComponentInChildren<CapsuleCollider>());
 
             var modWalkCol = thing.transform.Find("SE_cols_kakam");
             modWalkCol.SetParent(walkCol, false);

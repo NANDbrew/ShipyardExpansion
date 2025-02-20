@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SE_Bridge;
 
 namespace ShipyardExpansion
 {
@@ -173,6 +174,19 @@ namespace ShipyardExpansion
 
             #region late Adjustments
             //outerFstaySource.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
+
+            /*var standardKeel = Util.AddPartOption(structure.Find("trim_006").gameObject, "standard keel");
+            standardKeel.basePrice = 1500;
+            standardKeel.installCost = 2000;
+            var deepKeel = Util.AddPartOption(structure.Find("deep_keel").gameObject, "deep keel");
+            deepKeel.basePrice = 2200;
+            deepKeel.installCost = 2000;
+            deepKeel.mass = 250;
+            var keelComp = deepKeel.gameObject.AddComponent<SE_Keel>();
+            keelComp.localCoM = new Vector3(0f, -2.5f, 0f);
+            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { standardKeel, deepKeel });
+            deepKeel.GetComponent<Renderer>().material = standardKeel.GetComponent<Renderer>().material;
+            deepKeel.gameObject.AddComponent<MeshCollider>();*/
             #endregion
         }
     }

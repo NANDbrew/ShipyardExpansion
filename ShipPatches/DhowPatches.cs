@@ -36,12 +36,13 @@ namespace ShipyardExpansion
 
             Debug.Log("Dhow adjustments");
             #region adjustments
+
             partsList.availableParts[1].category = 2;
             partsList.availableParts[4].category = 2;
             shortForestay.localScale = new Vector3(1, 1, 1.02f);
             shortForestay.GetComponent<BoatPartOption>().requires.Remove(container.Find("bowsprit").GetComponent<BoatPartOption>());
             container.Find("empty low forestay").GetComponent<BoatPartOption>().optionName = "(no lower forestay)";
-
+            container.Find("mooring_attachment_000").parent = mainMast;
             var mainFlag = container.Find("flag");
             mainFlag.SetParent(mainMast);
             var tallFlag = UnityEngine.Object.Instantiate(mainFlag, mainMastTall, false);
@@ -96,14 +97,25 @@ namespace ShipyardExpansion
             modParts["flag_empty"].partOptions[0].childOptions = modParts["flag_empty"].partOptions[0].childOptions.AddToArray(lowFlag);
             lowFlag.transform.SetParent(thing.transform.Find("main_shrouds_side").Find("short_s"));
 
-            mainMastTallM.mastCols = mainMastTallM.mastCols.AddToArray(thing.transform.Find("crowsnest_low").GetComponent<CapsuleCollider>());
+            //mainMastTallM.mastCols = mainMastTallM.mastCols.AddToArray(thing.transform.Find("crowsnest_low").GetComponent<CapsuleCollider>());
             //modParts["main_shrouds_side"].partOptions[0].childOptions = modParts["main_shrouds_side"].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { staticRig, rigCol, TallMastChildren[0], TallMastChildren[1] });
 
 
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
             lowForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(partsList.availableParts[0].partOptions[2]);
+            lowForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(partsList.availableParts[0].partOptions[3]);
             shortForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(partsList.availableParts[0].partOptions[2]);
+            shortForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(partsList.availableParts[0].partOptions[3]);
+
+            try
+            {
+                walkCol.Find("flag_low").GetComponent<MeshCollider>().enabled = false;
+            } 
+            catch 
+            {
+                Debug.Log("didn't patch dhow flag collider"); 
+            }
             #endregion
         }
     }
