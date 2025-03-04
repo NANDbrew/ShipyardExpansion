@@ -54,6 +54,10 @@ namespace ShipyardExpansion
                         {
                             component.SetAngle(Convert.ToSingle(sailInfo[3], CultureInfo.InvariantCulture));
                             //Debug.Log("sail angle = " + sailInfo[3]);
+                            if (sailInfo.Length >= 5 && Boolean.Parse(sailInfo[4]))
+                            {
+                                component.FlipJib(true);
+                            }
                         }
                     }
                 }
@@ -84,7 +88,9 @@ namespace ShipyardExpansion
 
                     text += component.scale.x.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.scale.y.ToString(CultureInfo.InvariantCulture) + ",";
-                    text += component.angle.ToString(CultureInfo.InvariantCulture) + "]";
+                    text += component.angle.ToString(CultureInfo.InvariantCulture);
+                    if (component.flippable) text += "," + component.flipped.ToString(CultureInfo.InvariantCulture);
+                    text += "]";
                 }
                 text += ")";
             }

@@ -29,9 +29,11 @@ namespace ShipyardExpansion
         public Transform rotatablePart;
         ScaleType scaleType = ScaleType.Uniform;
         string baseName;
+        public bool flipped = false;
+        public bool flippable = false;
         //float scaleFactor = 1f;
-        Dictionary<BoxCollider, Vector3> colStartCenters;
-        Dictionary<BoxCollider, Vector3> colBaseCenters;
+        //Dictionary<BoxCollider, Vector3> colStartCenters;
+        //Dictionary<BoxCollider, Vector3> colBaseCenters;
 
 
         public float GetBaseHeight()
@@ -84,15 +86,15 @@ namespace ShipyardExpansion
             else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
             if (startScale.y < scaleLimits[0]) scaleLimits[0] = startScale.y * 0.8f;
             if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
-
-            colStartCenters = new Dictionary<BoxCollider, Vector3>();
+            flippable = sail.category == SailCategory.staysail || SailLimits.flippableSquares.Contains(sail.prefabIndex);
+            /*colStartCenters = new Dictionary<BoxCollider, Vector3>();
             colBaseCenters = new Dictionary<BoxCollider, Vector3>();
             foreach (var col in colChecker.GetComponentsInChildren<BoxCollider>())
             {
                 colStartCenters.Add(col, col.center);
                 Vector3 cent = new Vector3(col.center.x / startScale.x, col.center.y / startScale.y, col.center.z / startScale.z);
                 colBaseCenters.Add(col, cent);
-            }
+            }*/
         }
         #region rotation
         public void SetAngle(float newAngle)
@@ -102,6 +104,8 @@ namespace ShipyardExpansion
             newAngle = (newAngle + 360) % 360;
             if (newAngle > angleLimits[1] && newAngle < 180) newAngle = angleLimits[1];
             else if (newAngle < angleLimits[0] && newAngle > 180) newAngle = angleLimits[0];
+            flippable = SailLimits.flippableSquares.Contains(sail.prefabIndex) || sail.category == SailCategory.staysail;
+
 
             shadowCol.SetParent(scaleablePart);
             windCenter.SetParent(scaleablePart);
@@ -119,6 +123,56 @@ namespace ShipyardExpansion
                 //sail.UpdateInstallPosition();
             }
         }
+        public void FlipJib()
+        {
+            FlipJib(!flipped);
+        }
+        public void FlipJib(bool inv)
+        {
+            if (scaleablePart == null) return;
+            shadowCol.SetParent(scaleablePart);
+            windCenter.SetParent(scaleablePart);
+            scaleablePart.gameObject.SetActive(false);
+            scaleablePart.localEulerAngles = new Vector3(scaleablePart.localEulerAngles.x + 180, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
+
+            if (inv) scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
+            else scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, 0f);
+            scaleablePart.gameObject.SetActive(true);
+            shadowCol.SetParent(transform);
+            windCenter.SetParent(transform);
+
+            if (inv && sail.category == SailCategory.staysail && scaleablePart.gameObject.GetComponentInChildren<RopeEffect>() is RopeEffect childRope)
+            {
+                var rope = /*sail.GetComponent<SailConnections>().mastReefAttExtension ??*/ sail.GetComponent<SailConnections>().mastReefAttachment;
+                sail.GetComponent<SailConnections>().mastReefAttExtension.gameObject.SetActive(false);
+                if (childRope.GetComponent<MeshFilter>() != null)
+                {
+                    rope.GetComponent<RopeEffect>().attachment = childRope.transform;
+                    childRope.attachment.gameObject.SetActive(false);
+                    childRope.GetComponent<LineRenderer>().enabled = false;
+                    childRope.enabled = false;
+                }
+                else
+                {
+                    rope.GetComponent<RopeEffect>().attachment = childRope.attachment;
+                    childRope.gameObject.SetActive(false);
+                }
+            }
+            if (SailLimits.flippableSquares.Contains(sail.prefabIndex) && sail.GetComponent<SailConnections>().reefController is RopeControllerSailReef controller)
+            {
+                controller.reverseReefing = inv;
+            }
+
+            if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
+            {
+                colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, scaleablePart.localEulerAngles.y, colChecker.localEulerAngles.z);
+                GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
+                //GameState.currentShipyard.sailInstaller.RecheckAllSailsCols();
+                //sail.UpdateInstallPosition();
+            }
+
+            flipped = inv;
+        }
 
         public void RotateFwd()
         {
@@ -133,11 +187,13 @@ namespace ShipyardExpansion
         #region scaling
         public void SetScaleAbs(float width, float height)
         {
-            float newRatio = height / width;
-            if (newRatio < ratioLimits[0] || newRatio > ratioLimits[1]) return;
+            /*if (newRatio < ratioLimits[0] || newRatio > ratioLimits[1]) return;
             if (height < scaleLimits[0] && scaleType == ScaleType.Jib) return;
             if (width < scaleLimits[0] && scaleType != ScaleType.Jib) return;
-            if (width > scaleLimits[1] || height > scaleLimits[1]) return;
+            if (width > scaleLimits[1] || height > scaleLimits[1]) return;*/
+            width = Mathf.Clamp(width, scaleLimits[0], scaleLimits[1]);
+            height = Mathf.Clamp(height, scaleLimits[0], scaleLimits[1]);
+            float newRatio = height / width;
             Vector3 colScale;
             if (scaleType == ScaleType.Jib)
             {
@@ -191,28 +247,33 @@ namespace ShipyardExpansion
         }
         public void SetScaleRel(float newScale)
         {
+            if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
+            if (newScale * ratio < scaleLimits[0] || newScale * ratio > scaleLimits[1]) return;
             SetScaleAbs(newScale, newScale * ratio);
         }
         public void SetScaleRel(float newScale, float newRatio)
         {
+            if (newRatio < ratioLimits[0] || newRatio > ratioLimits[1]) return;
+            if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
+            if (newScale * newRatio < scaleLimits[0] || newScale * newRatio > scaleLimits[1]) return;
             SetScaleAbs(newScale, newScale * newRatio);
         }
 
         public void IncreaseHeight()
         {
-            SetScaleAbs(scale.x, scale.y + scaleStep);
+            SetScaleRel(scale.x, (scale.y + scaleStep) / scale.x);
         }
         public void IncreaseWidth()
         {
-            SetScaleAbs(scale.x + scaleStep, scale.y);
+            SetScaleRel(scale.x + scaleStep, scale.y / (scale.x + scaleStep));
         }
         public void DecreaseHeight()
         {
-            SetScaleAbs(scale.x, scale.y - scaleStep);
+            SetScaleRel(scale.x, (scale.y - scaleStep) / scale.x);
         }
         public void DecreaseWidth()
         {
-            SetScaleAbs(scale.x - scaleStep, scale.y);
+            SetScaleRel(scale.x - scaleStep, scale.y / (scale.x - scaleStep));
         }
         public void ScaleUp()
         {
@@ -229,6 +290,7 @@ namespace ShipyardExpansion
         public void UpdateInstallHeight(Transform mast)
         {
             sail.installHeight = scale.y * baseHeight;
+            if (flipped) scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
             if (mast && mast.localScale.z != 1)
             {
                 sail.installHeight /= mast.localScale.z;

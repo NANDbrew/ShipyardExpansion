@@ -24,6 +24,7 @@ namespace ShipyardExpansion
         static GameObject decreaseWidthButton;
         static GameObject rotateForwardButton;
         static GameObject rotateBackwardButton;
+        static GameObject flipButton;
 
         static int[] partCounts;
         static bool extra;
@@ -153,6 +154,14 @@ namespace ShipyardExpansion
             buttonrotBkwd.buttonType = SailScaleButton.ButtonType.rotateBackward;
             buttonrotBkwd.SetText("Rotate\nBackward");
 
+            flipButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
+            flipButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
+            flipButton.name = "button flip";
+            UnityEngine.Object.Destroy(flipButton.GetComponent<ShipyardButton>());
+            SailScaleButton buttonflip = flipButton.AddComponent<SailScaleButton>();
+            buttonflip.buttonType = SailScaleButton.ButtonType.flip;
+            buttonflip.SetText("Flip");
+
         }
         [HarmonyPatch("UpdateMoveButtons")]
         [HarmonyPostfix]
@@ -164,6 +173,7 @@ namespace ShipyardExpansion
             bool rotatable = active && currentSail != null && currentSail.rotatablePart != null;
             bool heightable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Square));
             bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
+            bool flippable = active && currentSail != null && currentSail.flippable;
             scaleUpButton.SetActive(active && !heightable);
             scaleDownButton.SetActive(active && !heightable);
 
@@ -175,8 +185,10 @@ namespace ShipyardExpansion
 
             rotateForwardButton.SetActive(rotatable);
             rotateBackwardButton.SetActive(rotatable);
-        }
 
+            flipButton.SetActive(flippable && !widthable);
+
+        }
 
         [HarmonyPatch("UpdateMastButtons")]
         [HarmonyPostfix]
