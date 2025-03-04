@@ -147,9 +147,10 @@ namespace ShipyardExpansion
                 else
                 {
                     stay.requiresDisabled.Add(partsList.availableParts[2].partOptions[2]);
-                    stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[1]);
-                    stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[2]);
+                    //stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[1]);
+                    //stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[2]);
                     //stay.requiresDisabled.Add(bowspritNone);
+                    stay.requires.Add(modParts["foremast_empty"].partOptions[0]);
 
                 }
             }
@@ -159,9 +160,9 @@ namespace ShipyardExpansion
                 if (stay.optionName.StartsWith("topmast") || stay.optionName.StartsWith("(no") || stay.optionName.Contains("foremast")) continue;
                 else
                 {
-                    stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[1]);
-                    stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[2]);
-
+                    //stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[1]);
+                    //stay.requiresDisabled.Add(modParts["foremast_empty"].partOptions[2]);
+                    stay.requires.Add(modParts["foremast_empty"].partOptions[0]);
                 }
             }
             topmastStay1.GetComponent<BoatPartOption>().requires.Add(modParts["foremast_empty"].partOptions[0]);
