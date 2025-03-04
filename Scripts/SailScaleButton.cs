@@ -19,8 +19,7 @@ namespace ShipyardExpansion
             increaseWidth,
             decreaseWidth,
             rotateForward,
-            rotateBackward,
-            flip
+            rotateBackward
         }
         public ButtonType buttonType;
 
@@ -95,10 +94,6 @@ namespace ShipyardExpansion
             else if (buttonType == ButtonType.rotateBackward)
             {
                 sail.GetComponent<SailScaler>().RotateBkwd();
-            }
-            else if (buttonType == ButtonType.flip)
-            {
-                sail.GetComponent<SailScaler>().FlipJib();
             }
             GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
 

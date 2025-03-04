@@ -8,9 +8,8 @@ namespace ShipyardExpansion
 {
     internal static class SailLimits
     {
-        public static readonly int[] stretchableSquares = { 4, 32, 48, 49, 50, 51, 52, 59, 80, 113, 114, 115, 116, };
-        public static readonly int[] stretchableJibs = { 110, 111, };
-        public static readonly int[] flippableSquares = { 27, 28, 29, 100, 101, 102 };
+        public static readonly List<int> stretchableSquares = new List<int> { 4, 32, 48, 49, 50, 51, 52, 59, 80, 113, 114, 115, 116, };
+        public static readonly List<int> stretchableJibs = new List<int> { 110, 111, };
 
         public static readonly Dictionary<int, float[]> angleLimits = new Dictionary<int, float[]> 
         {
