@@ -10,7 +10,6 @@ namespace ShipyardExpansion
 {
     public static class SaveCleaner
     {
-        
         public static void CleanSaveOld(List<BoatCustomParts> boats, Dictionary<BoatPart, int> stockParts, List<BoatPartOption> stockPartOptions, List<Mast> stockMasts)
         {
             foreach (BoatCustomParts partsList in boats)
@@ -137,7 +136,6 @@ namespace ShipyardExpansion
             }
         }
 
-
         public static void Convert(SaveBoatCustomizationData data, BoatRefs refs)
         {
             //if (GameState.playing && !GameState.justStarted) return;
@@ -163,7 +161,12 @@ namespace ShipyardExpansion
             if (!Plugin.convertSave.Value) return;
 
             // convert to SE v0.5
-            if (VersionManager.saveVersion >= 50) return;
+            if (VersionManager.saveVersion2[1] >= 5)
+            {
+                Debug.Log("save version >= 0.5, not converting");
+                return;
+            }
+            //if (VersionManager.saveVersion >= 50) return;
             if (Plugin.converted.ContainsKey(refs.gameObject))
             {
                 //Debug.Log("brig??");

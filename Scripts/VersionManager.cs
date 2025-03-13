@@ -10,6 +10,7 @@ namespace ShipyardExpansion
 {
     internal static class VersionManager
     {
+        public static int[] saveVersion2 = { -1, 0, 0 };
         public static int saveVersion = -1;
         public static void WriteSaveVersion()
         {
@@ -17,7 +18,9 @@ namespace ShipyardExpansion
             string text = Plugin.PLUGIN_VERSION.Replace(".", string.Empty);
             Debug.Log("SE save version updated: " + text);
             saveVersion = Convert.ToInt32(text);
-
+            string[] a = Plugin.PLUGIN_VERSION.Split('.');
+            saveVersion2 = new int[a.Length];
+            for (int i = 0; i < a.Length; i++) saveVersion2[i] = Convert.ToInt32(a[i]);
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
                 GameState.modData[Plugin.PLUGIN_ID] = Plugin.PLUGIN_VERSION;
@@ -34,8 +37,12 @@ namespace ShipyardExpansion
             if (GameState.modData.ContainsKey(Plugin.PLUGIN_ID))
             {
                 string text = new string((from a in GameState.modData[Plugin.PLUGIN_ID] where char.IsNumber(a) select a).ToArray());
-                //Debug.Log("SE save version = " + text);
                 saveVersion = Convert.ToInt32(text);
+
+                string[] b = GameState.modData[Plugin.PLUGIN_ID].Split('.');
+                saveVersion2 = new int[b.Length];
+                for (int i = 0; i < b.Length; i++) saveVersion2[i] = Convert.ToInt32(b[i]);
+
                 foreach (GameObject obj in Plugin.converted.Keys)
                 {
                     obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
@@ -43,6 +50,7 @@ namespace ShipyardExpansion
             }
             else
             {
+                saveVersion2 = new int[]{ 0, 0, 0};
                 saveVersion = 0;
                 foreach (GameObject obj in Plugin.converted.Keys)
                 {
@@ -50,6 +58,7 @@ namespace ShipyardExpansion
                 }
             }
             Debug.Log("SE save version read: " + saveVersion);
+            Debug.Log("SE save version2: " + saveVersion2[0].ToString() + " " + saveVersion2[1] + " " + saveVersion2[2]);
         }
     }
 }
