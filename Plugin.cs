@@ -30,8 +30,6 @@ namespace ShipyardExpansion
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
         internal static ConfigEntry<bool> convertSave;
-        internal static ConfigEntry<bool> lenientLateens;
-        internal static ConfigEntry<bool> lenientSquares;
         internal static ConfigEntry<bool> vertLateens;
         internal static ConfigEntry<bool> vertFins;
         internal static ConfigEntry<bool> unrollSails;
