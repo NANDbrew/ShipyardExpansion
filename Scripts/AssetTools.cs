@@ -160,6 +160,9 @@ namespace ShipyardExpansion
                     ReqTranslate(optData, opt, partsList);
                     partsList.availableParts[optData.parentPartIndex].partOptions.Add(opt);
                     //optData.enabled = false;
+#if DEBUG
+                    if (opt.walkColObject.layer != 8) Debug.Log("part " + opt.gameObject.name + " walk col is not layer 8");
+#endif
                 }
                 else Debug.LogError("huh? " + optData.name);
 
@@ -208,7 +211,7 @@ namespace ShipyardExpansion
             
 #if DEBUG
             Debug.Log("Replaced embarkCol mesh: " + col.GetComponentInParent<BoatDamage>().name);
-    #endif
+#endif
         }
     }
 }
