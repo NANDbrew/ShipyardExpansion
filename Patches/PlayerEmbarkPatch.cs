@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShipyardExpansion.Patches
 {
-    [HarmonyPatch(typeof(PlayerEmbarkDisembarkTrigger), "FixedUpdate")]
+    [HarmonyPatch(typeof(PlayerEmbarkDisembarkTrigger), "Update")]
     internal static class PlayerEmbarkPatch
     {
         public static bool Prefix(bool __runOriginal)
