@@ -20,21 +20,12 @@ namespace ShipyardExpansion.Scripts
         {
             base.Start();
             player = Refs.charController;
-            //GetComponentInParent<BoatRefs>().walkCol;
-            //playerTrig = Refs.observerMirror.GetComponent<PlayerEmbarkDisembarkTrigger>();
-            //lerpTime *= Vector3.Distance(target.localPosition, this.transform.localPosition);
+
             walkCol = GetComponentInParent<BoatRefs>().walkCol;
         }
         public override void OnActivate()
         {
-            /*BoatEmbarkCollider embarkCol = GetComponentInParent<BoatRefs>().GetComponentInChildren<BoatEmbarkCollider>();
-            playerTrig = Refs.observerMirror.GetComponentInChildren<PlayerEmbarkDisembarkTrigger>();
-            if (PlayerEmbarkDisembarkTrigger.embarked)
-            {
-                AccessTools.Method(playerTrig.GetType(), "ExitBoat").Invoke(playerTrig, null);
-            }
-            AccessTools.Method(playerTrig.GetType(), "EnterBoat").Invoke(playerTrig, new object[] { embarkCol.transform.parent, embarkCol.walkCollider });
-*/
+
             if (player.transform.parent == walkCol && targets.Length >= 1)
             {
                 Transform target = targets.OrderBy(t => (t.transform.localPosition - player.transform.localPosition).sqrMagnitude).Last();
