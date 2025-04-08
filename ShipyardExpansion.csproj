@@ -103,6 +103,7 @@
     <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
+    <Compile Include="Patches\TopsailPatch.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />
     <Compile Include="Scripts\SailDataManager.cs" />
