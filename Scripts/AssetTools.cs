@@ -98,27 +98,37 @@ namespace ShipyardExpansion
 
         private static void ReqTranslate(SE_PartOptionData optData, BoatPartOption opt, BoatCustomParts partsList)
         {
+#if DEBUG
             Debug.Log("Translating partOption requirements for " + opt.name);
+#endif
             if (optData.requiresVanilla1.Length == 2)
             {
                 opt.requires.Add(partsList.availableParts[optData.requiresVanilla1[0]].partOptions[optData.requiresVanilla1[1]]);
+#if DEBUG
                 Debug.Log("did 1");
+#endif
             }
             if (optData.requiresVanilla2.Length == 2)
             {
                 opt.requires.Add(partsList.availableParts[optData.requiresVanilla2[0]].partOptions[optData.requiresVanilla2[1]]);
+#if DEBUG
                 Debug.Log("did 2");
+#endif
             }
             if (optData.requiresDisabledVanilla1.Length == 2)
             {
                 opt.requiresDisabled.Add(partsList.availableParts[optData.requiresDisabledVanilla1[0]].partOptions[optData.requiresDisabledVanilla1[1]]);
-                Debug.Log("did anti 1");
+#if DEBUG
+               Debug.Log("did anti 1");
+#endif
 
             }
             if (optData.requiresDisabledVanilla2.Length == 2)
             {
                 opt.requiresDisabled.Add(partsList.availableParts[optData.requiresDisabledVanilla2[0]].partOptions[optData.requiresDisabledVanilla2[1]]);
-                Debug.Log("did anti 2");
+#if DEBUG
+               Debug.Log("did anti 2");
+#endif
 
             }
             //optData.enabled = false;
@@ -146,10 +156,13 @@ namespace ShipyardExpansion
                         ReqTranslate(optData, opt, partsList);
                         //optData.enabled = false;
                     }
+
                 }
                 partData.enabled = false;
+#if DEBUG
                 Debug.Log(partData.name);
                 Debug.Log(partsList.availableParts.Count);
+#endif
             }
 
             foreach (SE_PartOptionData optData in boatData.options)
@@ -160,6 +173,7 @@ namespace ShipyardExpansion
                     ReqTranslate(optData, opt, partsList);
                     partsList.availableParts[optData.parentPartIndex].partOptions.Add(opt);
                     //optData.enabled = false;
+                    
 #if DEBUG
                     if (opt.walkColObject.layer != 8) Debug.Log("part " + opt.gameObject.name + " walk col is not layer 8");
 #endif
@@ -167,12 +181,16 @@ namespace ShipyardExpansion
                 else Debug.LogError("huh? " + optData.name);
 
             }
+#if DEBUG
             Debug.Log("working on ladders and flags");
+#endif
             foreach (Transform obj in thing.GetComponentsInChildren<Transform>())
             {
                 if (obj.GetComponent<SE_LadderData>() is SE_LadderData ladderData)
                 {
+#if DEBUG
                     Debug.Log("adding ladder: " + ladderData.name);
+#endif
                     var ladder = ladderData.gameObject.AddComponent<NANDLadder>();
                     ladder.targets = ladderData.targets;
                     for (int i = 0; i < ladder.targets.Length; i++)
@@ -194,18 +212,24 @@ namespace ShipyardExpansion
             if (boatData.walkColMesh != null)
             {
                 var col = partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>();
+#if DEBUG
                 Debug.Log("SE found embarkCol: " + col);
+#endif
                 col.GetComponent<MeshCollider>().sharedMesh = boatData.walkColMesh;
                 col.GetComponent<MeshFilter>().sharedMesh = boatData.walkColMesh;
                 //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.walkColMesh));
             }
+#if DEBUG
             Debug.Log("modParts.Count = " + modParts.Count);
+#endif
             return modParts;
         }
         public static IEnumerator ReplaceEmbarkMesh(BoatEmbarkCollider col, Mesh mesh)
         {
             yield return new WaitUntil(() => GameState.playing && !GameState.justStarted);
+#if DEBUG
             Debug.Log("SE found embarkCol: " + col);
+#endif
             col.GetComponent<MeshCollider>().sharedMesh = mesh;
             col.GetComponent<MeshFilter>().sharedMesh = mesh;
             
