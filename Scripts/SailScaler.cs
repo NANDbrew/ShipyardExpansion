@@ -34,7 +34,7 @@ namespace ShipyardExpansion
         //float scaleFactor = 1f;
         //Dictionary<BoxCollider, Vector3> colStartCenters;
         //Dictionary<BoxCollider, Vector3> colBaseCenters;
-
+        float jibStartAngle;
 
         public float GetBaseHeight()
         {
@@ -95,6 +95,7 @@ namespace ShipyardExpansion
                 Vector3 cent = new Vector3(col.center.x / startScale.x, col.center.y / startScale.y, col.center.z / startScale.z);
                 colBaseCenters.Add(col, cent);
             }*/
+            jibStartAngle = scaleablePart.localEulerAngles.x;
         }
         #region rotation
         public void SetAngle(float newAngle)
@@ -133,10 +134,18 @@ namespace ShipyardExpansion
             shadowCol.SetParent(scaleablePart);
             windCenter.SetParent(scaleablePart);
             scaleablePart.gameObject.SetActive(false);
-            scaleablePart.localEulerAngles = new Vector3(scaleablePart.localEulerAngles.x + 180, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
-
-            if (inv) scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
-            else scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, 0f);
+            scaleablePart.localEulerAngles = new Vector3(jibStartAngle + 180, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
+            Debug.Log("jib flip rotation = " + scaleablePart.localEulerAngles.ToString());
+            if (inv)
+            {
+                scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
+                scaleablePart.localEulerAngles = new Vector3(jibStartAngle + 180, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
+            }
+            else
+            {
+                scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, 0f);
+                scaleablePart.localEulerAngles = new Vector3(jibStartAngle, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
+            }
             scaleablePart.gameObject.SetActive(true);
             shadowCol.SetParent(transform);
             windCenter.SetParent(transform);
@@ -166,7 +175,8 @@ namespace ShipyardExpansion
             if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
             {
                 colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, scaleablePart.localEulerAngles.y, colChecker.localEulerAngles.z);
-                GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
+                //float height = inv? -sail.installHeight: sail.installHeight;
+                //GameState.currentShipyard.sailInstaller.MoveHeldSail(height);
                 //GameState.currentShipyard.sailInstaller.RecheckAllSailsCols();
                 //sail.UpdateInstallPosition();
             }
