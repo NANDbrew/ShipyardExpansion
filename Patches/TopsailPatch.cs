@@ -13,7 +13,7 @@ namespace ShipyardExpansion.Patches
     {
         private static void Postfix(GameObject squareSail, Mast __instance, ref bool __result)
         {
-            if (__instance.GetComponent<BoatPartOption>().childMast is Mast childMast)
+            if (__instance.GetComponent<BoatPartOption>()?.childMast is Mast childMast)
             {
                 for (int num = childMast.sails.Count - 1; num >= 0; num--)
                 {
