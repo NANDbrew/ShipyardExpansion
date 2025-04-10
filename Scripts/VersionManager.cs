@@ -43,18 +43,25 @@ namespace ShipyardExpansion
                 saveVersion2 = new int[b.Length];
                 for (int i = 0; i < b.Length; i++) saveVersion2[i] = Convert.ToInt32(b[i]);
 
-                foreach (GameObject obj in Plugin.converted.Keys)
+                if (Plugin.convertSave.Value)
                 {
-                    obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
+                    foreach (GameObject obj in Plugin.converted.Keys)
+                    {
+                        obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
+                    }
                 }
             }
             else
             {
                 saveVersion2 = new int[]{ 0, 0, 0};
                 saveVersion = 0;
-                foreach (GameObject obj in Plugin.converted.Keys)
+
+                if (Plugin.convertSave.Value)
                 {
-                    obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
+                    foreach (GameObject obj in Plugin.converted.Keys)
+                    {
+                        obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
+                    }
                 }
             }
             Debug.Log("SE save version read: " + saveVersion);
