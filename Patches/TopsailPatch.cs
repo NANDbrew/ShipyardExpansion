@@ -34,21 +34,7 @@ namespace ShipyardExpansion.Patches
     {
         private static void Postfix(Mast __instance)
         {
-            if (__instance.onlyStaysails || __instance.onlySquareSails) return;
-            if (__instance.GetComponent<BoatPartOption>() is BoatPartOption opt && opt.childMast == null)
-            {
-                foreach (var req in opt.requires)
-                {
-                    if (req.GetComponent<Mast>() is Mast mast)
-                    {
-                        opt.childMast = mast;
-#if DEBUG
-                        Debug.Log("SE: linking masts " + opt.optionName + " and " + req.optionName);
-#endif
-                        break;
-                    }
-                }
-            }
+            AssetTools.AutoLinkMast(__instance);
         }
     }
 }

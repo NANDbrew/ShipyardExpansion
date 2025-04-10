@@ -133,6 +133,28 @@ namespace ShipyardExpansion
             }
             //optData.enabled = false;
         }
+
+        public static bool AutoLinkMast(Mast mast)
+        {
+            if (mast.onlyStaysails || mast.onlySquareSails) return false;
+            if (mast.GetComponent<BoatPartOption>() is BoatPartOption opt && opt.childMast == null)
+            {
+                foreach (var req in opt.requires)
+                {
+                    if (req.GetComponent<Mast>() is Mast toLink)
+                    {
+                        opt.childMast = toLink;
+#if DEBUG
+                        Debug.Log("SE: linking masts " + opt.optionName + " and " + req.optionName);
+#endif
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
         public static Dictionary<string, BoatPart> HandleImports(GameObject thing, BoatCustomParts partsList)
         {
             Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
@@ -155,6 +177,10 @@ namespace ShipyardExpansion
                     {
                         ReqTranslate(optData, opt, partsList);
                         //optData.enabled = false;
+                        if (opt.GetComponent<Mast>() is Mast mast)
+                        {
+                            AutoLinkMast(mast);
+                        }
                     }
 
                 }
@@ -173,7 +199,10 @@ namespace ShipyardExpansion
                     ReqTranslate(optData, opt, partsList);
                     partsList.availableParts[optData.parentPartIndex].partOptions.Add(opt);
                     //optData.enabled = false;
-                    
+                    if (opt.GetComponent<Mast>() is Mast mast)
+                    {
+                        AutoLinkMast(mast);
+                    }
 #if DEBUG
                     if (opt.walkColObject.layer != 8) Debug.Log("part " + opt.gameObject.name + " walk col is not layer 8");
 #endif
