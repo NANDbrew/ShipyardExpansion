@@ -103,9 +103,11 @@
     <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
+    <Compile Include="Patches\TestPatch.cs" />
     <Compile Include="Patches\TopsailPatch.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />
+    <Compile Include="Scripts\ObjectToggler.cs" />
     <Compile Include="Scripts\SailDataManager.cs" />
     <Compile Include="SailLimits.cs" />
     <Compile Include="Scripts\SailScaleButton.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="ShipPatches\BrigPatches.cs" />
     <Compile Include="ShipPatches\CogPatches.cs" />
     <Compile Include="ShipPatches\DhowPatches.cs" />
+    <Compile Include="ShipPatches\JongPatches.cs" />
     <Compile Include="ShipPatches\JunkPatches.cs" />
     <Compile Include="ShipPatches\KakamPatches.cs" />
     <Compile Include="Patches\Patch.cs" />

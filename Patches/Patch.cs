@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using ShipyardExpansion.ShipPatches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ShipyardExpansion
             [HarmonyPostfix]
             public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts, BoatRefs ___refs)
             {
-                if (!AssetTools.bundle) AssetTools.LoadAssetBundles();
+                if (!AssetTools.bundle || !AssetTools.bundle2) AssetTools.LoadAssetBundles();
                 
                 Array.Resize(ref ___refs.masts, Plugin.mastListSize);
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
@@ -27,6 +28,7 @@ namespace ShipyardExpansion
                 else if (sceneIndex == 80) JunkPatches.Patch(__instance.transform, ___parts);
                 else if (sceneIndex == 40) CogPatches.Patch(__instance.transform, ___parts);
                 else if (sceneIndex == 50) BrigPatches.Patch(__instance.transform, ___parts);
+                else if (sceneIndex == 70) JongPatches.Patch(__instance.transform, ___parts);
 
             }
 

@@ -53,7 +53,7 @@ namespace ShipyardExpansion
             }
             else
             {
-                saveVersion2 = new int[]{ 0, 0, 0};
+                saveVersion2 = new int[]{ 0, 0, 0 };
                 saveVersion = 0;
 
                 if (Plugin.convertSave.Value)

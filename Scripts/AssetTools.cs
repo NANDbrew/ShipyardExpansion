@@ -20,9 +20,11 @@ namespace ShipyardExpansion
     public static class AssetTools
     {
         public static AssetBundle bundle;
+        public static AssetBundle bundle2;
         static string basePath = "";
         const string assetDir = "ShipyardExpansion";
         const string assetFile = "shipyard_expansion.assets";
+        const string assetFile2 = "shipyard_expansion2.assets";
         const string libFile = "SE_Bridge.dll";
 
         public static void LoadAssetBundles()    //Load the bundle
@@ -42,6 +44,16 @@ namespace ShipyardExpansion
                 Debug.LogError("Bundle not loaded! Did you place it in the correct folder?");
             }
             else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle.ToString()); }
+
+            string firstTry2 = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile2);
+            string secondTry2 = Path.Combine(basePath, assetFile2);
+
+            bundle2 = AssetBundle.LoadFromFile(File.Exists(firstTry2) ? firstTry2 : secondTry2);
+            if (bundle2 == null)
+            {
+                Debug.LogError("Bundle not loaded! Did you place it in the correct folder?");
+            }
+            else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }
 
         }
 
@@ -224,6 +236,7 @@ namespace ShipyardExpansion
                     ladder.targets = ladderData.targets;
                     for (int i = 0; i < ladder.targets.Length; i++)
                     {
+                        if (ladder.targets[i] == null) Debug.Log("ladder target is null");
                         //Transform target = ;
                         ladder.targets[i].SetParent(thing.transform.parent);
                         //ladder.targets[i] = target;

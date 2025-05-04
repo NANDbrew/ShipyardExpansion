@@ -157,16 +157,27 @@ namespace ShipyardExpansion
                 data.partActiveOptions[3] = 4;
             }
 
+            // convert Jong shrouds. having this here could be a problem
+            if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 90 && index == 70)
+            {
+                if (data.partActiveOptions[13] > 1) data.partActiveOptions[13] = 1;
+                if (data.partActiveOptions[14] > 1) data.partActiveOptions[14] = 1;
+            }
             // if the convert setting is off or we don't know the file version yet, bug out
             if (!Plugin.convertSave.Value) return;
+            if (VersionManager.saveVersion2[0] >= 1)
+            {
+                Debug.Log("save version >= 1.0, not converting");
+                return;
+            }
 
-            // convert to SE v0.5
+
             if (VersionManager.saveVersion2[1] >= 5)
             {
                 Debug.Log("save version >= 0.5, not converting");
                 return;
             }
-            //if (VersionManager.saveVersion >= 50) return;
+            // convert to SE v0.5
             if (Plugin.converted.ContainsKey(refs.gameObject))
             {
                 //Debug.Log("brig??");
