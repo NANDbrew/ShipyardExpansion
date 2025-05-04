@@ -4,36 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using HarmonyLib;
 
 namespace ShipyardExpansion
 {
     public class SailScaler : MonoBehaviour
     {
+        static float scaleStep = 0.05f;
+        static float angleStep = 1;
         Sail sail;
-        public Transform scaleablePart;
-        public Vector3 scale;
-        Vector3 startScale;
-        float baseHeight;
-        Vector3 basePos;
-        float ratio = 1f;
-        float[] ratioLimits = new float[2] { 0.3f, 2f };
-        float[] scaleLimits = new float[2] { 0.5f, 2.5f };
-        float[] angleLimits = new float[2] { 340f, 15f };
-        public float scaleStep = 0.05f;
-        public float angle = 0;
-        float angleStep = 1;
         Transform shadowCol;
         Transform windCenter;
         Transform colChecker;
         public Transform rotatablePart;
-        ScaleType scaleType = ScaleType.Uniform;
+        public Transform scaleablePart;
+        public float[] ratioLimits = { 0.3f, 2f };
+        public float[] scaleLimits = { 0.5f, 2.5f };
+        public float[] angleLimits = { 340f, 15f };
+        public Vector3 Scale { get; private set; }
+        public float Angle { get; private set; }
+        public bool Flipped { get; private set; }
+        Vector3 startScale;
+        float baseHeight;
+        Vector3 basePos;
+        float ratio = 1f;
+        public ScaleType scaleType = ScaleType.Uniform;
         string baseName;
-        public bool flipped = false;
         public bool flippable = false;
-        //float scaleFactor = 1f;
-        //Dictionary<BoxCollider, Vector3> colStartCenters;
-        //Dictionary<BoxCollider, Vector3> colBaseCenters;
         float jibStartAngle;
 
         public float GetBaseHeight()
@@ -57,7 +53,7 @@ namespace ShipyardExpansion
                 this.enabled = false;
             }
             startScale = scaleablePart.localScale;
-            scale = startScale;
+            Scale = startScale;
             baseHeight = sail.installHeight / startScale.y;
             basePos = scaleablePart.localPosition / startScale.y;
 
@@ -112,7 +108,7 @@ namespace ShipyardExpansion
             windCenter.SetParent(scaleablePart);
             rotatablePart.gameObject.SetActive(false);
             rotatablePart.localEulerAngles = new Vector3(rotatablePart.localEulerAngles.x, newAngle, rotatablePart.localEulerAngles.z);
-            angle = rotatablePart.localEulerAngles.y;
+            Angle = rotatablePart.localEulerAngles.y;
             rotatablePart.gameObject.SetActive(true);
             shadowCol.SetParent(transform);
             windCenter.SetParent(transform);
@@ -126,7 +122,7 @@ namespace ShipyardExpansion
         }
         public void FlipJib()
         {
-            FlipJib(!flipped);
+            FlipJib(!Flipped);
         }
         public void FlipJib(bool inv)
         {
@@ -181,16 +177,16 @@ namespace ShipyardExpansion
                 //sail.UpdateInstallPosition();
             }
 
-            flipped = inv;
+            Flipped = inv;
         }
 
         public void RotateFwd()
         {
-            SetAngle(angle + angleStep);
+            SetAngle(Angle + angleStep);
         }
         public void RotateBkwd()
         {
-            SetAngle(angle - angleStep);
+            SetAngle(Angle - angleStep);
         }
         #endregion
 
@@ -207,25 +203,25 @@ namespace ShipyardExpansion
             Vector3 colScale;
             if (scaleType == ScaleType.Jib)
             {
-                scale = new Vector3(width, height, height);
-                colScale = scale;
+                Scale = new Vector3(width, height, height);
+                colScale = Scale;
             }
             else
             {
-                scale = new Vector3(width, height, width);
+                Scale = new Vector3(width, height, width);
                 float colRot = colChecker.localEulerAngles.x - scaleablePart.localEulerAngles.x;
                 if (colRot < 0) colRot = -colRot;
                 if (colRot == 90)
                 {
                     colScale = new Vector3(width, width, height);
                 }
-                else colScale = scale;
+                else colScale = Scale;
             }
             ratio = newRatio;
             shadowCol.SetParent(scaleablePart);
             windCenter.SetParent(scaleablePart);
             scaleablePart.gameObject.SetActive(false);
-            scaleablePart.localScale = scale;
+            scaleablePart.localScale = Scale;
             scaleablePart.localPosition = basePos * height;
 
             if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs)
@@ -243,7 +239,7 @@ namespace ShipyardExpansion
                 {
                     col.center = Vector3.Scale(colBaseCenters[col], colScale);
                 }
-                else col.center = Vector3.Scale(colBaseCenters[col], scale);
+                else col.center = Vector3.Scale(colBaseCenters[col], Scale);
             }*/
             sail.SetSailArea();
             shadowCol.SetParent(transform);
@@ -271,27 +267,27 @@ namespace ShipyardExpansion
 
         public void IncreaseHeight()
         {
-            SetScaleRel(scale.x, (scale.y + scaleStep) / scale.x);
+            SetScaleRel(Scale.x, (Scale.y + scaleStep) / Scale.x);
         }
         public void IncreaseWidth()
         {
-            SetScaleRel(scale.x + scaleStep, scale.y / (scale.x + scaleStep));
+            SetScaleRel(Scale.x + scaleStep, Scale.y / (Scale.x + scaleStep));
         }
         public void DecreaseHeight()
         {
-            SetScaleRel(scale.x, (scale.y - scaleStep) / scale.x);
+            SetScaleRel(Scale.x, (Scale.y - scaleStep) / Scale.x);
         }
         public void DecreaseWidth()
         {
-            SetScaleRel(scale.x - scaleStep, scale.y / (scale.x - scaleStep));
+            SetScaleRel(Scale.x - scaleStep, Scale.y / (Scale.x - scaleStep));
         }
         public void ScaleUp()
         {
-            SetScaleRel(scale.x + scaleStep, ratio);
+            SetScaleRel(Scale.x + scaleStep, ratio);
         }
         public void ScaleDown()
         {
-            SetScaleRel(scale.x - scaleStep, ratio);
+            SetScaleRel(Scale.x - scaleStep, ratio);
         }
         public void UpdateInstallHeight()
         {
@@ -299,8 +295,8 @@ namespace ShipyardExpansion
         }
         public void UpdateInstallHeight(Transform mast)
         {
-            sail.installHeight = scale.y * baseHeight;
-            if (flipped) scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
+            sail.installHeight = Scale.y * baseHeight;
+            if (Flipped) scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
             if (mast && mast.localScale.z != 1)
             {
                 sail.installHeight /= mast.localScale.z;

@@ -85,9 +85,9 @@ namespace NANDBrewShipDataParser
                 foreach (GameObject sail in mast.sails)
                 {
                     SailScaler comp2 = sail.GetComponent<SailScaler>();
-                    output += IntToBase64(Mathf.RoundToInt(comp2.scale.x * 100), true);
-                    output += IntToBase64(Mathf.RoundToInt(comp2.scale.y * 100), true);
-                    //output += IntToBase64(Mathf.RoundToInt(comp2.angle, true));
+                    output += IntToBase64(Mathf.RoundToInt(comp2.Scale.x * 100), true);
+                    output += IntToBase64(Mathf.RoundToInt(comp2.Scale.y * 100), true);
+                    //output += IntToBase64(Mathf.RoundToInt(comp2.Angle, true));
                 }
             }
             foreach (SaveSailData sailData in data.sails)
