@@ -15,7 +15,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.6.2";
+        public const string PLUGIN_VERSION = "0.6.90";
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
