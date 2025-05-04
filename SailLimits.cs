@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShipyardExpansion
 {
-    internal static class SailLimits
+    public static class SailLimits
     {
         public static readonly int[] stretchableSquares = { 4, 32, 48, 49, 50, 51, 52, 59, 80, 113, 114, 115, 116, };
         public static readonly int[] stretchableJibs = { 110, 111, };
