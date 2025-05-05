@@ -120,6 +120,14 @@ namespace ShipyardExpansion.ShipPatches
             walkCol.Find("trim mirrored").GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("trim").GetComponent<MeshFilter>().sharedMesh;
             #endregion
 
+            #region telltales
+            thing.transform.Find("shrouds_main1_side/wind_flag").parent = partsList.availableParts[13].partOptions[0].transform;
+            thing.transform.Find("shrouds_main1_back/wind_flag").parent = partsList.availableParts[13].partOptions[1].transform;
+            thing.transform.Find("shrouds_main2_side/wind_flag").parent = partsList.availableParts[14].partOptions[0].transform;
+            thing.transform.Find("shrouds_main2_back/wind_flag").parent = partsList.availableParts[14].partOptions[1].transform;
+            thing.transform.Find("telltale_mizzen/wind_flag").parent = mainMast1.parent.Find("mast_back");
+            #endregion
+
             #region shrouds
             BoatPartOption mainMast1BPO = mainMast1.GetComponent<BoatPartOption>();
             mainMast1BPO.childOptions = mainMast1BPO.childOptions.AddRangeToArray(new GameObject[]{ partsList.availableParts[13].partOptions[0].walkColObject, partsList.availableParts[13].partOptions[1].walkColObject });
@@ -138,7 +146,6 @@ namespace ShipyardExpansion.ShipPatches
             partsList.availableParts[14].partOptions.RemoveRange(0, 3);
 
             #endregion
-
         }
     }
 }
