@@ -118,6 +118,13 @@ namespace ShipyardExpansion.ShipPatches
             walkCol.Find("walls").GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("walls_end").GetComponent<MeshFilter>().sharedMesh;
             walkCol.Find("walls mirrored").GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("walls").GetComponent<MeshFilter>().sharedMesh;
             walkCol.Find("trim mirrored").GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("trim").GetComponent<MeshFilter>().sharedMesh;
+
+            foreach (var partOption in partsList.availableParts[16].partOptions)
+            {
+                partOption.mass = +400;
+                partOption.basePrice += 400;
+            }
+            AccessTools.Field(typeof(BoatMass), "selfMass").SetValue(boat.GetComponent<BoatMass>(), (float)AccessTools.Field(typeof(BoatMass), "selfMass").GetValue(boat.GetComponent<BoatMass>()) - 400f);
             #endregion
 
             #region telltales
