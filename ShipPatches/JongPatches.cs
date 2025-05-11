@@ -43,10 +43,20 @@ namespace ShipyardExpansion.ShipPatches
             foreach (Mast stay in staysContainer.GetComponentsInChildren<Mast>())
             {
                 stay.mastHeight += 1f;
+                stay.GetComponent<BoatPartOption>().mass = Mathf.RoundToInt(stay.mastHeight);
             }
             mainMast1M.extraBottomHeight = 0.5f;
             mainMast1M.mastHeight = 23f;
             mainMast2M.mastHeight = 24f;
+
+            int cabinMass = 600;
+            foreach (var partOption in partsList.availableParts[16].partOptions)
+            {
+                partOption.mass += cabinMass;
+                partOption.basePrice += cabinMass;
+            }
+            AccessTools.Field(typeof(BoatMass), "selfMass").SetValue(boat.GetComponent<BoatMass>(), (float)AccessTools.Field(typeof(BoatMass), "selfMass").GetValue(boat.GetComponent<BoatMass>()) - cabinMass);
+
             #endregion
 
             var prefab = AssetTools.bundle2.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_jong.prefab");
@@ -119,12 +129,6 @@ namespace ShipyardExpansion.ShipPatches
             walkCol.Find("walls mirrored").GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("walls").GetComponent<MeshFilter>().sharedMesh;
             walkCol.Find("trim mirrored").GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("trim").GetComponent<MeshFilter>().sharedMesh;
 
-            foreach (var partOption in partsList.availableParts[16].partOptions)
-            {
-                partOption.mass = +400;
-                partOption.basePrice += 400;
-            }
-            AccessTools.Field(typeof(BoatMass), "selfMass").SetValue(boat.GetComponent<BoatMass>(), (float)AccessTools.Field(typeof(BoatMass), "selfMass").GetValue(boat.GetComponent<BoatMass>()) - 400f);
             #endregion
 
             #region telltales
@@ -136,22 +140,33 @@ namespace ShipyardExpansion.ShipPatches
             #endregion
 
             #region shrouds
-            BoatPartOption mainMast1BPO = mainMast1.GetComponent<BoatPartOption>();
-            mainMast1BPO.childOptions = mainMast1BPO.childOptions.AddRangeToArray(new GameObject[]{ partsList.availableParts[13].partOptions[0].walkColObject, partsList.availableParts[13].partOptions[1].walkColObject });
+            BoatPartOption mainMast1_opt = mainMast1.GetComponent<BoatPartOption>();
+            mainMast1_opt.childOptions = mainMast1_opt.childOptions.AddRangeToArray(new GameObject[]{ partsList.availableParts[13].partOptions[0].walkColObject, partsList.availableParts[13].partOptions[1].walkColObject });
             partsList.availableParts[13].partOptions[1].transform.parent = thing.transform.Find("shrouds_main1_back");
             partsList.availableParts[13].partOptions[1].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main1_back");
             partsList.availableParts[13].partOptions[0].transform.parent = thing.transform.Find("shrouds_main1_side");
             partsList.availableParts[13].partOptions[0].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main1_side");
             partsList.availableParts[13].partOptions.RemoveRange(0, 3);
 
-            BoatPartOption mainMast2BPO = mainMast2M.GetComponent<BoatPartOption>();
-            mainMast2BPO.childOptions = mainMast2BPO.childOptions.AddRangeToArray(new GameObject[] { partsList.availableParts[14].partOptions[0].walkColObject, partsList.availableParts[14].partOptions[1].walkColObject });
+            BoatPartOption mainMast2_opt = mainMast2M.GetComponent<BoatPartOption>();
+            mainMast2_opt.childOptions = mainMast2_opt.childOptions.AddRangeToArray(new GameObject[] { partsList.availableParts[14].partOptions[0].walkColObject, partsList.availableParts[14].partOptions[1].walkColObject });
             partsList.availableParts[14].partOptions[1].transform.parent = thing.transform.Find("shrouds_main2_back");
             partsList.availableParts[14].partOptions[1].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main2_back");
             partsList.availableParts[14].partOptions[0].transform.parent = thing.transform.Find("shrouds_main2_side");
             partsList.availableParts[14].partOptions[0].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main2_side");
             partsList.availableParts[14].partOptions.RemoveRange(0, 3);
 
+            var mizzen1 = mainMast1.parent.Find("mast_back");
+            BoatPartOption mizzen1_opt = mizzen1.GetComponent<BoatPartOption>();
+            mizzen1_opt.childOptions = mizzen1_opt.childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("shrouds_mizzen_back").GetChild(0).gameObject, modWalkCol.transform.Find("shrouds_mizzen_back").GetChild(0).gameObject});
+            var miz_side_opt = thing.transform.Find("shrouds_mizzen_side").GetComponent<BoatPartOption>();
+            miz_side_opt.childOptions = miz_side_opt.childOptions.AddRangeToArray(new GameObject[] { mizzen1.Find("static_rig_002").gameObject, mizzen1.Find("static_rope_atts_001").gameObject, mizzen1_opt.walkColObject.transform.Find("static_rig_002").gameObject, mizzen1_opt.walkColObject.transform.Find("static_rope_atts_001").gameObject });
+
+            var foremast1 = mainMast1.parent.Find("mast_front");
+            BoatPartOption foremast1_opt = foremast1.GetComponent<BoatPartOption>();
+            foremast1_opt.childOptions = foremast1_opt.childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("shrouds_fore_back").GetChild(0).gameObject, modWalkCol.transform.Find("shrouds_fore_back").GetChild(0).gameObject });
+            var fore_side_opt = thing.transform.Find("shrouds_fore_side").GetComponent<BoatPartOption>();
+            fore_side_opt.childOptions = fore_side_opt.childOptions.AddRangeToArray(new GameObject[] { foremast1.Find("static_rig_007").gameObject, foremast1.Find("static_rope_atts").gameObject, foremast1_opt.walkColObject.transform.Find("static_rig_007").gameObject, foremast1_opt.walkColObject.transform.Find("static_rope_atts").gameObject });
             #endregion
         }
     }
