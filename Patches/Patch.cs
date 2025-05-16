@@ -18,7 +18,11 @@ namespace ShipyardExpansion
             public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts, BoatRefs ___refs)
             {
                 if (!AssetTools.bundle || !AssetTools.bundle2) AssetTools.LoadAssetBundles();
-                
+
+                foreach (var mast in ___refs.masts)
+                {
+                    if (mast != null) Plugin.mastHeights.Add(mast, mast.mastHeight);
+                }
                 Array.Resize(ref ___refs.masts, Plugin.mastListSize);
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
 

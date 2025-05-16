@@ -150,20 +150,30 @@ namespace ShipyardExpansion
                 }
                 Plugin.converted.Add(refs.gameObject, data);
             }
+            // if we don't know the file version yet, bug out
             if (VersionManager.saveVersion < 0) return;
-            if (VersionManager.saveVersion == 0 && index == 20 && data.partActiveOptions[3] > 3)
+            if (VersionManager.saveVersion == 0)
             {
-                data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
-                data.partActiveOptions[3] = 4;
+                // convert sanbuq topmast forestays
+                if (index == 20 && data.partActiveOptions[3] > 3)
+                {
+                    data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
+                    data.partActiveOptions[3] = 4;
+                }
+                // adjust installed sail heights for new mast heights
+                foreach (var sail in data.sails)
+                {
+                    var mast = refs.masts[sail.mastIndex];
+                    sail.installHeight += mast.mastHeight - Plugin.mastHeights[mast];
+                }
             }
-
             // convert Jong shrouds. having this here could be a problem
             if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 90 && index == 70)
             {
                 if (data.partActiveOptions[13] > 1) data.partActiveOptions[13] = 1;
                 if (data.partActiveOptions[14] > 1) data.partActiveOptions[14] = 1;
             }
-            // if the convert setting is off or we don't know the file version yet, bug out
+            // if the convert setting is off, bug out
             if (!Plugin.convertSave.Value) return;
             if (VersionManager.saveVersion2[0] >= 1)
             {

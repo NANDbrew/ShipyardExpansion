@@ -26,6 +26,7 @@ namespace ShipyardExpansion
         public static int stockSailsListSize;
         public static Dictionary<GameObject, SaveBoatCustomizationData> converted;
         public static Transform prefabContainer;
+        public static Dictionary<Mast, float> mastHeights = new Dictionary<Mast, float>();
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -40,6 +41,7 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> skipSailData;
         internal static ConfigEntry<bool> starterSetFix;
         internal static ConfigEntry<int> climbSpeed;
+        internal static ConfigEntry<bool> topsailPatch;
 
         private void Awake()
         {
@@ -61,6 +63,7 @@ namespace ShipyardExpansion
             percentSailNames = Config.Bind("Settings", "Show percent scale in sail name", true, new ConfigDescription(""));
             autoFit = Config.Bind("Settings", "Auto-fit sails", true, new ConfigDescription("Automatically scale too-big sails to fit the mast"));
             climbSpeed = Config.Bind("Settings", "Climb speed", 10, new ConfigDescription("Speed when climbing up to tops/crow's nests", new AcceptableValueRange<int>(2, 15)));
+            topsailPatch = Config.Bind("Settings", "Link topmasts", true, new ConfigDescription("Link square sail angles on topmasts to the ones on the mast below (requires a restart)"));
 
 
         }

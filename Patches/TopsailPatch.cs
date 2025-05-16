@@ -13,13 +13,14 @@ namespace ShipyardExpansion.Patches
     {
         private static void Postfix(GameObject squareSail, Mast __instance, ref bool __result)
         {
+            if (!Plugin.topsailPatch.Value) return;
             if (__instance.GetComponent<BoatPartOption>()?.childMast is Mast childMast)
             {
                 for (int num = childMast.sails.Count - 1; num >= 0; num--)
                 {
                     if (childMast.sails[num] != null && childMast.sails[num].GetComponent<Sail>().squareSail)
                     {
-                        Debug.Log("SE topsail patch => " + __instance.gameObject.name + "." + squareSail.name + ": adding topsail component.");
+                        Debug.Log($"SE topsail patch => {__instance.gameObject.name}.{squareSail.name}: adding topsail component.");
                         squareSail.AddComponent<SquareTopsailAngleMirror>().sailBelow = childMast.sails[num].GetComponent<HingeJoint>();
                         __result = true;
                         break;
@@ -34,6 +35,7 @@ namespace ShipyardExpansion.Patches
     {
         private static void Postfix(Mast __instance)
         {
+            if (!Plugin.topsailPatch.Value) return;
             AssetTools.AutoLinkMast(__instance);
         }
     }

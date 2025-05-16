@@ -49,6 +49,7 @@ namespace ShipyardExpansion
                     {
                         obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
                     }
+                    Debug.Log("SE version manager: reapplied SaveableBoatCustomization");
                 }
             }
             else
@@ -56,13 +57,11 @@ namespace ShipyardExpansion
                 saveVersion2 = new int[]{ 0, 0, 0 };
                 saveVersion = 0;
 
-                if (Plugin.convertSave.Value)
+                foreach (GameObject obj in Plugin.converted.Keys)
                 {
-                    foreach (GameObject obj in Plugin.converted.Keys)
-                    {
-                        obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
-                    }
+                    obj.GetComponent<SaveableBoatCustomization>().LoadData(Plugin.converted[obj]);
                 }
+                Debug.Log("SE version manager: reapplied SaveableBoatCustomization");
             }
             Debug.Log("SE save version read: " + saveVersion);
             Debug.Log("SE save version2: " + saveVersion2[0].ToString() + " " + saveVersion2[1] + " " + saveVersion2[2]);
