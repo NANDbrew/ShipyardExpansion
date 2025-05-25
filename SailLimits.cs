@@ -42,6 +42,8 @@ namespace ShipyardExpansion
             { 70, new float[2]{ 0.5f, 3.5f } },
             { 71, new float[2]{ 0.5f, 3.5f } },
             { 72, new float[2]{ 0.5f, 3.5f } },
+
+            { 113, new float[2]{ 0.35f, 2.0f } },
         };
 
         public static readonly Dictionary<int, float[]> ratioLimits = new Dictionary<int, float[]>
