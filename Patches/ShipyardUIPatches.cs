@@ -171,9 +171,10 @@ namespace ShipyardExpansion
             SailScaler currentSail = null;
             if (active) currentSail = GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>();
             bool rotatable = active && currentSail != null && currentSail.rotatablePart != null;
-            bool heightable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Square));
+            bool heightable = active && currentSail != null && currentSail.GetScaleType().Equals(ScaleType.Square) && !Plugin.combinedScale.Value;
             bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
             bool flippable = active && currentSail != null && currentSail.flippable;
+            
             scaleUpButton.SetActive(active && !heightable);
             scaleDownButton.SetActive(active && !heightable);
 
