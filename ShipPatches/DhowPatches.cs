@@ -54,9 +54,9 @@ namespace ShipyardExpansion
             tallMastReefAtt.parent.localPosition += new Vector3(0f, 0f, 0.3f);
             mainMastTallM.mastReefAtt[0] = tallMastReefAtt;
             mainMastTallM.mastReefAtt[1] = tallMastReefAtt;
-            mainMastTall.GetComponent<CapsuleCollider>().radius = 0.2f;
+            //mainMastTall.GetComponent<CapsuleCollider>().radius = 0.2f;
 
-            mainMast.GetComponent<CapsuleCollider>().radius = 0.2f;
+            //mainMast.GetComponent<CapsuleCollider>().radius = 0.2f;
 
             container.Find("Cylinder").gameObject.SetActive(false);
             container.Find("Cylinder_002").gameObject.SetActive(false);

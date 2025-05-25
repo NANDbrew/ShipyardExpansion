@@ -125,8 +125,8 @@ namespace ShipyardExpansion
 
             mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_main").Find("mast_0").gameObject);
             mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_main").Find("mast_1").gameObject);
-            topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(thing.transform.Find("crowsnest_0").GetComponent<CapsuleCollider>());
-            topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(thing.transform.Find("crowsnest_1").GetComponent<CapsuleCollider>());
+            //topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(thing.transform.Find("crowsnest_0").GetComponent<CapsuleCollider>());
+            //topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(thing.transform.Find("crowsnest_1").GetComponent<CapsuleCollider>());
             #endregion
 
             #region hammock
