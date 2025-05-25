@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using HarmonyLib;
 using SE_Bridge;
 using ShipyardExpansion.Scripts;
 using System;
@@ -144,28 +145,32 @@ namespace ShipyardExpansion
 
             }
             //optData.enabled = false;
+
         }
 
-        public static bool AutoLinkMast(Mast mast)
+        private static void HandleMastCols(SE_PartOptionData optData, BoatPartOption opt, BoatCustomParts partsList)
         {
-            if (mast.onlyStaysails || mast.onlySquareSails) return false;
-            if (mast.GetComponent<BoatPartOption>() is BoatPartOption opt && opt.childMast == null)
+            var masts = new List<Mast>();
+            foreach (var req in opt.requires)
             {
-                foreach (var req in opt.requires)
+                if (req.GetComponent<Mast>() is Mast mast)
                 {
-                    if (req.GetComponent<Mast>() is Mast toLink)
-                    {
-                        opt.childMast = toLink;
-#if DEBUG
-                        Debug.Log("SE: linking masts " + opt.optionName + " and " + req.optionName);
-#endif
-                        return true;
-                    }
+                    masts.Add(mast);
                 }
             }
-            return false;
+            if (optData.mastVanilla1.Length == 2 && partsList.availableParts[optData.mastVanilla1[0]].partOptions[optData.mastVanilla1[1]].GetComponent<Mast>() is Mast m1)
+            {
+                masts.Add(m1);
+            }
+            if (optData.mastVanilla2.Length == 2 && partsList.availableParts[optData.mastVanilla2[0]].partOptions[optData.mastVanilla2[1]].GetComponent<Mast>() is Mast m2)
+            {
+                masts.Add(m2);
+            }
+            foreach (var mast in masts)
+            {
+                mast.mastCols = mast.mastCols.AddRangeToArray(optData.colliders.ToArray());
+            }
         }
-
 
         public static Dictionary<string, BoatPart> HandleImports(GameObject thing, BoatCustomParts partsList)
         {
@@ -188,11 +193,6 @@ namespace ShipyardExpansion
                     if (opt.GetComponent<SE_PartOptionData>() is SE_PartOptionData optData)
                     {
                         ReqTranslate(optData, opt, partsList);
-                        //optData.enabled = false;
-                        if (opt.GetComponent<Mast>() is Mast mast)
-                        {
-                            AutoLinkMast(mast);
-                        }
                     }
 
                 }
@@ -206,15 +206,15 @@ namespace ShipyardExpansion
             foreach (SE_PartOptionData optData in boatData.options)
             {
                 Debug.Log(optData.name);
-                if (optData.GetComponent<BoatPartOption>() is BoatPartOption opt && optData.parentPartIndex > -1)
+                if (optData.GetComponent<BoatPartOption>() is BoatPartOption opt)
                 {
-                    ReqTranslate(optData, opt, partsList);
-                    partsList.availableParts[optData.parentPartIndex].partOptions.Add(opt);
-                    //optData.enabled = false;
-                    if (opt.GetComponent<Mast>() is Mast mast)
+                    if (optData.parentPartIndex > -1)
                     {
-                        AutoLinkMast(mast);
+                        ReqTranslate(optData, opt, partsList);
+                        partsList.availableParts[optData.parentPartIndex].partOptions.Add(opt);
                     }
+                    HandleMastCols(optData, opt, partsList);
+
 #if DEBUG
                     if (opt.walkColObject.layer != 8) Debug.Log("part " + opt.gameObject.name + " walk col is not layer 8");
 #endif
