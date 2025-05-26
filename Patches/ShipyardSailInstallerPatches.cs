@@ -20,6 +20,14 @@ namespace ShipyardExpansion
             SailScaler component = sailObject.GetComponent<SailScaler>();// ?? sailObject.AddComponent<SailScaler>();
             component.UpdateInstallHeight(___currentMast.transform);
 
+            Sail component2 = sailObject.GetComponent<Sail>();
+            if (Plugin.autoFit.Value && component2.installHeight > ___currentMast.mastHeight)
+            {
+                float extraHeight = component2.UseExtendedMastHeight()? ___currentMast.extraBottomHeight : 0;
+                component.SetScaleRel((___currentMast.mastHeight + extraHeight - 0.1f) / component.GetBaseHeight());
+                //__instance.MoveHeldSail(component2.installHeight - component.GetBaseHeight() - extraHeight);
+
+            }
         }
         public static void Postfix(ref Sail ___selectedSail, Mast ___currentMast, ShipyardSailInstaller __instance)
         {
@@ -40,11 +48,6 @@ namespace ShipyardExpansion
                 component.SetAngle(component.transform.eulerAngles.y);
             }
 
-            if (Plugin.autoFit.Value && ___selectedSail.installHeight > ___currentMast.mastHeight)
-            {
-                component.SetScaleRel((___currentMast.mastHeight - 0.1f) / component.GetBaseHeight());
-                __instance.MoveHeldSail(___selectedSail.installHeight - component.GetBaseHeight());
-            }
         }
 
     }
