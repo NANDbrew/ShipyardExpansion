@@ -119,7 +119,7 @@ namespace ShipyardExpansion
             UnityEngine.Object.Destroy(decreaseHeightButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonShorter = decreaseHeightButton.AddComponent<SailScaleButton>();
             buttonShorter.buttonType = SailScaleButton.ButtonType.decreaseHeight;
-            buttonShorter.SetText("Decrease\nHeight");
+            buttonShorter.SetText("Reduce\nHeight");
 
             increaseWidthButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
             increaseWidthButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
@@ -135,7 +135,7 @@ namespace ShipyardExpansion
             UnityEngine.Object.Destroy(decreaseWidthButton.GetComponent<ShipyardButton>());
             SailScaleButton buttonNarrower = decreaseWidthButton.AddComponent<SailScaleButton>();
             buttonNarrower.buttonType = SailScaleButton.ButtonType.decreaseWidth;
-            buttonNarrower.SetText("Decrease\nWidth");
+            buttonNarrower.SetText("Reduce\nWidth");
 
 
             rotateForwardButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
