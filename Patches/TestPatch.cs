@@ -4,39 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
+using SE_Bridge;
 using UnityEngine;
 
 namespace ShipyardExpansion.Patches
 {
-    [HarmonyPatch(typeof(BoatPart), "SetOptionEnabled")]
+    [HarmonyPatch(typeof(Mast), "Awake")]
     internal static class TestPatch
     {
-        public static bool Prefix(int i, bool state, BoatPart __instance)
+        public static void Postfix(Mast __instance)
         {
-            try 
+            if (__instance.onlyStaysails)
             {
-                __instance.partOptions[i].gameObject.SetActive(state);
-                GameObject[] childOptions = __instance.partOptions[i].childOptions;
-                for (int j = 0; j < childOptions.Length; j++)
+                var col = __instance.GetComponent<CapsuleCollider>() ?? __instance.gameObject.AddComponent<CapsuleCollider>();
+                col.direction = 2;
+                col.center = new Vector3(0f, 0f, -(__instance.mastHeight / 2));
+                col.radius = 0.1f;
+                col.height = __instance.mastHeight;
+                foreach (var req in __instance.GetComponent<BoatPartOption>()?.requires)
                 {
-                    childOptions[j].SetActive(state);
+                    if (req.GetComponent<Mast>() is Mast mast && !mast.mastCols.Contains(col))
+                    {
+                        mast.mastCols = mast.mastCols.AddToArray(col);
+                    }
                 }
-
-                if (__instance.partOptions[i].walkColObject == null)
-                {
-                    Debug.LogError(__instance.partOptions[i].optionName + ": no walkColObject set.");
-                }
-                else
-                {
-                    __instance.partOptions[i].walkColObject.SetActive(state);
-                }
+                __instance.gameObject.AddComponent<SE_ClothColToggler>();
             }
-            catch
-            {
-                Debug.LogError("something went wrong with " + __instance.partOptions[i].name); 
-            }
-
-            return false;
         }
     }
 }
