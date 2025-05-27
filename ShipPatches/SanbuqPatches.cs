@@ -22,7 +22,9 @@ namespace ShipyardExpansion
             Transform mainMast2 = structure.Find("mast_1");
             Transform mizzenMast1 = structure.Find("mast_002");
             Transform topMast1 = structure.Find("mast_0_extension");
+            var topmast1M = topMast1.GetComponent<Mast>();
             Transform topMast2 = structure.Find("mast_1_extension");
+            var topmast2M = topMast2.GetComponent<Mast>();
             Transform topmastStay1 = container.Find("forestay_0_extension_long");
             Transform topmastStay2 = container.Find("forestay_1_extension_long");
             Transform topmastStay3 = container.Find("forestay_1_extension_short");
@@ -55,7 +57,8 @@ namespace ShipyardExpansion
 
             /*BoatPartOption bowspritNone = Util.CreatePartOption(container, "(empty bowsprit)", "(no bowsprit)");
             partsList.availableParts[2].partOptions.Add(bowspritNone);*/
-
+            topmast1M.extraBottomHeight += 1f;
+            topmast2M.extraBottomHeight += 1f;
             mainMast1.GetComponent<Mast>().mastHeight += 0.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight -= 0.5f;
             mainMast2.GetComponent<Mast>().mastHeight += 0.5f;
@@ -140,6 +143,14 @@ namespace ShipyardExpansion
 
             #region late adjustments
             Debug.Log("Sanbuq late adjustments");
+
+            topmast1M.mastReefAtt = topmast1M.mastReefAtt.AddRangeToArray(topmast1M.mastReefAtt);
+            topmast1M.reefWinch = topmast1M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension0_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
+
+            topmast2M.mastReefAtt = topmast2M.mastReefAtt.AddRangeToArray(topmast2M.mastReefAtt);
+            topmast2M.reefWinch = topmast2M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension1_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
+
+
             partsList.availableParts[3].category = 2;
             foreach (BoatPartOption stay in partsList.availableParts[3].partOptions)
             {
