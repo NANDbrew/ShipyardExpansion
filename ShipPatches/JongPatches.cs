@@ -99,6 +99,19 @@ namespace ShipyardExpansion.ShipPatches
             mainMast2M.midRopeAtt[0].parent.gameObject.SetActive(false);
             mainMast2M.midRopeAtt = thing.transform.Find("mast_main_2_f").GetComponent<Mast>().midRopeAtt;
 
+            mainMast1M.maxSails += 1;
+            mainMast1M.reefWinch = mainMast1M.reefWinch.AddToArray(thing.transform.Find("winches/winch_front_reef_extra").GetComponent<GPButtonRopeWinch>());
+            mainMast1M.midAngleWinch = mainMast1M.midAngleWinch.AddToArray(thing.transform.Find("winches/winch_angle_main_front (3)").GetComponent<GPButtonRopeWinch>());
+            mainMast1M.mastReefAtt = mainMast1M.mastReefAtt.AddToArray(mainMast1M.mastReefAtt.Last());
+            mainMast1M.mastReefAttExtension = mainMast1M.mastReefAttExtension.AddToArray(mainMast1M.mastReefAttExtension.Last());
+
+            mainMast2M.maxSails += 1;
+            mainMast2M.reefWinch = mainMast2M.reefWinch.AddToArray(thing.transform.Find("winches/winch_back_reef_extra").GetComponent<GPButtonRopeWinch>());
+            mainMast2M.midAngleWinch = mainMast2M.midAngleWinch.AddToArray(thing.transform.Find("winches/winch_angle_main_back (3)").GetComponent<GPButtonRopeWinch>());
+            mainMast2M.mastReefAtt = mainMast2M.mastReefAtt.AddToArray(mainMast2M.mastReefAtt.Last());
+            mainMast2M.mastReefAttExtension = mainMast2M.mastReefAttExtension.AddToArray(mainMast2M.mastReefAttExtension.Last());
+
+
             #endregion
             #region cabinStuff
             container.Find("trim").gameObject.SetActive(false);
