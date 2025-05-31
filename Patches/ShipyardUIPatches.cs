@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using UnityEngine;
 
-namespace ShipyardExpansion
+namespace ShipyardExpansion.Patches
 {
 
     [HarmonyPatch(typeof(ShipyardUI))]

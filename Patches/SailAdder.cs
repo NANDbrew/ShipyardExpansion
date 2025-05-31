@@ -7,7 +7,7 @@ using UnityEngine;
 using HarmonyLib;
 using Unity.Collections.LowLevel.Unsafe;
 
-namespace ShipyardExpansion
+namespace ShipyardExpansion.Patches
 {
     [HarmonyPatch(typeof(WindCloth), "Awake")]
     internal static class SailMaterialPatches

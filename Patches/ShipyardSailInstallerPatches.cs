@@ -10,7 +10,7 @@ using HarmonyLib;
 using Mono.Cecil;
 using UnityEngine;
 
-namespace ShipyardExpansion
+namespace ShipyardExpansion.Patches
 {
     [HarmonyPatch(typeof(ShipyardSailInstaller), "AddNewSail")]
     internal static class ShipyardSailInstallerPatches
