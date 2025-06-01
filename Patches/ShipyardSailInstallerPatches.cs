@@ -17,7 +17,7 @@ namespace ShipyardExpansion.Patches
     {
         public static void Prefix(GameObject sailObject, Mast ___currentMast)
         {
-            SailScaler component = sailObject.GetComponent<SailScaler>();// ?? sailObject.AddComponent<SailScaler>();
+            SailScaler component = sailObject.GetComponent<SailScaler>();
             component.UpdateInstallHeight(___currentMast.transform);
 
             Sail component2 = sailObject.GetComponent<Sail>();
@@ -25,33 +25,19 @@ namespace ShipyardExpansion.Patches
             {
                 float extraHeight = component2.UseExtendedMastHeight()? ___currentMast.extraBottomHeight : 0;
                 component.SetScaleRel((___currentMast.mastHeight + extraHeight - 0.1f) / component.GetBaseHeight());
-                //__instance.MoveHeldSail(component2.installHeight - component.GetBaseHeight() - extraHeight);
 
             }
         }
         public static void Postfix(ref Sail ___selectedSail)
         {
             SailScaler component = ___selectedSail.GetComponent<SailScaler>();
-            //float tilt = 0;
             if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen)
             {
                 VertifySail(component);
-/*                ___selectedSail.transform.eulerAngles = new Vector3(270, 0, 0);
-                ___selectedSail.transform.localEulerAngles = new Vector3(0, ___selectedSail.transform.localEulerAngles.y, 0);
-                component.SetAngle(___selectedSail.transform.localEulerAngles.y);*/
             }
             if (Plugin.vertFins.Value && ___selectedSail.category == SailCategory.other && ___selectedSail.name.Contains("junklateen"))
             {
                 VertifySail(component);
-
-/*                ___selectedSail.transform.eulerAngles = new Vector3(270, 0, 0);
-                ___selectedSail.transform.localEulerAngles = new Vector3(0, ___selectedSail.transform.localEulerAngles.y, 0);
-
-                component.SetAngle(___selectedSail.transform.localEulerAngles.y);
-                if (component.rotatablePart != ___selectedSail.transform)
-                {
-                    ___selectedSail.transform.localEulerAngles = Vector3.zero;
-                }*/
 
             }
 
@@ -69,6 +55,7 @@ namespace ShipyardExpansion.Patches
 
     }
 
+    // --- lug sail hacks ---
     [HarmonyPatch(typeof(ShipyardSailColChecker), "RunColCheck")]
     internal static class ColCheckPatch
     {
@@ -77,13 +64,10 @@ namespace ShipyardExpansion.Patches
             if (___sail.GetComponent<SailScaler>().rotatablePart)
             {
                 ___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().rotatablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
-
             }
 
-            if (__instance.GetComponent<SailPartLocations>() is SailPartLocations partLocations/*___sail.name.Contains("lug")*/)
+            if (__instance.GetComponent<SailPartLocations>() is SailPartLocations partLocations)
             {
-                //___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().scaleablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
-
                 foreach (ShipyardSailColCheckerSub sub in __instance.GetComponentsInChildren<ShipyardSailColCheckerSub>())
                 {
                     sub.transform.localPosition = partLocations.locations[sub.transform.GetSiblingIndex()];
