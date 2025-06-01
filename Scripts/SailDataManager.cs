@@ -49,6 +49,11 @@ namespace ShipyardExpansion
                     if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
                     {
                         SailScaler component = installedSail.GetComponent<SailScaler>();
+                        if (component == null)
+                        {
+                            Debug.Log("No sail scaler component found");
+                            continue;
+                        }
                         component.SetScaleAbs(Convert.ToSingle(sailInfo[1], CultureInfo.InvariantCulture), Convert.ToSingle(sailInfo[2], CultureInfo.InvariantCulture));
                         if (sailInfo.Length >= 4)
                         {
@@ -67,6 +72,8 @@ namespace ShipyardExpansion
 
         public static void SaveSailConfig(BoatRefs refs)
         {
+            if (Plugin.skipSailData.Value) return;
+
             Debug.Log("attempting to save data");
             string boat = "SEboatSails." + refs.GetComponent<SaveableObject>().sceneIndex.ToString();
             string text = "";
@@ -81,6 +88,12 @@ namespace ShipyardExpansion
                 foreach (GameObject sail in mast.sails)
                 {
                     SailScaler component = sail.GetComponent<SailScaler>();
+                    if (component == null)
+                    {
+                        Debug.Log("No sail scaler component found");
+                        continue;
+                    }
+
                     Sail component2 = sail.GetComponent<Sail>();
                     text += component2.prefabIndex.ToString(CultureInfo.InvariantCulture) + ",";
 
