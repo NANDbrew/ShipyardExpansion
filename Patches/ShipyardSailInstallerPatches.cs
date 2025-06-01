@@ -29,25 +29,42 @@ namespace ShipyardExpansion.Patches
 
             }
         }
-        public static void Postfix(ref Sail ___selectedSail, Mast ___currentMast, ShipyardSailInstaller __instance)
+        public static void Postfix(ref Sail ___selectedSail)
         {
             SailScaler component = ___selectedSail.GetComponent<SailScaler>();
             //float tilt = 0;
             if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen)
             {
-                ___selectedSail.transform.eulerAngles = new Vector3(270, 0, 0); // new Vector3(tilt, __instance.transform.eulerAngles.y, __instance.transform.eulerAngles.z);
+                VertifySail(component);
+/*                ___selectedSail.transform.eulerAngles = new Vector3(270, 0, 0);
                 ___selectedSail.transform.localEulerAngles = new Vector3(0, ___selectedSail.transform.localEulerAngles.y, 0);
-                component.SetAngle(___selectedSail.transform.localEulerAngles.y);
+                component.SetAngle(___selectedSail.transform.localEulerAngles.y);*/
             }
-            if (Plugin.vertFins.Value && ___selectedSail.category == SailCategory.other && !___selectedSail.sailName.Contains("lug"))
+            if (Plugin.vertFins.Value && ___selectedSail.category == SailCategory.other && ___selectedSail.name.Contains("junklateen"))
             {
-                //Transform child = component.rotatablePart;
-                //Vector3 oldRot = child.localEulerAngles;
-                //child.eulerAngles = new Vector3(0, 0, 0);
-                //child.localEulerAngles = new Vector3(oldRot.x, child.localEulerAngles.y + 90, oldRot.z);
-                component.SetAngle(component.transform.eulerAngles.y);
+                VertifySail(component);
+
+/*                ___selectedSail.transform.eulerAngles = new Vector3(270, 0, 0);
+                ___selectedSail.transform.localEulerAngles = new Vector3(0, ___selectedSail.transform.localEulerAngles.y, 0);
+
+                component.SetAngle(___selectedSail.transform.localEulerAngles.y);
+                if (component.rotatablePart != ___selectedSail.transform)
+                {
+                    ___selectedSail.transform.localEulerAngles = Vector3.zero;
+                }*/
+
             }
 
+        }
+        private static void VertifySail(SailScaler sail)
+        {
+            sail.transform.eulerAngles = new Vector3(270, 0, 0);
+            sail.transform.localEulerAngles = new Vector3(0, sail.transform.localEulerAngles.y, 0);
+            sail.SetAngle(sail.transform.localEulerAngles.y);
+            if (sail.rotatablePart != sail.transform)
+            {
+                sail.transform.localEulerAngles = Vector3.zero;
+            }
         }
 
     }
