@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ShipyardExpansion
@@ -173,22 +171,12 @@ namespace ShipyardExpansion
                 if (data.partActiveOptions[13] > 1) data.partActiveOptions[13] = 1;
                 if (data.partActiveOptions[14] > 1) data.partActiveOptions[14] = 1;
             }
+
             // if the convert setting is off, bug out
             if (!Plugin.convertSave.Value) return;
-            if (VersionManager.saveVersion2[0] >= 1)
-            {
-                Debug.Log("save version >= 1.0, not converting");
-                return;
-            }
 
-
-            if (VersionManager.saveVersion2[1] >= 5)
-            {
-                Debug.Log("save version >= 0.5, not converting");
-                return;
-            }
             // convert to SE v0.5
-            if (Plugin.converted.ContainsKey(refs.gameObject))
+            if (VersionManager.saveVersion2[1] < 5)
             {
                 //Debug.Log("brig??");
                 foreach (SaveSailData sailData in data.sails)
@@ -221,7 +209,26 @@ namespace ShipyardExpansion
                     else if (data.partActiveOptions[6] == 3) data.partActiveOptions[6] = 2;
                 }
 
-                SailDataManager.SaveSailConfig(refs);
+                SailDataManager.SaveSailConfig(refs); // this assumes the sails have been installed, I think
+            }
+
+            // convert to SE v0.6.93. This is just sail position adjustments
+            if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 93)
+            {
+                if (index == 20 || index == 50)
+                {
+                    int[] mastIndices = new int[0];
+                    if (index == 20) mastIndices = new int[5] { 13, 14, 64, 59, 70 };
+                    else if (index == 50) mastIndices = new int[6] { 55, 56, 57, 58, 59, 60 };
+
+                    foreach (var sail in data.sails)
+                    {
+                        if (mastIndices.Contains(sail.mastIndex))
+                        {
+                            sail.installHeight += 1f;
+                        }
+                    }
+                }
             }
 
         }
