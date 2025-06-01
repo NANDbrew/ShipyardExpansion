@@ -22,8 +22,6 @@ namespace ShipyardExpansion
             Mast mizzenMastM = mizzenMast.GetComponent<Mast>();
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
 
-            PartRefs.kakam = container;
-            PartRefs.kakamCol = walkCol;
             boat.GetComponent<BoatRefs>().walkCol = walkCol; // fix vanilla missing ref
 
             // add references for save cleaner

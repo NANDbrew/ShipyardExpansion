@@ -44,11 +44,7 @@ namespace ShipyardExpansion
             }
             Plugin.moddedBoats.Add(partsList);
 
-            PartRefs.junk = container;
-            PartRefs.junkCol = walkCol;
-
             #region adjustments
-
 
             mainMast1.GetComponent<Mast>().mastHeight = 18.8f;//= 17.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;

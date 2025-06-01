@@ -27,8 +27,6 @@ namespace ShipyardExpansion
             Transform foreMast2 = structure.Find("mast_Front_1");
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
             
-            PartRefs.brig = container;
-            PartRefs.brigCol = walkCol;
 
             // add references for save cleaner
             foreach (var part in partsList.availableParts)

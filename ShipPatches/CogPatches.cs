@@ -82,9 +82,6 @@ namespace ShipyardExpansion
             Mast mainMast1M = mainMast1.GetComponent<Mast>();
             Transform mizzenMast = structure.Find("mast_mizzen");
             Mast mizzenMastM = mizzenMast.GetComponent<Mast>();
-            PartRefs.cog = container;
-            PartRefs.cogCol = walkCols;
-
 
             #region adjustments
             mainMast1M.mastHeight += 1.2f;//= 11.5f;

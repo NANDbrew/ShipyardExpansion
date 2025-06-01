@@ -33,10 +33,6 @@ namespace ShipyardExpansion
             Mast topmastStay3_mast = topmastStay3.GetComponent<Mast>();
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
 
-           // Plugin.topmastRef = topMast1;
-            PartRefs.sanbuq = container;
-            PartRefs.sanbuqCol = walkCol;
-
             // add references for save cleaner
             foreach (var part in partsList.availableParts)
             {

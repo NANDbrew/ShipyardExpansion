@@ -24,9 +24,6 @@ namespace ShipyardExpansion
             Transform shortForestay = container.Find("forestay_low");
             Transform lowForestay = container.Find("forestay");
 
-            PartRefs.dhow = container;
-            PartRefs.dhowCol = walkCol;
-
             // add references for save cleaner
             foreach (var part in partsList.availableParts)
             {
