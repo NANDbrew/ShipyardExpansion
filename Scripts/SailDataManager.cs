@@ -32,12 +32,16 @@ namespace ShipyardExpansion
 
                 int mastIndex = Convert.ToInt32(foo[0]);
                 if (mastIndex >= refs.masts.Length) break;
+
+                #region convert from SE v4.5
                 if (Plugin.convertSave.Value && VersionManager.saveVersion2[1] < 5 && mastIndex > 30 && mastIndex < 50)
                 {
                     Debug.Log("mast index? " + mastIndex);
                     mastIndex += 20;
                     Debug.Log("mast index! " + mastIndex);
                 }
+                #endregion
+
                 Mast mastComp = refs.masts[mastIndex];
                 if (mastComp == null) continue;
 
@@ -46,8 +50,8 @@ namespace ShipyardExpansion
                 {
                     GameObject installedSail = mastComp.sails[i];
                     string[] sailInfo = sails[i].Split(',');
-                    if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
-                    {
+                    //if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
+                    //{
                         SailScaler component = installedSail.GetComponent<SailScaler>();
                         if (component == null)
                         {
@@ -64,7 +68,7 @@ namespace ShipyardExpansion
                                 component.FlipJib(true);
                             }
                         }
-                    }
+                    //}
                 }
 
             }
@@ -90,15 +94,12 @@ namespace ShipyardExpansion
                     SailScaler component = sail.GetComponent<SailScaler>();
                     if (component == null)
                     {
-                        Debug.Log("No sail scaler component found");
-                        continue;
+                        Debug.LogError("No sail scaler component found! Aborting data for this boat");
+                        return;
                     }
 
                     Sail component2 = sail.GetComponent<Sail>();
                     text += component2.prefabIndex.ToString(CultureInfo.InvariantCulture) + ",";
-
-                    //text += mast.orderIndex.ToString() + ",";
-
                     text += component.Scale.x.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Scale.y.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Angle.ToString(CultureInfo.InvariantCulture);
