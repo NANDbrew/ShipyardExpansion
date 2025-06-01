@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using SE_Bridge;
+using System;
 
 namespace ShipyardExpansion
 {
@@ -28,13 +29,13 @@ namespace ShipyardExpansion
             Transform walkCol = walkColStruct.parent;
             Mast mizzenMast1M = mizzenMast1.GetComponent<Mast>();
             Mast mizzenMast2M = mizzenMast2.GetComponent<Mast>();
-            var midstaySource = container.Find("midstay_1-1");
-            Transform forestay = container.Find("forestay_1");
-            var forestaySource = container.Find("forestay_foremast");
+            var midstay_1_1 = container.Find("midstay_1-1");
+            Transform forestay_1 = container.Find("forestay_1");
+            var forestay_foremast = container.Find("forestay_foremast");
             var forestay1Lower = container.Find("forestay_1_lower");
             var forestay0Lower = container.Find("forestay_0_lower");
             var forestay0 = container.Find("forestay_0");
-            var forestayMid = container.Find("forestay_0_mid");
+            var forestay0mid = container.Find("forestay_0_mid");
 
             // add references for save cleaner
             foreach (var part in partsList.availableParts)
@@ -43,34 +44,11 @@ namespace ShipyardExpansion
             }
             Plugin.moddedBoats.Add(partsList);
 
-
-            Transform ropeExtMain1 = UnityEngine.Object.Instantiate(mainMast1.GetComponent<Mast>().mastReefAttExtension[0].parent, mainMast1);
-            ropeExtMain1.localPosition = new Vector3(ropeExtMain1.localPosition.x, -ropeExtMain1.localPosition.y, ropeExtMain1.localPosition.z);
-            ropeExtMain1.localEulerAngles = new Vector3(50, 270, 172);
-            Transform ropeExtMain2 = UnityEngine.Object.Instantiate(mainMast2.GetComponent<Mast>().mastReefAttExtension[0].parent, mainMast2);
-            ropeExtMain2.localPosition = new Vector3(ropeExtMain2.localPosition.x, -ropeExtMain2.localPosition.y, ropeExtMain2.localPosition.z);
-            ropeExtMain2.localEulerAngles = new Vector3(50, 270, 172);
-
-
             PartRefs.junk = container;
             PartRefs.junkCol = walkCol;
 
             #region adjustments
-            Transform ropeExtFore1 = UnityEngine.Object.Instantiate(ropeExtMain2, foremast, true);
-            ropeExtFore1.localPosition = new Vector3(ropeExtMain2.localPosition.x, ropeExtMain2.localPosition.y, ropeExtFore1.localPosition.z);
 
-            Transform[] main2ExtList = new Transform[2] { ropeExtMain2.GetChild(0), ropeExtMain2.GetChild(0), };
-            Transform[] main1ExtList = new Transform[2] { ropeExtMain1.GetChild(0), ropeExtMain1.GetChild(0), };
-            Transform[] fore1ExtList = new Transform[2] { ropeExtFore1.GetChild(0), ropeExtMain1.GetChild(0), };
-            forestay.GetComponent<Mast>().mastReefAttExtension = main2ExtList;
-            forestay1Lower.GetComponent<Mast>().mastReefAttExtension = main2ExtList;
-
-            forestay0.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
-            forestayMid.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
-            forestay0Lower.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
-            container.Find("midstay_f-0").GetComponent<Mast>().mastReefAttExtension = main1ExtList;
-
-            forestaySource.GetComponent<Mast>().mastReefAttExtension = fore1ExtList;
 
             mainMast1.GetComponent<Mast>().mastHeight = 18.8f;//= 17.5f;
             mainMast1.GetComponent<Mast>().extraBottomHeight = 0.5f;
@@ -88,19 +66,19 @@ namespace ShipyardExpansion
             forestay0Lower.GetComponent<BoatPartOption>().requiresDisabled = new List<BoatPartOption> { foremast.GetComponent<BoatPartOption>() };
             forestay0Lower.GetComponent<Mast>().mastHeight = 18.3f;
 
-            forestay.GetComponent<Mast>().mastHeight = 20;
+            forestay_1.GetComponent<Mast>().mastHeight = 20;
             forestay1Lower.GetComponent<Mast>().mastHeight = 14;
 
-            midstaySource.GetComponent<Mast>().reefWinch[0].transform.SetParent(container);
+            midstay_1_1.GetComponent<Mast>().reefWinch[0].transform.SetParent(container);
 
             partsList.availableParts[4].category = 2;
             partsList.availableParts[5].category = 2;
             partsList.availableParts[6].category = 2;
             partsList.availableParts[7].category = 2;
 
-            midstaySource.GetComponent<BoatPartOption>().requires.Remove(mizzenMast2.GetComponent<BoatPartOption>());
-            midstaySource.GetComponent<BoatPartOption>().requiresDisabled = new List<BoatPartOption> { mizzenMast1.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen_(empty)").GetComponent<BoatPartOption>() };
-            forestaySource.GetComponent<BoatPartOption>().requires.Add(bowsprit.GetComponent<BoatPartOption>());
+            midstay_1_1.GetComponent<BoatPartOption>().requires.Remove(mizzenMast2.GetComponent<BoatPartOption>());
+            midstay_1_1.GetComponent<BoatPartOption>().requiresDisabled = new List<BoatPartOption> { mizzenMast1.GetComponent<BoatPartOption>(), structure.Find("mast_mizzen_(empty)").GetComponent<BoatPartOption>() };
+            forestay_foremast.GetComponent<BoatPartOption>().requires.Add(bowsprit.GetComponent<BoatPartOption>());
 
             #endregion
 
@@ -173,20 +151,30 @@ namespace ShipyardExpansion
 
 
             #region late Adjustments
-            //outerFstaySource.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
 
-            /*var standardKeel = Util.AddPartOption(structure.Find("trim_006").gameObject, "standard keel");
-            standardKeel.basePrice = 1500;
-            standardKeel.installCost = 2000;
-            var deepKeel = Util.AddPartOption(structure.Find("deep_keel").gameObject, "deep keel");
-            deepKeel.basePrice = 2200;
-            deepKeel.installCost = 2000;
-            deepKeel.mass = 250;
-            var keelComp = deepKeel.gameObject.AddComponent<SE_Keel>();
-            keelComp.localCoM = new Vector3(0f, -2.5f, 0f);
-            Util.CreateAndAddPart(partsList, 1, new List<BoatPartOption> { standardKeel, deepKeel });
-            deepKeel.GetComponent<Renderer>().material = standardKeel.GetComponent<Renderer>().material;
-            deepKeel.gameObject.AddComponent<MeshCollider>();*/
+            Transform ropeExtMain1 = thing.transform.Find("rope_holder_main_0");
+            ropeExtMain1.parent = mainMast1;
+            Transform ropeExtMain2 = thing.transform.Find("rope_holder_main_1");
+            ropeExtMain2.parent = mainMast2;
+
+            var ropeExtFore1 = thing.transform.Find("rope_holder_front_extra");
+            ropeExtFore1.parent = foremast;
+            //foremastM.mastReefAttExtension = new Transform[] { ropeExtFore1.GetChild(0), ropeExtFore1.GetChild(0) };
+
+            Transform[] main1ExtList = new Transform[] { ropeExtMain1.GetChild(0), ropeExtMain1.GetChild(0), };
+            forestay0.GetComponent<Mast>().mastReefAttExtension = main1ExtList;
+            forestay0mid.GetComponent<Mast>().mastReefAttExtension = new Transform[] { main1ExtList[0] };
+            forestay0Lower.GetComponent<Mast>().mastReefAttExtension = new Transform[] { main1ExtList[0] };
+
+            container.Find("midstay_f-0").GetComponent<Mast>().mastReefAttExtension = new Transform[] { main1ExtList[0] };
+            container.Find("midstay_f-0_top").GetComponent<Mast>().mastReefAttExtension = new Transform[] { main1ExtList[0] };
+
+            Transform[] main2ExtList = new Transform[2] { ropeExtMain2.GetChild(0), ropeExtMain2.GetChild(0), };
+            forestay_1.GetComponent<Mast>().mastReefAttExtension = main2ExtList;
+            forestay1Lower.GetComponent<Mast>().mastReefAttExtension = new Transform[] { main2ExtList[0] };
+
+            Transform[] fore1ExtList = new Transform[] { ropeExtFore1.GetChild(0), ropeExtFore1.GetChild(0) };
+            forestay_foremast.GetComponent<Mast>().mastReefAttExtension = fore1ExtList;
             #endregion
         }
     }
