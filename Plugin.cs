@@ -55,7 +55,7 @@ namespace ShipyardExpansion
             convertSave = Config.Bind("Fixers", "Convert saves", false, new ConfigDescription("Enable this before loading a save from a version of Shipyard Expansion before v0.5"));
             cleanSave = Config.Bind("Fixers", "Clean save", false, new ConfigDescription("Enable this before saving if you want to uninstall this mod (will disable itself when done)"));
             cleanLoad = Config.Bind("Fixers", "Clean load", true, new ConfigDescription("Enable this before loading a broken save"));
-            skipSailData = Config.Bind("Fixers", "skip sail data", false, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
+            skipSailData = Config.Bind("zDebug", "skip sail data", false, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             starterSetFix = Config.Bind("Fixers", "starter set fix", true, new ConfigDescription("", null, new ConfigurationManagerAttributes { IsAdvanced = true }));
             vertLateens = Config.Bind("Slant", "Vertical lateens", true, new ConfigDescription("Install lateens vertical instead of slanting with the mast"));
             vertFins = Config.Bind("Slant", "Vertical fins", true, new ConfigDescription("Install fin sails vertical instead of slanting with the mast"));

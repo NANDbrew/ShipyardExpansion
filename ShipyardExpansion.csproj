@@ -99,12 +99,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\SailConnectionPatch.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
     <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Patches\TestPatch.cs" />
     <Compile Include="Patches\TopsailPatch.cs" />
+    <Compile Include="ScaleType.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\ClothColToggler.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />
