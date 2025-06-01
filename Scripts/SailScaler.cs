@@ -9,8 +9,8 @@ namespace ShipyardExpansion
 {
     public class SailScaler : MonoBehaviour
     {
-        static float scaleStep = 0.05f;
-        static float angleStep = 1;
+        public static float scaleStep = 0.05f;
+        public static float angleStep = 1;
         Sail sail;
         Transform shadowCol;
         Transform windCenter;
