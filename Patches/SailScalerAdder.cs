@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ShipyardExpansion.Patches
 {
-    [HarmonyPatch(typeof(Sail), "Start")]
+/*    [HarmonyPatch(typeof(Sail), "Start")]
     internal static class CompAdder
     {
         public static void Postfix(Sail __instance)
@@ -17,7 +17,7 @@ namespace ShipyardExpansion.Patches
             __instance.gameObject.AddComponent<SailScaler>();
 
         }
-    }
+    }*/
     [HarmonyPatch(typeof(PrefabsDirectory), "Start")]
     internal static class CompAdder2
     {
