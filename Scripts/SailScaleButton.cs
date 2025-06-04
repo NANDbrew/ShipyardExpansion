@@ -34,7 +34,7 @@ namespace ShipyardExpansion
             UISoundPlayer.instance.PlayUISound(UISounds.buttonClick, 1f, 1f);
             Mast mast = GameState.currentShipyard.sailInstaller.GetCurrentMast();
             Sail sail = GameState.currentShipyard.sailInstaller.GetCurrentSail();
-            
+            SailScaler scaler = sail.GetComponent<SailScaler>();
             if (buttonType == ButtonType.scaleUp)
             {
                 if (MastNotTallEnough(mast, sail))
@@ -42,24 +42,11 @@ namespace ShipyardExpansion
                     Debug.Log("mast cannot fit bigger sail");
                     return;
                 }
-                sail.GetComponent<SailScaler>().ScaleUp();
-
-                if (sail.GetCurrentInstallHeight() < sail.installHeight)
-                {
-                    GameState.currentShipyard.sailInstaller.MoveHeldSail(sail.installHeight - sail.GetCurrentInstallHeight());
-                }
-                //else (sail.GetCurrentInstallHeight() < sail.installHeight)
-                //sail.UpdateInstallPosition();
-
+                scaler.ScaleUp();
             }
             else if (buttonType == ButtonType.scaleDown)
             {
-                float oldHeight = sail.installHeight;
-                sail.GetComponent<SailScaler>().ScaleDown();
-                if (!sail.UseExtendedMastHeight())
-                {
-                    GameState.currentShipyard.sailInstaller.MoveHeldSail(sail.installHeight - oldHeight);
-                }
+                scaler.ScaleDown();
             }
             else if (buttonType == ButtonType.increaseHeight)
             {
@@ -68,39 +55,39 @@ namespace ShipyardExpansion
                     Debug.Log("mast cannot fit taller sail");
                     return;
                 }
-
-                sail.GetComponent<SailScaler>().IncreaseHeight();
-                if (sail.GetCurrentInstallHeight() < sail.installHeight)
-                {
-                    GameState.currentShipyard.sailInstaller.MoveHeldSail(sail.installHeight - sail.GetCurrentInstallHeight());
-                }
-
+                scaler.IncreaseHeight();
             }
             else if (buttonType == ButtonType.decreaseHeight)
             {
-                sail.GetComponent<SailScaler>().DecreaseHeight();
+                scaler.DecreaseHeight();
             }
             else if (buttonType == ButtonType.increaseWidth)
             {
-                sail.GetComponent<SailScaler>().IncreaseWidth();
+                scaler.IncreaseWidth();
             }
             else if (buttonType == ButtonType.decreaseWidth)
             {
-                sail.GetComponent<SailScaler>().DecreaseWidth();
+                scaler.DecreaseWidth();
             }
             else if (buttonType == ButtonType.rotateForward)
             {
-                sail.GetComponent<SailScaler>().RotateFwd();
+                scaler.RotateFwd();
             }
             else if (buttonType == ButtonType.rotateBackward)
             {
-                sail.GetComponent<SailScaler>().RotateBkwd();
+                scaler.RotateBkwd();
             }
             else if (buttonType == ButtonType.flip)
             {
-                sail.GetComponent<SailScaler>().FlipJib();
+                scaler.FlipJib();
             }
-            GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
+            float move = 0f;
+            float extra = sail.UseExtendedMastHeight()? mast.extraBottomHeight : 0f;
+            if (sail.GetCurrentInstallHeight() < sail.installHeight - extra)
+            {
+                move = sail.installHeight - sail.GetCurrentInstallHeight();
+            }
+            GameState.currentShipyard.sailInstaller.MoveHeldSail(move);
 
             ShipyardUI.instance.RefreshButtons();
 
