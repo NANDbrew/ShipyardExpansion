@@ -142,10 +142,11 @@ namespace ShipyardExpansion
 
             topmast1M.mastReefAtt = topmast1M.mastReefAtt.AddRangeToArray(topmast1M.mastReefAtt);
             topmast1M.reefWinch = topmast1M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension0_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
+            topmast1M.maxSails = 2;
 
             topmast2M.mastReefAtt = topmast2M.mastReefAtt.AddRangeToArray(topmast2M.mastReefAtt);
             topmast2M.reefWinch = topmast2M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension1_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
-
+            topmast2M.maxSails = 2;
 
             partsList.availableParts[3].category = 2;
             foreach (BoatPartOption stay in partsList.availableParts[3].partOptions)
