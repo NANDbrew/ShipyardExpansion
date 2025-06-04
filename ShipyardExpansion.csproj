@@ -106,6 +106,7 @@
     <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Patches\TestPatch.cs" />
     <Compile Include="Patches\TopsailPatch.cs" />
+    <Compile Include="SailClothRotations.cs" />
     <Compile Include="ScaleType.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\ClothColToggler.cs" />

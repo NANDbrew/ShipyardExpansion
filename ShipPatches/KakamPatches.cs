@@ -32,8 +32,10 @@ namespace ShipyardExpansion
             Plugin.moddedBoats.Add(partsList);
 
             #region adjustments
+            // move stays to stays category
             partsList.availableParts[0].category = 2;
             partsList.availableParts[7].category = 2;
+
             mainMast1.GetComponent<Mast>().mastHeight = 9.7f;
             mainMast2.GetComponent<Mast>().mastHeight = 9.7f;
             //mainMast1.GetComponent<Mast>().startSailHeightOffset -= 0.4f;
