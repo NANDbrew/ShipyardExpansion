@@ -23,8 +23,15 @@ namespace ShipyardExpansion.Patches
             Sail component2 = sailObject.GetComponent<Sail>();
             if (Plugin.autoFit.Value && component2.installHeight > ___currentMast.mastHeight)
             {
-                float extraHeight = component2.UseExtendedMastHeight()? ___currentMast.extraBottomHeight : 0;
-                component.SetScaleRel((___currentMast.mastHeight + extraHeight - 0.1f) / component.GetBaseHeight());
+                if (component2.UseExtendedMastHeight())
+                { // extra logic to avoid making the sail bigger
+                    if (component2.installHeight > ___currentMast.mastHeight + ___currentMast.extraBottomHeight)
+                    {
+                        component.SetScaleRel((___currentMast.mastHeight + ___currentMast.extraBottomHeight - 0.1f) / component.GetBaseHeight());
+                    }
+                    return;
+                }
+                component.SetScaleRel((___currentMast.mastHeight - 0.1f) / component.GetBaseHeight());
 
             }
         }
@@ -61,7 +68,7 @@ namespace ShipyardExpansion.Patches
     {
         public static void Prefix(ShipyardSailColChecker __instance, Sail ___sail, ref Quaternion ___initialRot, ref Vector3 ___initialLocalPos, ref Vector3 ___sailModelOffset)
         {
-            if (___sail.GetComponent<SailScaler>().rotatablePart)
+            if (___sail.GetComponent<SailScaler>()?.rotatablePart)
             {
                 ___initialRot.eulerAngles = new Vector3(___sail.transform.localEulerAngles.x, ___sail.GetComponent<SailScaler>().rotatablePart.localEulerAngles.y, ___sail.transform.localEulerAngles.z);
             }
