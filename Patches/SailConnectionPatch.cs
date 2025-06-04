@@ -13,7 +13,8 @@ namespace ShipyardExpansion.Patches
     {
         internal static void Postfix(SailConnections __instance)
         {
-            if (__instance.mastReefAttachment.GetComponent<RopeEffect>().attachment == __instance.mastReefAttExtension)
+            if (__instance.mastReefAttachment == null || __instance.mastReefAttExtension == null) return;
+            if (__instance.mastReefAttachment.GetComponent<RopeEffect>()?.attachment == __instance.mastReefAttExtension)
             {
                 // magical reference swapping
                 (__instance.mastReefAttExtension, __instance.mastReefAttachment) = (__instance.mastReefAttachment, __instance.mastReefAttExtension);
