@@ -77,16 +77,26 @@ namespace ShipyardExpansion
             {
                 scaleType = ScaleType.Jib;
             }
+            else if (SailClothRotations.clothRotations.ContainsKey(sail.prefabIndex))
+            {
+                scaleablePart.GetComponentInChildren<WindCloth>().transform.localEulerAngles = SailClothRotations.clothRotations[sail.prefabIndex];
+                scaleType = ScaleType.Square;
+                Debug.Log("SailSaler: Rotated sailcloth");
+            }
+
             if (SailLimits.angleLimits.ContainsKey(sail.prefabIndex)) angleLimits = SailLimits.angleLimits[sail.prefabIndex];
             if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
             if (SailLimits.ratioLimits.ContainsKey(sail.prefabIndex)) ratioLimits = SailLimits.ratioLimits[sail.prefabIndex];
 
             else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
+            //scaleLimits[0] = startScale.x * 0.5f;
+            //scaleLimits[1] = startScale.x * 1.5f;
             if (startScale.y < scaleLimits[0]) scaleLimits[0] = startScale.y * 0.8f;
             if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
             flippable = sail.category == SailCategory.staysail || SailLimits.flippableSquares.Contains(sail.prefabIndex);
 
             jibStartAngle = flippable ? scaleablePart.localEulerAngles.x : jibStartAngle;
+
         }
         #region rotation
         public void SetAngle(float newAngle)
@@ -201,6 +211,11 @@ namespace ShipyardExpansion
                 if (colRot == 90)
                 {
                     colScale = new Vector3(width, width, height);
+                }
+                else if (SailClothRotations.colDirs.ContainsKey(sail.prefabIndex))
+                {
+                    int[] matrix = SailClothRotations.colDirs[sail.prefabIndex];
+                    colScale = new Vector3(Scale[matrix[0]], Scale[matrix[1]], Scale[matrix[2]]);
                 }
                 else colScale = Scale;
             }
