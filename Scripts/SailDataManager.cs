@@ -17,7 +17,7 @@ namespace ShipyardExpansion
             Debug.Log("attempting to load data for " + refs.name);
             if (!GameState.modData.ContainsKey(boat))
             {
-                Debug.Log("modData does not contain config");
+                Debug.Log("SE boat sails: modData does not contain config for " + refs.name);
                 return;
             }
             if (Plugin.skipSailData.Value) return;
