@@ -63,7 +63,7 @@ namespace ShipyardExpansion.Patches
     }
 
     [HarmonyPatch(typeof(SaveLoadManager), "LoadModData")]
-    internal class SavePatch
+    internal class LoadPatch
     {
         public static void Postfix()
         {
@@ -80,7 +80,7 @@ namespace ShipyardExpansion.Patches
 
     }
     [HarmonyPatch(typeof(SaveLoadManager), "SaveModData")]
-    internal class LoadPatch
+    internal class SavePatch
     {
         public static void Prefix()
         {
