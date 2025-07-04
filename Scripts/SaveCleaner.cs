@@ -162,7 +162,10 @@ namespace ShipyardExpansion
                 foreach (var sail in data.sails)
                 {
                     var mast = refs.masts[sail.mastIndex];
-                    sail.installHeight += mast.mastHeight - Plugin.mastHeights[mast];
+                    if (Plugin.mastHeights.ContainsKey(mast))
+                    {
+                        sail.installHeight += mast.mastHeight - Plugin.mastHeights[mast];
+                    }
                 }
             }
             // convert Jong shrouds. having this here could be a problem
