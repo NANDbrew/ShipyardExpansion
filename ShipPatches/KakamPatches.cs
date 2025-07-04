@@ -64,8 +64,9 @@ namespace ShipyardExpansion
             {
                 mast.shipRigidbody = shipRigidbody;
             }
-
+#if DEBUG
             Debug.Log("SE: instanting kakam parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 

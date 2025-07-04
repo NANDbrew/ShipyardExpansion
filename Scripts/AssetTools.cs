@@ -31,10 +31,14 @@ namespace ShipyardExpansion
         public static void LoadAssetBundles()    //Load the bundle
         {
             basePath = Directory.GetParent(Plugin.instance.Info.Location).FullName;
-            Debug.Log("attempting to load other assembly");
             string libFirstTry = Path.Combine(basePath, assetDir, libFile);
             string libSecondTry = Path.Combine(basePath, libFile);
-            Assembly.LoadFrom(File.Exists(libFirstTry) ? libFirstTry : libSecondTry);
+            try
+            {
+                Assembly.LoadFrom(File.Exists(libFirstTry) ? libFirstTry : libSecondTry);
+                Debug.Log("SE: loaded other assembly");
+            } 
+            catch { Debug.LogError("SE: failed to load other assembly!"); }
 
             string firstTry = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile);
             string secondTry = Path.Combine(basePath, assetFile);
@@ -42,7 +46,7 @@ namespace ShipyardExpansion
             bundle = AssetBundle.LoadFromFile(File.Exists(firstTry) ? firstTry : secondTry);
             if (bundle == null)
             {
-                Debug.LogError("Bundle not loaded! Did you place it in the correct folder?");
+                Debug.LogError("Bundle 1 not loaded! Did you place it in the correct folder?");
             }
             else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle.ToString()); }
 
@@ -52,7 +56,7 @@ namespace ShipyardExpansion
             bundle2 = AssetBundle.LoadFromFile(File.Exists(firstTry2) ? firstTry2 : secondTry2);
             if (bundle2 == null)
             {
-                Debug.LogError("Bundle not loaded! Did you place it in the correct folder?");
+                Debug.LogError("Bundle 2 not loaded! Did you place it in the correct folder?");
             }
             else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }
 
@@ -205,7 +209,9 @@ namespace ShipyardExpansion
 
             foreach (SE_PartOptionData optData in boatData.options)
             {
+#if DEBUG
                 Debug.Log(optData.name);
+#endif
                 if (optData.GetComponent<BoatPartOption>() is BoatPartOption opt)
                 {
                     if (optData.parentPartIndex > -1)
@@ -236,7 +242,7 @@ namespace ShipyardExpansion
                     ladder.targets = ladderData.targets;
                     for (int i = 0; i < ladder.targets.Length; i++)
                     {
-                        if (ladder.targets[i] == null) Debug.Log("ladder target is null");
+                        if (ladder.targets[i] == null) Debug.LogWarning("SE: ladder target is null");
                         //Transform target = ;
                         ladder.targets[i].SetParent(thing.transform.parent);
                         //ladder.targets[i] = target;

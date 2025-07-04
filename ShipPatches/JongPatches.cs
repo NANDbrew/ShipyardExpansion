@@ -66,7 +66,9 @@ namespace ShipyardExpansion.ShipPatches
             {
                 mast.shipRigidbody = shipRigidbody;
             }
+#if DEBUG
             Debug.Log("SE: instanting jong parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 

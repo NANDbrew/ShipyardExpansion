@@ -68,7 +68,9 @@ namespace ShipyardExpansion
             {
                 mast.shipRigidbody = shipRigidbody;
             }
+#if DEBUG
             Debug.Log("SE: instanting sanbuq parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 
@@ -78,7 +80,9 @@ namespace ShipyardExpansion
 
 
             #region topmastStay
+#if DEBUG
             Debug.Log("topmast stay rejiggering");
+#endif
             topmastStay1_mast.reefWinch = Util.CopyWinches(topmastStay1_mast.reefWinch, Vector3.zero, Vector3.up);
             topmastStay1_mast.leftAngleWinch = Util.CopyWinches(topmastStay1_mast.leftAngleWinch, Vector3.zero, new Vector3(-0.2f, -0.2f, -0.17f));
             topmastStay1_mast.rightAngleWinch = Util.CopyWinches(topmastStay1_mast.rightAngleWinch, Vector3.zero, new Vector3(-0.2f, -0.2f, 0.13f));
@@ -126,10 +130,12 @@ namespace ShipyardExpansion
             mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_main").Find("mast_1").gameObject);
             //topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(thing.transform.Find("crowsnest_0").GetComponent<CapsuleCollider>());
             //topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(thing.transform.Find("crowsnest_1").GetComponent<CapsuleCollider>());
-            #endregion
+#endregion
 
-            #region hammock
+#region hammock
+#if DEBUG
             Debug.Log("sanbuq hammock");
+#endif
             BoatPartOption hammock = modParts["hammock_part"].partOptions[0];//Util.AddPartOption(container.Find("hammock").gameObject, "hammock");
 
             hammock.childOptions = new GameObject[3] { container.Find("hammock").gameObject, container.Find("hammock_001").gameObject, walkCol.Find("hammock_001").gameObject };
@@ -137,9 +143,10 @@ namespace ShipyardExpansion
 
             #endregion
 
-            #region late adjustments
+#region late adjustments
+#if DEBUG
             Debug.Log("Sanbuq late adjustments");
-
+#endif
             topmast1M.mastReefAtt = topmast1M.mastReefAtt.AddRangeToArray(topmast1M.mastReefAtt);
             topmast1M.reefWinch = topmast1M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension0_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
             topmast1M.maxSails = 2;
@@ -180,7 +187,7 @@ namespace ShipyardExpansion
             topmastNone.childOptions = topmastNone.childOptions.AddRangeToArray(new GameObject[] { mainMast1.Find("flag (2)").gameObject, mainMast2.Find("flag (1)").gameObject });
             UnityEngine.Object.Instantiate(mainMast1.Find("flag (2)"), topMast1, false).localPosition = Vector3.zero;
             UnityEngine.Object.Instantiate(mainMast1.Find("flag (2)"), topMast2, false).localPosition = Vector3.zero;
-            #endregion
+#endregion
 
         }
     }

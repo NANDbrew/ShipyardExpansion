@@ -84,8 +84,9 @@ namespace ShipyardExpansion
             {
                 mast.shipRigidbody = shipRigidbody;
             }
-
+#if DEBUG
             Debug.Log("SE: instanting junk parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 
@@ -137,13 +138,15 @@ namespace ShipyardExpansion
             foremastM.walkColMast.GetComponent<MeshCollider>().enabled = true;
             #endregion
 
-            #region bed
+#region bed
+#if DEBUG
             Debug.Log("junk bed??");
+#endif
             thing.transform.Find("bed").GetComponent<BoatPartOption>().childOptions = new GameObject[] { container.Find("bed").gameObject };
             var hammock = thing.GetComponentInChildren<GPButtonBed>(true);
             hammock.damage = boat.GetComponent<BoatDamage>();
             hammock.GetComponent<HingeJoint>().connectedBody = boat.GetComponent<Rigidbody>();
-            #endregion
+#endregion
 
 
             #region late Adjustments

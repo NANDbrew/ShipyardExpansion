@@ -54,8 +54,9 @@ namespace ShipyardExpansion
                 mast.shipRigidbody = shipRigidbody;
                 //mast.gameObject.SetActive(false);
             }
-
+#if DEBUG
             Debug.Log("SE: instanting brig parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 

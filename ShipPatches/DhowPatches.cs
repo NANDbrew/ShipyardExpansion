@@ -31,7 +31,9 @@ namespace ShipyardExpansion
             }
             Plugin.moddedBoats.Add(partsList);
 
+#if DEBUG
             Debug.Log("Dhow adjustments");
+#endif
             #region adjustments
 
             partsList.availableParts[1].category = 2;
@@ -76,8 +78,9 @@ namespace ShipyardExpansion
             {
                 mast.shipRigidbody = shipRigidbody;
             }
-
+#if DEBUG
             Debug.Log("SE: instanting dhow parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 

@@ -37,8 +37,9 @@ namespace ShipyardExpansion
                 //mast.gameObject.SetActive(false);
                 mast.shipRigidbody = shipRigidbody;
             }
-
+#if DEBUG
             Debug.Log("SE: instanting cog parts");
+#endif
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 
@@ -106,8 +107,9 @@ namespace ShipyardExpansion
             modParts["bowsprit_empty"].partOptions.Insert(0, bowspritOpt);
 
             #endregion
-         
+#if DEBUG
             Debug.Log("Cog: late adjustments");
+#endif
             #region late adjustments
             var ropeHolderAft = container.Find("struct_var_1__low_roof_").Find("mast_003");
             ropeHolderAft.SetParent(mizzenMast);
