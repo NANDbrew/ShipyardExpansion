@@ -2,10 +2,6 @@
 using ShipyardExpansion.ShipPatches;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace ShipyardExpansion.Patches
 {
@@ -24,9 +20,6 @@ namespace ShipyardExpansion.Patches
                     if (mast != null) Plugin.mastHeights.Add(mast, mast.mastHeight);
                 }
                 Array.Resize(ref ___refs.masts, Plugin.mastListSize);
-
-                // add references for save cleaner
-
 
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
 

@@ -24,8 +24,7 @@ namespace ShipyardExpansion.Patches
         }
         public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
-
-                SailDataManager.LoadSailConfig(___refs);
+            SailDataManager.LoadSailConfig(___refs);
             
         }
     }
