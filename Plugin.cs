@@ -1,28 +1,25 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
-using System;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 
 namespace ShipyardExpansion
 {
     [BepInPlugin(PLUGIN_ID, PLUGIN_NAME, PLUGIN_VERSION)]
-    //[BepInDependency("com.app24.sailwindmoddinghelper", "2.0.3")]
     public class Plugin : BaseUnityPlugin
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.7.2";
+        public const string PLUGIN_VERSION = "0.7.3";
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
 
         internal static Plugin instance;
         public static List<BoatCustomParts> moddedBoats;
-        public static Dictionary<BoatPart, int> stockParts;
+        public static Dictionary<BoatRefs, Dictionary<BoatPart, int>> stockParts;
         public static int stockSailsListSize;
         public static Dictionary<GameObject, SaveBoatCustomizationData> converted;
         public static Transform prefabContainer;
@@ -47,7 +44,7 @@ namespace ShipyardExpansion
         private void Awake()
         {
             instance = this;
-            stockParts = new Dictionary<BoatPart, int>();
+            stockParts = new Dictionary <BoatRefs, Dictionary<BoatPart, int>>();
             moddedBoats = new List<BoatCustomParts>();
             converted = new Dictionary<GameObject, SaveBoatCustomizationData>();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);
@@ -68,5 +65,6 @@ namespace ShipyardExpansion
             combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)"));
 
         }
+
     }
 }

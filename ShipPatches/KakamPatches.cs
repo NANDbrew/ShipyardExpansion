@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SE_Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ShipyardExpansion
     internal class KakamPatches
     {
         static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
-        public static void Patch(Transform boat, BoatCustomParts partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList, BoatRefs boatRefs)
         {
             Transform container = boat.Find("junk small");
             Transform structure = container.Find("structure");
@@ -24,11 +25,6 @@ namespace ShipyardExpansion
 
             boat.GetComponent<BoatRefs>().walkCol = walkCol; // fix vanilla missing ref
 
-            // add references for save cleaner
-            foreach (var part in partsList.availableParts)
-            {
-                Plugin.stockParts.Add(part, part.activeOption);
-            }
             Plugin.moddedBoats.Add(partsList);
 
             #region adjustments
@@ -59,10 +55,11 @@ namespace ShipyardExpansion
             #endregion
 
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_kakam.prefab");
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
+            AssetTools.PreparePrefab(prefab, boatRefs);
+            var rudder = container.Find("rudder").GetComponent<HingeJoint>();
+            foreach (var tiller in prefab.GetComponent<SE_BoatCustomData>().tillers)
             {
-                mast.shipRigidbody = shipRigidbody;
+                tiller.attachedRudder = rudder;
             }
 #if DEBUG
             Debug.Log("SE: instanting kakam parts");
@@ -104,6 +101,15 @@ namespace ShipyardExpansion
                 modParts["shrouds_mizzen_side"].partOptions[1].transform.GetChild(0).gameObject, 
                 modParts["shrouds_mizzen_side"].partOptions[1].walkColObject.transform.GetChild(0).gameObject,
             });
+
+            BoatPartOption wheel = Util.AddPartOption(container.Find("steering_wheel").gameObject, "steering wheel");
+
+            wheel.basePrice = 600;
+            wheel.installCost = 350;
+            wheel.walkColObject = walkCol.Find("structure").Find("steering_wheel_holder").gameObject;
+            wheel.childOptions = new GameObject[] { structure.Find("steering_wheel_holder").gameObject };
+            modParts["tiller_container"].partOptions.Insert(0, wheel);
+
         }
 
     }

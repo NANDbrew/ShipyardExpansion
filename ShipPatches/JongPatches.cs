@@ -13,7 +13,7 @@ namespace ShipyardExpansion.ShipPatches
     {
         static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
 
-        public static void Patch(Transform boat, BoatCustomParts partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList, BoatRefs boatRefs)
         {
             //Mast[] masts = boat.GetComponent<BoatRefs>().masts;
             //var boatRefs = boat.GetComponent<BoatRefs>();
@@ -33,10 +33,6 @@ namespace ShipyardExpansion.ShipPatches
             //PartRefs.jongCol = walkCol;
 
             // add references for save cleaner
-            foreach (var part in partsList.availableParts)
-            {
-                Plugin.stockParts.Add(part, part.activeOption);
-            }
             Plugin.moddedBoats.Add(partsList);
 
             #region adjustments
@@ -61,11 +57,7 @@ namespace ShipyardExpansion.ShipPatches
 
             var prefab = AssetTools.bundle2.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_jong.prefab");
 
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
-            {
-                mast.shipRigidbody = shipRigidbody;
-            }
+            AssetTools.PreparePrefab(prefab, boatRefs);
 #if DEBUG
             Debug.Log("SE: instanting jong parts");
 #endif
@@ -134,7 +126,7 @@ namespace ShipyardExpansion.ShipPatches
             walkCol.Find("Cube").parent = cabin;
             walkCol.Find("Cube.047").parent = cabin;
 
-            var toggler = thing.transform.Find("railing").gameObject.AddComponent<Scripts.ObjectToggler>();
+            var toggler = thing.transform.Find("railing").gameObject.AddComponent<SE_Bridge.ObjectToggler>();
             toggler.offObjects = new GameObject[] { cabin.gameObject, cabinCol.gameObject, subContainer.Find("interior_trigger_001").gameObject, structure.Find("junk_large_sliding_door_004").gameObject, structure.Find("junk_large_sliding_door_006").gameObject };
 
             container.Find("walls").GetComponent<MeshFilter>().sharedMesh = thing.transform.Find("walls_end").GetComponent<MeshFilter>().sharedMesh;

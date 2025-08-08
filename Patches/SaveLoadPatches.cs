@@ -15,7 +15,7 @@ namespace ShipyardExpansion.Patches
     {
         public static void Prefix(ref SaveBoatCustomizationData data, BoatRefs ___refs, BoatCustomParts ___parts)
         {
-            SaveCleaner.Convert(data, ___refs);
+            SaveCleaner.ConvertSave(data, ___refs);
 
             if (Plugin.cleanLoad.Value)
             {
@@ -67,14 +67,14 @@ namespace ShipyardExpansion.Patches
     {
         public static void Postfix()
         {
-            VersionManager.ReadSaveVersion();
+/*            VersionManager.ReadSaveVersion();
             foreach (BoatRefs boat in GameObject.FindObjectsOfType<BoatRefs>())
             {
                 if (boat.GetComponent<SaveableObject>().extraSetting)
                 {
                     SailDataManager.LoadSailConfig(boat);
                 }
-            }
+            }*/
             VersionManager.WriteSaveVersion();
         }
 
@@ -85,6 +85,20 @@ namespace ShipyardExpansion.Patches
         public static void Prefix()
         {
             VersionManager.WriteSaveVersion();
+            PartCountTracker.Write();
+        }
+
+    }
+
+    [HarmonyPatch(typeof(SaveLoadManager), "LoadNeeds")]
+    internal class LoadNeedsPatch
+    {
+        public static void Postfix(SaveContainer save)
+        {
+            GameState.modData = save.modData;
+            VersionManager.ReadSaveVersion();
+            //VersionManager.WriteSaveVersion();
+            Debug.Log("Vanilla Save version = " + save.gameVersion);
         }
 
     }

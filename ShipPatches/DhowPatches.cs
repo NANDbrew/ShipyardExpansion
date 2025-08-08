@@ -12,7 +12,7 @@ namespace ShipyardExpansion
     internal class DhowPatches
     {
         static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
-        public static void Patch(Transform boat, BoatCustomParts partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList, BoatRefs boatRefs)
         {
             Transform container = boat.transform.Find("dhow");
             Transform mainMast = container.Find("mast");
@@ -24,11 +24,6 @@ namespace ShipyardExpansion
             Transform shortForestay = container.Find("forestay_low");
             Transform lowForestay = container.Find("forestay");
 
-            // add references for save cleaner
-            foreach (var part in partsList.availableParts)
-            {
-                Plugin.stockParts.Add(part, part.activeOption);
-            }
             Plugin.moddedBoats.Add(partsList);
 
 #if DEBUG
@@ -73,11 +68,7 @@ namespace ShipyardExpansion
             #endregion
 
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_dhow.prefab");
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
-            {
-                mast.shipRigidbody = shipRigidbody;
-            }
+            AssetTools.PreparePrefab(prefab, boatRefs);
 #if DEBUG
             Debug.Log("SE: instanting dhow parts");
 #endif

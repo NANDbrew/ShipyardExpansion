@@ -15,7 +15,7 @@ namespace ShipyardExpansion
     internal class BrigPatches
     {
         static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
-        public static void Patch(Transform boat, BoatCustomParts partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList, BoatRefs boatRefs)
         {
             Transform container = boat.Find("medi medium new");
             Transform structure = container.Find("structure_container");
@@ -26,13 +26,7 @@ namespace ShipyardExpansion
             Transform foreMast1 = structure.Find("mast_Front_0");
             Transform foreMast2 = structure.Find("mast_Front_1");
             Transform walkCol = mainMast1.GetComponent<Mast>().walkColMast.parent.parent;
-            
 
-            // add references for save cleaner
-            foreach (var part in partsList.availableParts)
-            {
-                Plugin.stockParts.Add(part, part.activeOption);
-            }
             Plugin.moddedBoats.Add(partsList);
 
 
@@ -47,13 +41,7 @@ namespace ShipyardExpansion
 
             #endregion
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_brig.prefab");
-
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
-            {
-                mast.shipRigidbody = shipRigidbody;
-                //mast.gameObject.SetActive(false);
-            }
+            AssetTools.PreparePrefab(prefab, boatRefs);
 #if DEBUG
             Debug.Log("SE: instanting brig parts");
 #endif

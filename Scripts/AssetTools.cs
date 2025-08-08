@@ -1,20 +1,11 @@
-﻿using BepInEx;
-using HarmonyLib;
+﻿using HarmonyLib;
 using SE_Bridge;
 using ShipyardExpansion.Scripts;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 
 namespace ShipyardExpansion
 {
@@ -36,7 +27,7 @@ namespace ShipyardExpansion
             try
             {
                 Assembly.LoadFrom(File.Exists(libFirstTry) ? libFirstTry : libSecondTry);
-                Debug.Log("SE: loaded other assembly");
+                Debug.Log("ShipyardExpansion: SE bridge loaded successfully");
             } 
             catch { Debug.LogError("SE: failed to load other assembly!"); }
 
@@ -182,6 +173,10 @@ namespace ShipyardExpansion
 
             SE_BoatCustomData boatData = thing.GetComponent<SE_BoatCustomData>();
 
+            BoatRefs boatRefs = partsList.GetComponent<BoatRefs>();
+
+            BoatEmbarkCollider embarkCol = partsList.GetComponentInChildren<BoatEmbarkCollider>();
+
             foreach (SE_PartData partData in boatData.parts)
             {
                 BoatPart part = new BoatPart
@@ -228,43 +223,30 @@ namespace ShipyardExpansion
                 else Debug.LogError("huh? " + optData.name);
 
             }
-#if DEBUG
-            Debug.Log("working on ladders and flags");
-#endif
-            foreach (Transform obj in thing.GetComponentsInChildren<Transform>())
+            foreach (var ladderData in boatData.ladders)
             {
-                if (obj.GetComponent<SE_LadderData>() is SE_LadderData ladderData)
-                {
 #if DEBUG
-                    Debug.Log("adding ladder: " + ladderData.name);
+                Debug.Log("adding ladder: " + ladderData.name);
 #endif
-                    var ladder = ladderData.gameObject.AddComponent<NANDLadder>();
-                    ladder.targets = ladderData.targets;
-                    for (int i = 0; i < ladder.targets.Length; i++)
-                    {
-                        if (ladder.targets[i] == null) Debug.LogWarning("SE: ladder target is null");
-                        //Transform target = ;
-                        ladder.targets[i].SetParent(thing.transform.parent);
-                        //ladder.targets[i] = target;
-
-                    }
-                    ladderData.enabled = false;
-                }
-
-
-                if (obj.GetComponent<WindClothSimple>() is WindClothSimple cloth)
+                var ladder = ladderData.gameObject.AddComponent<NANDLadder>();
+                ladder.walkCol = boatRefs.walkCol;
+                ladder.targets = ladderData.targets;
+                foreach (var target in ladder.targets)
                 {
-                    cloth.shipRigidbody = partsList.GetComponent<Rigidbody>();
+                    target.SetParent(boatRefs.boatModel);
+                    //target.GetComponent<Renderer>().enabled = false;
+                    target.gameObject.layer = 8;
                 }
+                ladderData.enabled = false;
             }
             if (boatData.walkColMesh != null)
             {
-                var col = partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>();
+                //var col = partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>();
 #if DEBUG
-                Debug.Log("SE found embarkCol: " + col);
+                Debug.Log("SE found embarkCol: " + embarkCol);
 #endif
-                col.GetComponent<MeshCollider>().sharedMesh = boatData.walkColMesh;
-                col.GetComponent<MeshFilter>().sharedMesh = boatData.walkColMesh;
+                embarkCol.GetComponent<MeshCollider>().sharedMesh = boatData.walkColMesh;
+                embarkCol.GetComponent<MeshFilter>().sharedMesh = boatData.walkColMesh;
                 //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.walkColMesh));
             }
 #if DEBUG
@@ -285,6 +267,36 @@ namespace ShipyardExpansion
             Debug.Log("Replaced embarkCol mesh: " + col.GetComponentInParent<BoatDamage>().name);
 #endif
         }
+
+        public static void PreparePrefab(GameObject prefab, BoatRefs boatRefs)
+        {
+            SE_BoatCustomData boatData = prefab.GetComponent<SE_BoatCustomData>();
+#if DEBUG
+            Debug.Log("working on ladders and flags");
+#endif
+            Rigidbody boatRigidbody = boatRefs.gameObject.GetComponent<Rigidbody>();
+            foreach (var mast in boatData.masts)
+            {
+                mast.shipRigidbody = boatRigidbody;
+            }
+
+            foreach (var cloth in boatData.flags)
+            {
+                cloth.shipRigidbody = boatRigidbody;
+            }
+
+            foreach (var swapper in boatData.meshSwappers)
+            {
+                swapper.targetParent = swapper.targetWalkCol ? boatRefs.walkCol : boatRefs.boatModel;
+            }
+/*            foreach (var trapdoor in boatData.doors)
+            {
+                trapdoor.importedActualBoat = boatRefs.boatModel;
+                trapdoor.embarkCol = embarkCol;
+            }*/
+            
+        }
+
     }
 }
 

@@ -50,7 +50,7 @@ namespace ShipyardExpansion
                 {
                     GameObject installedSail = mastComp.sails[i];
                     string[] sailInfo = sails[i].Split(',');
-                    //if (installedSail.GetComponent<Sail>().prefabIndex == Convert.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
+                    //if (installedSail.GetComponent<Sail>().prefabIndex == ConvertSave.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
                     //{
                         SailScaler component = installedSail.GetComponent<SailScaler>();
                         if (component == null)

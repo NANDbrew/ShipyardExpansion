@@ -1,11 +1,6 @@
 ﻿using HarmonyLib;
-using ShipyardExpansion.Scripts;
-using System;
-using System.Collections;
+using SE_Bridge;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ShipyardExpansion
@@ -13,29 +8,28 @@ namespace ShipyardExpansion
     internal class CogPatches
     {
         static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
-        public static void Patch(Transform boat, BoatCustomParts partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList, BoatRefs boatRefs)
         {
-
-            Transform container = boat.transform.Find("medi small");
+            var walkCol = boatRefs.walkCol;
+            Transform container = boatRefs.boatModel;
             Transform structure = container.Find("structure");
             var mainMast1 = structure.Find("mast").GetComponent<BoatPartOption>();
             var mainMast2 = structure.Find("mast_front").GetComponent<BoatPartOption>();
-            var walkCol = mainMast1.walkColObject.transform.parent.parent;
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
+            BoatEmbarkCollider embarkCol = boat.GetComponentInChildren<BoatEmbarkCollider>();
 
-            // add references for save cleaner
-            foreach (var part in partsList.availableParts)
-            {
-                Plugin.stockParts.Add(part, part.activeOption);
-            }
             Plugin.moddedBoats.Add(partsList);
 
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_cog.prefab");
-            prefab.transform.GetComponentInChildren<GPButtonSteeringWheel>().attachedRudder = container.Find("rudder").GetComponent<HingeJoint>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
+            AssetTools.PreparePrefab(prefab, boatRefs);
+            var rudder = container.Find("rudder").GetComponent<HingeJoint>();
+            foreach (var tiller in prefab.GetComponent<SE_BoatCustomData>().tillers)
             {
-                //mast.gameObject.SetActive(false);
-                mast.shipRigidbody = shipRigidbody;
+                tiller.attachedRudder = rudder;
+            }
+            foreach (var door in prefab.GetComponent<SE_BoatCustomData>().doors)
+            {
+                door.importedActualBoat = container;
+                door.embarkCol = embarkCol;
             }
 #if DEBUG
             Debug.Log("SE: instanting cog parts");
@@ -107,6 +101,7 @@ namespace ShipyardExpansion
             modParts["bowsprit_empty"].partOptions.Insert(0, bowspritOpt);
 
             #endregion
+
 #if DEBUG
             Debug.Log("Cog: late adjustments");
 #endif
@@ -125,7 +120,7 @@ namespace ShipyardExpansion
 
 
             #endregion
-            BoatPartOption bottomHelm = Util.AddPartOption(container.GetComponentInChildren<GPButtonSteeringWheel>().gameObject, "helm 1");
+            BoatPartOption bottomHelm = Util.AddPartOption(container.Find("steering_wheel").gameObject, "helm 1");
 
             bottomHelm.basePrice = 800;
             bottomHelm.installCost = 450;
@@ -135,6 +130,13 @@ namespace ShipyardExpansion
 
             var modWalkCol = thing.transform.Find("SE_cols_cog");
             modWalkCol.SetParent(walkCol, false);
+
+            var deck1 = thing.transform.Find("deck_1").GetComponent<BoatPartOption>();
+            deck1.transform.Find("Cylinder").SetParent(mainMast1.transform, true);
+            deck1.walkColObject.transform.Find("Cylinder").SetParent(mainMast1Col.transform, true);
+
+            var deck0 = thing.transform.Find("deck_0").GetComponent<BoatPartOption>();
+            deck0.childOptions = new GameObject[] { structure.Find("trim_015").gameObject, walkCol.Find("structure/trim_015").gameObject };
 
         }
 

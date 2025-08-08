@@ -1,10 +1,5 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ShipyardExpansion.Scripts
@@ -14,17 +9,15 @@ namespace ShipyardExpansion.Scripts
         public static bool animating;
         public Transform[] targets;
         CharacterController player;
-        Transform walkCol;
+        public Transform walkCol;
 
         public override void Start()
         {
             base.Start();
             player = Refs.charController;
-            walkCol = GetComponentInParent<BoatRefs>().walkCol;
         }
         public override void OnActivate()
         {
-
             if (player.transform.parent == walkCol && targets.Length >= 1)
             {
                 Transform target = targets.OrderBy(t => (t.transform.localPosition - player.transform.localPosition).sqrMagnitude).Last();

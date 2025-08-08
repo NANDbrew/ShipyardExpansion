@@ -13,7 +13,7 @@ namespace ShipyardExpansion
     {
         static Dictionary<string, BoatPart> modParts = new Dictionary<string, BoatPart>();
 
-        public static void Patch(Transform boat, BoatCustomParts partsList)
+        public static void Patch(Transform boat, BoatCustomParts partsList, BoatRefs boatRefs)
         {
             //Mast[] masts = __instance.GetComponent<BoatRefs>().masts;
             Transform container = boat.Find("junk medium (actual)");
@@ -38,10 +38,6 @@ namespace ShipyardExpansion
             var forestay0mid = container.Find("forestay_0_mid");
 
             // add references for save cleaner
-            foreach (var part in partsList.availableParts)
-            {
-                Plugin.stockParts.Add(part, part.activeOption);
-            }
             Plugin.moddedBoats.Add(partsList);
 
             #region adjustments
@@ -79,11 +75,7 @@ namespace ShipyardExpansion
             #endregion
 
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_junk.prefab");
-            Rigidbody shipRigidbody = boat.GetComponent<Rigidbody>();
-            foreach (Mast mast in prefab.GetComponentsInChildren<Mast>(true))
-            {
-                mast.shipRigidbody = shipRigidbody;
-            }
+            AssetTools.PreparePrefab(prefab, boatRefs);
 #if DEBUG
             Debug.Log("SE: instanting junk parts");
 #endif

@@ -99,12 +99,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\MastPatches.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
     <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
-    <Compile Include="Patches\TestPatch.cs" />
+    <Compile Include="Patches\TrapdoorStartPatch.cs" />
     <Compile Include="Patches\TopsailPatch.cs" />
     <Compile Include="SailClothRotations.cs" />
     <Compile Include="ScaleType.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Scripts\SailScaler.cs" />
     <Compile Include="Patches\SaveLoadPatches.cs" />
     <Compile Include="Scripts\TopsailAngleMirror.cs" />
+    <Compile Include="Scripts\PartCountTracker.cs" />
     <Compile Include="ShipPatches\BrigPatches.cs" />
     <Compile Include="ShipPatches\CogPatches.cs" />
     <Compile Include="ShipPatches\DhowPatches.cs" />

@@ -114,7 +114,7 @@ namespace ShipyardExpansion
             for (int i = 0; i < parts.availableParts.Count;)
             {
                 BoatPart part = parts.availableParts[i];
-                if (!Plugin.stockParts.TryGetValue(part, out part.activeOption)) 
+                if (!Plugin.stockParts[parts.gameObject.GetComponent<BoatRefs>()].TryGetValue(part, out part.activeOption)) 
                 { 
                     parts.availableParts.Remove(part);
                     continue;
@@ -134,20 +134,40 @@ namespace ShipyardExpansion
             }
         }
 
-        public static void Convert(SaveBoatCustomizationData data, BoatRefs refs)
+        public static void ConvertSave(SaveBoatCustomizationData data, BoatRefs refs)
         {
             //if (GameState.playing && !GameState.justStarted) return;
             int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
             // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
             {
-                if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
+                // check vanilla part count and pad as needed
+                if (GameState.modData.TryGetValue(Plugin.PLUGIN_ID + "." + index + ".partCount", out string value))
+                {
+                    int partCount = Convert.ToInt32(value);
+                    Debug.Log("SE: part count for " + refs.gameObject.name + " = " + partCount);
+                    if (Plugin.stockParts[refs].Count > partCount)
+                    {
+                        //data.partActiveOptions.InsertRange(partCount - 1, new int[Plugin.stockParts[refs].Count - partCount]);
+
+                        for (int i = partCount; i < Plugin.stockParts[refs].Count; i++)
+                        {
+                            Debug.Log("SE: padding partActiveOptions for " + refs.gameObject.name + " at index " + (i));
+                            data.partActiveOptions.Insert(i, Plugin.stockParts[refs].ElementAt(i).Value);
+                        }
+                    }
+                }
+                // check modded part count and pad as needed
+/*                if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
                 {
                     data.partActiveOptions.AddRange(new int[refs.GetComponent<BoatCustomParts>().availableParts.Count - data.partActiveOptions.Count]);
 
-                }
+                }*/
                 Plugin.converted.Add(refs.gameObject, data);
             }
+
+
+
             // if we don't know the file version yet, bug out
             if (VersionManager.saveVersion < 0) return;
             if (VersionManager.saveVersion == 0)
