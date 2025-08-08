@@ -158,11 +158,11 @@ namespace ShipyardExpansion
                     }
                 }
                 // check modded part count and pad as needed
-/*                if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
+                if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
                 {
                     data.partActiveOptions.AddRange(new int[refs.GetComponent<BoatCustomParts>().availableParts.Count - data.partActiveOptions.Count]);
 
-                }*/
+                }
                 Plugin.converted.Add(refs.gameObject, data);
             }
 
