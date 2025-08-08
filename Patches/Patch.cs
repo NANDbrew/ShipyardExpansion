@@ -26,26 +26,56 @@ namespace ShipyardExpansion.Patches
                 Array.Resize(ref ___refs.masts, Plugin.mastListSize);
 
                 // add references for save cleaner
-                Plugin.stockParts.Add(___refs, new Dictionary<BoatPart, int>());
-                foreach (var part in ___parts.availableParts)
-                {
-                    Plugin.stockParts[___refs].Add(part, part.activeOption);
-                }
+
 
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
 
-                if (sceneIndex == 10) DhowPatches.Patch(__instance.transform, ___parts, ___refs);
-                else if (sceneIndex == 20) SanbuqPatches.Patch(__instance.transform, ___parts, ___refs);
-                else if (sceneIndex == 90) KakamPatches.Patch(__instance.transform, ___parts, ___refs);
-                else if (sceneIndex == 80) JunkPatches.Patch(__instance.transform, ___parts, ___refs);
-                else if (sceneIndex == 40) CogPatches.Patch(__instance.transform, ___parts, ___refs);
-                else if (sceneIndex == 50) BrigPatches.Patch(__instance.transform, ___parts, ___refs);
-                else if (sceneIndex == 70) JongPatches.Patch(__instance.transform, ___parts, ___refs);
-
+                if (sceneIndex == 10)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    DhowPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+                else if (sceneIndex == 20)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    SanbuqPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+                else if (sceneIndex == 90)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    KakamPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+                else if (sceneIndex == 80)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    JunkPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+                else if (sceneIndex == 40)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    CogPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+                else if (sceneIndex == 50)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    BrigPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+                else if (sceneIndex == 70)
+                {
+                    CacheStockParts(___refs, ___parts);
+                    JongPatches.Patch(__instance.transform, ___parts, ___refs);
+                }
+            }
+            private static void CacheStockParts(BoatRefs refs, BoatCustomParts parts)
+            {
+                Plugin.stockParts.Add(refs, new Dictionary<BoatPart, int>());
+                foreach (var part in parts.availableParts)
+                {
+                    Plugin.stockParts[refs].Add(part, part.activeOption);
+                }
             }
 
         }
-
         [HarmonyPatch(typeof(SaveBoatCustomizationData), MethodType.Constructor)]
         internal class GetDataPatch
         {

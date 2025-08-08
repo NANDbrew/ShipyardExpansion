@@ -21,14 +21,12 @@ namespace ShipyardExpansion.Patches
             {
                 data = SaveCleaner.CleanLoad(data, ___refs, ___parts);
             }
-            
         }
         public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
-            if (___refs.GetComponent<PurchasableBoat>().isPurchased())
-            {
+
                 SailDataManager.LoadSailConfig(___refs);
-            }
+            
         }
     }
 

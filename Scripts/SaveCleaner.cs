@@ -142,7 +142,7 @@ namespace ShipyardExpansion
             if (!Plugin.converted.ContainsKey(refs.gameObject))
             {
                 // check vanilla part count and pad as needed
-                if (GameState.modData.TryGetValue(Plugin.PLUGIN_ID + "." + index + ".partCount", out string value))
+                if (Plugin.stockParts.ContainsKey(refs) && GameState.modData.TryGetValue(Plugin.PLUGIN_ID + "." + index + ".partCount", out string value))
                 {
                     int partCount = Convert.ToInt32(value);
                     Debug.Log("SE: part count for " + refs.gameObject.name + " = " + partCount);
