@@ -16,6 +16,7 @@ namespace ShipyardExpansion
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
+        internal const int maxPartsPages = 3;
 
         internal static Plugin instance;
         public static List<BoatCustomParts> moddedBoats;
@@ -63,7 +64,7 @@ namespace ShipyardExpansion
             climbSpeed = Config.Bind("Settings", "Climb speed", 10, new ConfigDescription("Speed when climbing up to tops/crow's nests", new AcceptableValueRange<int>(2, 15)));
             topsailPatch = Config.Bind("Settings", "Link topmasts", true, new ConfigDescription("Link square sail angles on topmasts to the ones on the mast below (requires a restart)"));
             combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)"));
-
+            AssetTools.LoadAssetBundles();
         }
 
     }

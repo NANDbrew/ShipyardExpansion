@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
+    <Compile Include="Patches\ShipyardUIPatches2.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
     <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
@@ -108,7 +109,6 @@
     <Compile Include="SailClothRotations.cs" />
     <Compile Include="ScaleType.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
-    <Compile Include="Scripts\ClothColToggler.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />
     <Compile Include="Scripts\ObjectToggler.cs" />
     <Compile Include="Scripts\SailDataManager.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="Scripts\SailPartLocations.cs" />
     <Compile Include="Scripts\SailScaler.cs" />
     <Compile Include="Patches\SaveLoadPatches.cs" />
+    <Compile Include="Scripts\ShipyardUnfurlButton.cs" />
     <Compile Include="Scripts\TopsailAngleMirror.cs" />
     <Compile Include="Scripts\PartCountTracker.cs" />
     <Compile Include="ShipPatches\BrigPatches.cs" />

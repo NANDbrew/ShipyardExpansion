@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ShipyardExpansion.Scripts
 {
 
-
+    // an attempt at linking fore and aft sails
     public class TopsailAngleMirror : MonoBehaviour
     {
         private HingeJoint sail;

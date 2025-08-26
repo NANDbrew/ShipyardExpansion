@@ -138,6 +138,7 @@ namespace ShipyardExpansion
         {
             //if (GameState.playing && !GameState.justStarted) return;
             int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
+            if (!Plugin.stockParts.ContainsKey(refs)) return;
             // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
             {
@@ -149,7 +150,6 @@ namespace ShipyardExpansion
                     if (Plugin.stockParts[refs].Count > partCount)
                     {
                         //data.partActiveOptions.InsertRange(partCount - 1, new int[Plugin.stockParts[refs].Count - partCount]);
-
                         for (int i = partCount; i < Plugin.stockParts[refs].Count; i++)
                         {
                             Debug.Log("SE: padding partActiveOptions for " + refs.gameObject.name + " at index " + (i));
