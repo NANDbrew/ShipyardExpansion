@@ -1,10 +1,11 @@
-﻿using System;
+﻿using HarmonyLib;
+using ShipyardExpansion.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using HarmonyLib;
 using UnityEngine;
 
 namespace ShipyardExpansion.Patches
@@ -55,7 +56,7 @@ namespace ShipyardExpansion.Patches
 
         [HarmonyPatch("Awake")]
         [HarmonyPrefix]
-        public static void AwakePatch2(ShipyardUI __instance, ref GameObject[] ___mastButtons)
+        public static void AwakePatch2(ref GameObject[] ___mastButtons)
         {
             // mast buttons (clickable ball things for selecting masts)
             GameObject[] newButtons = new GameObject[Plugin.mastListSize];
@@ -78,8 +79,11 @@ namespace ShipyardExpansion.Patches
 
         [HarmonyPatch("Awake")]
         [HarmonyPostfix]
-        public static void AwakePatch(GameObject ___partsOtherMenu, ShipyardUI __instance, GameObject ___ui, GameObject ___moveUpButton, GameObject ___moveDownButton)
+        public static void AwakePatch(GameObject ___ui, GameObject ___moveUpButton, GameObject ___moveDownButton, GameObject ___sailMenu)
         {
+            GameObject furlButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("button sail toggle.prefab"), ___sailMenu.transform) as GameObject;
+            furlButton.AddComponent<ShipyardUnfurlButton>();
+
             oldButton = ___ui.transform.Find("mode button Parts Other");
             Transform newButton = UnityEngine.Object.Instantiate(oldButton, ___ui.transform);
             newButton.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, -0.28f);
@@ -191,7 +195,7 @@ namespace ShipyardExpansion.Patches
 
         }
 
-        [HarmonyPatch("UpdateMastButtons")]
+/*        [HarmonyPatch("UpdateMastButtons")]
         [HarmonyPostfix]
         public static void UpdateMastButtonsPatch2(GameObject[] ___mastButtons)
         {
@@ -204,7 +208,7 @@ namespace ShipyardExpansion.Patches
                 }
             }
 
-        }
+        }*/
 
     }
 }
