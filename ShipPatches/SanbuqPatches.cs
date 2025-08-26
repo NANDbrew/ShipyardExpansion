@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Mono.Cecil;
+using SE_Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace ShipyardExpansion
             Debug.Log("SE: instantiated " + thing);
 
             modParts = AssetTools.HandleImports(thing, partsList);
-            var modWalkCol = thing.transform.Find("SE_cols_sanbuq");
+            var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
 
@@ -135,14 +136,17 @@ namespace ShipyardExpansion
 
             #endregion
 
-#region late adjustments
+            #region late adjustments
 #if DEBUG
             Debug.Log("Sanbuq late adjustments");
 #endif
+            topmast1M.midAngleWinch = topmast2M.midAngleWinch.Concat(topmast2M.midAngleWinch).ToArray();
+            topmast1M.midRopeAtt = topmast1M.midRopeAtt.Concat(topmast1M.midRopeAtt).ToArray();
             topmast1M.mastReefAtt = topmast1M.mastReefAtt.AddRangeToArray(topmast1M.mastReefAtt);
             topmast1M.reefWinch = topmast1M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension0_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
             topmast1M.maxSails = 2;
 
+            topmast2M.midAngleWinch = topmast2M.midAngleWinch.Concat(topmast2M.midAngleWinch).ToArray();
             topmast2M.mastReefAtt = topmast2M.mastReefAtt.AddRangeToArray(topmast2M.mastReefAtt);
             topmast2M.reefWinch = topmast2M.reefWinch.AddToArray(thing.transform.Find("winches/rope_winch_extension1_reef (1)").gameObject.GetComponent<GPButtonRopeWinch>());
             topmast2M.maxSails = 2;

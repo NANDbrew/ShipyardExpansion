@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Mono.Cecil;
+using SE_Bridge;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace ShipyardExpansion
             Debug.Log("SE: instantiated " + thing);
 
             modParts = AssetTools.HandleImports(thing, partsList);
-            var modWalkCol = thing.transform.Find("SE_cols_brig");
+            var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
             modParts["fore_topmast_empty"].partOptions[0].childOptions = new GameObject[] { foreMast1.GetComponentInChildren<WindClothSimple>().gameObject, foreMast2.GetComponentInChildren<WindClothSimple>().gameObject };

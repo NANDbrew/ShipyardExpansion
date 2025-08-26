@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SE_Bridge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace ShipyardExpansion.ShipPatches
             Debug.Log("SE: instantiated " + thing);
 
             modParts = AssetTools.HandleImports(thing, partsList);
-            var modWalkCol = thing.transform.Find("SE_cols_jong");
+            var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
             /*var testMast = Util.CopyMast(mainMast1, mainMast1.transform.position + (Vector3.forward * 2), "testMast", "test mast", 67);

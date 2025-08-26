@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SE_Bridge;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace ShipyardExpansion
 
             modParts = AssetTools.HandleImports(thing, partsList);
 
-            var modWalkCol = thing.transform.Find("SE_cols_dhow");
+            var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
             mainMast.GetComponent<BoatPartOption>().childOptions = new GameObject[] { thing.transform.Find("main_shrouds_side").Find("short_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("short_s").gameObject, thing.transform.Find("main_shrouds_back").Find("short_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("short_b").gameObject };

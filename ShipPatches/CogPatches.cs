@@ -128,7 +128,7 @@ namespace ShipyardExpansion
             bottomHelm.childOptions = new GameObject[] { structure.Find("Cube_004").gameObject };
             modParts["helm_base_top_2"].partOptions.Insert(0, bottomHelm);
 
-            var modWalkCol = thing.transform.Find("SE_cols_cog");
+            var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
             var deck1 = thing.transform.Find("deck_1").GetComponent<BoatPartOption>();

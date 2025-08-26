@@ -239,15 +239,15 @@ namespace ShipyardExpansion
                 }
                 ladderData.enabled = false;
             }
-            if (boatData.walkColMesh != null)
+            if (boatData.embarkColMesh != null)
             {
                 //var col = partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>();
 #if DEBUG
                 Debug.Log("SE found embarkCol: " + embarkCol);
 #endif
-                embarkCol.GetComponent<MeshCollider>().sharedMesh = boatData.walkColMesh;
-                embarkCol.GetComponent<MeshFilter>().sharedMesh = boatData.walkColMesh;
-                //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.walkColMesh));
+                embarkCol.GetComponent<MeshCollider>().sharedMesh = boatData.embarkColMesh;
+                embarkCol.GetComponent<MeshFilter>().sharedMesh = boatData.embarkColMesh;
+                //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.embarkColMesh));
             }
 #if DEBUG
             Debug.Log("modParts.Count = " + modParts.Count);

@@ -71,7 +71,7 @@ namespace ShipyardExpansion
 
             //mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].GetComponentInChildren<CapsuleCollider>());
 
-            var modWalkCol = thing.transform.Find("SE_cols_kakam");
+            var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
             modParts["shrouds_main_side"].partOptions[0].childOptions = modParts["shrouds_main_side"].partOptions[0].childOptions.AddRangeToArray(new GameObject[] {
