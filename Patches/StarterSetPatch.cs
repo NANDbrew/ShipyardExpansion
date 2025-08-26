@@ -32,6 +32,7 @@ namespace ShipyardExpansion.Patches
             List<Transform> items = new List<Transform>();
             foreach (Transform item in __instance.transform)
             {
+                if (item == null) continue;
                 item.gameObject.SetActive(value: true);
                 items.Add(item);
             }
@@ -40,6 +41,7 @@ namespace ShipyardExpansion.Patches
             yield return new WaitForEndOfFrame();
             foreach (Transform item2 in items)
             {
+                if (item2 == null) continue;
                 item2.transform.Translate(Vector3.up * -15f, Space.World);
                 item2.GetComponent<ShipItem>().GetItemRigidbody().transform.Translate(Vector3.up * -15f, Space.World);
                 //item2.GetComponent<ShipItem>().itemRigidbodyC.transform.Translate(Vector3.up * -15f, Space.World);
@@ -49,6 +51,7 @@ namespace ShipyardExpansion.Patches
             yield return new WaitForEndOfFrame();
             foreach (Transform item3 in items)
             {
+                if (item3 == null) continue;
                 item3.GetComponent<ShipItem>().sold = true;
                 item3.GetComponent<SaveablePrefab>().RegisterToSave();
             }
