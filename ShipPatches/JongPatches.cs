@@ -176,6 +176,13 @@ namespace ShipyardExpansion.ShipPatches
             var fore_side_opt = thing.transform.Find("shrouds_fore_side").GetComponent<BoatPartOption>();
             fore_side_opt.childOptions = fore_side_opt.childOptions.AddRangeToArray(new GameObject[] { foremast1.Find("static_rig_007").gameObject, foremast1.Find("static_rope_atts").gameObject, foremast1_opt.walkColObject.transform.Find("static_rig_007").gameObject, foremast1_opt.walkColObject.transform.Find("static_rope_atts").gameObject });
             #endregion
+
+            #region tabletops
+            var boatData = thing.GetComponent<SE_BoatCustomData>();
+
+            partsList.availableParts[17].partOptions[0].childOptions = partsList.availableParts[17].partOptions[0].childOptions.AddToArray(boatData.tabletops[2]);
+            partsList.availableParts[16].partOptions[2].childOptions = partsList.availableParts[16].partOptions[2].childOptions.AddToArray(boatData.tabletops[1]);
+            #endregion
         }
     }
 }
