@@ -241,7 +241,7 @@ namespace ShipyardExpansion
             shadowCol.SetParent(transform, true);
             windCenter.SetParent(transform, true);
             scaleablePart.gameObject.SetActive(true);
-            sail.SetSailArea();
+            if (sail.IsInstalled()) sail.SetSailArea();
             if (Plugin.percentSailNames.Value)
             {
                 sail.sailName = baseName + " " + "(" + Mathf.RoundToInt((height / startScale.y) * 100) + "%)";
