@@ -92,6 +92,11 @@ namespace ShipyardExpansion
             //mainMastTallM.mastCols = mainMastTallM.mastCols.AddToArray(thing.transform.Find("crowsnest_low").GetComponent<CapsuleCollider>());
             //modParts["main_shrouds_side"].partOptions[0].childOptions = modParts["main_shrouds_side"].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { staticRig, rigCol, TallMastChildren[0], TallMastChildren[1] });
 
+            modParts["net_0"].partOptions[0].childOptions = new GameObject[]{ container.Find("hammock_001").gameObject };
+            //var table = modParts["net_0"].partOptions[1].transform.GetChild(0).gameObject.AddComponent<StaticTable>();
+            //table.allowPlacingItems = true;
+
+
 
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
@@ -111,4 +116,5 @@ namespace ShipyardExpansion
             #endregion
         }
     }
+
 }
