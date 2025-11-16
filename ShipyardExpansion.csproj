@@ -85,6 +85,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.ClothModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\UnityEngine.Core.2018.1.0\lib\net35\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -99,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\SailAreaPatch.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
     <Compile Include="Patches\ShipyardUIPatches2.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
@@ -110,7 +115,6 @@
     <Compile Include="ScaleType.cs" />
     <Compile Include="Scripts\AssetTools.cs" />
     <Compile Include="Scripts\NANDLadder.cs" />
-    <Compile Include="Scripts\ObjectToggler.cs" />
     <Compile Include="Scripts\SailDataManager.cs" />
     <Compile Include="SailLimits.cs" />
     <Compile Include="Scripts\SailScaleButton.cs" />
@@ -137,6 +141,8 @@
     <Compile Include="Patches\ShipyardUIPatches.cs" />
     <Compile Include="Scripts\Util.cs" />
     <Compile Include="Scripts\VersionManager.cs" />
+    <Compile Include="Scripts\StaticTable.cs" />
+    <Compile Include="Patches\TablePatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SailScalingNotes.txt" />

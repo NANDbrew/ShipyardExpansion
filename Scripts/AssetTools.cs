@@ -252,6 +252,12 @@ namespace ShipyardExpansion
 #if DEBUG
             Debug.Log("modParts.Count = " + modParts.Count);
 #endif
+            foreach (var table in boatData.tabletops)
+            {
+                var comp = table.AddComponent<StaticTable>();
+                comp.allowPlacingItems = true;
+            }
+
             return modParts;
         }
         public static IEnumerator ReplaceEmbarkMesh(BoatEmbarkCollider col, Mesh mesh)
