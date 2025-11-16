@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using HarmonyLib;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
-using Mono.Cecil;
 using UnityEngine;
 
 namespace ShipyardExpansion.Patches
@@ -80,6 +72,25 @@ namespace ShipyardExpansion.Patches
                     sub.transform.localPosition = partLocations.locations[sub.transform.GetSiblingIndex()];
                 }
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(Mast), "AttachSailToMast")]
+    internal static class ClothColPatch
+    {
+        public static void Postfix(Mast __instance, GameObject sailObject)
+        {
+            Sail sail = sailObject.GetComponent<SailConnections>().sail;
+            List<CapsuleCollider> cols = new List<CapsuleCollider>();
+            for (int i = 0; i < __instance.mastCols.Length; i++)
+            {
+                if (__instance.mastCols[i].gameObject.activeInHierarchy)
+                {
+                    cols.Add(__instance.mastCols[i]);
+                }
+            }
+
+            sail.cloth.capsuleColliders = cols.ToArray();
         }
     }
 }
