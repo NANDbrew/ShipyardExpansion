@@ -241,14 +241,17 @@ namespace ShipyardExpansion
             shadowCol.SetParent(transform, true);
             windCenter.SetParent(transform, true);
             scaleablePart.gameObject.SetActive(true);
-            if (sail.IsInstalled()) sail.SetSailArea();
+            sail.SetSailArea();
             if (Plugin.percentSailNames.Value)
             {
-                sail.sailName = baseName + " " + "(" + Mathf.RoundToInt((height / startScale.y) * 100) + "%)";
+                string size2 = "";
+                if (width != height) size2 = "x" + Mathf.RoundToInt((width / startScale.x) * 100) + "%";
+                sail.sailName = $"{baseName} ({Mathf.RoundToInt((height / startScale.y) * 100)}%{size2})";
             }
             else sail.sailName = baseName;
             UpdateInstallHeight();
         }
+
         public void SetScaleRel(float newScale)
         {
             if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
