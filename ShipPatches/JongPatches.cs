@@ -127,8 +127,13 @@ namespace ShipyardExpansion.ShipPatches
             walkCol.Find("Cube").parent = cabin;
             walkCol.Find("Cube.047").parent = cabin;
 
+
+            var door1 = structure.Find("junk_large_sliding_door_004").gameObject.AddComponent<DoorColToggler>();
+            var door2 = structure.Find("junk_large_sliding_door_006").gameObject.AddComponent<DoorColToggler>();
+
+
             var toggler = thing.transform.Find("railing").gameObject.AddComponent<SE_Bridge.ObjectToggler>();
-            toggler.offObjects = new GameObject[] { cabin.gameObject, cabinCol.gameObject, subContainer.Find("interior_trigger_001").gameObject, structure.Find("junk_large_sliding_door_004").gameObject, structure.Find("junk_large_sliding_door_006").gameObject };
+            toggler.offObjects = new GameObject[] { cabin.gameObject, cabinCol.gameObject, subContainer.Find("interior_trigger_001").gameObject, door1.gameObject, door2.gameObject };
 
             container.Find("walls").GetComponent<MeshFilter>().sharedMesh = thing.transform.Find("walls_end").GetComponent<MeshFilter>().sharedMesh;
             container.Find("walls mirrored").GetComponent<MeshFilter>().sharedMesh = thing.transform.Find("walls").GetComponent<MeshFilter>().sharedMesh;
