@@ -84,6 +84,11 @@ namespace ShipyardExpansion.Patches
             List<CapsuleCollider> cols = new List<CapsuleCollider>();
             for (int i = 0; i < __instance.mastCols.Length; i++)
             {
+                if (__instance.mastCols[i] == null)
+                {
+                    Debug.LogWarning("SE ClothColPatch: null in mast_cols at " + __instance.name);
+                    continue;
+                }
                 if (__instance.mastCols[i].gameObject.activeInHierarchy)
                 {
                     cols.Add(__instance.mastCols[i]);
