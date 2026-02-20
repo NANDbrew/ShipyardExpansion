@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using ShipyardExpansion.Scripts;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShipyardExpansion.Patches
 {
-    [HarmonyPatch(typeof(PlayerEmbarkDisembarkTrigger), "Update")]
+    [HarmonyPatch(typeof(PlayerEmbarkDisembarkTrigger), "LateUpdate")]
     internal static class PlayerEmbarkPatch
     {
         public static bool Prefix(bool __runOriginal)
@@ -20,3 +20,4 @@ namespace ShipyardExpansion.Patches
 
     }
 }
+*/
