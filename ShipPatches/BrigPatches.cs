@@ -71,6 +71,16 @@ namespace ShipyardExpansion
             partsList.availableParts[11].partOptions[0].childOptions = partsList.availableParts[11].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_fore_0/ladder_shr_0").gameObject, thing.transform.Find("crowsnest_fore_1/ladder_shr_0").gameObject, thing.transform.Find("telltale_fore").GetChild(1).gameObject, thing.transform.Find("mast_fore/static_rig").gameObject, modWalkCol.Find("mast_fore/static_rig").gameObject, thing.transform.Find("mast_fore (1)/static_rig").gameObject, modWalkCol.Find("mast_fore (1)/static_rig").gameObject });
             partsList.availableParts[11].partOptions[1].childOptions = partsList.availableParts[11].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("crowsnest_fore_0/ladder_shr_1").gameObject, thing.transform.Find("crowsnest_fore_1/ladder_shr_1").gameObject, thing.transform.Find("telltale_fore").GetChild(0).gameObject, thing.transform.Find("mast_fore/shrouds_alt_F1").gameObject, modWalkCol.Find("mast_fore/shrouds_alt_F1").gameObject, thing.transform.Find("mast_fore (1)/shrouds_alt_F0").gameObject, modWalkCol.Find("mast_fore (1)/shrouds_alt_F0").gameObject });
 
+            List<GameObject> balconyParts = new List<GameObject>();
+            balconyParts.Add(structure.Find("railing_003").gameObject);
+            balconyParts.Add(structure.Find("railing_002").gameObject);
+            balconyParts.Add(structure.Find("railing_posts_002").gameObject);
+            balconyParts.Add(walkCol.Find("structure_container/railing_003").gameObject);
+            balconyParts.Add(walkCol.Find("structure_container/railing_002").gameObject);
+            balconyParts.Add(walkCol.Find("structure_container/railing_posts_002").gameObject);
+
+            modParts["balcony standard"].partOptions[0].childOptions = balconyParts.ToArray();
+
 
             #region late adjustments
             var mizzenMast1M = mizzenMast1.GetComponent<Mast>();
