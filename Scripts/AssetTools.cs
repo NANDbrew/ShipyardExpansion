@@ -41,7 +41,7 @@ namespace ShipyardExpansion
             }
             else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle.ToString()); }
 
-            string firstTry2 = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile2);
+/*            string firstTry2 = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile2);
             string secondTry2 = Path.Combine(basePath, assetFile2);
 
             bundle2 = AssetBundle.LoadFromFile(File.Exists(firstTry2) ? firstTry2 : secondTry2);
@@ -49,7 +49,7 @@ namespace ShipyardExpansion
             {
                 Debug.LogError("Bundle 2 not loaded! Did you place it in the correct folder?");
             }
-            else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }
+            else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }*/
 
         }
 
@@ -177,6 +177,8 @@ namespace ShipyardExpansion
 
             BoatEmbarkCollider embarkCol = partsList.GetComponentInChildren<BoatEmbarkCollider>();
 
+            BoatDamage damage = boatRefs.GetComponent<BoatDamage>();
+
             foreach (SE_PartData partData in boatData.parts)
             {
                 BoatPart part = new BoatPart
@@ -258,6 +260,10 @@ namespace ShipyardExpansion
                 comp.allowPlacingItems = true;
             }
 
+            foreach (var pump in boatData.pumps)
+            {
+                pump.damage = damage;
+            }
             return modParts;
         }
         public static IEnumerator ReplaceEmbarkMesh(BoatEmbarkCollider col, Mesh mesh)
