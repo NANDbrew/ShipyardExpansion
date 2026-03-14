@@ -56,7 +56,7 @@ namespace ShipyardExpansion.ShipPatches
 
             #endregion
 
-            var prefab = AssetTools.bundle2.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_jong.prefab");
+            var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_jong.prefab");
 
             AssetTools.PreparePrefab(prefab, boatRefs);
 #if DEBUG

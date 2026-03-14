@@ -13,7 +13,7 @@ namespace ShipyardExpansion.Patches
             [HarmonyPostfix]
             public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts, BoatRefs ___refs)
             {
-                if (!AssetTools.bundle || !AssetTools.bundle2) AssetTools.LoadAssetBundles();
+                if (!AssetTools.bundle) AssetTools.LoadAssetBundles();
 
                 foreach (var mast in ___refs.masts)
                 {

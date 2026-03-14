@@ -43,7 +43,7 @@ namespace ShipyardExpansion.Patches
         public static void AwakePatch2(ShipyardUI __instance, GameObject ___sailMenu, ref ShipyardButton[] ___partOptionsLeftButtons, ref ShipyardButton[] ___partOptionsRightButtons, ref TextMesh[] ___partOptionsTexts, GameObject ___newPartsMenu)
         {
             
-            var thing = UnityEngine.Object.Instantiate(AssetTools.bundle2.LoadAsset<GameObject>("Assets/ShipyardExpansion/page_buttons.prefab"), ___newPartsMenu.transform).transform;
+            var thing = UnityEngine.Object.Instantiate(AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/page_buttons.prefab"), ___newPartsMenu.transform).transform;
             currentPageText = thing.Find("text").GetComponent<TextMesh>();
             thing.Find("page_left").gameObject.AddComponent<PageButton>().buttonType = 0;
             thing.Find("page_right").gameObject.AddComponent<PageButton>().buttonType = 1;
