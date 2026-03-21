@@ -136,7 +136,7 @@ namespace ShipyardExpansion
             deck1.walkColObject.transform.Find("Cylinder").SetParent(mainMast1Col.transform, true);
 
             var deck0 = thing.transform.Find("deck_0").GetComponent<BoatPartOption>();
-            deck0.childOptions = new GameObject[] { structure.Find("trim_015").gameObject, walkCol.Find("structure/trim_015").gameObject };
+            deck0.childOptions = new GameObject[] { structure.Find("trim_015").gameObject, walkCol.Find("structure/trim_015").gameObject, walkCol.Find("hull").gameObject };
 
         }
 
