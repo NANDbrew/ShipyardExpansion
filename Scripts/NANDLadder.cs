@@ -28,7 +28,8 @@ namespace ShipyardExpansion.Scripts
         private IEnumerator HackPlayerPos(Transform target)
         {
             animating = true;
-            player.enabled = false;
+            //player.enabled = false;
+            Refs.SetPlayerControl(false);
             Vector3 start = player.transform.localPosition;
             float lerpTime = Vector3.Distance(start, target.localPosition) * 0.1f;
             if (start.y < target.localPosition.y || Plugin.climbSpeed.Value > 10) { lerpTime /= Plugin.climbSpeed.Value * 0.1f; }
@@ -47,7 +48,8 @@ namespace ShipyardExpansion.Scripts
                 player.transform.localPosition = Vector3.Lerp(start, target.localPosition, t);
                 yield return new WaitForEndOfFrame();
             }
-            player.enabled = true;
+            Refs.SetPlayerControl(true);
+            //player.enabled = true;
             animating = false;
         }
     }
