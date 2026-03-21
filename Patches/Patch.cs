@@ -2,6 +2,7 @@
 using ShipyardExpansion.ShipPatches;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ShipyardExpansion.Patches
 {
@@ -13,14 +14,18 @@ namespace ShipyardExpansion.Patches
             [HarmonyPostfix]
             public static void Adder(SaveableBoatCustomization __instance, BoatCustomParts ___parts, BoatRefs ___refs)
             {
-                if (!AssetTools.bundle) AssetTools.LoadAssetBundles();
+                Array.Resize(ref ___refs.masts, Plugin.mastListSize);
+
+                if (!AssetTools.bundle)
+                {
+                    Debug.LogWarning("ShipyardExpansion: Asset bundle missing!");
+                    return; 
+                }
 
                 foreach (var mast in ___refs.masts)
                 {
                     if (mast != null) Plugin.mastHeights.Add(mast, mast.mastHeight);
                 }
-                Array.Resize(ref ___refs.masts, Plugin.mastListSize);
-
                 int sceneIndex = __instance.GetComponent<SaveableObject>().sceneIndex;
 
                 if (sceneIndex == 10)

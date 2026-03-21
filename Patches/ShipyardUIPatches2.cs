@@ -23,7 +23,7 @@ namespace ShipyardExpansion.Patches
 
         [HarmonyPatch("RefreshPartsPanel")]
         [HarmonyPrefix]
-        public static void RefreshPatch(ShipyardUI __instance, TextMesh[] ___partOptionsTexts, int category, bool freshStart)
+        public static void RefreshPatch(int category, bool freshStart)
         {
             if (freshStart)
             {
@@ -35,15 +35,16 @@ namespace ShipyardExpansion.Patches
                 }
             }
             currentPageCount = Mathf.CeilToInt((float)partCounts[category] / pageSize);
+            if (currentPageCount == 0) currentPageCount = 1;
             PageButton.UpdatePage();
         }
 
         [HarmonyPatch("Awake")]
         [HarmonyPrefix]
-        public static void AwakePatch2(ShipyardUI __instance, GameObject ___sailMenu, ref ShipyardButton[] ___partOptionsLeftButtons, ref ShipyardButton[] ___partOptionsRightButtons, ref TextMesh[] ___partOptionsTexts, GameObject ___newPartsMenu)
+        public static void AwakePatch2(ref ShipyardButton[] ___partOptionsLeftButtons, ref ShipyardButton[] ___partOptionsRightButtons, ref TextMesh[] ___partOptionsTexts, GameObject ___newPartsMenu)
         {
             
-            var thing = UnityEngine.Object.Instantiate(AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/page_buttons.prefab"), ___newPartsMenu.transform).transform;
+            var thing = UnityEngine.Object.Instantiate(AssetTools.bundle2.LoadAsset<GameObject>("Assets/ShipyardExpansion/page_buttons.prefab"), ___newPartsMenu.transform).transform;
             currentPageText = thing.Find("text").GetComponent<TextMesh>();
             thing.Find("page_left").gameObject.AddComponent<PageButton>().buttonType = 0;
             thing.Find("page_right").gameObject.AddComponent<PageButton>().buttonType = 1;
@@ -131,6 +132,7 @@ namespace ShipyardExpansion.Patches
                 {
                     currentPage = currentPageCount - 1;
                 }
+                if (currentPage < 0) currentPage = 0;
                 for (int i = 0; i < pageContainers.Count; i++)
                 {
                     pageContainers[i].SetActive(i == currentPage);

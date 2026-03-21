@@ -16,7 +16,7 @@ namespace ShipyardExpansion
         static string basePath = "";
         const string assetDir = "ShipyardExpansion";
         const string assetFile = "shipyard_expansion.assets";
-        const string assetFile2 = "shipyard_expansion2.assets";
+        const string assetFile2 = "shipyard_expansion_ui.assets";
         const string libFile = "SE_Bridge.dll";
 
         public static void LoadAssetBundles()    //Load the bundle
@@ -34,14 +34,14 @@ namespace ShipyardExpansion
             string firstTry = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile);
             string secondTry = Path.Combine(basePath, assetFile);
 
-            bundle = AssetBundle.LoadFromFile(File.Exists(firstTry) ? firstTry : secondTry);
-            if (bundle == null)
+            try
             {
-                Debug.LogError("Bundle 1 not loaded! Did you place it in the correct folder?");
+                AssetBundle.LoadFromFile(File.Exists(firstTry) ? firstTry : secondTry);
+                Debug.Log("ShipyardExpansion: loaded bundle " + bundle.ToString());
             }
-            else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle.ToString()); }
+            catch { Debug.LogError("Bundle 1 not loaded! Did you place it in the correct folder?"); }
 
-/*            string firstTry2 = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile2);
+            string firstTry2 = Path.Combine(Directory.GetParent(basePath).FullName, assetDir, assetFile2);
             string secondTry2 = Path.Combine(basePath, assetFile2);
 
             bundle2 = AssetBundle.LoadFromFile(File.Exists(firstTry2) ? firstTry2 : secondTry2);
@@ -49,7 +49,7 @@ namespace ShipyardExpansion
             {
                 Debug.LogError("Bundle 2 not loaded! Did you place it in the correct folder?");
             }
-            else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }*/
+            else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }
 
         }
 

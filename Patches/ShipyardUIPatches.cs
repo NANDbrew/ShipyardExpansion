@@ -81,7 +81,7 @@ namespace ShipyardExpansion.Patches
         [HarmonyPostfix]
         public static void AwakePatch(GameObject ___ui, GameObject ___moveUpButton, GameObject ___moveDownButton, GameObject ___sailMenu)
         {
-            GameObject furlButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle.LoadAsset("button sail toggle.prefab"), ___sailMenu.transform) as GameObject;
+            GameObject furlButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("button sail toggle.prefab"), ___sailMenu.transform) as GameObject;
             furlButton.AddComponent<ShipyardUnfurlButton>();
 
             oldButton = ___ui.transform.Find("mode button Parts Other");
