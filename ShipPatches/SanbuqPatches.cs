@@ -185,6 +185,9 @@ namespace ShipyardExpansion
             topmastNone.childOptions = topmastNone.childOptions.AddRangeToArray(new GameObject[] { mainMast1.Find("flag (2)").gameObject, mainMast2.Find("flag (1)").gameObject });
             UnityEngine.Object.Instantiate(mainMast1.Find("flag (2)"), topMast1, false).localPosition = Vector3.zero;
             UnityEngine.Object.Instantiate(mainMast1.Find("flag (2)"), topMast2, false).localPosition = Vector3.zero;
+
+            var miz_topmastNone = modParts["mizzen_topmast_empty"].partOptions[0];
+            miz_topmastNone.childOptions = miz_topmastNone.childOptions.AddToArray(mizzenMast1.Find("flag").gameObject);
 #endregion
 
         }
