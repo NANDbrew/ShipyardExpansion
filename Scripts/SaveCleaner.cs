@@ -142,10 +142,21 @@ namespace ShipyardExpansion
             // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
             {
+                List<int> partCounts = PartCountTracker.Read(index);
+
                 // check vanilla part count and pad as needed
-                if (Plugin.stockParts.ContainsKey(refs) && GameState.modData.TryGetValue(Plugin.PLUGIN_ID + "." + index + ".partCount", out string value))
+                if (Plugin.stockParts.ContainsKey(refs) && partCounts.Count > 0)
                 {
-                    int partCount = Convert.ToInt32(value);
+                    int partCount = 0;
+
+                    if (partCounts.Count == 1)
+                    {
+                        partCount = partCounts[0];
+                    }
+                    else if (partCounts.Count > 1)
+                    {
+                        partCount = partCounts.Count;
+                    }
                     Debug.Log("SE: part count for " + refs.gameObject.name + " = " + partCount);
                     if (Plugin.stockParts[refs].Count > partCount)
                     {
@@ -154,6 +165,20 @@ namespace ShipyardExpansion
                         {
                             Debug.Log("SE: padding partActiveOptions for " + refs.gameObject.name + " at index " + (i));
                             data.partActiveOptions.Insert(i, Plugin.stockParts[refs].ElementAt(i).Value);
+                        }
+                    }
+
+                    if (partCounts.Count > 1)
+                    {
+                        int j = 0;
+                        foreach (var part in Plugin.stockParts[refs].Keys)
+                        {
+                            if (j >= partCounts.Count) break;
+                            if (part.partOptions.Count > partCounts[j] && data.partActiveOptions[j] >= partCounts[j])
+                            {
+                                data.partActiveOptions[j] += (part.partOptions.Count - partCounts[j]);
+                            }
+                            j++;
                         }
                     }
                 }
