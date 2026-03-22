@@ -12,7 +12,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.8.1";
+        public const string PLUGIN_VERSION = "0.8.2";
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
@@ -64,6 +64,7 @@ namespace ShipyardExpansion
             climbSpeed = Config.Bind("Settings", "Climb speed", 10, new ConfigDescription("Speed when climbing up to tops/crow's nests", new AcceptableValueRange<int>(2, 15)));
             topsailPatch = Config.Bind("Settings", "Link topmasts", true, new ConfigDescription("Link square sail angles on topmasts to the ones on the mast below (requires a restart)"));
             combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)"));
+            
             AssetTools.LoadAssetBundles();
         }
 

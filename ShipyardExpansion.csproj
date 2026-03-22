@@ -105,7 +105,6 @@
     <Compile Include="ConfigurationManagerAttributes.cs" />
     <Compile Include="Patches\SailAreaPatch.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
-    <Compile Include="Patches\ShipyardUIPatches2.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
     <Compile Include="Patches\JunkGaffFixer.cs" />
     <Compile Include="Patches\PlayerEmbarkPatch.cs" />
@@ -123,6 +122,9 @@
     <Compile Include="Scripts\SailPartLocations.cs" />
     <Compile Include="Scripts\SailScaler.cs" />
     <Compile Include="Patches\SaveLoadPatches.cs" />
+    <Compile Include="Scripts\SailTextureButton.cs" />
+    <Compile Include="Scripts\SailTextureChanger.cs" />
+    <Compile Include="Scripts\ShipyardPageButton.cs" />
     <Compile Include="Scripts\ShipyardUnfurlButton.cs" />
     <Compile Include="Scripts\TopsailAngleMirror.cs" />
     <Compile Include="Scripts\PartCountTracker.cs" />
