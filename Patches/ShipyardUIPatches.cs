@@ -20,6 +20,7 @@ namespace ShipyardExpansion.Patches
         static GameObject rotateForwardButton;
         static GameObject rotateBackwardButton;
         static GameObject flipButton;
+        static GameObject flipButton2;
         static GameObject textureButton;
 
         static int[] partCounts;
@@ -161,6 +162,11 @@ namespace ShipyardExpansion.Patches
             SailScaleButton buttonflip = flipButton.AddComponent<SailScaleButton>();
             buttonflip.buttonType = SailScaleButton.ButtonType.flip;
 
+            flipButton2 = scalingButtons.transform.Find("button flip p2").gameObject;
+            SailScaleButton buttonflip2 = flipButton2.AddComponent<SailScaleButton>();
+            buttonflip2.buttonType = SailScaleButton.ButtonType.flip;
+
+
             var textureB1 = scalingButtons.transform.Find("button sail texture").gameObject;
             var textureB2 = scalingButtons.transform.Find("button sail texture p2").gameObject;
             if (Chainloader.PluginInfos.ContainsKey("net.lilith.allsailcolors"))
@@ -204,6 +210,7 @@ namespace ShipyardExpansion.Patches
             rotateBackwardButton.SetActive(rotatable);
 
             flipButton.SetActive(flippable && !widthable);
+            flipButton2.SetActive(flippable && widthable);
 
             textureButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null);
         }
