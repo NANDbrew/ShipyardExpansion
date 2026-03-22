@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
+using ShipyardExpansion.Scripts;
 using UnityEngine;
 
 namespace ShipyardExpansion
@@ -50,25 +51,25 @@ namespace ShipyardExpansion
                 {
                     GameObject installedSail = mastComp.sails[i];
                     string[] sailInfo = sails[i].Split(',');
-                    //if (installedSail.GetComponent<Sail>().prefabIndex == ConvertSave.ToInt32(sailInfo[0], CultureInfo.InvariantCulture))
-                    //{
-                        SailScaler component = installedSail.GetComponent<SailScaler>();
-                        if (component == null)
-                        {
-                            Debug.Log("No sail scaler component found");
-                            continue;
-                        }
-                        component.SetScaleAbs(Convert.ToSingle(sailInfo[1], CultureInfo.InvariantCulture), Convert.ToSingle(sailInfo[2], CultureInfo.InvariantCulture));
-                        if (sailInfo.Length >= 4)
-                        {
-                            component.SetAngle(Convert.ToSingle(sailInfo[3], CultureInfo.InvariantCulture));
-                            //Debug.Log("sail Angle = " + sailInfo[3]);
-                            if (sailInfo.Length >= 5 && Boolean.Parse(sailInfo[4]))
-                            {
-                                component.FlipJib(true);
-                            }
-                        }
-                    //}
+
+                    SailScaler component = installedSail.GetComponent<SailScaler>();
+                    if (component == null)
+                    {
+                        Debug.Log("No sail scaler component found");
+                        continue;
+                    }
+                    component.SetScaleAbs(Convert.ToSingle(sailInfo[1], CultureInfo.InvariantCulture), Convert.ToSingle(sailInfo[2], CultureInfo.InvariantCulture));
+                    component.SetAngle(Convert.ToSingle(sailInfo[3], CultureInfo.InvariantCulture));
+                    //Debug.Log("sail Angle = " + sailInfo[3]);
+                    if (sailInfo.Length >= 5 && Boolean.Parse(sailInfo[4]))
+                    {
+                        component.FlipJib(true);
+                    }
+                    if (sailInfo.Length >= 6)
+                    {
+                        installedSail.GetComponent<SailTextureChanger>().SetTexture(Convert.ToInt32(sailInfo[5], CultureInfo.InvariantCulture));
+                    }
+
                 }
 
             }
@@ -102,8 +103,9 @@ namespace ShipyardExpansion
                     text += component2.prefabIndex.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Scale.x.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Scale.y.ToString(CultureInfo.InvariantCulture) + ",";
-                    text += component.Angle.ToString(CultureInfo.InvariantCulture);
-                    if (component.flippable) text += "," + component.Flipped.ToString(CultureInfo.InvariantCulture);
+                    text += component.Angle.ToString(CultureInfo.InvariantCulture) + ",";
+                    text += component.Flipped.ToString(CultureInfo.InvariantCulture) + ",";
+                    text += sail.GetComponent<SailTextureChanger>().textureIndex.ToString(CultureInfo.InvariantCulture);
                     text += "]";
                 }
                 text += ")";

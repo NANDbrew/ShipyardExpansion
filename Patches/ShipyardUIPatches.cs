@@ -1,11 +1,8 @@
-﻿using HarmonyLib;
+﻿using BepInEx.Bootstrap;
+using HarmonyLib;
 using ShipyardExpansion.Scripts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ShipyardExpansion.Patches
@@ -14,9 +11,6 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(ShipyardUI))]
     internal static class ShipyardUIPatches
     {
-        static GameObject extraButton;
-        static Transform oldButton;
-
         static GameObject scaleUpButton;
         static GameObject scaleDownButton;
         static GameObject increaseHeightButton;
@@ -26,37 +20,31 @@ namespace ShipyardExpansion.Patches
         static GameObject rotateForwardButton;
         static GameObject rotateBackwardButton;
         static GameObject flipButton;
+        static GameObject textureButton;
 
         static int[] partCounts;
-        static bool extra;
 
         [HarmonyPatch("RefreshPartsPanel")]
         [HarmonyPrefix]
-        public static void RefreshPatch(ShipyardUI __instance, TextMesh[] ___partOptionsTexts, bool freshStart)
+        public static void RefreshPatch(int category, bool freshStart)
         {
             if (freshStart)
             {
-                extra = false;
-                partCounts = new int[4];
+                partCounts = new int[3];
                 BoatCustomParts component = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatCustomParts>();
                 foreach (var part in component.availableParts)
                 {
-                    if (partCounts[part.category] >= ___partOptionsTexts.Length)
-                    {
-                        part.category = 3;
-
-                        //extra = true;
-                    }
                     partCounts[part.category]++;
                 }
-                //if (partCounts[3] > 0) extra = true;
             }
-            extraButton.SetActive(partCounts[3] > 0);
+            ShipyardPageButton.currentPageCount = Mathf.CeilToInt((float)partCounts[category] / ShipyardPageButton.pageSize);
+            if (ShipyardPageButton.currentPageCount == 0) ShipyardPageButton.currentPageCount = 1;
+            ShipyardPageButton.UpdatePage();
         }
 
         [HarmonyPatch("Awake")]
         [HarmonyPrefix]
-        public static void AwakePatch2(ref GameObject[] ___mastButtons)
+        public static void AwakePatch2(ref GameObject[] ___mastButtons, ref ShipyardButton[] ___partOptionsLeftButtons, ref ShipyardButton[] ___partOptionsRightButtons, ref TextMesh[] ___partOptionsTexts, GameObject ___newPartsMenu)
         {
             // mast buttons (clickable ball things for selecting masts)
             GameObject[] newButtons = new GameObject[Plugin.mastListSize];
@@ -75,96 +63,120 @@ namespace ShipyardExpansion.Patches
                 }
             }
             ___mastButtons = newButtons;
+
+            var thing = UnityEngine.Object.Instantiate(AssetTools.bundle2.LoadAsset<GameObject>("Assets/ShipyardExpansion/page_buttons.prefab"), ___newPartsMenu.transform).transform;
+            ShipyardPageButton.currentPageText = thing.Find("text").GetComponent<TextMesh>();
+            thing.Find("page_left").gameObject.AddComponent<ShipyardPageButton>().buttonType = 0;
+            thing.Find("page_right").gameObject.AddComponent<ShipyardPageButton>().buttonType = 1;
+
+            ShipyardPageButton.pageSize = ___partOptionsTexts.Length;
+            ShipyardPageButton.pageContainers = new List<GameObject>();
+            var cont0 = new GameObject("PageContainer_0");
+            cont0.transform.SetParent(___newPartsMenu.transform, false);
+
+            for (int i = 0; i < ShipyardPageButton.pageSize; i++)
+            {
+                ___partOptionsLeftButtons[i].transform.SetParent(cont0.transform);
+            }
+            for (int i = 0; i < ShipyardPageButton.pageSize; i++)
+            {
+                ___partOptionsRightButtons[i].transform.SetParent(cont0.transform);
+            }
+            for (int i = 0; i < ShipyardPageButton.pageSize; i++)
+            {
+                ___partOptionsTexts[i].transform.SetParent(cont0.transform);
+            }
+
+            ShipyardPageButton.pageContainers.Add(cont0);
+            for (int i = 1; i < Plugin.maxPartsPages; i++) // starting at 1 because 0 is already created
+            {
+                GameObject pageContainer = new GameObject($"PageContainer_{i}");
+                pageContainer.transform.SetParent(___newPartsMenu.transform, false);
+
+                ShipyardButton[] newLefts = new ShipyardButton[ShipyardPageButton.pageSize];
+                for (int j = 0; j < ShipyardPageButton.pageSize; j++)
+                {
+                    newLefts[j] = UnityEngine.Object.Instantiate(___partOptionsLeftButtons[j], pageContainer.transform);
+                }
+                ___partOptionsLeftButtons = ___partOptionsLeftButtons.Concat(newLefts).ToArray();
+
+                ShipyardButton[] newRights = new ShipyardButton[ShipyardPageButton.pageSize];
+                for (int j = 0; j < ShipyardPageButton.pageSize; j++)
+                {
+                    newRights[j] = UnityEngine.Object.Instantiate(___partOptionsRightButtons[j], pageContainer.transform);
+                }
+                ___partOptionsRightButtons = ___partOptionsRightButtons.Concat(newRights).ToArray();
+
+                TextMesh[] newTexts = new TextMesh[ShipyardPageButton.pageSize];
+                for (int j = 0; j < ShipyardPageButton.pageSize; j++)
+                {
+                    newTexts[j] = UnityEngine.Object.Instantiate(___partOptionsTexts[j], pageContainer.transform);
+                }
+                ___partOptionsTexts = ___partOptionsTexts.Concat(newTexts).ToArray();
+
+                ShipyardPageButton.pageContainers.Add(pageContainer);
+
+            }
         }
 
         [HarmonyPatch("Awake")]
         [HarmonyPostfix]
-        public static void AwakePatch(GameObject ___ui, GameObject ___moveUpButton, GameObject ___moveDownButton, GameObject ___sailMenu)
+        public static void AwakePatch(GameObject ___moveUpButton, GameObject ___sailMenu)
         {
-            GameObject furlButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("button sail toggle.prefab"), ___sailMenu.transform) as GameObject;
-            furlButton.AddComponent<ShipyardUnfurlButton>();
+            GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail scaling buttons.prefab"), ___moveUpButton.transform.parent) as GameObject;
 
-            oldButton = ___ui.transform.Find("mode button Parts Other");
-            Transform newButton = UnityEngine.Object.Instantiate(oldButton, ___ui.transform);
-            newButton.localPosition = oldButton.localPosition + new Vector3(1.67f, 0, -0.28f);
-            newButton.GetComponent<ShipyardButton>().index = 3;
-            newButton.name = "mode button Parts Extra";
-            newButton.GetComponent<ShipyardButton>().SetText("Extra");
-            newButton.gameObject.SetActive(false);
-            extraButton = newButton.gameObject;
-
-            scaleUpButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            scaleUpButton.transform.localPosition += new Vector3(-1.48f, 0.0f, 0.25f);
-            scaleUpButton.name = "button Scale Up";
-            UnityEngine.Object.Destroy(scaleUpButton.GetComponent<ShipyardButton>());
+            scaleUpButton = scalingButtons.transform.Find("button scale up").gameObject;
             SailScaleButton buttonUp = scaleUpButton.AddComponent<SailScaleButton>();
             buttonUp.buttonType = SailScaleButton.ButtonType.scaleUp;
-            buttonUp.SetText("Scale\nUp");
 
-            scaleDownButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            scaleDownButton.transform.localPosition += new Vector3(-1.48f, 0.0f, 0.25f);
-            scaleDownButton.name = "button Scale Down";
-            UnityEngine.Object.Destroy(scaleDownButton.GetComponent<ShipyardButton>());
+            scaleDownButton = scalingButtons.transform.Find("button scale down").gameObject;
             SailScaleButton buttonDown = scaleDownButton.AddComponent<SailScaleButton>();
             buttonDown.buttonType = SailScaleButton.ButtonType.scaleDown;
-            buttonDown.SetText("Scale\nDown");
 
-            increaseHeightButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            increaseHeightButton.transform.localPosition += new Vector3(-1.48f, 0.0f, 0.25f);// - 2.96f, 0.0f, 0.46f);
-            increaseHeightButton.name = "button Increase Height";
-            UnityEngine.Object.Destroy(increaseHeightButton.GetComponent<ShipyardButton>());
-            SailScaleButton buttonTaller = increaseHeightButton.AddComponent<SailScaleButton>();
+            increaseHeightButton = scalingButtons.transform.Find("button increase height").gameObject;
+            SailScaleButton buttonTaller = scaleUpButton.AddComponent<SailScaleButton>();
             buttonTaller.buttonType = SailScaleButton.ButtonType.increaseHeight;
-            buttonTaller.SetText("Increase\nHeight");
 
-            decreaseHeightButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            decreaseHeightButton.transform.localPosition += new Vector3(-1.48f, 0.0f, 0.25f);//-2.96f, 0.0f, 0.46f);
-            decreaseHeightButton.name = "button Decrease Height";
-            UnityEngine.Object.Destroy(decreaseHeightButton.GetComponent<ShipyardButton>());
+            decreaseHeightButton = scalingButtons.transform.Find("button decrease height").gameObject;
             SailScaleButton buttonShorter = decreaseHeightButton.AddComponent<SailScaleButton>();
             buttonShorter.buttonType = SailScaleButton.ButtonType.decreaseHeight;
-            buttonShorter.SetText("Reduce\nHeight");
 
-            increaseWidthButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            increaseWidthButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
-            increaseWidthButton.name = "button Increase Width";
-            UnityEngine.Object.Destroy(increaseWidthButton.GetComponent<ShipyardButton>());
+            increaseWidthButton = scalingButtons.transform.Find("button increase width").gameObject;
             SailScaleButton buttonWider = increaseWidthButton.AddComponent<SailScaleButton>();
             buttonWider.buttonType = SailScaleButton.ButtonType.increaseWidth;
-            buttonWider.SetText("Increase\nWidth");
 
-            decreaseWidthButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            decreaseWidthButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
-            decreaseWidthButton.name = "button Decrease Width";
-            UnityEngine.Object.Destroy(decreaseWidthButton.GetComponent<ShipyardButton>());
+            decreaseWidthButton = scalingButtons.transform.Find("button decrease width").gameObject;
             SailScaleButton buttonNarrower = decreaseWidthButton.AddComponent<SailScaleButton>();
             buttonNarrower.buttonType = SailScaleButton.ButtonType.decreaseWidth;
-            buttonNarrower.SetText("Reduce\nWidth");
 
-
-            rotateForwardButton = UnityEngine.Object.Instantiate(___moveUpButton, ___moveUpButton.transform.parent);
-            rotateForwardButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
-            rotateForwardButton.name = "button Rotate Forward";
-            UnityEngine.Object.Destroy(rotateForwardButton.GetComponent<ShipyardButton>());
+            rotateForwardButton = scalingButtons.transform.Find("button rotate forward").gameObject;
             SailScaleButton buttonrotFwd = rotateForwardButton.AddComponent<SailScaleButton>();
             buttonrotFwd.buttonType = SailScaleButton.ButtonType.rotateForward;
-            buttonrotFwd.SetText("Rotate\nForward");
 
-            rotateBackwardButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            rotateBackwardButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
-            rotateBackwardButton.name = "button Rotate Backward";
-            UnityEngine.Object.Destroy(rotateBackwardButton.GetComponent<ShipyardButton>());
+            rotateBackwardButton = scalingButtons.transform.Find("button rotate backward").gameObject;
             SailScaleButton buttonrotBkwd = rotateBackwardButton.AddComponent<SailScaleButton>();
             buttonrotBkwd.buttonType = SailScaleButton.ButtonType.rotateBackward;
-            buttonrotBkwd.SetText("Rotate\nBackward");
 
-            flipButton = UnityEngine.Object.Instantiate(___moveDownButton, ___moveDownButton.transform.parent);
-            flipButton.transform.localPosition += new Vector3(-2.96f, 0.0f, 0.46f);
-            flipButton.name = "button flip";
-            UnityEngine.Object.Destroy(flipButton.GetComponent<ShipyardButton>());
+            flipButton = scalingButtons.transform.Find("button flip").gameObject;
             SailScaleButton buttonflip = flipButton.AddComponent<SailScaleButton>();
             buttonflip.buttonType = SailScaleButton.ButtonType.flip;
-            buttonflip.SetText("Flip");
+
+            var textureB1 = scalingButtons.transform.Find("button sail texture").gameObject;
+            var textureB2 = scalingButtons.transform.Find("button sail texture p2").gameObject;
+            if (Chainloader.PluginInfos.ContainsKey("net.lilith.allsailcolors"))
+            {
+                textureButton = textureB2;
+                textureB1.SetActive(false);
+            }
+            else
+            {
+                textureButton = textureB1;
+                textureB2.SetActive(false);
+            }
+            textureButton.AddComponent<TextureButton>();
+
+            GameObject furlButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("button sail toggle.prefab"), ___sailMenu.transform) as GameObject;
+            furlButton.AddComponent<ShipyardUnfurlButton>();
 
         }
         [HarmonyPatch("UpdateMoveButtons")]
@@ -193,22 +205,7 @@ namespace ShipyardExpansion.Patches
 
             flipButton.SetActive(flippable && !widthable);
 
+            textureButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null);
         }
-
-/*        [HarmonyPatch("UpdateMastButtons")]
-        [HarmonyPostfix]
-        public static void UpdateMastButtonsPatch2(GameObject[] ___mastButtons)
-        {
-            Mast[] masts = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatRefs>().masts;
-            for (int i = 0; i < ___mastButtons.Length; i++)
-            {
-                if (masts.Length > i && masts[i] != null && ___mastButtons[i].activeInHierarchy)
-                {
-                    ___mastButtons[i].transform.position = masts[i].transform.position - masts[i].transform.forward * (masts[i].mastHeight * masts[i].transform.localScale.z * 0.5f);
-                }
-            }
-
-        }*/
-
     }
 }
