@@ -135,7 +135,7 @@ namespace ShipyardExpansion.Patches
             buttonDown.buttonType = SailScaleButton.ButtonType.scaleDown;
 
             increaseHeightButton = scalingButtons.transform.Find("button increase height").gameObject;
-            SailScaleButton buttonTaller = scaleUpButton.AddComponent<SailScaleButton>();
+            SailScaleButton buttonTaller = increaseHeightButton.AddComponent<SailScaleButton>();
             buttonTaller.buttonType = SailScaleButton.ButtonType.increaseHeight;
 
             decreaseHeightButton = scalingButtons.transform.Find("button decrease height").gameObject;
