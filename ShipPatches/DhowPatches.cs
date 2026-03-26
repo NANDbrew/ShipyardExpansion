@@ -73,6 +73,12 @@ namespace ShipyardExpansion
 #if DEBUG
             Debug.Log("SE: instanting dhow parts");
 #endif
+            var rudder = container.Find("rudder").GetComponent<HingeJoint>();
+            foreach (var tiller in prefab.GetComponent<SE_BoatCustomData>().tillers)
+            {
+                tiller.attachedRudder = rudder;
+            }
+
             var thing = UnityEngine.Object.Instantiate(prefab, container, false);
             Debug.Log("SE: instantiated " + thing);
 
@@ -96,7 +102,25 @@ namespace ShipyardExpansion
             //var table = modParts["net_0"].partOptions[1].transform.GetChild(0).gameObject.AddComponent<StaticTable>();
             //table.allowPlacingItems = true;
 
+            BoatPartOption wheel = Util.AddPartOption(container.Find("steering_wheel").gameObject, "steering wheel");
 
+            wheel.basePrice = 600;
+            wheel.installCost = 350;
+            wheel.walkColObject = walkCol.Find("Cube_004").gameObject;
+            wheel.childOptions = new GameObject[] { container.Find("Cube_004").gameObject, container.Find("rope_holder").gameObject };
+            modParts["tiller_container"].partOptions.Insert(0, wheel);
+
+            var switcher = modParts["tiller_container"].partOptions[1].GetComponentInChildren<RopeAttAutoSwitcher>();
+            Transform switchingAtt = (Transform)AccessTools.Field(switcher.GetType(), "att").GetValue(switcher);
+            switcher.otherParent = mainMastM.midRopeAtt[0];
+            for (int i = 0; i < mainMastM.midRopeAtt.Length; i++)
+            {
+                mainMastM.midRopeAtt[i] = switchingAtt;
+            }
+            for (int i = 0; i < mainMastTallM.midRopeAtt.Length; i++)
+            {
+                mainMastTallM.midRopeAtt[i] = switchingAtt;
+            }
 
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
