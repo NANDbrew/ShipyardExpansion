@@ -215,4 +215,17 @@ namespace ShipyardExpansion.Patches
             textureButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null);
         }
     }
+
+    [HarmonyPatch(typeof(ShipyardButton), "SetText")]
+    public static class ButtonPatch
+    {
+        public static void Prefix(ShipyardButton __instance, ref string text)
+        {
+            if (__instance.function == ShipyardButton.ButtonFunction.selectSail && text.Contains("%"))
+            {
+                text = text.Insert(text.IndexOf('('), "\n");
+            }
+        }
+
+    }
 }
