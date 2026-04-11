@@ -1,9 +1,11 @@
 ﻿using HarmonyLib;
 using SE_Bridge;
 using ShipyardExpansion.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -18,7 +20,7 @@ namespace ShipyardExpansion
         const string assetFile = "shipyard_expansion.assets";
         const string assetFile2 = "shipyard_expansion_ui.assets";
         const string libFile = "SE_Bridge.dll";
-
+        //static object[] mats;
         public static void LoadAssetBundles()    //Load the bundle
         {
             basePath = Directory.GetParent(Plugin.instance.Info.Location).FullName;
@@ -49,7 +51,28 @@ namespace ShipyardExpansion
             }
             else { Debug.Log("ShipyardExpansion: loaded bundle " + bundle2.ToString()); }
 
+            // stupid hack to fix fogless shader
+            var mats = bundle.LoadAllAssets(typeof(Material));
+            foreach (Material m in mats)
+            {
+
+                var shaderName = m.shader.name;
+                //Debug.LogWarning("trying to refresh shader: " + shaderName + " in material " + m.name);
+                var newShader = Shader.Find(shaderName);
+                if (newShader != null)
+                {
+                    m.shader = newShader;
+                    //Debug.LogWarning("refreshed shader: " + shaderName + " in material " + m.name);
+
+                }
+                else
+                {
+                    Debug.LogWarning("unable to refresh shader: " + shaderName + " in material " + m.name);
+                }
+            }
+
         }
+
 
         public static GPButtonRopeWinch[] HandleWinches(GameObject[] data)
         {

@@ -108,7 +108,7 @@ namespace ShipyardExpansion
             return data;
         }
 
-        public static void CleanBoatParts(BoatCustomParts parts)
+        public static void CleanBoatParts(ref BoatCustomParts parts)
         {
             Debug.Log("SaveCleaner: commencing cleaning...");
             for (int i = 0; i < parts.availableParts.Count;)
@@ -134,7 +134,7 @@ namespace ShipyardExpansion
             }
         }
 
-        public static void ConvertSave(SaveBoatCustomizationData data, BoatRefs refs)
+        public static void ConvertSave(ref SaveBoatCustomizationData data, BoatRefs refs)
         {
             //if (GameState.playing && !GameState.justStarted) return;
             int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;

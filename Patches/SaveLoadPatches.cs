@@ -13,19 +13,19 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(SaveableBoatCustomization), "LoadData")]
     internal static class CustomizationCleaner
     {
-        public static void Prefix(ref SaveBoatCustomizationData data, BoatRefs ___refs, BoatCustomParts ___parts)
+/*        public static void Prefix(ref SaveBoatCustomizationData data, BoatRefs ___refs, BoatCustomParts ___parts)
         {
-            SaveCleaner.ConvertSave(data, ___refs);
+            SaveCleaner.ConvertSave(ref data, ___refs);
 
             if (Plugin.cleanLoad.Value)
             {
                 data = SaveCleaner.CleanLoad(data, ___refs, ___parts);
             }
-        }
+        }*/
         public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
             SailDataManager.LoadSailConfig(___refs);
-            
+            SailDataManager.SaveSailConfig(___refs);
         }
     }
 
@@ -34,6 +34,7 @@ namespace ShipyardExpansion.Patches
     { 
         public static void Postfix(BoatRefs ___refs, BoatCustomParts ___parts)
         {
+            if (GameState.currentShipyard == null) return;
             if (___refs.GetComponent<PurchasableBoat>().isPurchased())
             {
                 SailDataManager.SaveSailConfig(___refs);
@@ -49,9 +50,10 @@ namespace ShipyardExpansion.Patches
         {
             if (Plugin.cleanSave.Value)
             {
-                foreach (BoatCustomParts parts in Plugin.moddedBoats)
+                for (int i = 0; i < Plugin.moddedBoats.Count; i++)
                 {
-                    SaveCleaner.CleanBoatParts(parts);
+                    BoatCustomParts parts = Plugin.moddedBoats[i];
+                    SaveCleaner.CleanBoatParts(ref parts);
                 }
                 //SaveCleaner.CleanSaveOld(Plugin.moddedBoats, Plugin.stockParts, Plugin.stockPartOptions, Plugin.stockMasts);
                 Plugin.cleanSave.Value = false;
@@ -59,20 +61,22 @@ namespace ShipyardExpansion.Patches
         }
     }
 
-    [HarmonyPatch(typeof(SaveLoadManager), "LoadModData")]
+/*    [HarmonyPatch(typeof(SaveLoadManager), "LoadModData")]
     internal class LoadPatch
     {
         public static void Postfix()
         {
-/*            VersionManager.ReadSaveVersion();
-            foreach (BoatRefs boat in GameObject.FindObjectsOfType<BoatRefs>())
-            {
-                if (boat.GetComponent<SaveableObject>().extraSetting)
-                {
-                    SailDataManager.LoadSailConfig(boat);
-                }
-            }*/
-            VersionManager.WriteSaveVersion();
+            *//*            VersionManager.ReadSaveVersion();
+                        foreach (BoatRefs boat in GameObject.FindObjectsOfType<BoatRefs>())
+                        {
+                            if (boat.GetComponent<SaveableObject>().extraSetting)
+                            {
+                                SailDataManager.LoadSailConfig(boat);
+                            }
+                        }*//*
+            //PartCountTracker.Write();
+
+            //VersionManager.WriteSaveVersion();
         }
 
     }
@@ -81,11 +85,11 @@ namespace ShipyardExpansion.Patches
     {
         public static void Prefix()
         {
-            VersionManager.WriteSaveVersion();
-            PartCountTracker.Write();
+            //VersionManager.WriteSaveVersion();
+            //PartCountTracker.Write();
         }
 
-    }
+    }*/
 
     [HarmonyPatch(typeof(SaveLoadManager), "LoadNeeds")]
     internal class LoadNeedsPatch
@@ -94,8 +98,25 @@ namespace ShipyardExpansion.Patches
         {
             GameState.modData = save.modData;
             VersionManager.ReadSaveVersion();
-            //VersionManager.WriteSaveVersion();
-            Debug.Log("Vanilla Save version = " + save.gameVersion);
+
+            for (int i = 0; i < save.savedObjects.Count; i++)
+            {
+                SaveObjectData data = save.savedObjects[i];
+                BoatRefs refs = SaveLoadManager.instance.GetCurrentObjects()[data.sceneIndex]?.GetComponent<BoatRefs>();
+                if (refs != null)
+                {
+                    SaveCleaner.ConvertSave(ref data.customization, refs);
+
+                    if (Plugin.cleanLoad.Value)
+                    {
+                        data.customization = SaveCleaner.CleanLoad(data.customization, refs, refs.GetComponent<BoatCustomParts>());
+                    }
+                }
+            }
+            PartCountTracker.Write();
+
+            VersionManager.WriteSaveVersion();
+            Debug.Log("SE: Vanilla Save version = " + save.gameVersion);
         }
 
     }

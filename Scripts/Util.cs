@@ -9,6 +9,8 @@ namespace ShipyardExpansion
 {
     public static class Util
     {
+        private static readonly GameObject refObject = new GameObject();
+
         public static void MoveMast(Transform mast, Vector3 position, bool moveWinches)
         {
             if (moveWinches) MoveWinches(mast.GetComponent<Mast>().reefWinch, mast.localPosition, position);
@@ -101,7 +103,7 @@ namespace ShipyardExpansion
         }
         public static BoatPartOption CreatePartOption(Transform parent, string name, string prettyName)
         {
-            GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
+            GameObject part = UnityEngine.Object.Instantiate(refObject, parent);
             BoatPartOption partOption = AddPartOption(part, prettyName);
             part.name = name;
 
@@ -109,7 +111,7 @@ namespace ShipyardExpansion
         }
         public static BoatPartOption AddPartOption(GameObject target, string prettyName)
         {
-            //GameObject part = UnityEngine.Object.Instantiate(new GameObject(), parent);
+            //GameObject part = UnityEngine.Object.Instantiate(refObject, parent);
             BoatPartOption partOption = target.AddComponent<BoatPartOption>();
             partOption.optionName = prettyName;
             partOption.childOptions = new GameObject[0];
