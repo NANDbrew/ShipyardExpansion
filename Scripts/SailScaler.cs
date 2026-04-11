@@ -238,8 +238,8 @@ namespace ShipyardExpansion
             {
                 colChecker.localScale = colScale;
             }
-            shadowCol.SetParent(transform, true);
-            windCenter.SetParent(transform, true);
+            //shadowCol.SetParent(transform, true);
+            //windCenter.SetParent(transform, true);
             scaleablePart.gameObject.SetActive(true);
             sail.SetSailArea();
             if (Plugin.percentSailNames.Value && (!Mathf.Approximately(width, startScale.x) || !Mathf.Approximately(height, startScale.y)))

@@ -194,11 +194,11 @@ namespace ShipyardExpansion
         }
 
 
-        public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, string name, string prettyName, int newIndex)
+/*        public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, string name, string prettyName, int newIndex)
         {
             Transform sailObject = sailPrefabs[prefabIndex].GetComponentInChildren<Animator>().transform;
             return CopySail(sailPrefabs, prefabIndex, position, eulerAngles, sailObject.localScale.x, name, prettyName, newIndex);
-        }
+        }*/
         public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, float scale, string name, string prettyName, int newIndex)
         {
             //Debug.Log("thing");
@@ -207,7 +207,7 @@ namespace ShipyardExpansion
             sail.prefabIndex = newIndex;
             sail.sailName = prettyName;
             sailBase.name = newIndex + " SAIL " + name;
-            var windShadow = sailBase.Find("wind shadow col");
+            var windShadow = sailBase.GetComponentInChildren<SailShadowCol>().transform;//Find("wind shadow col");
 
             Transform sailObject = sailBase.GetComponentInChildren<Animator>().transform;
             sail.windcenter.parent = sailObject;
@@ -215,7 +215,7 @@ namespace ShipyardExpansion
             sailObject.localPosition = position;
             sailObject.localEulerAngles = eulerAngles;
             sail.windcenter.parent = sailBase;
-            windShadow.parent = sailBase;
+            //windShadow.parent = sailBase;
             sailObject.SetAsFirstSibling();
             SailPartLocations offsetStore = sailObject.gameObject.AddComponent<SailPartLocations>();
             offsetStore.forwardOffset = position.x / scale;
