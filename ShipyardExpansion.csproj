@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\ScaleButtonPatch.cs" />
     <Compile Include="Patches\SailAreaPatch.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />

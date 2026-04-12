@@ -125,7 +125,7 @@ namespace ShipyardExpansion.Patches
         public static void AwakePatch(GameObject ___moveUpButton, GameObject ___sailMenu)
         {
             GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail scaling buttons.prefab"), ___moveUpButton.transform.parent) as GameObject;
-
+            scalingButtons.transform.Translate(-1f, 0, 0);
             scaleUpButton = scalingButtons.transform.Find("button scale up").gameObject;
             SailScaleButton buttonUp = scaleUpButton.AddComponent<SailScaleButton>();
             buttonUp.buttonType = SailScaleButton.ButtonType.scaleUp;
@@ -190,8 +190,7 @@ namespace ShipyardExpansion.Patches
         public static void UpdateMoveButtonsPatch()
         {
             bool active = GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && !GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled();
-            SailScaler currentSail = null;
-            if (active) currentSail = GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>();
+            SailScaler currentSail = active? GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>() : null;
             bool rotatable = active && currentSail != null && currentSail.rotatablePart != null;
             bool heightable = active && currentSail != null && currentSail.GetScaleType().Equals(ScaleType.Square) && !Plugin.combinedScale.Value;
             bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));

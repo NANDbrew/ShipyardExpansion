@@ -1,9 +1,4 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ShipyardExpansion
@@ -24,6 +19,27 @@ namespace ShipyardExpansion
         }
         public ButtonType buttonType;
 
+        private static SailScaleButton clickHeldButton;
+
+        private static float heldTimer;
+
+        public override void ExtraLateUpdate()
+        {
+            if ((clickHeldButton == this && Input.GetMouseButtonUp(0)) || GameInput.GetKeyUp(InputName.PickUp))
+            {
+                clickHeldButton = null;
+            }
+
+            if (clickHeldButton == this)
+            {
+                heldTimer -= Time.deltaTime;
+                if (heldTimer <= 0f)
+                {
+                    heldTimer = 0.05f;
+                    OnActivate();
+                }
+            }
+        }
         public void SetText(string text)
         {
             base.transform.GetChild(0).GetComponent<TextMesh>().text = text;
@@ -31,7 +47,7 @@ namespace ShipyardExpansion
         public override void OnActivate()
         {
             base.OnActivate();
-            UISoundPlayer.instance.PlayUISound(UISounds.buttonClick, 1f, 1f);
+            UISoundPlayer.instance.PlayUISound(UISounds.buttonHover, 0.33f, 3f);
             Mast mast = GameState.currentShipyard.sailInstaller.GetCurrentMast();
             Sail sail = GameState.currentShipyard.sailInstaller.GetCurrentSail();
             SailScaler scaler = sail.GetComponent<SailScaler>();
@@ -80,6 +96,7 @@ namespace ShipyardExpansion
             else if (buttonType == ButtonType.flip)
             {
                 scaler.FlipJib();
+                HoldButton();
             }
             float move = 0f;
             float extra = sail.UseExtendedMastHeight()? mast.extraBottomHeight : 0f;
@@ -88,6 +105,7 @@ namespace ShipyardExpansion
                 move = sail.installHeight - sail.GetCurrentInstallHeight();
             }
             GameState.currentShipyard.sailInstaller.MoveHeldSail(move);
+            HoldButton();
 
             ShipyardUI.instance.RefreshButtons();
 
@@ -96,6 +114,15 @@ namespace ShipyardExpansion
         {
             ShipyardSailInstaller sailInstaller = GameState.currentShipyard.sailInstaller;
             return (bool)AccessTools.Method(sailInstaller.GetType(), "MastNotTallEnough").Invoke(sailInstaller, new object[2] { mast, sail });
+        }
+
+        private void HoldButton()
+        {
+            if (clickHeldButton != this)
+            {
+                clickHeldButton = this;
+                heldTimer = 0.16f;
+            }
         }
     }
 }

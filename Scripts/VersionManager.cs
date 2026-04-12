@@ -12,6 +12,20 @@ namespace ShipyardExpansion
     {
         public static int[] saveVersion2 = { -1, 0, 0 };
         public static int saveVersion = -1;
+
+        public static int[] GetVersion(string shipData)
+        {
+            string[] slug = shipData.Split('|');
+            string version = slug.Length > 1 ? slug.Last() : null;
+            int[] version2 = null;
+            if (version != null && version.Length > 0)
+            {
+                string[] b = version.Split('.');
+                version2 = new int[b.Length];
+                for (int i = 0; i < b.Length; i++) version2[i] = Convert.ToInt32(b[i]);
+            }
+            return version2;
+        }
         public static void WriteSaveVersion()
         {
             //string text = new string((from a in Plugin.PLUGIN_ID where char.IsNumber(a) select a).ToArray());

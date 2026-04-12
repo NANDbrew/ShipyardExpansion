@@ -45,7 +45,7 @@ namespace ShipyardExpansion
             if (scaleablePart == null)
             {
                 Debug.LogError("SailScaler: scaleable part is null!");
-                //UnityEngine.GameObject.Destroy(this);
+                
                 this.enabled = false;
             }
             startScale = scaleablePart.localScale;
@@ -85,8 +85,7 @@ namespace ShipyardExpansion
             if (SailLimits.ratioLimits.ContainsKey(sail.prefabIndex)) ratioLimits = SailLimits.ratioLimits[sail.prefabIndex];
 
             else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
-            //scaleLimits[0] = startScale.x * 0.5f;
-            //scaleLimits[1] = startScale.x * 1.5f;
+
             if (startScale.y < scaleLimits[0]) scaleLimits[0] = startScale.y * 0.8f;
             if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
             flippable = sail.category == SailCategory.staysail || SailLimits.flippableSquares.Contains(sail.prefabIndex);
@@ -104,21 +103,16 @@ namespace ShipyardExpansion
             else if (newAngle < angleLimits[0] && newAngle > 180) newAngle = angleLimits[0];
             flippable = SailLimits.flippableSquares.Contains(sail.prefabIndex) || sail.category == SailCategory.staysail;
 
-
-            shadowCol.SetParent(scaleablePart);
-            windCenter.SetParent(scaleablePart);
             rotatablePart.gameObject.SetActive(false);
             rotatablePart.localEulerAngles = new Vector3(rotatablePart.localEulerAngles.x, newAngle, rotatablePart.localEulerAngles.z);
             Angle = rotatablePart.localEulerAngles.y;
             rotatablePart.gameObject.SetActive(true);
-            shadowCol.SetParent(transform);
-            windCenter.SetParent(transform);
+
             if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
             {
                 colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, rotatablePart.localEulerAngles.y, colChecker.localEulerAngles.z);
                 GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
-                //GameState.currentShipyard.sailInstaller.RecheckAllSailsCols();
-                //sail.UpdateInstallPosition();
+
             }
         }
         public void FlipJib()
@@ -128,8 +122,7 @@ namespace ShipyardExpansion
         public void FlipJib(bool inv)
         {
             if (scaleablePart == null) return;
-            shadowCol.SetParent(scaleablePart, true);
-            windCenter.SetParent(scaleablePart, true);
+
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localEulerAngles = new Vector3(jibStartAngle + 180, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
             Debug.Log("jib flip rotation = " + scaleablePart.localEulerAngles.ToString());
@@ -143,13 +136,12 @@ namespace ShipyardExpansion
                 scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, 0f);
                 scaleablePart.localEulerAngles = new Vector3(jibStartAngle, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
             }
-            shadowCol.SetParent(transform, true);
-            windCenter.SetParent(transform, true);
+
             scaleablePart.gameObject.SetActive(true);
 
             if (inv && sail.category == SailCategory.staysail && scaleablePart.gameObject.GetComponentInChildren<RopeEffect>() is RopeEffect childRope)
             {
-                var rope = /*sail.GetComponent<SailConnections>().mastReefAttExtension ??*/ sail.GetComponent<SailConnections>().mastReefAttachment;
+                var rope = sail.GetComponent<SailConnections>().mastReefAttachment;
                 sail.GetComponent<SailConnections>().mastReefAttExtension.gameObject.SetActive(false);
                 if (childRope.GetComponent<MeshFilter>() != null)
                 {
@@ -200,7 +192,7 @@ namespace ShipyardExpansion
                 colScale = Scale;
             }
             else
-            {
+            { // craziness to deal with weirdly rotated collision checkers
                 Scale = new Vector3(width, height, width);
                 float colRot = colChecker.localEulerAngles.x - scaleablePart.localEulerAngles.x;
                 if (colRot < 0) colRot = -colRot;
@@ -216,32 +208,36 @@ namespace ShipyardExpansion
                 else colScale = Scale;
             }
             ratio = newRatio;
-            shadowCol.SetParent(scaleablePart, true);
-            windCenter.SetParent(scaleablePart, true);
             scaleablePart.gameObject.SetActive(false);
             scaleablePart.localScale = Scale;
+            sail.LoadScale(height, width);
+
+            // offset to keep the yard in place (mainly an issue on "cogsize square")
             if (basePos.magnitude > 0.1f)
             {
                 scaleablePart.localPosition = basePos * height;
-                //Debug.Log(sail.sailName + "basePos > 0");
             }
-
+            // offset for flipped jib
             if (Flipped)
             {
                 scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
             }
-            if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs) // special treatment for hacked lug sail
+            // special treatment for hacked lug sail
+            if (scaleablePart.GetComponent<SailPartLocations>() is SailPartLocations locs) 
             {
                 scaleablePart.localPosition = new Vector3(locs.forwardOffset * width, scaleablePart.localPosition.y, scaleablePart.localPosition.z);
             }
+
+            // scale the colchecker because it's not inside an unless the sail is installed
             if (!sail.IsInstalled())
             {
                 colChecker.localScale = colScale;
             }
-            //shadowCol.SetParent(transform, true);
-            //windCenter.SetParent(transform, true);
+
             scaleablePart.gameObject.SetActive(true);
             sail.SetSailArea();
+
+            // add scale to name so player knows which sail is which
             if (Plugin.percentSailNames.Value && (!Mathf.Approximately(width, startScale.x) || !Mathf.Approximately(height, startScale.y)))
             {
                 string size2 = "";
@@ -252,6 +248,7 @@ namespace ShipyardExpansion
             UpdateInstallHeight();
         }
 
+        // ratio-aware scaling
         public void SetScaleRel(float newScale)
         {
             if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
@@ -294,6 +291,8 @@ namespace ShipyardExpansion
         {
             UpdateInstallHeight(transform.parent);
         }
+
+        // this is just to adjust for masts with non-standard scaling
         public void UpdateInstallHeight(Transform mast)
         {
             sail.installHeight = Scale.y * baseHeight;
