@@ -128,23 +128,23 @@ namespace ShipyardExpansion
             foremastM.walkColMast.GetComponent<MeshCollider>().enabled = true;
             #endregion
 
-            var mainShrouds0 = Util.CreatePartOption(thing.transform, "shrouds_main_0", "mainmast shrouds 0");
-            mainShrouds0.childOptions = new GameObject[] { mainMast1.Find("static_rig_001").gameObject,
-                                mainMast1.GetComponent<Mast>().walkColMast.Find("static_rig_001").gameObject, mainMast2.Find("static_rig_000").gameObject,
-                                mainMast2.GetComponent<Mast>().walkColMast.Find("static_rig_000").gameObject, thing.transform.Find("spreaders").gameObject
-                };
-            modParts["shrouds_main_side"].partOptions.Insert(0, mainShrouds0);
-            partsList.availableParts[11].partOptions[1].requires.Add(mainShrouds0);
-            Util.AddChildOptions(mainMast1.GetComponent<BoatPartOption>(), new GameObject[] { thing.transform.Find("spreaders").GetChild(0).gameObject, modWalkCol.Find("spreaders").GetChild(0).gameObject });
-            Util.AddChildOptions(mainMast2.GetComponent<BoatPartOption>(), new GameObject[] { thing.transform.Find("spreaders").GetChild(1).gameObject, modWalkCol.Find("spreaders").GetChild(1).gameObject });
-            Util.AddChildOptions(mainMast1.GetComponent<BoatPartOption>(), new GameObject[] { thing.transform.Find("spreaders").GetChild(0).gameObject, modWalkCol.Find("spreaders").GetChild(0).gameObject });
+            var vanillaShrouds = modParts["shrouds_main_side"].partOptions[0];
+            Util.AddChildOptions(vanillaShrouds, new GameObject[] { 
+                    mainMast1.Find("static_rig_001").gameObject,
+                    mainMast1.GetComponent<Mast>().walkColMast.Find("static_rig_001").gameObject, 
+                    mainMast2.Find("static_rig_000").gameObject,
+                    mainMast2.GetComponent<Mast>().walkColMast.Find("static_rig_000").gameObject,
+                });
+            partsList.availableParts[11].partOptions[1].requires.Add(vanillaShrouds);
+            Util.AddChildOptions(mainMast1.GetComponent<BoatPartOption>(), new GameObject[] { vanillaShrouds.transform.GetChild(0).gameObject, vanillaShrouds.walkColObject.transform.GetChild(0).gameObject });
+            Util.AddChildOptions(mainMast2.GetComponent<BoatPartOption>(), new GameObject[] { vanillaShrouds.transform.GetChild(1).gameObject, vanillaShrouds.walkColObject.transform.GetChild(1).gameObject });
 
             #region bed
 #if DEBUG
             Debug.Log("junk bed??");
 #endif
             thing.transform.Find("bed").GetComponent<BoatPartOption>().childOptions = new GameObject[] { container.Find("bed").gameObject };
-            var hammock = thing.GetComponentInChildren<GPButtonBed>(true);
+            var hammock = thing.transform.Find("hammock_001").GetComponent<GPButtonBed>();
             hammock.damage = boat.GetComponent<BoatDamage>();
             hammock.GetComponent<HingeJoint>().connectedBody = boat.GetComponent<Rigidbody>();
 #endregion
