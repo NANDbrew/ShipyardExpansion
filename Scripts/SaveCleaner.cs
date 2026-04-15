@@ -214,7 +214,7 @@ namespace ShipyardExpansion
                     }
                 }
             }
-
+            if (VersionManager.saveVersion2[0] > 0) return;
             // convert Jong shrouds. having this here could be a problem
             if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 90 && index == 70)
             {
