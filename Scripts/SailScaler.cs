@@ -128,7 +128,7 @@ namespace ShipyardExpansion
             Debug.Log("jib flip rotation = " + scaleablePart.localEulerAngles.ToString());
             if (inv)
             {
-                scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.installHeight);
+                scaleablePart.localPosition = new Vector3(scaleablePart.localPosition.x, scaleablePart.localPosition.y, -sail.GetScaledHeight());
                 scaleablePart.localEulerAngles = new Vector3(jibStartAngle + 180, scaleablePart.localEulerAngles.y, scaleablePart.localEulerAngles.z);
             }
             else
@@ -253,14 +253,14 @@ namespace ShipyardExpansion
         {
             if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
             if (newScale * ratio < scaleLimits[0] || newScale * ratio > scaleLimits[1]) return;
-            SetScaleAbs(newScale, newScale * ratio);
+            sail.ChangeScale(newScale, newScale * ratio);
         }
         public void SetScaleRel(float newScale, float newRatio)
         {
             if (newRatio < ratioLimits[0] || newRatio > ratioLimits[1]) return;
             if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
             if (newScale * newRatio < scaleLimits[0] || newScale * newRatio > scaleLimits[1]) return;
-            SetScaleAbs(newScale, newScale * newRatio);
+            sail.ChangeScale(newScale, newScale * newRatio);
         }
 
         public void IncreaseHeight()
@@ -281,11 +281,11 @@ namespace ShipyardExpansion
         }
         public void ScaleUp()
         {
-            SetScaleRel(Scale.x + scaleStep, ratio);
+            SetScaleRel(scaleStep, ratio);
         }
         public void ScaleDown()
         {
-            SetScaleRel(Scale.x - scaleStep, ratio);
+            SetScaleRel(-scaleStep, ratio);
         }
         public void UpdateInstallHeight()
         {
