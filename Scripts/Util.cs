@@ -8,10 +8,18 @@ using UnityEngine;
 
 namespace ShipyardExpansion
 {
+    /// <summary>
+    /// Provides methods for moving, modifying or copying various boat pieces
+    /// </summary>
     public static class Util
     {
         private static readonly GameObject refObject = new GameObject();
-
+        /// <summary>
+        /// Moves the specified mast. If moveWinches, maintains the relative positions of the Mast component's reefWinches. Includes walkCols
+        /// </summary>
+        /// <param name="mast"></param>
+        /// <param name="position"></param>
+        /// <param name="moveWinches"></param>
         public static void MoveMast(Transform mast, Vector3 position, bool moveWinches)
         {
             if (moveWinches) MoveWinches(mast.GetComponent<Mast>().reefWinch, mast.localPosition, position);
@@ -22,6 +30,12 @@ namespace ShipyardExpansion
             mast.localPosition = position;
             mast.GetComponent<Mast>().walkColMast.transform.localPosition = position;
         }
+        /// <summary>
+        /// Moves a group of winches, retaining their positions relative to eachother
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="sourcePosition"></param>
+        /// <param name="targetPosition"></param>
         public static void MoveWinches(GPButtonRopeWinch[] source, Vector3 sourcePosition, Vector3 targetPosition)
         {
             for (int i = 0; i < source.Length; i++)
@@ -31,14 +45,47 @@ namespace ShipyardExpansion
                 source[i].transform.localPosition = targetPosition + vector;
             }
         }
+        /// <summary>
+        /// Instatiates a copy of the specified mast at the specified rotation. Includes walkCols
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        /// <param name="name"></param>
+        /// <param name="prettyName"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static Mast CopyMast(Transform source, Vector3 position, string name, string prettyName, int index)
         {
             return CopyMast(source, source.parent, source.GetComponent<Mast>().walkColMast.parent, position, source.localEulerAngles, source.localScale, name, prettyName, index);
         }
+        /// <summary>
+        /// Instatiates a copy of the specified mast at the specified position and rotation. Includes walkCols
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        /// <param name="eulerAngles"></param>
+        /// <param name="scale"></param>
+        /// <param name="name"></param>
+        /// <param name="prettyName"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static Mast CopyMast(Transform source, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName, int index)
         {
             return CopyMast(source, source.parent, source.GetComponent<Mast>().walkColMast.parent, position, eulerAngles, scale, name, prettyName, index);
         }
+        /// <summary>
+        /// Instatiates a copy of the specified mast at the specified position and rotation. Includes walkCols
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="parent"></param>
+        /// <param name="walkColParent"></param>
+        /// <param name="position"></param>
+        /// <param name="eulerAngles"></param>
+        /// <param name="scale"></param>
+        /// <param name="name"></param>
+        /// <param name="prettyName"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static Mast CopyMast(Transform source, Transform parent, Transform walkColParent, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName, int index)
         {
             source.gameObject.SetActive(false);
@@ -72,6 +119,13 @@ namespace ShipyardExpansion
             //mastComp.Awake();
             return mastComp;
         }
+        /// <summary>
+        /// Instantiates copies of the targeted winches as a group, retaining their positions relative to each other
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="sourcePosition"></param>
+        /// <param name="targetPosition"></param>
+        /// <returns></returns>
         public static GPButtonRopeWinch[] CopyWinches(GPButtonRopeWinch[] source, Vector3 sourcePosition, Vector3 targetPosition)
         {
             GPButtonRopeWinch[] winches = new GPButtonRopeWinch[source.Length];
@@ -89,6 +143,12 @@ namespace ShipyardExpansion
             }
             return winches;
         }
+        /// <summary>
+        /// Instantiates a copy of the targeted winch as a sibling
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="targetPosition"></param>
+        /// <returns></returns>
         public static GPButtonRopeWinch CopyWinch(GPButtonRopeWinch source, Vector3 targetPosition)
         {
 
@@ -102,6 +162,13 @@ namespace ShipyardExpansion
             
             return winch;
         }
+        /// <summary>
+        /// Creates a new GameObject with a BoatPartOption component. Returns the new component.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="name"></param>
+        /// <param name="prettyName"></param>
+        /// <returns></returns>
         public static BoatPartOption CreatePartOption(Transform parent, string name, string prettyName)
         {
             GameObject part = UnityEngine.Object.Instantiate(refObject, parent);
@@ -110,6 +177,12 @@ namespace ShipyardExpansion
 
             return partOption;
         }
+        /// <summary>
+        /// Adds a BoatPartOption to the targeted GameObject with safe defaults. Returns the new component.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="prettyName"></param>
+        /// <returns></returns>
         public static BoatPartOption AddPartOption(GameObject target, string prettyName)
         {
             //GameObject part = UnityEngine.Object.Instantiate(refObject, parent);
@@ -122,7 +195,13 @@ namespace ShipyardExpansion
             
             return partOption;
         }
-
+        /// <summary>
+        /// Copies a BoatPartOption component from one GameObject to another. Returns the new component.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="prettyName"></param>
+        /// <returns></returns>
         public static BoatPartOption CopyPartOption(BoatPartOption source, GameObject target, string prettyName)
         {
             //GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
@@ -143,11 +222,28 @@ namespace ShipyardExpansion
             
             return partOption;
         }
+        /// <summary>
+        /// Instantiates a copy of a BoatPartOption, including walkCol. Will be parented to the target's parent transform. 
+        /// Returns the new component.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="name"></param>
+        /// <param name="prettyName"></param>
+        /// <returns></returns>
         public static BoatPartOption CopyPartOptionObj(BoatPartOption source, string name, string prettyName)
         {
             return CopyPartOptionObj(source, source.transform.localPosition, source.transform.localEulerAngles, source.transform.localScale, name, prettyName);
         }
-
+        /// <summary>
+        /// Instantiates a copy of a BoatPartOption, including walkCol. Will be parented to the target's parent transform
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        /// <param name="eulerAngles"></param>
+        /// <param name="scale"></param>
+        /// <param name="name"></param>
+        /// <param name="prettyName"></param>
+        /// <returns></returns>
         public static BoatPartOption CopyPartOptionObj(BoatPartOption source, Vector3 position, Vector3 eulerAngles, Vector3 scale, string name, string prettyName)
         {
             GameObject part = UnityEngine.Object.Instantiate(source.gameObject, source.transform.parent);
@@ -167,6 +263,13 @@ namespace ShipyardExpansion
 
             return partOption;
         }
+        /// <summary>
+        /// Creates a BoatPart and appends it to the target
+        /// </summary>
+        /// <param name="partsList"></param>
+        /// <param name="category"></param>
+        /// <param name="partOptions"></param>
+        /// <returns></returns>
         public static BoatPart CreateAndAddPart(BoatCustomParts partsList, int category, List<BoatPartOption> partOptions)
         {
             BoatPart newPart = new BoatPart
@@ -180,6 +283,14 @@ namespace ShipyardExpansion
 
             return newPart;
         }
+        /// <summary>
+        /// Creates a BoatPart and inserts it at the specified index
+        /// </summary>
+        /// <param name="partsList"></param>
+        /// <param name="category"></param>
+        /// <param name="index"></param>
+        /// <param name="partOptions"></param>
+        /// <returns></returns>
         public static BoatPart CreateAndInsertPart(BoatCustomParts partsList, int category, int index, List<BoatPartOption> partOptions)
         {
             BoatPart newPart = new BoatPart
