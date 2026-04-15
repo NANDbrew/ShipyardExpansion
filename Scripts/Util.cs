@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -193,6 +194,16 @@ namespace ShipyardExpansion
             return newPart;
         }
 
+        /// <summary>
+        /// Adds the specified array of GameObjects to the targetted BoatPartOption's childOptions array.
+        /// Modifies in place
+        /// </summary>
+        /// <param name="sourceTarget"></param>
+        /// <param name="children"></param>
+        public static void AddChildOptions(BoatPartOption sourceTarget, GameObject[] children)
+        {
+            sourceTarget.childOptions = sourceTarget.childOptions.AddRangeToArray(children);
+        }
 
 /*        public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, string name, string prettyName, int newIndex)
         {

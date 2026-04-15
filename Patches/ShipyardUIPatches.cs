@@ -125,7 +125,10 @@ namespace ShipyardExpansion.Patches
         public static void AwakePatch(GameObject ___moveUpButton, GameObject ___sailMenu)
         {
             GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail scaling buttons.prefab"), ___moveUpButton.transform.parent) as GameObject;
+            
+#if DEBUG   // REMOVE THIS BEFORE RELEASE
             scalingButtons.transform.Translate(-1f, 0, 0);
+#endif
             scaleUpButton = scalingButtons.transform.Find("button scale up").gameObject;
             SailScaleButton buttonUp = scaleUpButton.AddComponent<SailScaleButton>();
             buttonUp.buttonType = SailScaleButton.ButtonType.scaleUp;
