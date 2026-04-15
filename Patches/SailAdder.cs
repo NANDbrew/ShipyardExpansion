@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using HarmonyLib;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace ShipyardExpansion.Patches
 {
@@ -29,11 +24,19 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(PrefabsDirectory), "Start")]
     internal static class SailAdderPatches
     {
+        public static void Prefix(PrefabsDirectory __instance)
+        {
+            Plugin.stockSailsListSize = __instance.sails.Length;
+            if (__instance.sails.Length < Plugin.sailListSize)
+            {
+                Array.Resize(ref __instance.sails, Plugin.sailListSize);
+            }
+
+        }
         public static void Postfix(ref GameObject[] ___sails)
         {
+
             if (!Plugin.addSails.Value) return;
-            Plugin.stockSailsListSize = ___sails.Length;
-            Array.Resize(ref ___sails, Plugin.sailListSize);
             Plugin.prefabContainer = new GameObject { name = "SEprefabContainer" }.transform;
             Plugin.prefabContainer.gameObject.SetActive(false);
 
