@@ -154,7 +154,7 @@ namespace ShipyardExpansion.ShipPatches
 
             #region shrouds
             BoatPartOption mainMast1_opt = mainMast1.GetComponent<BoatPartOption>();
-            Util.AddChildOptions(mainMast1_opt, new GameObject[] { modParts["crowsnest_back"].partOptions[1].transform.GetChild(0).gameObject, modParts["crowsnest_back"].partOptions[1].walkColObject.transform.GetChild(0).gameObject, partsList.availableParts[13].partOptions[0].walkColObject, partsList.availableParts[13].partOptions[1].walkColObject });
+            Util.AddChildOptions(mainMast1_opt, new GameObject[] { modParts["crowsnest_front_none"].partOptions[1].transform.GetChild(0).gameObject, modParts["crowsnest_front_none"].partOptions[1].walkColObject.transform.GetChild(0).gameObject, partsList.availableParts[13].partOptions[0].walkColObject, partsList.availableParts[13].partOptions[1].walkColObject });
             partsList.availableParts[13].partOptions[1].transform.parent = thing.transform.Find("shrouds_main1_back");
             partsList.availableParts[13].partOptions[1].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main1_back");
             partsList.availableParts[13].partOptions[0].transform.parent = thing.transform.Find("shrouds_main1_side");
@@ -162,7 +162,7 @@ namespace ShipyardExpansion.ShipPatches
             partsList.availableParts[13].partOptions.RemoveRange(0, 3);
 
             BoatPartOption mainMast2_opt = mainMast2M.GetComponent<BoatPartOption>();
-            Util.AddChildOptions(mainMast2_opt, new GameObject[] { modParts["crowsnest_front"].partOptions[1].transform.GetChild(0).gameObject, modParts["crowsnest_front"].partOptions[1].walkColObject.transform.GetChild(0).gameObject, partsList.availableParts[14].partOptions[0].walkColObject, partsList.availableParts[14].partOptions[1].walkColObject });
+            Util.AddChildOptions(mainMast2_opt, new GameObject[] { modParts["crowsnest_back_none"].partOptions[1].transform.GetChild(0).gameObject, modParts["crowsnest_back_none"].partOptions[1].walkColObject.transform.GetChild(0).gameObject, partsList.availableParts[14].partOptions[0].walkColObject, partsList.availableParts[14].partOptions[1].walkColObject });
             partsList.availableParts[14].partOptions[1].transform.parent = thing.transform.Find("shrouds_main2_back");
             partsList.availableParts[14].partOptions[1].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main2_back");
             partsList.availableParts[14].partOptions[0].transform.parent = thing.transform.Find("shrouds_main2_side");

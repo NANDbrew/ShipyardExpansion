@@ -127,7 +127,9 @@ namespace ShipyardExpansion
             foremastM.walkColMast.GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_front_").GetComponent<MeshFilter>().sharedMesh;
             foremastM.walkColMast.GetComponent<MeshCollider>().enabled = true;
             #endregion
-
+#if DEBUG
+            Debug.Log("Junk sticks");
+#endif
             var vanillaShrouds = modParts["shrouds_main_side"].partOptions[0];
             Util.AddChildOptions(vanillaShrouds, new GameObject[] { 
                     mainMast1.Find("static_rig_001").gameObject,
