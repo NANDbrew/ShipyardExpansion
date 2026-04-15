@@ -7,30 +7,33 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(ShipyardSailInstaller), "AddNewSail")]
     internal static class ShipyardSailInstallerPatches
     {
-        public static void Prefix(GameObject sailObject, Mast ___currentMast)
+        public static void Prefix(GameObject sailObject, Mast ___currentMast, ref bool __state)
         {
-            SailScaler component = sailObject.GetComponent<SailScaler>();
-            component.UpdateInstallHeight(___currentMast.transform);
 
             Sail component2 = sailObject.GetComponent<Sail>();
             if (Plugin.autoFit.Value && component2.installHeight > ___currentMast.mastHeight)
             {
+                float newHeight;
                 if (component2.UseExtendedMastHeight())
                 { // extra logic to avoid making the sail bigger
                     if (component2.installHeight > ___currentMast.mastHeight + ___currentMast.extraBottomHeight)
                     {
-                        component.SetScaleRel((___currentMast.mastHeight + ___currentMast.extraBottomHeight - 0.1f) / component.GetBaseHeight());
+                        newHeight = (___currentMast.mastHeight + ___currentMast.extraBottomHeight - 0.1f) / component2.installHeight;
+                        component2.LoadScale(newHeight, newHeight);
                     }
-                    return;
                 }
-                component.SetScaleRel((___currentMast.mastHeight - 0.1f) / component.GetBaseHeight());
-
+                else
+                {
+                    newHeight = (___currentMast.mastHeight - 0.1f) / component2.installHeight;
+                    component2.LoadScale(newHeight, newHeight);
+                }
+                __state = true;
             }
         }
-        public static void Postfix(ref Sail ___selectedSail)
+        public static void Postfix(Sail ___selectedSail, ShipyardSailInstaller __instance, bool __state)
         {
             SailScaler component = ___selectedSail.GetComponent<SailScaler>();
-            if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen)
+            if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen || component != null)
             {
                 VertifySail(component);
             }
@@ -39,6 +42,9 @@ namespace ShipyardExpansion.Patches
                 VertifySail(component);
 
             }
+            if (__state) __instance.MoveHeldSail(0.1f);
+            else Debug.Log("boo!");
+            //__instance.MoveHeldSail(___selectedSail.GetCurrentInstallHeight() - ___currentMast.mastHeight);
 
         }
         private static void VertifySail(SailScaler sail)
@@ -54,11 +60,41 @@ namespace ShipyardExpansion.Patches
 
     }
 
+    [HarmonyPatch(typeof(ShipyardSailInstaller))]
+    public static class SailInstallerHeightClamp
+    {
+        [HarmonyPatch("MoveHeldSail")]
+        [HarmonyPrefix]
+        public static bool Patch(ref float distance, Sail ___selectedSail, Mast ___currentMast, ShipyardSailInstaller __instance)
+        {
+            if (!___selectedSail || !___selectedSail.UseExtendedMastHeight())
+            {
+                return true;
+            }
+
+            if (distance <= 0f && ___selectedSail.GetCurrentInstallHeight() + distance - ___selectedSail.GetScaledHeight() < -0.1f - ___currentMast.extraBottomHeight)
+            {
+                distance = ___selectedSail.GetScaledHeight() - ___selectedSail.GetCurrentInstallHeight() - ___currentMast.extraBottomHeight;
+                Debug.Log("SE: clamped sail mover distance");
+            }
+
+            if (___selectedSail.GetScaledHeight() > ___currentMast.mastHeight + ___currentMast.extraBottomHeight)
+            {
+                ___selectedSail.ChangeInstallHeight(___currentMast.mastHeight - ___selectedSail.GetCurrentInstallHeight());
+                //___selectedSail.ChangeInstallHeight(___currentMast.mastHeight);
+                //Debug.Log("SE: prevented sail move");
+                AccessTools.Method(__instance.GetType(), "ApplySailPosition").Invoke(__instance, null);
+                return false;
+            }
+            return true;
+        }
+    }
+
     // --- lug sail hacks ---
     [HarmonyPatch(typeof(ShipyardSailColChecker), "RunColCheck")]
     internal static class ColCheckPatch
     {
-        public static void Prefix(ShipyardSailColChecker __instance, Sail ___sail, ref Quaternion ___initialRot, ref Vector3 ___initialLocalPos, ref Vector3 ___sailModelOffset)
+        public static void Prefix(ShipyardSailColChecker __instance, Sail ___sail, ref Quaternion ___initialRot)
         {
             if (___sail.GetComponent<SailScaler>()?.rotatablePart)
             {
@@ -98,4 +134,6 @@ namespace ShipyardExpansion.Patches
             sail.cloth.capsuleColliders = cols.ToArray();
         }
     }
+
+
 }
