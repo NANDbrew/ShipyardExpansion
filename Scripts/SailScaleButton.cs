@@ -23,8 +23,6 @@ namespace ShipyardExpansion
 
         private static float heldTimer;
 
-        public static float step = 0.05f;
-
         public override void ExtraLateUpdate()
         {
             if ((clickHeldButton == this && Input.GetMouseButtonUp(0)) || GameInput.GetKeyUp(InputName.PickUp))
@@ -60,17 +58,11 @@ namespace ShipyardExpansion
                     Debug.Log("mast cannot fit bigger sail");
                     return;
                 }
-                Sail curSail = GameState.currentShipyard.sailInstaller.GetCurrentSail();
-                float ratio = curSail.GetScaleZ() / curSail.GetScaleY();
-                GameState.currentShipyard.ChangeSailScale(step, step * ratio);
-
+                scaler.ScaleUp();
             }
             else if (buttonType == ButtonType.scaleDown)
             {
-                Sail curSail = GameState.currentShipyard.sailInstaller.GetCurrentSail();
-                float ratio = curSail.GetScaleZ() / curSail.GetScaleY();
-                GameState.currentShipyard.ChangeSailScale(-step, -step / ratio);
-
+                scaler.ScaleDown();
             }
             else if (buttonType == ButtonType.increaseHeight)
             {
@@ -79,20 +71,19 @@ namespace ShipyardExpansion
                     Debug.Log("mast cannot fit taller sail");
                     return;
                 }
-                GameState.currentShipyard.ChangeSailScale(step, 0f);
-                //scaler.IncreaseHeight();
+                scaler.IncreaseHeight();
             }
             else if (buttonType == ButtonType.decreaseHeight)
             {
-                GameState.currentShipyard.ChangeSailScale(-step, 0f);
+                scaler.DecreaseHeight();
             }
             else if (buttonType == ButtonType.increaseWidth)
             {
-                GameState.currentShipyard.ChangeSailScale(0f, step);
+                scaler.IncreaseWidth();
             }
             else if (buttonType == ButtonType.decreaseWidth)
             {
-                GameState.currentShipyard.ChangeSailScale(0f, -step);
+                scaler.DecreaseWidth();
             }
             else if (buttonType == ButtonType.rotateForward)
             {
@@ -105,6 +96,7 @@ namespace ShipyardExpansion
             else if (buttonType == ButtonType.flip)
             {
                 scaler.FlipJib();
+                HoldButton();
             }
             float move = 0f;
             float extra = sail.UseExtendedMastHeight()? mast.extraBottomHeight : 0f;
@@ -113,26 +105,15 @@ namespace ShipyardExpansion
                 move = sail.installHeight - sail.GetCurrentInstallHeight();
             }
             GameState.currentShipyard.sailInstaller.MoveHeldSail(move);
-            if (buttonType != ButtonType.flip)
-            { HoldButton(); }
+            HoldButton();
 
             ShipyardUI.instance.RefreshButtons();
 
         }
         private bool MastNotTallEnough(Mast mast, Sail sail)
         {
-            float num = 0f;
-            if (sail.UseExtendedMastHeight())
-            {
-                num = mast.extraBottomHeight;
-            }
-
-            if (sail.GetScaledHeight() > mast.mastHeight + num)
-            {
-                return true;
-            }
-
-            return false;
+            ShipyardSailInstaller sailInstaller = GameState.currentShipyard.sailInstaller;
+            return (bool)AccessTools.Method(sailInstaller.GetType(), "MastNotTallEnough").Invoke(sailInstaller, new object[2] { mast, sail });
         }
 
         private void HoldButton()
