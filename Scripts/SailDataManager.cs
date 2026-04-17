@@ -50,6 +50,8 @@ namespace ShipyardExpansion
                 for (int i = 0; i < mastComp.sails.Count; i++)
                 {
                     GameObject installedSail = mastComp.sails[i];
+                    if (i >= sails.Length) { Debug.Log($"SE SailDataManager: boat {refs.name}, mast {mastIndex}, sail {i} is out of range"); break; }
+
                     string[] sailInfo = sails[i].Split(',');
 
                     SailScaler component = installedSail.GetComponent<SailScaler>();
