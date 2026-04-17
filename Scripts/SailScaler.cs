@@ -9,30 +9,21 @@ namespace ShipyardExpansion
         public static float scaleStep = 0.05f;
         public static float angleStep = 1;
         Sail sail;
-        //Transform shadowCol;
-        //Transform windCenter;
+
         Transform colChecker;
         public Transform rotatablePart;
         public Transform scaleablePart;
         public float[] ratioLimits = { 0.3f, 2.5f };
         public float[] scaleLimits = { 0.2f, 3f };
         public float[] angleLimits = { 340f, 15f };
-        //public Vector3 Scale { get; private set; }
         public float Angle { get; private set; }
         public bool Flipped { get; private set; }
-        //Vector3 startScale;
-        //float baseHeight;
-        //Vector3 basePos;
-        //float ratio = 1f;
+
         public ScaleType scaleType = ScaleType.Uniform;
         string baseName;
         public bool flippable = false;
         float jibStartAngle;
 
-/*        public float GetBaseHeight()
-        {
-            return baseHeight;
-        }*/
         public ScaleType GetScaleType()
         {
             return scaleType;
@@ -49,13 +40,7 @@ namespace ShipyardExpansion
                 
                 this.enabled = false;
             }
-            //startScale = scaleablePart.localScale;
-            //Scale = startScale;
-            //baseHeight = sail.installHeight / startScale.y;
-            //basePos = scaleablePart.localPosition / startScale.y;
 
-            //shadowCol = GetComponentInChildren<SailShadowCol>().transform;
-            //windCenter = sail.windcenter;
             colChecker = GetComponent<SailConnections>().colChecker.transform;
             if (sail.category == SailCategory.lateen)
             {
@@ -85,10 +70,8 @@ namespace ShipyardExpansion
             //if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
             //if (SailLimits.ratioLimits.ContainsKey(sail.prefabIndex)) ratioLimits = SailLimits.ratioLimits[sail.prefabIndex];
 
-            else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
+            //else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
 
-            //if (startScale.y < scaleLimits[0]) scaleLimits[0] = startScale.y * 0.8f;
-            //if (startScale.y > scaleLimits[1]) scaleLimits[1] = startScale.y * 1.2f;
             flippable = sail.category == SailCategory.staysail || SailLimits.flippableSquares.Contains(sail.prefabIndex);
 
             jibStartAngle = flippable ? scaleablePart.localEulerAngles.x : jibStartAngle;
@@ -186,7 +169,7 @@ namespace ShipyardExpansion
             width = Mathf.Clamp(width, scaleLimits[0], scaleLimits[1]);
             height = Mathf.Clamp(height, scaleLimits[0], scaleLimits[1]);
 
-            Vector3 newScale = new Vector3(width, height, width);
+            Vector3 newScale = new Vector3(height, height, height);
 
             if (scaleType == ScaleType.Square)
             {
@@ -197,10 +180,7 @@ namespace ShipyardExpansion
                 newScale = new Vector3(width, height, height);
                 //colScale = Scale;
             }
-            else
-            {
-                newScale = new Vector3(height, height, height);
-            }
+
 
             float num = scaleablePart.localPosition.z / scaleablePart.localScale.y;
             float num2 = scaleablePart.localPosition.x / scaleablePart.localScale.x;
@@ -222,14 +202,13 @@ namespace ShipyardExpansion
                 sail.sailName = $"{baseName} ({Mathf.RoundToInt((height / 1) * 100)}%{size2})";
             }
             else sail.sailName = baseName;
-            //UpdateInstallHeight();
         }
 
         // ratio-aware scaling
         public void SetScaleRel(float newScale)
         {
             if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
-            float ratio = sail.GetScaleY() / sail.GetScaleZ();
+            float ratio = scaleablePart.localScale.y / scaleablePart.localScale.x;
             if (newScale * ratio < scaleLimits[0] || newScale * ratio > scaleLimits[1]) return;
             SetScaleAbs(newScale, newScale * ratio);
         }
@@ -238,7 +217,7 @@ namespace ShipyardExpansion
             if (newRatio < ratioLimits[0] || newRatio > ratioLimits[1]) return;
             if (newScale < scaleLimits[0] || newScale > scaleLimits[1]) return;
             if (newScale * newRatio < scaleLimits[0] || newScale * newRatio > scaleLimits[1]) return;
-            //float ratio = sail.GetScaleY() / sail.GetScaleZ();
+            //float ratio = scaleablePart.localScale.y / scaleablePart.localScale.x;
 
             SetScaleAbs(newScale, newScale * newRatio);
             //sail.ChangeScale(newScale, newScale * newRatio);
@@ -246,29 +225,29 @@ namespace ShipyardExpansion
 
         public void IncreaseHeight()
         {
-            SetScaleRel(sail.GetScaleZ(), (sail.GetScaleY() + scaleStep) / sail.GetScaleZ());
+            SetScaleRel(scaleablePart.localScale.x, (scaleablePart.localScale.y + scaleStep) / scaleablePart.localScale.x);
         }
         public void IncreaseWidth()
         {
-            SetScaleRel(sail.GetScaleZ() + scaleStep, sail.GetScaleY() / (sail.GetScaleZ() + scaleStep));
+            SetScaleRel(scaleablePart.localScale.x + scaleStep, scaleablePart.localScale.y / (scaleablePart.localScale.x + scaleStep));
         }
         public void DecreaseHeight()
         {
-            SetScaleRel(sail.GetScaleZ(), (sail.GetScaleY() - scaleStep) / sail.GetScaleZ());
+            SetScaleRel(scaleablePart.localScale.x, (scaleablePart.localScale.y - scaleStep) / scaleablePart.localScale.x);
         }
         public void DecreaseWidth()
         {
-            SetScaleRel(sail.GetScaleZ() - scaleStep, sail.GetScaleY() / (sail.GetScaleZ() - scaleStep));
+            SetScaleRel(scaleablePart.localScale.x - scaleStep, scaleablePart.localScale.y / (scaleablePart.localScale.x - scaleStep));
         }
         public void ScaleUp()
         {
-            float ratio = sail.GetScaleY() / sail.GetScaleZ();
-            SetScaleRel(sail.GetScaleZ() + scaleStep, ratio);
+            float ratio = scaleablePart.localScale.y / scaleablePart.localScale.x;
+            SetScaleRel(scaleablePart.localScale.x + scaleStep, ratio);
         }
         public void ScaleDown()
         {
-            float ratio = sail.GetScaleY() / sail.GetScaleZ();
-            SetScaleRel(sail.GetScaleY() - scaleStep, ratio);
+            float ratio = scaleablePart.localScale.y / scaleablePart.localScale.x;
+            SetScaleRel(scaleablePart.localScale.x - scaleStep, ratio);
         }
         public void UpdateInstallHeight()
         {
