@@ -11,16 +11,13 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(ShipyardUI))]
     internal static class ShipyardUIPatches
     {
-        static GameObject scaleUpButton;
-        static GameObject scaleDownButton;
-        static GameObject increaseHeightButton;
-        static GameObject decreaseHeightButton;
-        static GameObject increaseWidthButton;
-        static GameObject decreaseWidthButton;
+        static SailScaleButton scaleUpButton;
+        static SailScaleButton scaleDownButton;
+        static GameObject widthUpButton;
+        static GameObject widthDownButton;
         static GameObject rotateForwardButton;
         static GameObject rotateBackwardButton;
         static GameObject flipButton;
-        static GameObject flipButton2;
         static GameObject textureButton;
 
         static int[] partCounts;
@@ -124,50 +121,39 @@ namespace ShipyardExpansion.Patches
         [HarmonyPostfix]
         public static void AwakePatch(GameObject ___moveUpButton, GameObject ___sailMenu)
         {
-            GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail scaling buttons.prefab"), ___moveUpButton.transform.parent) as GameObject;
+            GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail_buttons_new.prefab"), ___moveUpButton.transform.parent) as GameObject;
             
 #if DEBUG   // REMOVE THIS BEFORE RELEASE
             scalingButtons.transform.Translate(-1f, 0, 0);
 #endif
-            scaleUpButton = scalingButtons.transform.Find("button scale up").gameObject;
-            SailScaleButton buttonUp = scaleUpButton.AddComponent<SailScaleButton>();
-            buttonUp.buttonType = SailScaleButton.ButtonType.scaleUp;
+            var buttonUp = scalingButtons.transform.Find("button scale sail up").gameObject;
+            scaleUpButton = buttonUp.AddComponent<SailScaleButton>();
+            scaleUpButton.buttonType = SailScaleButton.ButtonType.scaleUp;
 
-            scaleDownButton = scalingButtons.transform.Find("button scale down").gameObject;
-            SailScaleButton buttonDown = scaleDownButton.AddComponent<SailScaleButton>();
-            buttonDown.buttonType = SailScaleButton.ButtonType.scaleDown;
+            var buttonDown = scalingButtons.transform.Find("button scale sail down").gameObject;
+            scaleDownButton = buttonDown.AddComponent<SailScaleButton>();
+            scaleDownButton.buttonType = SailScaleButton.ButtonType.scaleDown;
 
-            increaseHeightButton = scalingButtons.transform.Find("button increase height").gameObject;
-            SailScaleButton buttonTaller = increaseHeightButton.AddComponent<SailScaleButton>();
-            buttonTaller.buttonType = SailScaleButton.ButtonType.increaseHeight;
-
-            decreaseHeightButton = scalingButtons.transform.Find("button decrease height").gameObject;
-            SailScaleButton buttonShorter = decreaseHeightButton.AddComponent<SailScaleButton>();
-            buttonShorter.buttonType = SailScaleButton.ButtonType.decreaseHeight;
-
-            increaseWidthButton = scalingButtons.transform.Find("button increase width").gameObject;
-            SailScaleButton buttonWider = increaseWidthButton.AddComponent<SailScaleButton>();
+            widthUpButton = scalingButtons.transform.Find("button scale width up").gameObject;
+            SailScaleButton buttonWider = widthUpButton.AddComponent<SailScaleButton>();
             buttonWider.buttonType = SailScaleButton.ButtonType.increaseWidth;
 
-            decreaseWidthButton = scalingButtons.transform.Find("button decrease width").gameObject;
-            SailScaleButton buttonNarrower = decreaseWidthButton.AddComponent<SailScaleButton>();
+            widthDownButton = scalingButtons.transform.Find("button scale width down").gameObject;
+            SailScaleButton buttonNarrower = widthDownButton.AddComponent<SailScaleButton>();
             buttonNarrower.buttonType = SailScaleButton.ButtonType.decreaseWidth;
 
-            rotateForwardButton = scalingButtons.transform.Find("button rotate forward").gameObject;
+
+            rotateForwardButton = scalingButtons.transform.Find("button rotate fwd").gameObject;
             SailScaleButton buttonrotFwd = rotateForwardButton.AddComponent<SailScaleButton>();
             buttonrotFwd.buttonType = SailScaleButton.ButtonType.rotateForward;
 
-            rotateBackwardButton = scalingButtons.transform.Find("button rotate backward").gameObject;
+            rotateBackwardButton = scalingButtons.transform.Find("button rotate bkwd").gameObject;
             SailScaleButton buttonrotBkwd = rotateBackwardButton.AddComponent<SailScaleButton>();
             buttonrotBkwd.buttonType = SailScaleButton.ButtonType.rotateBackward;
 
             flipButton = scalingButtons.transform.Find("button flip").gameObject;
             SailScaleButton buttonflip = flipButton.AddComponent<SailScaleButton>();
             buttonflip.buttonType = SailScaleButton.ButtonType.flip;
-
-            flipButton2 = scalingButtons.transform.Find("button flip p2").gameObject;
-            SailScaleButton buttonflip2 = flipButton2.AddComponent<SailScaleButton>();
-            buttonflip2.buttonType = SailScaleButton.ButtonType.flip;
 
 
             var textureB1 = scalingButtons.transform.Find("button sail texture").gameObject;
@@ -190,7 +176,7 @@ namespace ShipyardExpansion.Patches
         }
         [HarmonyPatch("UpdateMoveButtons")]
         [HarmonyPostfix]
-        public static void UpdateMoveButtonsPatch()
+        public static void UpdateMoveButtonsPatch(GameObject ___scaleUpButton, GameObject ___scaleDownButton, GameObject ___widthUpButton, GameObject ___widthDownButton)
         {
             bool active = GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && !GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled();
             SailScaler currentSail = active? GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>() : null;
@@ -199,20 +185,28 @@ namespace ShipyardExpansion.Patches
             bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
             bool flippable = active && currentSail != null && currentSail.flippable;
             
-            scaleUpButton.SetActive(active && !heightable);
-            scaleDownButton.SetActive(active && !heightable);
+            scaleUpButton.gameObject.SetActive(active && Plugin.overrideScaling.Value);
+            scaleDownButton.gameObject.SetActive(active && Plugin.overrideScaling.Value);
+            if (Plugin.overrideScaling.Value)
+            {
+                ___scaleUpButton.SetActive(false);
+                ___scaleDownButton.SetActive(false);
+                ___widthUpButton.SetActive(false);
+                ___widthDownButton.SetActive(false);
 
-            increaseHeightButton.SetActive(heightable);
-            decreaseHeightButton.SetActive(heightable);
+            }
+            scaleUpButton.buttonType = heightable ? SailScaleButton.ButtonType.increaseHeight : SailScaleButton.ButtonType.scaleUp;
+            scaleDownButton.buttonType = heightable ? SailScaleButton.ButtonType.decreaseHeight : SailScaleButton.ButtonType.scaleDown;
+            scaleUpButton.SetText("+\n" + (heightable ? "Height" : "Size"));
+            scaleDownButton.SetText("-\n" + (heightable ? "Height" : "Size"));
 
-            increaseWidthButton.SetActive(widthable);
-            decreaseWidthButton.SetActive(widthable);
+            widthUpButton.SetActive(widthable);
+            widthDownButton.SetActive(widthable);
 
             rotateForwardButton.SetActive(rotatable);
             rotateBackwardButton.SetActive(rotatable);
 
-            flipButton.SetActive(flippable && !widthable);
-            flipButton2.SetActive(flippable && widthable);
+            flipButton.SetActive(flippable);
 
             textureButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null);
         }

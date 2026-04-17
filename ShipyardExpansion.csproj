@@ -103,7 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
-    <Compile Include="Patches\ScaleButtonPatch.cs" />
+    <Compile Include="Patches\SailScalePatch.cs" />
     <Compile Include="Patches\SailAreaPatch.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
@@ -118,7 +118,6 @@
     <Compile Include="Scripts\SailDataManager.cs" />
     <Compile Include="SailLimits.cs" />
     <Compile Include="Scripts\SailScaleButton.cs" />
-    <Compile Include="Scripts\Parser.cs" />
     <Compile Include="Patches\SailAdder.cs" />
     <Compile Include="Scripts\SailPartLocations.cs" />
     <Compile Include="Scripts\SailScaler.cs" />

@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using UnityEngine;
+﻿using UnityEngine;
+using HarmonyLib;
 
 namespace ShipyardExpansion
 {
@@ -96,18 +96,20 @@ namespace ShipyardExpansion
             else if (buttonType == ButtonType.flip)
             {
                 scaler.FlipJib();
-                HoldButton();
+                return;
             }
             float move = 0f;
             float extra = sail.UseExtendedMastHeight()? mast.extraBottomHeight : 0f;
-            if (sail.GetCurrentInstallHeight() < sail.installHeight - extra)
+            if (sail.GetCurrentInstallHeight() < sail.GetScaledHeight() - extra)
             {
-                move = sail.installHeight - sail.GetCurrentInstallHeight();
+                move = sail.GetScaledHeight() - sail.GetCurrentInstallHeight();
             }
             GameState.currentShipyard.sailInstaller.MoveHeldSail(move);
             HoldButton();
 
             ShipyardUI.instance.RefreshButtons();
+
+            ShipyardUI.instance.UpdateDescriptionText();
 
         }
         private bool MastNotTallEnough(Mast mast, Sail sail)

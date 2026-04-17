@@ -41,6 +41,7 @@ namespace ShipyardExpansion
         internal static ConfigEntry<int> climbSpeed;
         internal static ConfigEntry<bool> topsailPatch;
         internal static ConfigEntry<bool> combinedScale;
+        internal static ConfigEntry<bool> overrideScaling;
 
         private void Awake()
         {
@@ -63,8 +64,9 @@ namespace ShipyardExpansion
             autoFit = Config.Bind("Settings", "Auto-fit sails", true, new ConfigDescription("Automatically scale too-big sails to fit the mast"));
             climbSpeed = Config.Bind("Settings", "Climb speed", 10, new ConfigDescription("Speed when climbing up to tops/crow's nests", new AcceptableValueRange<int>(2, 15)));
             topsailPatch = Config.Bind("Settings", "Link topmasts", true, new ConfigDescription("Link square sail angles on topmasts to the ones on the mast below (requires a restart)"));
-            combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)"));
-            
+            combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)\nRequires \"Override scaling\" to work"));
+            overrideScaling = Config.Bind("Settings", "Override scaling", false, new ConfigDescription("Override the size up and down buttons with the mod's version"));
+
             AssetTools.LoadAssetBundles();
         }
 
