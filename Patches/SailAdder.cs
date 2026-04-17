@@ -46,10 +46,12 @@ namespace ShipyardExpansion.Patches
             modSail2.transform.Find("sail M small gaff").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail2.GetComponent<Sail>().category = SailCategory.other;
 
-            var modSail3 = Util.CopySail(___sails, 75, new Vector3(2.35f, 0.25f, 0), new Vector3(90, 354, 0), 1f, "lug giant", "balanced lug tall", 157);
+            var modSail3 = Util.CopySail(___sails, 15, new Vector3(2.35f, 0.25f, 0), new Vector3(90, 354, 0), 1f, "lug giant", "balanced lug full", 157);
             modSail3.transform.Find("sail M small gaff 3").Find("SAIL_small_gaff").Find("boom_brace").gameObject.SetActive(false);
             modSail3.transform.Find("sail M small gaff 3").Find("SAIL_small_gaff").Find("boom_brace_001").gameObject.SetActive(false);
             modSail3.GetComponent<Sail>().category = SailCategory.other;
+            //___sails[157] = AssetTools.bundle.LoadAsset<GameObject>("157 SAIL lug full.prefab");
+
             var modSail4 = Util.CopySail(___sails, 5, new Vector3(1.5f, 0.2f, 0), new Vector3(90, 356, 0), 1f, "lug tiny", "balanced lug low", 156);
             modSail4.transform.Find("sail A tiny gaff").Find("SAIL_tiny_gaff").Find("boom_brace").gameObject.SetActive(false);
             modSail4.transform.Find("sail A tiny gaff").Find("SAIL_tiny_gaff").Find("boom_brace_001").gameObject.SetActive(false);
