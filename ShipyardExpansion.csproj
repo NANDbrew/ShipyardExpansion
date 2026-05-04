@@ -108,7 +108,7 @@
     <Compile Include="Patches\SailConnectionPatch.cs" />
     <Compile Include="Patches\StarterSetPatch.cs" />
     <Compile Include="Patches\JunkGaffFixer.cs" />
-    <Compile Include="Patches\PlayerEmbarkPatch.cs" />
+    <Compile Include="Patches\EnterShipyardPatch.cs" />
     <Compile Include="Patches\SailScalerAdder.cs" />
     <Compile Include="Patches\TopsailPatch.cs" />
     <Compile Include="SailClothRotations.cs" />

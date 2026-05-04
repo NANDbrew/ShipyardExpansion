@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Channels;
 using UnityEngine;
 
 namespace ShipyardExpansion
@@ -55,7 +56,6 @@ namespace ShipyardExpansion
             var mats = bundle.LoadAllAssets(typeof(Material));
             foreach (Material m in mats)
             {
-
                 var shaderName = m.shader.name;
                 //Debug.LogWarning("trying to refresh shader: " + shaderName + " in material " + m.name);
                 var newShader = Shader.Find(shaderName);
@@ -285,6 +285,14 @@ namespace ShipyardExpansion
             {
                 pump.damage = damage;
             }
+/*
+            foreach (var cladding in boatData.GetComponentsInChildren<SE_Cladding>())
+            { 
+                cladding.boatDamage = damage;
+                cladding.cleanableObject = damage.GetComponent<SaveableObject>().GetCleanable();
+                Plugin.CopperPrice += (sender, args) => cladding.SetPriceModifier((SE_Cladding.Args)args);
+            }
+*/
             return modParts;
         }
         public static IEnumerator ReplaceEmbarkMesh(BoatEmbarkCollider col, Mesh mesh)
