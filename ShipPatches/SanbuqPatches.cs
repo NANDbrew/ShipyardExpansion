@@ -67,8 +67,8 @@ namespace ShipyardExpansion
             var helmB = container.Find("steering_wheel (big)");
 
             var newHelms = prefab.GetComponent<SE_BoatCustomData>().tillers;
-            newHelms[0].attachedRudder = helm1.GetComponent<GPButtonSteeringWheel>().attachedRudder;
-            newHelms[1].attachedRudder = helmB.GetComponent<GPButtonSteeringWheel>().attachedRudder;
+            newHelms[1].attachedRudder = helm1.GetComponent<GPButtonSteeringWheel>().attachedRudder;
+            newHelms[0].attachedRudder = helmB.GetComponent<GPButtonSteeringWheel>().attachedRudder;
 
 
 #if DEBUG
@@ -161,12 +161,12 @@ namespace ShipyardExpansion
             frontHelm.walkColObject = walkCol.Find("structure").Find("Cube_005").gameObject;
             //frontHelm.childOptions = new GameObject[] { structure.Find("Cube_004").gameObject };
             modParts["wheel_holder"].partOptions.Insert(0, frontHelm);
-/*
-            partsList.availableParts[9].partOptions[0] = Util.CopyPartOption(partsList.availableParts[9].partOptions[0], new GameObject("wheel_opt"), partsList.availableParts[9].partOptions[0].optionName);
-            partsList.availableParts[9].partOptions[1] = Util.CopyPartOption(partsList.availableParts[9].partOptions[1], new GameObject("wheel_opt_b"), partsList.availableParts[9].partOptions[1].optionName);
-*/
-            partsList.availableParts[9].partOptions[0].childOptions = partsList.availableParts[9].partOptions[0].childOptions.AddToArray(thing.transform.Find("wheel_holder/steering_wheel").gameObject);
-            partsList.availableParts[9].partOptions[1].childOptions = partsList.availableParts[9].partOptions[1].childOptions.AddToArray(thing.transform.Find("wheel_holder/steering_wheel (big)").gameObject);
+            /*
+                        partsList.availableParts[9].partOptions[0] = Util.CopyPartOption(partsList.availableParts[9].partOptions[0], new GameObject("wheel_opt"), partsList.availableParts[9].partOptions[0].optionName);
+                        partsList.availableParts[9].partOptions[1] = Util.CopyPartOption(partsList.availableParts[9].partOptions[1], new GameObject("wheel_opt_b"), partsList.availableParts[9].partOptions[1].optionName);
+            */
+            Util.AddChildOption(partsList.availableParts[9].partOptions[0], thing.transform.Find("wheel_holder/orienter/steering_wheel").gameObject);
+            Util.AddChildOption(partsList.availableParts[9].partOptions[1], thing.transform.Find("wheel_holder/orienter/steering_wheel (big)").gameObject);
 
             #region late adjustments
 #if DEBUG

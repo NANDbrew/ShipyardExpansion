@@ -304,7 +304,16 @@ namespace ShipyardExpansion
 
             return newPart;
         }
-
+        /// <summary>
+        /// Adds the specified GameObject to the targetted BoatPartOption's childOptions array.
+        /// Modifies in place
+        /// </summary>
+        /// <param name="sourceTarget"></param>
+        /// <param name="child"></param>
+        public static void AddChildOption(BoatPartOption sourceTarget, GameObject child)
+        {
+            sourceTarget.childOptions = sourceTarget.childOptions.AddToArray(child);
+        }
         /// <summary>
         /// Adds the specified array of GameObjects to the targetted BoatPartOption's childOptions array.
         /// Modifies in place
