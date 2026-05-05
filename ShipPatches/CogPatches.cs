@@ -46,7 +46,7 @@ namespace ShipyardExpansion
             mainMast1.transform.Find("trim_014").gameObject.SetActive(false);
             mainMast1.transform.Find("mast_002").gameObject.SetActive(false);
             mainMast1.transform.Find("Cylinder_002").gameObject.SetActive(false);
-            mainMast1.childOptions = mainMast1.childOptions.AddRangeToArray(new GameObject[] { shrouds_back.transform.GetChild(0).gameObject, shrouds_side.transform.GetChild(0).gameObject, shrouds_back.walkColObject.transform.GetChild(0).gameObject, shrouds_side.walkColObject.transform.GetChild(0).gameObject });
+            Util.AddChildOptions(mainMast1, new GameObject[] { shrouds_back.transform.GetChild(0).gameObject, shrouds_side.transform.GetChild(0).gameObject, shrouds_back.walkColObject.transform.GetChild(0).gameObject, shrouds_side.walkColObject.transform.GetChild(0).gameObject });
             mainMast1.GetComponent<Mast>().mastCols = mainMast1.GetComponent<Mast>().mastCols.AddRangeToArray(shrouds_back.transform.GetChild(0).GetComponentsInChildren<CapsuleCollider>());
             mainMast1.GetComponent<Mast>().mastCols = mainMast1.GetComponent<Mast>().mastCols.AddRangeToArray(shrouds_side.transform.GetChild(0).GetComponentsInChildren<CapsuleCollider>());
 
@@ -58,7 +58,7 @@ namespace ShipyardExpansion
             mainMast2.transform.Find("trim_016").gameObject.SetActive(false);
             mainMast2.transform.Find("mast_004").gameObject.SetActive(false);
             mainMast2.transform.Find("Cylinder_004").gameObject.SetActive(false);
-            mainMast2.childOptions = mainMast2.childOptions.AddRangeToArray(new GameObject[] { shrouds_back.transform.GetChild(1).gameObject, shrouds_side.transform.GetChild(1).gameObject, shrouds_back.walkColObject.transform.GetChild(1).gameObject, shrouds_side.walkColObject.transform.GetChild(1).gameObject });
+            Util.AddChildOptions(mainMast2, new GameObject[] { shrouds_back.transform.GetChild(1).gameObject, shrouds_side.transform.GetChild(1).gameObject, shrouds_back.walkColObject.transform.GetChild(1).gameObject, shrouds_side.walkColObject.transform.GetChild(1).gameObject });
             mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddRangeToArray(shrouds_back.transform.GetChild(1).GetComponentsInChildren<CapsuleCollider>());
             mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddRangeToArray(shrouds_side.transform.GetChild(1).GetComponentsInChildren<CapsuleCollider>());
 

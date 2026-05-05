@@ -44,7 +44,7 @@ namespace ShipyardExpansion
             mainMast2.gameObject.GetComponent<BoatPartOption>().optionName = "main mast 2";
             BoatPartOption mainMastNone = Util.CreatePartOption(container, "(empty mainmast)", "(no main mast)");
             partsList.availableParts[0].partOptions.Add(mainMastNone);
-            
+
             BoatPartOption forestayNone = Util.CreatePartOption(container, "(empty forestay)", "(no forestay)");
             partsList.availableParts[3].partOptions.Add(forestayNone);
 
@@ -67,8 +67,8 @@ namespace ShipyardExpansion
             var helmB = container.Find("steering_wheel (big)");
 
             var newHelms = prefab.GetComponent<SE_BoatCustomData>().tillers;
-            newHelms[0].attachedRudder = helm1.GetComponent<GPButtonSteeringWheel>().attachedRudder;
-            newHelms[1].attachedRudder = helmB.GetComponent<GPButtonSteeringWheel>().attachedRudder;
+            newHelms[1].attachedRudder = helm1.GetComponent<GPButtonSteeringWheel>().attachedRudder;
+            newHelms[0].attachedRudder = helmB.GetComponent<GPButtonSteeringWheel>().attachedRudder;
 
 
 #if DEBUG
@@ -80,6 +80,9 @@ namespace ShipyardExpansion
             modParts = AssetTools.HandleImports(thing, partsList);
             var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
+
+            var crowsnests = thing.transform.Find("crowsnest");
+            var crowsnestCols = modWalkCol.Find("crowsnest");
 
 
             #region topmastStay
@@ -120,21 +123,21 @@ namespace ShipyardExpansion
             partsList.availableParts[3].partOptions.Remove(topmastStay3.GetComponent<BoatPartOption>());
             var mainShrouds0Children = partsList.availableParts[5].partOptions[0];
             var mainShrouds1Children = partsList.availableParts[5].partOptions[1];
-            mainShrouds0Children.childOptions = mainShrouds0Children.childOptions.AddRangeToArray(new GameObject[] { modParts["crowsnest_empty"].partOptions[1].transform.Find("ladder_shr_0").gameObject, modParts["crowsnest_empty"].partOptions[2].transform.Find("ladder_shr_0").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_0").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_0").gameObject });
-            mainShrouds1Children.childOptions = mainShrouds1Children.childOptions.AddRangeToArray(new GameObject[] { modParts["crowsnest_empty"].partOptions[1].transform.Find("ladder_shr_1").gameObject, modParts["crowsnest_empty"].partOptions[2].transform.Find("ladder_shr_1").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_1").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_1").gameObject });
+            Util.AddChildOptions(mainShrouds0Children, new GameObject[] { crowsnests.Find("crowsnest_0/ladder_shr_0").gameObject, crowsnests.Find("crowsnest_1/ladder_shr_0").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_0").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_0").gameObject });
+            Util.AddChildOptions(mainShrouds1Children, new GameObject[] { crowsnests.Find("crowsnest_0/ladder_shr_1").gameObject, crowsnests.Find("crowsnest_1/ladder_shr_1").gameObject, thing.transform.Find("flags_main").Find("mast_0").Find("flag_1").gameObject, thing.transform.Find("flags_main").Find("mast_1").Find("flag_1").gameObject });
 
             // mizzen shrouds
-            partsList.availableParts[6].partOptions[0].childOptions = partsList.availableParts[6].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_side").gameObject, thing.transform.Find("mizzen_mast2").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast2").Find("shrouds_mizzen_side").gameObject });
-            partsList.availableParts[6].partOptions[1].childOptions = partsList.availableParts[6].partOptions[1].childOptions.AddRangeToArray(new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_back").gameObject, thing.transform.Find("mizzen_mast2").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast2").Find("shrouds_mizzen_back").gameObject });
+            Util.AddChildOptions(partsList.availableParts[6].partOptions[0], new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_side").gameObject, thing.transform.Find("mizzen_mast2").Find("shrouds_side").gameObject, modWalkCol.transform.Find("mizzen_mast2").Find("shrouds_mizzen_side").gameObject });
+            Util.AddChildOptions(partsList.availableParts[6].partOptions[1], new GameObject[] { thing.transform.Find("mizzen_mast").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast").Find("shrouds_mizzen_back").gameObject, thing.transform.Find("mizzen_mast2").Find("shrouds_back").gameObject, modWalkCol.transform.Find("mizzen_mast2").Find("shrouds_mizzen_back").gameObject });
 
             mizzenMast1.GetComponent<BoatPartOption>().childOptions = mizzenMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_mizzen").GetChild(0).gameObject);
 
-            mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_main").Find("mast_0").gameObject);
-            mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddToArray(thing.transform.Find("flags_main").Find("mast_1").gameObject);
-            
+            Util.AddChildOptions(mainMast1.GetComponent<BoatPartOption>(), new GameObject[] {thing.transform.Find("flags_main").Find("mast_0").gameObject, crowsnests.GetChild(0).gameObject, crowsnestCols.GetChild(0).gameObject});
+            Util.AddChildOptions(mainMast2.GetComponent<BoatPartOption>(), new GameObject[] {thing.transform.Find("flags_main").Find("mast_1").gameObject, crowsnests.GetChild(1).gameObject, crowsnestCols.GetChild(1).gameObject});
+
             // crow's nest cloth colliders
-            topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[1].transform.Find("cloth_col").GetComponent<CapsuleCollider>());
-            topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].transform.Find("cloth_col").GetComponent<CapsuleCollider>());
+            topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(crowsnests.Find("crowsnest_0/cloth_col").GetComponent<CapsuleCollider>());
+            topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(crowsnests.Find("crowsnest_1/cloth_col").GetComponent<CapsuleCollider>());
 #endregion
 
 #region hammock
@@ -158,12 +161,12 @@ namespace ShipyardExpansion
             frontHelm.walkColObject = walkCol.Find("structure").Find("Cube_005").gameObject;
             //frontHelm.childOptions = new GameObject[] { structure.Find("Cube_004").gameObject };
             modParts["wheel_holder"].partOptions.Insert(0, frontHelm);
-/*
-            partsList.availableParts[9].partOptions[0] = Util.CopyPartOption(partsList.availableParts[9].partOptions[0], new GameObject("wheel_opt"), partsList.availableParts[9].partOptions[0].optionName);
-            partsList.availableParts[9].partOptions[1] = Util.CopyPartOption(partsList.availableParts[9].partOptions[1], new GameObject("wheel_opt_b"), partsList.availableParts[9].partOptions[1].optionName);
-*/
-            partsList.availableParts[9].partOptions[0].childOptions = partsList.availableParts[9].partOptions[0].childOptions.AddToArray(thing.transform.Find("wheel_holder/steering_wheel").gameObject);
-            partsList.availableParts[9].partOptions[1].childOptions = partsList.availableParts[9].partOptions[1].childOptions.AddToArray(thing.transform.Find("wheel_holder/steering_wheel (big)").gameObject);
+            /*
+                        partsList.availableParts[9].partOptions[0] = Util.CopyPartOption(partsList.availableParts[9].partOptions[0], new GameObject("wheel_opt"), partsList.availableParts[9].partOptions[0].optionName);
+                        partsList.availableParts[9].partOptions[1] = Util.CopyPartOption(partsList.availableParts[9].partOptions[1], new GameObject("wheel_opt_b"), partsList.availableParts[9].partOptions[1].optionName);
+            */
+            Util.AddChildOption(partsList.availableParts[9].partOptions[0], thing.transform.Find("wheel_holder/orienter/steering_wheel").gameObject);
+            Util.AddChildOption(partsList.availableParts[9].partOptions[1], thing.transform.Find("wheel_holder/orienter/steering_wheel (big)").gameObject);
 
             #region late adjustments
 #if DEBUG
@@ -209,7 +212,7 @@ namespace ShipyardExpansion
             topmastStay2.GetComponent<BoatPartOption>().requires.Add(modParts["foremast_empty"].partOptions[0]);
 
             var topmastNone = container.Find("(empty topmast)").GetComponent<BoatPartOption>();
-            topmastNone.childOptions = topmastNone.childOptions.AddRangeToArray(new GameObject[] { mainMast1.Find("flag (2)").gameObject, mainMast2.Find("flag (1)").gameObject });
+            Util.AddChildOptions(topmastNone, new GameObject[] { mainMast1.Find("flag (2)").gameObject, mainMast2.Find("flag (1)").gameObject });
             UnityEngine.Object.Instantiate(mainMast1.Find("flag (2)"), topMast1, false).localPosition = Vector3.zero;
             UnityEngine.Object.Instantiate(mainMast1.Find("flag (2)"), topMast2, false).localPosition = Vector3.zero;
 

@@ -4,6 +4,7 @@ using HarmonyLib;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace ShipyardExpansion
 {
@@ -12,7 +13,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.8.94";
+        public const string PLUGIN_VERSION = "0.9.0";
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
@@ -25,6 +26,8 @@ namespace ShipyardExpansion
         public static Dictionary<GameObject, SaveBoatCustomizationData> converted;
         public static Transform prefabContainer;
         public static Dictionary<Mast, float> mastHeights = new Dictionary<Mast, float>();
+
+        public static event EventHandler CopperPrice;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -41,6 +44,7 @@ namespace ShipyardExpansion
         internal static ConfigEntry<int> climbSpeed;
         internal static ConfigEntry<bool> topsailPatch;
         internal static ConfigEntry<bool> combinedScale;
+        internal static ConfigEntry<bool> overrideScaling;
 
         private void Awake()
         {
@@ -63,10 +67,17 @@ namespace ShipyardExpansion
             autoFit = Config.Bind("Settings", "Auto-fit sails", true, new ConfigDescription("Automatically scale too-big sails to fit the mast"));
             climbSpeed = Config.Bind("Settings", "Climb speed", 10, new ConfigDescription("Speed when climbing up to tops/crow's nests", new AcceptableValueRange<int>(2, 15)));
             topsailPatch = Config.Bind("Settings", "Link topmasts", true, new ConfigDescription("Link square sail angles on topmasts to the ones on the mast below (requires a restart)"));
-            combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)"));
-            
+            combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)\nRequires \"Override scaling\" to work"));
+            overrideScaling = Config.Bind("Settings", "Override scaling", false, new ConfigDescription("Override the size up and down buttons with the mod's version"));
+
             AssetTools.LoadAssetBundles();
         }
+
+        public static void UpdateCopperPrice(int price)
+        {
+            CopperPrice?.Invoke(instance, new SE_Bridge.SE_Cladding.Args { arg = price });
+        }
+
 
     }
 }

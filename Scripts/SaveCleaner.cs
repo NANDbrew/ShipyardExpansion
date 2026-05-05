@@ -138,6 +138,7 @@ namespace ShipyardExpansion
         {
             //if (GameState.playing && !GameState.justStarted) return;
             int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
+
             if (!Plugin.stockParts.ContainsKey(refs)) return;
             // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
@@ -213,6 +214,7 @@ namespace ShipyardExpansion
                     }
                 }
             }
+            if (VersionManager.saveVersion2[0] > 0) return;
             // convert Jong shrouds. having this here could be a problem
             if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 90 && index == 70)
             {

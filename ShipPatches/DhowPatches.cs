@@ -87,8 +87,8 @@ namespace ShipyardExpansion
             var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
-            mainMast.GetComponent<BoatPartOption>().childOptions = new GameObject[] { thing.transform.Find("main_shrouds_side").Find("short_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("short_s").gameObject, thing.transform.Find("main_shrouds_back").Find("short_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("short_b").gameObject };
-            mainMastTall.GetComponent<BoatPartOption>().childOptions = new GameObject[] { thing.transform.Find("main_shrouds_side").Find("tall_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("tall_s").gameObject, thing.transform.Find("main_shrouds_back").Find("tall_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("tall_b").gameObject };
+            Util.AddChildOptions(mainMast.GetComponent<BoatPartOption>(), new GameObject[] { thing.transform.Find("main_shrouds_side").Find("short_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("short_s").gameObject, thing.transform.Find("main_shrouds_back").Find("short_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("short_b").gameObject });
+            Util.AddChildOptions(mainMastTall.GetComponent<BoatPartOption>(), new GameObject[] { thing.transform.Find("main_shrouds_side").Find("tall_s").gameObject, modWalkCol.transform.Find("main_shrouds_side").Find("tall_s").gameObject, thing.transform.Find("main_shrouds_back").Find("tall_b").gameObject, modWalkCol.transform.Find("main_shrouds_back").Find("tall_b").gameObject });
 
             var lowFlag = container.Find("flag_low").gameObject;
 
@@ -96,7 +96,7 @@ namespace ShipyardExpansion
             lowFlag.transform.SetParent(thing.transform.Find("main_shrouds_side").Find("short_s"));
 
             //mainMastTallM.mastCols = mainMastTallM.mastCols.AddToArray(thing.transform.Find("crowsnest_low").GetComponent<CapsuleCollider>());
-            //modParts["main_shrouds_side"].partOptions[0].childOptions = modParts["main_shrouds_side"].partOptions[0].childOptions.AddRangeToArray(new GameObject[] { staticRig, rigCol, TallMastChildren[0], TallMastChildren[1] });
+            //Util.AddChildOptions(modParts["main_shrouds_side"].partOptions[0], new GameObject[] { staticRig, rigCol, TallMastChildren[0], TallMastChildren[1] });
 
             modParts["net_0"].partOptions[0].childOptions = new GameObject[]{ container.Find("hammock_001").gameObject };
             //var table = modParts["net_0"].partOptions[1].transform.GetChild(0).gameObject.AddComponent<StaticTable>();

@@ -87,30 +87,28 @@ namespace ShipyardExpansion
             //mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].GetComponentInChildren<CapsuleCollider>());
 
             var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
-            modWalkCol.SetParent(walkCol, false);
+            modWalkCol.SetParent(walkCol, false);        
 
             #region shrouds
-            mainMast1.GetComponent<BoatPartOption>().childOptions = mainMast1.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] {
+            Util.AddChildOptions(mainMast1.GetComponent<BoatPartOption>(), new GameObject[] {
+                thing.transform.Find("crowsnest").GetChild(0).gameObject, modWalkCol.Find("crowsnest").GetChild(0).gameObject,
                 thing.transform.Find("shrouds_main_side").Find("mast_mid_0").gameObject,
                 modWalkCol.transform.Find("shrouds_main_side").Find("mast_mid_0").gameObject,
                 thing.transform.Find("shrouds_main_back").Find("mast_mid_0").gameObject,
                 modWalkCol.transform.Find("shrouds_main_back").Find("mast_mid_0").gameObject, });
-            mainMast1.Find("static_rig_001").gameObject.SetActive(false);
-            mainMast1.GetComponent<Mast>().walkColMast.Find("static_rig_001").gameObject.SetActive(false);
             mainMast1.GetComponent<MeshFilter>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_mid_0").GetComponent<MeshFilter>().sharedMesh;
             mainMast1.GetComponent<Mast>().walkColMast.GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_mid_0").GetComponent<MeshFilter>().sharedMesh;
 
-            mainMast2.GetComponent<BoatPartOption>().childOptions = mainMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] {
+            Util.AddChildOptions(mainMast2.GetComponent<BoatPartOption>(), new GameObject[] {
+                thing.transform.Find("crowsnest").GetChild(1).gameObject, modWalkCol.Find("crowsnest").GetChild(1).gameObject,
                 thing.transform.Find("shrouds_main_side").Find("mast_mid_1").gameObject,
                 modWalkCol.transform.Find("shrouds_main_side").Find("mast_mid_1").gameObject,
                 thing.transform.Find("shrouds_main_back").Find("mast_mid_1").gameObject,
                 modWalkCol.transform.Find("shrouds_main_back").Find("mast_mid_1").gameObject, });
-            mainMast2.Find("static_rig_000").gameObject.SetActive(false);
-            mainMast2.GetComponent<Mast>().walkColMast.Find("static_rig_000").gameObject.SetActive(false);
             mainMast2.GetComponent<MeshFilter>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_mid_1").GetComponent<MeshFilter>().sharedMesh;
             mainMast2.GetComponent<Mast>().walkColMast.GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_mid_1").GetComponent<MeshFilter>().sharedMesh;
 
-            mizzenMast2.GetComponent<BoatPartOption>().childOptions = mizzenMast2.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] {
+            Util.AddChildOptions(mizzenMast2.GetComponent<BoatPartOption>(), new GameObject[] {
                 thing.transform.Find("shrouds_miz_side").Find("mast_miz_1").gameObject,
                 modWalkCol.transform.Find("shrouds_miz_side").Find("mast_miz_1").gameObject,
                 thing.transform.Find("shrouds_miz_back").Find("mast_miz_1").gameObject,
@@ -120,7 +118,7 @@ namespace ShipyardExpansion
             mizzenMast2.GetComponent<MeshFilter>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_mizzen_1").GetComponent<MeshFilter>().sharedMesh;
             mizzenMast2.GetComponent<Mast>().walkColMast.GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_mizzen_1").GetComponent<MeshFilter>().sharedMesh;
 
-            foremast.GetComponent<BoatPartOption>().childOptions = foremast.GetComponent<BoatPartOption>().childOptions.AddRangeToArray(new GameObject[] {
+            Util.AddChildOptions(foremast.GetComponent<BoatPartOption>(), new GameObject[] {
                 thing.transform.Find("fore_shrouds").gameObject,
                 modWalkCol.transform.Find("fore_shrouds").gameObject, });
             foremast.Find("static_rope_atts").gameObject.SetActive(false);
@@ -129,13 +127,26 @@ namespace ShipyardExpansion
             foremastM.walkColMast.GetComponent<MeshCollider>().sharedMesh = thing.transform.Find("mast_meshes").Find("mast_front_").GetComponent<MeshFilter>().sharedMesh;
             foremastM.walkColMast.GetComponent<MeshCollider>().enabled = true;
             #endregion
+#if DEBUG
+            Debug.Log("Junk sticks");
+#endif
+            var vanillaShrouds = modParts["shrouds_main_side"].partOptions[0];
+            Util.AddChildOptions(vanillaShrouds, new GameObject[] { 
+                    mainMast1.Find("static_rig_001").gameObject,
+                    mainMast1.GetComponent<Mast>().walkColMast.Find("static_rig_001").gameObject, 
+                    mainMast2.Find("static_rig_000").gameObject,
+                    mainMast2.GetComponent<Mast>().walkColMast.Find("static_rig_000").gameObject,
+                });
+            partsList.availableParts[11].partOptions[1].requires.Add(vanillaShrouds);
+            Util.AddChildOptions(mainMast1.GetComponent<BoatPartOption>(), new GameObject[] { vanillaShrouds.transform.GetChild(0).gameObject, vanillaShrouds.walkColObject.transform.GetChild(0).gameObject });
+            Util.AddChildOptions(mainMast2.GetComponent<BoatPartOption>(), new GameObject[] { vanillaShrouds.transform.GetChild(1).gameObject, vanillaShrouds.walkColObject.transform.GetChild(1).gameObject });
 
-#region bed
+            #region bed
 #if DEBUG
             Debug.Log("junk bed??");
 #endif
             thing.transform.Find("bed").GetComponent<BoatPartOption>().childOptions = new GameObject[] { container.Find("bed").gameObject };
-            var hammock = thing.GetComponentInChildren<GPButtonBed>(true);
+            var hammock = thing.transform.Find("hammock_001").GetComponent<GPButtonBed>();
             hammock.damage = boat.GetComponent<BoatDamage>();
             hammock.GetComponent<HingeJoint>().connectedBody = boat.GetComponent<Rigidbody>();
 #endregion

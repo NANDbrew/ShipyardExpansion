@@ -22,10 +22,10 @@ namespace ShipyardExpansion
                 return;
             }
             if (Plugin.skipSailData.Value) return;
+            int[] version2 = VersionManager.GetVersion(GameState.modData[boat]);
+            string[] slug = GameState.modData[boat].Split('|');
 
-            string slug = GameState.modData[boat];
-            //Debug.Log("loading data: " + slug);
-            string[] masts = slug.Split(new char[] { ')' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] masts = slug.First().Split(new char[] { ')' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string mast in masts)
             {
                 //Debug.Log($"{mast}");
@@ -50,6 +50,8 @@ namespace ShipyardExpansion
                 for (int i = 0; i < mastComp.sails.Count; i++)
                 {
                     GameObject installedSail = mastComp.sails[i];
+                    if (i >= sails.Length) { Debug.Log($"SE SailDataManager: boat {refs.name}, mast {mastIndex}, sail {i} is out of range"); break; }
+
                     string[] sailInfo = sails[i].Split(',');
 
                     SailScaler component = installedSail.GetComponent<SailScaler>();
@@ -58,7 +60,10 @@ namespace ShipyardExpansion
                         Debug.Log("No sail scaler component found");
                         continue;
                     }
-                    component.SetScaleAbs(Convert.ToSingle(sailInfo[1], CultureInfo.InvariantCulture), Convert.ToSingle(sailInfo[2], CultureInfo.InvariantCulture));
+                    if (version2 == null || version2[1] < 9 && version2[2] < 94)
+                    {
+                        installedSail.GetComponent<Sail>().LoadScale(Convert.ToSingle(sailInfo[2], CultureInfo.InvariantCulture), Convert.ToSingle(sailInfo[1], CultureInfo.InvariantCulture));
+                    }
                     component.SetAngle(Convert.ToSingle(sailInfo[3], CultureInfo.InvariantCulture));
                     //Debug.Log("sail Angle = " + sailInfo[3]);
                     if (sailInfo.Length >= 5 && Boolean.Parse(sailInfo[4]))
@@ -101,8 +106,8 @@ namespace ShipyardExpansion
 
                     Sail component2 = sail.GetComponent<Sail>();
                     text += component2.prefabIndex.ToString(CultureInfo.InvariantCulture) + ",";
-                    text += component.Scale.x.ToString(CultureInfo.InvariantCulture) + ",";
-                    text += component.Scale.y.ToString(CultureInfo.InvariantCulture) + ",";
+                    text += component2.GetScaleZ().ToString(CultureInfo.InvariantCulture) + ",";
+                    text += component2.GetScaleY().ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Angle.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Flipped.ToString(CultureInfo.InvariantCulture) + ",";
                     text += sail.GetComponent<SailTextureChanger>().textureIndex.ToString(CultureInfo.InvariantCulture);
@@ -110,6 +115,7 @@ namespace ShipyardExpansion
                 }
                 text += ")";
             }
+            text += "|" + Plugin.PLUGIN_VERSION;
             if (GameState.modData.ContainsKey(boat))
             {
                 GameState.modData[boat] = text;
