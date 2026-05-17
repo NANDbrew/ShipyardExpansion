@@ -42,8 +42,9 @@ namespace ShipyardExpansion
 
             // fix shrouds category because in v0.36 they moved to the 'masts' tab to make room for the forecastle
             // we have more pages, so move back to 'other'
-            partsList.availableParts[11].category = 1;
-            partsList.availableParts[12].category = 1;
+            // change of plan: shrouds in masts tab seems to be the new standard, so we're switching to match it
+            //partsList.availableParts[11].category = 1;
+            //partsList.availableParts[12].category = 1;
 
             #endregion
             var prefab = AssetTools.bundle.LoadAsset<GameObject>("Assets/ShipyardExpansion/SE_parts_brig.prefab");

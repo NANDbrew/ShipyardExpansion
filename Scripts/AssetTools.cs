@@ -285,14 +285,14 @@ namespace ShipyardExpansion
             {
                 pump.damage = damage;
             }
-/*
+
             foreach (var cladding in boatData.GetComponentsInChildren<SE_Cladding>())
-            { 
+            {
                 cladding.boatDamage = damage;
                 cladding.cleanableObject = damage.GetComponent<SaveableObject>().GetCleanable();
                 Plugin.CopperPrice += (sender, args) => cladding.SetPriceModifier((SE_Cladding.Args)args);
             }
-*/
+
             return modParts;
         }
         public static IEnumerator ReplaceEmbarkMesh(BoatEmbarkCollider col, Mesh mesh)
