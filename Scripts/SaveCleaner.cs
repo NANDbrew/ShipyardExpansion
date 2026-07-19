@@ -139,6 +139,36 @@ namespace ShipyardExpansion
             //if (GameState.playing && !GameState.justStarted) return;
             int index = refs.gameObject.GetComponent<SaveableObject>().sceneIndex;
 
+            // if we don't know the file version yet, bug out
+            if (VersionManager.saveVersion < 0) return;
+            if (VersionManager.saveVersion == 0)
+            {
+                // convert sanbuq topmast forestays
+                if (index == 20 && data.partActiveOptions[3] > 3)
+                {
+                    data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
+                    data.partActiveOptions[3] = 4;
+                }
+                // adjust installed sail heights for new mast heights
+                foreach (var sail in data.sails)
+                {
+                    var mast = refs.masts[sail.mastIndex];
+                    if (Plugin.mastHeights.ContainsKey(mast))
+                    {
+                        sail.installHeight += mast.mastHeight - Plugin.mastHeights[mast];
+                    }
+                }
+            }
+            if (VersionManager.saveVersion2[0] > 0) return;
+            // convert Jong shrouds. having this here could be a problem
+            if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 90 && index == 70)
+            {
+                if (data.partActiveOptions[13] > 1) data.partActiveOptions[13] = 1;
+                if (data.partActiveOptions[14] > 1) data.partActiveOptions[14] = 1;
+            }
+
+            // if the convert setting is off, bug out
+            if (!Plugin.convertSave.Value) return;
             if (!Plugin.stockParts.ContainsKey(refs)) return;
             // initial conversion from vanilla (move sails on topmast forestays to new indices, pad part options)
             if (!Plugin.converted.ContainsKey(refs.gameObject))
@@ -184,47 +214,13 @@ namespace ShipyardExpansion
                     }
                 }
                 // check modded part count and pad as needed
-                if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
+/*                if (data.partActiveOptions.Count < refs.GetComponent<BoatCustomParts>().availableParts.Count)
                 {
                     data.partActiveOptions.AddRange(new int[refs.GetComponent<BoatCustomParts>().availableParts.Count - data.partActiveOptions.Count]);
 
-                }
+                }*/
                 Plugin.converted.Add(refs.gameObject, data);
             }
-
-
-
-            // if we don't know the file version yet, bug out
-            if (VersionManager.saveVersion < 0) return;
-            if (VersionManager.saveVersion == 0)
-            {
-                // convert sanbuq topmast forestays
-                if (index == 20 && data.partActiveOptions[3] > 3)
-                {
-                    data.partActiveOptions[11] = data.partActiveOptions[3] - 3;
-                    data.partActiveOptions[3] = 4;
-                }
-                // adjust installed sail heights for new mast heights
-                foreach (var sail in data.sails)
-                {
-                    var mast = refs.masts[sail.mastIndex];
-                    if (Plugin.mastHeights.ContainsKey(mast))
-                    {
-                        sail.installHeight += mast.mastHeight - Plugin.mastHeights[mast];
-                    }
-                }
-            }
-            if (VersionManager.saveVersion2[0] > 0) return;
-            // convert Jong shrouds. having this here could be a problem
-            if (VersionManager.saveVersion2[1] < 7 && VersionManager.saveVersion2[2] < 90 && index == 70)
-            {
-                if (data.partActiveOptions[13] > 1) data.partActiveOptions[13] = 1;
-                if (data.partActiveOptions[14] > 1) data.partActiveOptions[14] = 1;
-            }
-
-            // if the convert setting is off, bug out
-            if (!Plugin.convertSave.Value) return;
-
             // convert to SE v0.5
             if (VersionManager.saveVersion2[1] < 5)
             {

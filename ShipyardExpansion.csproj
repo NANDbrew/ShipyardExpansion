@@ -147,6 +147,7 @@
     <Compile Include="Patches\TablePatch.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="changelog.txt" />
     <Content Include="SailScalingNotes.txt" />
   </ItemGroup>
   <ItemGroup>

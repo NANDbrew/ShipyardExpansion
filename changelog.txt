@@ -1,0 +1,9 @@
+﻿general
+- fixed cladding sometimes breaking hull durability
+
+
+kakam:
+ - fixed halyards and adjusted height limits on "bermuda forestay 2" and "bermuda forestay low"
+ - fixed broken bermuda halyards
+sanbuq: 
+ - removed redundant cladding
