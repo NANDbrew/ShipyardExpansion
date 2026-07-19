@@ -94,22 +94,27 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(SaveLoadManager), "LoadNeeds")]
     internal class LoadNeedsPatch
     {
+        static List<SaveObjectData> data;
         public static void Postfix(SaveContainer save)
         {
             GameState.modData = save.modData;
             VersionManager.ReadSaveVersion();
-
+            data = save.savedObjects;
             for (int i = 0; i < save.savedObjects.Count; i++)
             {
                 SaveObjectData data = save.savedObjects[i];
-                BoatRefs refs = SaveLoadManager.instance.GetCurrentObjects()[data.sceneIndex]?.GetComponent<BoatRefs>();
-                if (refs != null)
-                {
-                    SaveCleaner.ConvertSave(ref data.customization, refs);
 
-                    if (Plugin.cleanLoad.Value)
+                if (data.sceneIndex < SaveLoadManager.instance.GetCurrentObjects().Length)
+                {
+                    BoatRefs refs = SaveLoadManager.instance.GetCurrentObjects()[data.sceneIndex]?.GetComponent<BoatRefs>();
+                    if (refs != null)
                     {
-                        data.customization = SaveCleaner.CleanLoad(data.customization, refs, refs.GetComponent<BoatCustomParts>());
+                        SaveCleaner.ConvertSave(ref data.customization, refs);
+
+                        if (Plugin.cleanLoad.Value)
+                        {
+                            data.customization = SaveCleaner.CleanLoad(data.customization, refs, refs.GetComponent<BoatCustomParts>());
+                        }
                     }
                 }
             }
