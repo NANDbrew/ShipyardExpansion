@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Channels;
 using UnityEngine;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ShipyardExpansion
 {
@@ -288,8 +289,8 @@ namespace ShipyardExpansion
 
             foreach (var cladding in boatData.GetComponentsInChildren<SE_Cladding>())
             {
-                cladding.boatDamage = damage;
-                cladding.cleanableObject = damage.GetComponent<SaveableObject>().GetCleanable();
+                //cladding.boatDamage = damage;
+                //cladding.cleanableObject = damage.GetComponent<SaveableObject>().GetCleanable();
                 Plugin.CopperPrice += (sender, args) => cladding.SetPriceModifier((SE_Cladding.Args)args);
             }
 
@@ -330,12 +331,20 @@ namespace ShipyardExpansion
             {
                 swapper.targetParent = swapper.targetWalkCol ? boatRefs.walkCol : boatRefs.boatModel;
             }
-/*            foreach (var trapdoor in boatData.doors)
+            var damage = boatRefs.GetComponent<BoatDamage>();
+            foreach (var cladding in boatData.GetComponentsInChildren<SE_Cladding>())
             {
-                trapdoor.importedActualBoat = boatRefs.boatModel;
-                trapdoor.embarkCol = embarkCol;
-            }*/
-            
+                cladding.gameObject.SetActive(false);
+                cladding.boatDamage = damage;
+                cladding.cleanableObject = damage.GetComponent<SaveableObject>().GetCleanable();
+                //Plugin.CopperPrice += (sender, args) => cladding.SetPriceModifier((SE_Cladding.Args)args);
+            }
+            /*            foreach (var trapdoor in boatData.doors)
+                        {
+                            trapdoor.importedActualBoat = boatRefs.boatModel;
+                            trapdoor.embarkCol = embarkCol;
+                        }*/
+
         }
 
     }
