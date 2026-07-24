@@ -7,6 +7,16 @@ namespace ShipyardExpansion.Patches
     [HarmonyPatch(typeof(Sail))]
     public static class SailScalePatch
     {
+        [HarmonyPatch("GetScaleZ")]
+        [HarmonyPostfix]
+        public static void LoadPatch(Sail __instance, ref float __result, Cloth ___cloth)
+        {
+            if (__instance.GetComponent<SailScaler>().scaleType == ScaleType.Jib)
+            {
+                __result = ___cloth.transform.parent.localScale.x;
+            }
+        }
+
         [HarmonyPatch("LoadScale")]
         [HarmonyPostfix]
         public static void LoadPatch(Sail __instance, float y, float z)
@@ -15,10 +25,15 @@ namespace ShipyardExpansion.Patches
         }
 
         [HarmonyPatch("ChangeScale")]
-        [HarmonyPostfix]
-        public static void Postfix(Sail __instance, ref string ___sailName)
+        [HarmonyPrefix]
+        public static bool ChangeScalePatch(Sail __instance, ref string ___sailName, float changeY, float changeZ)
         {
+            if (Plugin.overrideScaling.Value)
+            {
+                __instance.GetComponent<SailScaler>().SetScaleAbs(__instance.GetScaleZ() + changeZ, __instance.GetScaleY() + changeY);
+            }
             ___sailName = NameSail(___sailName, __instance.GetScaleY(), __instance.GetScaleZ());
+            return !Plugin.overrideScaling.Value;
         }
         private static string NameSail(string oldName, float y, float z)
         {
