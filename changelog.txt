@@ -7,3 +7,7 @@ kakam:
  - fixed broken bermuda halyards
 sanbuq: 
  - removed redundant cladding
+jong:
+- fixed bermuda masts clipping through the hull
+- fixed "middle stay 1-2" collider
+- added sheathing
