@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using UnityEngine;
-using static ShipyardButton;
 
 namespace ShipyardExpansion.Patches
 {
@@ -9,17 +8,31 @@ namespace ShipyardExpansion.Patches
     {
         [HarmonyPatch("GetScaleZ")]
         [HarmonyPostfix]
-        public static void LoadPatch(Sail __instance, ref float __result, Cloth ___cloth)
+        public static void GetScaleZPatch(Sail __instance, ref float __result, Cloth ___cloth)
         {
-            if (__instance.GetComponent<SailScaler>().scaleType == ScaleType.Jib)
+            if (__instance.GetComponent<SailScaler>()?.scaleType == ScaleType.Jib)
             {
                 __result = ___cloth.transform.parent.localScale.x;
             }
+/*            else if (__instance.GetComponent<SailScaler>() == null)
+            {
+                string text = __instance.name;
+                Transform parent = __instance.transform.parent;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (parent == null) break;
+
+                    text = parent.name + "." + text;
+                    parent = parent.parent;
+
+                }
+                Debug.Log("SE: Missing Sail Scaler at " + text);
+            }*/
         }
 
         [HarmonyPatch("LoadScale")]
         [HarmonyPostfix]
-        public static void LoadPatch(Sail __instance, float y, float z)
+        public static void LoadScalePatch(Sail __instance, float y, float z)
         {
             __instance.GetComponent<SailScaler>().SetScaleAbs(z, y);
         }
