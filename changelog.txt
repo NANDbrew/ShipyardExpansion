@@ -11,3 +11,4 @@ jong:
 - fixed bermuda masts clipping through the hull
 - fixed "middle stay 1-2" collider
 - added sheathing
+- increased max sails on mod main mast options to 4
