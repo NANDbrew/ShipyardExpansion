@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System.Linq;
 using UnityEngine;
 
 namespace ShipyardExpansion.Patches
@@ -11,7 +12,7 @@ namespace ShipyardExpansion.Patches
             var smr = __instance.cloth.GetComponent<SkinnedMeshRenderer>();
 
             int[] triangles = smr.sharedMesh.triangles;
-            Vector3[] vertices = smr.sharedMesh.vertices;
+            Vector3[] vertices = new Vector3[smr.sharedMesh.vertices.Count()];
 
             for (int i = 0; i < vertices.Length; i++)
             {
