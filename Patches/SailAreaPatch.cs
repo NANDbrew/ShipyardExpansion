@@ -12,19 +12,19 @@ namespace ShipyardExpansion.Patches
             var smr = __instance.cloth.GetComponent<SkinnedMeshRenderer>();
 
             int[] triangles = smr.sharedMesh.triangles;
-            Vector3[] vertices = new Vector3[smr.sharedMesh.vertices.Count()];
-
+            Vector3[] vertices = smr.sharedMesh.vertices;
+            Vector3[] newVerts = new Vector3[smr.sharedMesh.vertices.Length];
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i] = smr.transform.TransformVector(vertices[i]);
+                newVerts[i] = smr.transform.TransformVector(vertices[i]);
             }
 
             float num = 0.0f;
             for (int i = 0; i < triangles.Length; i += 3)
             {
-                Vector3 vector = vertices[triangles[i]];
-                Vector3 lhs = vertices[triangles[i + 1]] - vector;
-                Vector3 rhs = vertices[triangles[i + 2]] - vector;
+                Vector3 vector = newVerts[triangles[i]];
+                Vector3 lhs = newVerts[triangles[i + 1]] - vector;
+                Vector3 rhs = newVerts[triangles[i + 2]] - vector;
                 num += Vector3.Cross(lhs, rhs).magnitude;
             }
 
