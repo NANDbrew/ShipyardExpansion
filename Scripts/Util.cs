@@ -325,14 +325,10 @@ namespace ShipyardExpansion
             sourceTarget.childOptions = sourceTarget.childOptions.AddRangeToArray(children);
         }
 
-/*        public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, string name, string prettyName, int newIndex)
-        {
-            Transform sailObject = sailPrefabs[prefabIndex].GetComponentInChildren<Animator>().transform;
-            return CopySail(sailPrefabs, prefabIndex, position, eulerAngles, sailObject.localScale.x, name, prettyName, newIndex);
-        }*/
+
         public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, float scale, string name, string prettyName, int newIndex)
         {
-            //Debug.Log("thing");
+
             Transform sailBase = UnityEngine.Object.Instantiate(sailPrefabs[prefabIndex], Plugin.prefabContainer).transform;
             var sail = sailBase.GetComponent<Sail>();
             sail.prefabIndex = newIndex;
@@ -341,12 +337,10 @@ namespace ShipyardExpansion
             var windShadow = sailBase.GetComponentInChildren<SailShadowCol>().transform;//Find("wind shadow col");
 
             Transform sailObject = sailBase.GetComponentInChildren<Animator>().transform;
-            sail.windcenter.parent = sailObject;
-            windShadow.parent = sailObject;
+
             sailObject.localPosition = position;
             sailObject.localEulerAngles = eulerAngles;
-            sail.windcenter.parent = sailBase;
-            //windShadow.parent = sailBase;
+
             sailObject.SetAsFirstSibling();
             SailPartLocations offsetStore = sailObject.gameObject.AddComponent<SailPartLocations>();
             offsetStore.forwardOffset = position.x / scale;
@@ -357,14 +351,12 @@ namespace ShipyardExpansion
             foreach (Transform child in col_parent.gameObject.GetComponentsInChildren<Transform>(true).Where(go => go.gameObject != col_parent.gameObject))
             {
                 child.transform.localPosition += position;
-                /*                UnityEngine.Object.Destroy(child.GetComponent<Rigidbody>());
-                                UnityEngine.Object.Destroy(child.GetComponent<ShipyardSailColCheckerSub>());
-                */
+
                 locs.locations.Add(child.transform.localPosition);
             }
             sail.installHeight = (float)Math.Round(sail.installHeight * (scale / sailObject.localScale.y), 2);
             sailObject.localScale = new Vector3(scale, scale, scale);
-            //sailBase.gameObject.SetActive(false);
+
             sailPrefabs[newIndex] = sailBase.gameObject;
             return sailBase.gameObject;
         }
