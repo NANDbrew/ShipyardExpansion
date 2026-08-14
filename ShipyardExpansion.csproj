@@ -150,6 +150,7 @@
   <ItemGroup>
     <Content Include="changelog.txt" />
     <Content Include="SailScalingNotes.txt" />
+    <None Include="PartsList.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SE_Bridge\SE_Bridge.csproj">
