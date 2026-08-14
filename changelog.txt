@@ -16,5 +16,8 @@ jong:
 ------------------------
 - fixed jong crow's nest colliders
 - fixed visual issues with jong upper ratlines
-
 - added non-raked foremast + stays to cog
+- added sheathing for the small boats
+- adjusted dhow cabin weight
+- brought ReadMe up to date
+- added a more complete parts list
