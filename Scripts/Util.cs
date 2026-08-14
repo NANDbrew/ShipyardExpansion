@@ -334,7 +334,6 @@ namespace ShipyardExpansion
             sail.prefabIndex = newIndex;
             sail.sailName = prettyName;
             sailBase.name = newIndex + " SAIL " + name;
-            var windShadow = sailBase.GetComponentInChildren<SailShadowCol>().transform;//Find("wind shadow col");
 
             Transform sailObject = sailBase.GetComponentInChildren<Animator>().transform;
 

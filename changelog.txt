@@ -1,7 +1,6 @@
 ﻿general
 - fixed cladding sometimes breaking hull durability
 
-
 kakam:
  - fixed halyards and adjusted height limits on "bermuda forestay 2" and "bermuda forestay low"
  - fixed broken bermuda halyards
@@ -12,3 +11,10 @@ jong:
 - fixed "middle stay 1-2" collider
 - added sheathing
 - increased max sails on mod main mast options to 4
+
+
+------------------------
+- fixed jong crow's nest colliders
+- fixed visual issues with jong upper ratlines
+
+- added non-raked foremast + stays to cog

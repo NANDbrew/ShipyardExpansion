@@ -197,7 +197,7 @@ namespace ShipyardExpansion
 
             BoatRefs boatRefs = partsList.GetComponent<BoatRefs>();
 
-            BoatEmbarkCollider embarkCol = partsList.GetComponentInChildren<BoatEmbarkCollider>();
+            //BoatEmbarkCollider[] embarkCols = partsList.GetComponentsInChildren<BoatEmbarkCollider>();
 
             BoatDamage damage = boatRefs.GetComponent<BoatDamage>();
 
@@ -269,8 +269,15 @@ namespace ShipyardExpansion
 #if DEBUG
                 Debug.Log("SE found embarkCol: " + embarkCol);
 #endif
-                embarkCol.GetComponent<MeshCollider>().sharedMesh = boatData.embarkColMesh;
-                embarkCol.GetComponent<MeshFilter>().sharedMesh = boatData.embarkColMesh;
+                foreach (var embarkCol in partsList.GetComponentsInChildren<BoatEmbarkCollider>())
+                {
+                    if (embarkCol.name == boatData.embarkColName)
+                    {
+                        embarkCol.GetComponent<MeshCollider>().sharedMesh = boatData.embarkColMesh;
+                        embarkCol.GetComponent<MeshFilter>().sharedMesh = boatData.embarkColMesh;
+                        break;
+                    }
+                }
                 //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.embarkColMesh));
             }
 #if DEBUG
