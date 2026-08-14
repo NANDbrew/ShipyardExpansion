@@ -1,5 +1,7 @@
 ﻿# Shipyard Expansion
-⚠️**WARNING! Saving while this is installed will make the save dependent on it!**⚠️
+New parts and options for Sailwind's vanilla ships.
+
+**⚠️Saving while this is installed will make the save dependent on it!⚠️**
 
 ## New Parts
 - More masts
@@ -16,24 +18,32 @@
   - Ratlines are click-to-climb instead of vanilla's janky climbing
 - Lug sails
 - Raked masts
-- Rotate fin, lateen, and lug sails forward/backward to fit raked masts better
-- Flib staysails along the stay
 - Topmasts for Brig, Junk, Sanbuq
 - Jib-booms for several boats (bowsprit extension, not the modern type)
 - Bermuda masts (early historical style, only accepts staysails)
 - Other misc. parts
 
 ## General Features/Adjustments
-- Topmast linking: Links square sail angles on topmasts to the ones on the mast below, making them behave as if it's all one mast
+- Topmast linking
+  - Links square sail angles on topmasts to the ones on the mast below, making them behave as if it's all one mast
+  - Can be turned off in [settings](https://github.com/NANDbrew/ShipyardExpansion#general-settings)
 - Sail area: Fixes occasional issues with sail area calculations for resized sails
 - Rotate lateen and fin sails to work better with raked masts
+- Flip staysails along the stay
 - Improved sail scaling and limits
+  - Allows bigger and/or wider square sails
+  - Brig Jibs can be width-adjusted
+  - Can be turned off in [settings](https://github.com/NANDbrew/ShipyardExpansion#general-settings)
 - Includes the "Junk gaff fix" from NANDFixes
 - Fixes a visual issue with the rope routing on certain sails
 - Furl/unfurl all sails while in the shipyard for ease of planning
 - Change the cloth texture of your sails for better color matching
 - Adds size percent to sail names
+  - Can be turned off in [settings](https://github.com/NANDbrew/ShipyardExpansion#general-settings)
 - Adjusts sail height limits on existing masts
+- Increases sail capacity of a few vanilla masts
+- Adds targeting colliders to a few key railings and things on the boats to make arranging tools easier
+- Adds pages and next/previous page buttons to the shipyard parts pane to fit more options per tab
 
 ## Configuration
 ### General settings
