@@ -13,7 +13,7 @@ namespace ShipyardExpansion
     {
         public const string PLUGIN_ID = "com.nandbrew.shipyardexpansion";
         public const string PLUGIN_NAME = "Shipyard Expansion";
-        public const string PLUGIN_VERSION = "0.10.1";
+        public const string PLUGIN_VERSION = "0.11.0";
 
         internal const int mastListSize = 128;
         internal const int sailListSize = 512;
@@ -26,8 +26,6 @@ namespace ShipyardExpansion
         public static Dictionary<GameObject, SaveBoatCustomizationData> converted;
         public static Transform prefabContainer;
         public static Dictionary<Mast, float> mastHeights = new Dictionary<Mast, float>();
-
-        public static event EventHandler CopperPrice;
 
         //--settings--
         internal static ConfigEntry<bool> cleanSave;
@@ -72,12 +70,6 @@ namespace ShipyardExpansion
 
             AssetTools.LoadAssetBundles();
         }
-
-        public static void UpdateCopperPrice(int price)
-        {
-            CopperPrice?.Invoke(instance, new SE_Bridge.SE_Cladding.Args { arg = price });
-        }
-
 
     }
 }
