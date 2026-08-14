@@ -2,6 +2,9 @@
 New parts and options for Sailwind's vanilla ships.
 
 **⚠️Saving while this is installed will make the save dependent on it!⚠️**
+There are two ways to safely uninstall this mod:
+- Use ["Clean Save"](https://github.com/NANDbrew/ShipyardExpansion#fixers) to sanitize your saves **before** uninstalling the mod
+- Install the [standalone save cleaner](https://github.com/NANDbrew/SaveCleaner) to fix missing parts **after** uninstalling the mod
 
 ## New Parts
 - More masts
