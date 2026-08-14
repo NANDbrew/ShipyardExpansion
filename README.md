@@ -44,6 +44,7 @@ New parts and options for Sailwind's vanilla ships.
 - Increases sail capacity of a few vanilla masts
 - Adds targeting colliders to a few key railings and things on the boats to make arranging tools easier
 - Adds pages and next/previous page buttons to the shipyard parts pane to fit more options per tab
+- Moves a few stays from the 'masts' tab to the 'stays' tab
 
 ## Configuration
 ### General settings
