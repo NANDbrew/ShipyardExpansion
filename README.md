@@ -22,6 +22,7 @@ New parts and options for Sailwind's vanilla ships.
 - Jib-booms for several boats (bowsprit extension, not the modern type)
 - Bermuda masts (early historical style, only accepts staysails)
 - Other misc. parts
+- For a more complete list of added parts and ship adjustments see [PartsList.md](https://github.com/NANDbrew/ShipyardExpansion/blob/main/PartsList.md)
 
 ## General Features/Adjustments
 - Topmast linking
@@ -45,6 +46,9 @@ New parts and options for Sailwind's vanilla ships.
 - Adds targeting colliders to a few key railings and things on the boats to make arranging tools easier
 - Adds pages and next/previous page buttons to the shipyard parts pane to fit more options per tab
 - Moves a few stays from the 'masts' tab to the 'stays' tab
+### Technical adjustments for mod authors
+- Resizes sail prefab array to 128
+- Resizes mast/mast button array to 512
 
 ## Configuration
 ### General settings
