@@ -128,8 +128,8 @@ namespace ShipyardExpansion.ShipPatches
             walkCol.Find("Cube.047").parent = cabin;
 
 
-            var door1 = structure.Find("junk_large_sliding_door_004").gameObject.AddComponent<DoorColToggler>();
-            var door2 = structure.Find("junk_large_sliding_door_006").gameObject.AddComponent<DoorColToggler>();
+            var door1 = structure.Find("junk_large_sliding_door_004");
+            var door2 = structure.Find("junk_large_sliding_door_006");
 
 
             var toggler = thing.transform.Find("railing").gameObject.AddComponent<SE_Bridge.ObjectToggler>();
