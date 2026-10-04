@@ -38,11 +38,11 @@ namespace ShipyardExpansion.Patches
                     CacheStockParts(___refs, ___parts);
                     SanbuqPatches.Patch(__instance.transform, ___parts, ___refs);
                 }
-                else if (sceneIndex == 30)
+/*                else if (sceneIndex == 30)
                 {
                     CacheStockParts(___refs, ___parts);
                     BigBuqPatches.Patch(__instance.transform, ___parts, ___refs);
-                }
+                }*/
                 else if (sceneIndex == 90)
                 {
                     CacheStockParts(___refs, ___parts);
