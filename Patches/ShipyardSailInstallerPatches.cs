@@ -29,11 +29,14 @@ namespace ShipyardExpansion.Patches
                 }
                 __state = true;
             }
+
+
         }
-        public static void Postfix(Sail ___selectedSail, ShipyardSailInstaller __instance, bool __state)
+        public static void Postfix(Sail ___selectedSail, Mast ___currentMast, Shipyard ___shipyard, ShipyardSailInstaller __instance, bool __state)
         {
             SailScaler component = ___selectedSail.GetComponent<SailScaler>();
-            if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen || component != null)
+            if (component == null) return;
+            if (Plugin.vertLateens.Value && ___selectedSail.category == SailCategory.lateen)
             {
                 VertifySail(component);
             }
@@ -44,6 +47,12 @@ namespace ShipyardExpansion.Patches
             }
             if (__state) __instance.MoveHeldSail(0.1f);
             else Debug.Log("boo!");
+
+            if (SailLimits.spritAngleLimits.TryGetValue(___shipyard.GetCurrentBoat().GetComponent<SaveableObject>().sceneIndex.ToString() + ___currentMast.ToString(), out float[] limits))
+            {
+                component.angleLimits = limits;
+                Debug.Log("SE: found angle limits for " + ___currentMast.name);
+            }
             //__instance.MoveHeldSail(___selectedSail.GetCurrentInstallHeight() - ___currentMast.mastHeight);
 
         }

@@ -46,7 +46,7 @@ namespace ShipyardExpansion
             {
                 rotatablePart = transform;
             }
-            else if (sail.category == SailCategory.other)
+            else if (sail.category == SailCategory.other || sail.category == SailCategory.junk)
             {
                 rotatablePart = scaleablePart;
             }
@@ -67,10 +67,11 @@ namespace ShipyardExpansion
             }
 
             if (SailLimits.angleLimits.ContainsKey(sail.prefabIndex)) angleLimits = SailLimits.angleLimits[sail.prefabIndex];
-            //if (SailLimits.sizeLimits.ContainsKey(sail.prefabIndex)) scaleLimits = SailLimits.sizeLimits[sail.prefabIndex];
-            //if (SailLimits.ratioLimits.ContainsKey(sail.prefabIndex)) ratioLimits = SailLimits.ratioLimits[sail.prefabIndex];
-
-            //else if (sail.category == SailCategory.gaff || sail.category == SailCategory.junk) scaleLimits = SailLimits.sizeLimits[-1];
+            
+            if (sail.category == SailCategory.square)
+            {
+                angleStep = 5;
+            }
 
             flippable = sail.category == SailCategory.staysail || SailLimits.flippableSquares.Contains(sail.prefabIndex);
 
@@ -80,21 +81,22 @@ namespace ShipyardExpansion
         #region rotation
         public void SetAngle(float newAngle)
         {
-            if (rotatablePart == null) return;
 
+            //if (rotatablePart == null) return;
+            Transform rotPart = rotatablePart ?? transform;
             newAngle = (newAngle + 360) % 360;
             if (newAngle > angleLimits[1] && newAngle < 180) newAngle = angleLimits[1];
             else if (newAngle < angleLimits[0] && newAngle > 180) newAngle = angleLimits[0];
             flippable = SailLimits.flippableSquares.Contains(sail.prefabIndex) || sail.category == SailCategory.staysail;
 
-            rotatablePart.gameObject.SetActive(false);
-            rotatablePart.localEulerAngles = new Vector3(rotatablePart.localEulerAngles.x, newAngle, rotatablePart.localEulerAngles.z);
-            Angle = rotatablePart.localEulerAngles.y;
-            rotatablePart.gameObject.SetActive(true);
+            rotPart.gameObject.SetActive(false);
+            rotPart.localEulerAngles = new Vector3(rotPart.localEulerAngles.x, newAngle, rotPart.localEulerAngles.z);
+            Angle = rotPart.localEulerAngles.y;
+            rotPart.gameObject.SetActive(true);
 
             if (GameState.currentShipyard != null && GameState.currentShipyard.sailInstaller.GetCurrentSail() == sail)
             {
-                colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, rotatablePart.localEulerAngles.y, colChecker.localEulerAngles.z);
+                colChecker.localEulerAngles = new Vector3(colChecker.localEulerAngles.x, rotPart.localEulerAngles.y, colChecker.localEulerAngles.z);
                 GameState.currentShipyard.sailInstaller.MoveHeldSail(0);
 
             }
@@ -155,10 +157,12 @@ namespace ShipyardExpansion
 
         public void RotateFwd()
         {
+            Angle = rotatablePart ? rotatablePart.localEulerAngles.y : transform.localEulerAngles.y;
             SetAngle(Angle + angleStep);
         }
         public void RotateBkwd()
         {
+            Angle = rotatablePart ? rotatablePart.localEulerAngles.y : transform.localEulerAngles.y;
             SetAngle(Angle - angleStep);
         }
         #endregion

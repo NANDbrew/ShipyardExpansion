@@ -12,6 +12,25 @@ namespace ShipyardExpansion
         public static readonly int[] stretchableJibs = { 110, 111, };
         public static readonly int[] flippableSquares = { };//{ 27, 28, 29, 100, 101, 102 };
 
+        public static readonly Dictionary<string, float[]> spritAngleLimits = new Dictionary<string, float[]>
+        {
+            // left = ship scene index, mast index strings. right = angles
+            //{ new int[2]{ 10, 0 }, new float[2]{ 295f, 0f } },
+            { "200", new float[2]{ 350f, 50f } },
+            { "201", new float[2]{ 350f, 50f } },
+            { "309", new float[2]{ 295f, 60f } },
+            { "402", new float[2]{ 330f, 28f } },
+            { "4052", new float[2]{ 330f, 28f } },
+            { "500", new float[2]{ 327f, 30f } },
+            { "501", new float[2]{ 327f, 30f } },
+            { "5053", new float[2]{ 0f, 0f } },
+            { "5054", new float[2]{ 0f, 0f } },
+            { "700", new float[2]{ 295f, 0f } },
+            { "808", new float[2]{ 310f, 0f } },
+            { "8051", new float[2]{ 330f, 30f } },
+            { "9071", new float[2]{ 334f, 0f } },
+        };
+
         public static readonly Dictionary<int, float[]> angleLimits = new Dictionary<int, float[]> 
         {
             { 2, new float[2] { 340f, 20f } },
@@ -32,7 +51,9 @@ namespace ShipyardExpansion
             { 156, new float[2] { 340f, 10f } },
             { 157, new float[2] { 340f, 8f } },
             { 158, new float[2] { 340f, 10f } },
-
+            { 90, new float[2] { 350f, 10f} },
+            { 91, new float[2] { 350f, 12f} },
+            { 21, new float[2] { 340f, 7f} },
         };
 
         public static readonly Dictionary<int, float[]> sizeLimits = new Dictionary<int, float[]>
