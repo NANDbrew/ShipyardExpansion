@@ -325,6 +325,26 @@ namespace ShipyardExpansion
             sourceTarget.childOptions = sourceTarget.childOptions.AddRangeToArray(children);
         }
 
+        /// <summary>
+        /// Adds the specified CapsuleCollider to the targetted Mast's mastCols array.
+        /// Modifies in place
+        /// </summary>
+        /// <param name="targetMast"></param>
+        /// <param name="collider"></param>
+        public static void AddClothCol(Mast targetMast, CapsuleCollider collider)
+        {
+            targetMast.mastCols = targetMast.mastCols.AddToArray(collider);
+        }
+        /// <summary>
+        /// Adds the specified array of CapsuleColliders to the targetted Mast's mastCols array.
+        /// Modifies in place
+        /// </summary>
+        /// <param name="targetMast"></param>
+        /// <param name="colliders"></param>
+        public static void AddClothCols(Mast targetMast, CapsuleCollider[] colliders)
+        {
+            targetMast.mastCols = targetMast.mastCols.AddRangeToArray(colliders);
+        }
 
         public static GameObject CopySail(GameObject[] sailPrefabs, int prefabIndex, Vector3 position, Vector3 eulerAngles, float scale, string name, string prettyName, int newIndex)
         {
