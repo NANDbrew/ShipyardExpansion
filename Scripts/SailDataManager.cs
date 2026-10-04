@@ -72,7 +72,7 @@ namespace ShipyardExpansion
                     }
                     if (sailInfo.Length >= 6)
                     {
-                        installedSail.GetComponent<SailTextureChanger>().SetTexture(Convert.ToInt32(sailInfo[5], CultureInfo.InvariantCulture));
+                        installedSail.GetComponent<SailTextureChanger>().SetTexture(sailInfo[5]);
                     }
 
                 }
