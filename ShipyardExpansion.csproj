@@ -127,6 +127,7 @@
     <Compile Include="Scripts\SailTextureButton.cs" />
     <Compile Include="Scripts\SailTextureChanger.cs" />
     <Compile Include="Scripts\ShipyardPageButton.cs" />
+    <Compile Include="Scripts\ShipyardCutawayButton.cs" />
     <Compile Include="Scripts\ShipyardUnfurlButton.cs" />
     <Compile Include="Scripts\TopsailAngleMirror.cs" />
     <Compile Include="Scripts\PartCountTracker.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="ShipPatches\DhowPatches.cs" />
     <Compile Include="ShipPatches\JongPatches.cs" />
     <Compile Include="ShipPatches\JunkPatches.cs" />
+    <Compile Include="ShipPatches\BigBuqPatches.cs" />
     <Compile Include="ShipPatches\KakamPatches.cs" />
     <Compile Include="Patches\Patch.cs" />
     <Compile Include="ShipPatches\SanbuqPatches.cs" />
