@@ -110,6 +110,8 @@ namespace ShipyardExpansion
             wheel.childOptions = new GameObject[] { structure.Find("steering_wheel_holder").gameObject };
             modParts["tiller_container"].partOptions.Insert(0, wheel);
 
+            // bowsprit mast
+            Util.AddChildOption(partsList.availableParts[1].partOptions[1], thing.GetComponent<SE_BoatCustomData>().masts[9].gameObject); 
         }
 
     }

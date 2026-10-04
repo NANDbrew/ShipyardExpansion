@@ -136,15 +136,15 @@ namespace ShipyardExpansion
             Util.AddChildOptions(mainMast2.GetComponent<BoatPartOption>(), new GameObject[] {thing.transform.Find("flags_main").Find("mast_1").gameObject, crowsnests.GetChild(1).gameObject, crowsnestCols.GetChild(1).gameObject});
 
             // crow's nest cloth colliders
-            topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(crowsnests.Find("crowsnest_0/cloth_col").GetComponent<CapsuleCollider>());
-            topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(crowsnests.Find("crowsnest_1/cloth_col").GetComponent<CapsuleCollider>());
+            //topMast1.GetComponent<Mast>().mastCols = topMast1.GetComponent<Mast>().mastCols.AddToArray(crowsnests.Find("crowsnest_0/cloth_col").GetComponent<CapsuleCollider>());
+            //topMast2.GetComponent<Mast>().mastCols = topMast2.GetComponent<Mast>().mastCols.AddToArray(crowsnests.Find("crowsnest_1/cloth_col").GetComponent<CapsuleCollider>());
 #endregion
 
 #region hammock
 #if DEBUG
             Debug.Log("sanbuq hammock");
 #endif
-            BoatPartOption hammock = modParts["hammock_part"].partOptions[0];//Util.AddPartOption(container.Find("hammock").gameObject, "hammock");
+            BoatPartOption hammock = modParts["hammock"].partOptions[0];//Util.AddPartOption(container.Find("hammock").gameObject, "hammock");
 
             hammock.childOptions = new GameObject[3] { container.Find("hammock").gameObject, container.Find("hammock_001").gameObject, walkCol.Find("hammock_001").gameObject };
             hammock.walkColObject = walkCol.Find("hammock").gameObject;

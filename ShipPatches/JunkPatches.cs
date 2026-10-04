@@ -130,7 +130,7 @@ namespace ShipyardExpansion
 #if DEBUG
             Debug.Log("Junk sticks");
 #endif
-            var vanillaShrouds = modParts["shrouds_main_side"].partOptions[0];
+            var vanillaShrouds = modParts["shrouds_main_vanilla"].partOptions[0];
             Util.AddChildOptions(vanillaShrouds, new GameObject[] { 
                     mainMast1.Find("static_rig_001").gameObject,
                     mainMast1.GetComponent<Mast>().walkColMast.Find("static_rig_001").gameObject, 

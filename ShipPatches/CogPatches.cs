@@ -40,8 +40,8 @@ namespace ShipyardExpansion
             modParts = AssetTools.HandleImports(thing, partsList);
             //Debug.Log("modParts.Count = " + modParts.Count);
 
-            BoatPartOption shrouds_back = modParts["shrouds"].partOptions[0];
-            BoatPartOption shrouds_side = modParts["shrouds"].partOptions[1];
+            BoatPartOption shrouds_back = modParts["shrouds_back"].partOptions[0];
+            BoatPartOption shrouds_side = modParts["shrouds_back"].partOptions[1];
 
             mainMast1.transform.Find("trim_014").gameObject.SetActive(false);
             mainMast1.transform.Find("mast_002").gameObject.SetActive(false);
@@ -98,7 +98,7 @@ namespace ShipyardExpansion
             bowspritOpt.mass = 20;
             bowspritOpt.childOptions = new GameObject[1] { bowsprit.gameObject };
             bowspritOpt.walkColObject = walkCol.Find("structure").Find("mast_001").gameObject;
-            modParts["bowsprit_empty"].partOptions.Insert(0, bowspritOpt);
+            modParts["longsprit"].partOptions.Insert(0, bowspritOpt);
 
             #endregion
 

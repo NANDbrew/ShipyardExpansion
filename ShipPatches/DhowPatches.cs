@@ -92,13 +92,13 @@ namespace ShipyardExpansion
 
             var lowFlag = container.Find("flag_low").gameObject;
 
-            modParts["flag_empty"].partOptions[0].childOptions = modParts["flag_empty"].partOptions[0].childOptions.AddToArray(lowFlag);
+            modParts["flag_main"].partOptions[0].childOptions = modParts["flag_main"].partOptions[0].childOptions.AddToArray(lowFlag);
             lowFlag.transform.SetParent(thing.transform.Find("main_shrouds_side").Find("short_s"));
 
             //mainMastTallM.mastCols = mainMastTallM.mastCols.AddToArray(thing.transform.Find("crowsnest_low").GetComponent<CapsuleCollider>());
             //Util.AddChildOptions(modParts["main_shrouds_side"].partOptions[0], new GameObject[] { staticRig, rigCol, TallMastChildren[0], TallMastChildren[1] });
 
-            modParts["net_0"].partOptions[0].childOptions = new GameObject[]{ container.Find("hammock_001").gameObject };
+            modParts["no_net"].partOptions[0].childOptions = new GameObject[]{ container.Find("hammock_001").gameObject };
             //var table = modParts["net_0"].partOptions[1].transform.GetChild(0).gameObject.AddComponent<StaticTable>();
             //table.allowPlacingItems = true;
 
@@ -121,6 +121,8 @@ namespace ShipyardExpansion
             {
                 mainMastTallM.midRopeAtt[i] = switchingAtt;
             }
+
+            Util.AddChildOption(partsList.availableParts[2].partOptions[1], thing.transform.Find("mast_bowsprit").gameObject);
 
             #region late adjustments
             //highForestay.GetComponent<BoatPartOption>().requiresDisabled.Add(rakedMain.GetComponent<BoatPartOption>());
