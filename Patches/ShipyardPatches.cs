@@ -17,6 +17,8 @@ namespace ShipyardExpansion.Patches
             [HarmonyPostfix]
             public static void Patch2(Shipyard __instance, GameObject ___currentShip)
             {
+                ShipyardCutawayButton.SetState(true);
+
                 if (!Plugin.unrollSails.Value || discharging)
                 {
                     ShipyardUnfurlButton.SetState(true);
@@ -50,6 +52,13 @@ namespace ShipyardExpansion.Patches
                 }
             }
 
+            [HarmonyPatch("AdmitShip")]
+            [HarmonyPrefix]
+            public static void Patch6(GameObject ship)
+            {
+                Debug.Log("finding renderers...");
+                ShipyardCutawayButton.FindRenderers(ship);
+            }
         }
 
     }

@@ -119,7 +119,7 @@ namespace ShipyardExpansion.Patches
 
         [HarmonyPatch("Awake")]
         [HarmonyPostfix]
-        public static void AwakePatch(GameObject ___moveUpButton, GameObject ___sailMenu)
+        public static void AwakePatch(GameObject ___moveUpButton, GameObject ___sailMenu, GameObject ___newPartsMenu)
         {
             GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail_buttons_new.prefab"), ___moveUpButton.transform.parent) as GameObject;
             
@@ -173,6 +173,9 @@ namespace ShipyardExpansion.Patches
             GameObject furlButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("button sail toggle.prefab"), ___sailMenu.transform) as GameObject;
             furlButton.AddComponent<ShipyardUnfurlButton>();
 
+            GameObject cutawayButton = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("button cutaway toggle.prefab"), ___newPartsMenu.transform) as GameObject;
+            cutawayButton.AddComponent<ShipyardCutawayButton>();
+            //cutawayButton.transform.Translate(0f, 0.2f, 0f);
         }
         [HarmonyPatch("UpdateMoveButtons")]
         [HarmonyPostfix]
@@ -180,7 +183,7 @@ namespace ShipyardExpansion.Patches
         {
             bool active = GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && !GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled();
             SailScaler currentSail = active? GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>() : null;
-            bool rotatable = active && currentSail != null && currentSail.rotatablePart != null;
+            bool rotatable = active && currentSail != null && (currentSail.rotatablePart != null || GameState.currentShipyard.sailInstaller.GetCurrentMast().onlySquareSails);
             bool heightable = active && currentSail != null && currentSail.GetScaleType().Equals(ScaleType.Square) && !Plugin.combinedScale.Value;
             bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
             bool flippable = active && currentSail != null && currentSail.flippable;
