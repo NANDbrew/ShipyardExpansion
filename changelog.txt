@@ -13,7 +13,7 @@ jong:
 - increased max sails on mod main mast options to 4
 
 
-------------------------
+v0.11.0
 - fixed jong crow's nest colliders
 - fixed visual issues with jong upper ratlines
 - added non-raked foremast + stays to cog
@@ -21,3 +21,15 @@ jong:
 - adjusted dhow cabin weight
 - brought ReadMe up to date
 - added a more complete parts list
+
+v0.12.0
+- fixed junk mainmast 2 ratlines being visible when they shouldn't
+- added sail capacity to kakam bowsprit
+- added midstay for cog main mast + foremast
+- updated sail texture changer to use material names instead of indexes
+- sprit sails can now be tilted forward/backward
+- added a hull cutaway view button in the shipyard
+- various internal changes
+
+v0.13 (upcoming)
+- add parts for BigBuq aka Baghlah
