@@ -169,25 +169,18 @@ namespace ShipyardExpansion.ShipPatches
             partsList.availableParts[14].partOptions[0].walkColObject.transform.parent = modWalkCol.transform.Find("shrouds_main2_side");
             partsList.availableParts[14].partOptions.RemoveRange(0, 3);
 
-            var mizzen1 = mainMast1.parent.Find("mast_back");
-            BoatPartOption mizzen1_opt = mizzen1.GetComponent<BoatPartOption>();
-            Util.AddChildOptions(mizzen1_opt, new GameObject[] { thing.transform.Find("shrouds_mizzen_back").GetChild(0).gameObject, modWalkCol.transform.Find("shrouds_mizzen_back").GetChild(0).gameObject});
+            //var mizzen1 = mainMast1.parent.Find("mast_back");
+            BoatPartOption mizzen1 = partsList.availableParts[4].partOptions[1];
+            //Util.AddChildOptions(mizzen1_opt, new GameObject[] { thing.transform.Find("shrouds_mizzen_back").GetChild(0).gameObject, modWalkCol.transform.Find("shrouds_mizzen_back").GetChild(0).gameObject});
             var miz_side_opt = thing.transform.Find("shrouds_mizzen_side").GetComponent<BoatPartOption>();
-            Util.AddChildOptions(miz_side_opt, new GameObject[] { mizzen1.Find("static_rig_002").gameObject, mizzen1.Find("static_rope_atts_001").gameObject, mizzen1_opt.walkColObject.transform.Find("static_rig_002").gameObject, mizzen1_opt.walkColObject.transform.Find("static_rope_atts_001").gameObject });
+            Util.AddChildOptions(miz_side_opt, new GameObject[] { mizzen1.transform.Find("static_rig_002").gameObject, mizzen1.transform.Find("static_rope_atts_001").gameObject, mizzen1.walkColObject.transform.Find("static_rig_002").gameObject, mizzen1.walkColObject.transform.Find("static_rope_atts_001").gameObject });
 
-            var foremast1 = mainMast1.parent.Find("mast_front");
-            BoatPartOption foremast1_opt = foremast1.GetComponent<BoatPartOption>();
-            Util.AddChildOptions(foremast1_opt, new GameObject[] { thing.transform.Find("shrouds_fore_back").GetChild(0).gameObject, modWalkCol.transform.Find("shrouds_fore_back").GetChild(0).gameObject });
+            BoatPartOption foremast1 = partsList.availableParts[1].partOptions[1];
+            //Util.AddChildOptions(foremast1, new GameObject[] { thing.transform.Find("shrouds_fore_back").GetChild(0).gameObject, modWalkCol.transform.Find("shrouds_fore_back").GetChild(0).gameObject });
             var fore_side_opt = thing.transform.Find("shrouds_fore_side").GetComponent<BoatPartOption>();
-            Util.AddChildOptions(fore_side_opt, new GameObject[] { foremast1.Find("static_rig_007").gameObject, foremast1.Find("static_rope_atts").gameObject, foremast1_opt.walkColObject.transform.Find("static_rig_007").gameObject, foremast1_opt.walkColObject.transform.Find("static_rope_atts").gameObject });
+            Util.AddChildOptions(fore_side_opt, new GameObject[] { foremast1.transform.Find("static_rig_007").gameObject, foremast1.transform.Find("static_rope_atts").gameObject, foremast1.walkColObject.transform.Find("static_rig_007").gameObject, foremast1.walkColObject.transform.Find("static_rope_atts").gameObject });
             #endregion
 
-            #region tabletops
-            var boatData = thing.GetComponent<SE_BoatCustomData>();
-
-            partsList.availableParts[17].partOptions[0].childOptions = partsList.availableParts[17].partOptions[0].childOptions.AddToArray(boatData.tabletops[2]);
-            partsList.availableParts[16].partOptions[2].childOptions = partsList.availableParts[16].partOptions[2].childOptions.AddToArray(boatData.tabletops[1]);
-            #endregion
         }
     }
 }
