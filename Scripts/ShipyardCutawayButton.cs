@@ -45,7 +45,7 @@ namespace ShipyardExpansion.Scripts
                 foreach (var child in children)
                 {
                     var rend = child.GetComponent<Renderer>();
-                    if (rend != null)
+                    if (rend != null && rend.enabled)
                     { 
                         renderers.Add(rend); 
                     }
