@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using BepInEx;
+using HarmonyLib;
 using SE_Bridge;
 using ShipyardExpansion.Scripts;
 using System;
@@ -201,6 +202,9 @@ namespace ShipyardExpansion
 
             BoatDamage damage = boatRefs.GetComponent<BoatDamage>();
 
+            Dictionary<Vector2Int, List<GameObject>> childOptions = new Dictionary<Vector2Int, List<GameObject>>();
+
+            // legacy part handling, new is next section down
             foreach (SE_PartData partData in boatData.parts)
             {
                 BoatPart part = new BoatPart
@@ -224,6 +228,20 @@ namespace ShipyardExpansion
                 Debug.Log(partData.name);
                 Debug.Log(partsList.availableParts.Count);
 #endif
+            }
+            // new part handling
+            foreach (BoatPart part in boatData.partsNew)
+            {
+                foreach (BoatPartOption opt in part.partOptions)
+                {
+                    if (opt.GetComponent<SE_PartOptionData>() is SE_PartOptionData optData)
+                    {
+                        ReqTranslate(optData, opt, partsList);
+                    }
+
+                }
+                partsList.availableParts.Add(part);
+                modParts.Add(part.partOptions[0].name, part);
             }
 
             foreach (SE_PartOptionData optData in boatData.options)
@@ -263,13 +281,13 @@ namespace ShipyardExpansion
                 }
                 ladderData.enabled = false;
             }
-            if (boatData.embarkColMesh != null)
+            var embarkCols = partsList.GetComponentsInChildren<BoatEmbarkCollider>();
+            if (!string.IsNullOrEmpty(boatData.embarkColName) && boatData.embarkColMesh != null)
             {
-                //var col = partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>();
 #if DEBUG
-                Debug.Log("SE found embarkCol: " + embarkCol);
+                Debug.Log("SE found embarkCol: ");
 #endif
-                foreach (var embarkCol in partsList.GetComponentsInChildren<BoatEmbarkCollider>())
+                foreach (var embarkCol in embarkCols)
                 {
                     if (embarkCol.name == boatData.embarkColName)
                     {
@@ -278,7 +296,21 @@ namespace ShipyardExpansion
                         break;
                     }
                 }
-                //partsList.StartCoroutine(ReplaceEmbarkMesh(partsList.gameObject.GetComponentInChildren<BoatEmbarkCollider>(), boatData.embarkColMesh));
+            }
+            if (boatData.embarkColMeshPlayer != null && !string.IsNullOrEmpty(boatData.embarkColNamePlayer))
+            {
+#if DEBUG
+                Debug.Log("SE found embarkColPlayer: ");
+#endif
+                foreach (var embarkCol in embarkCols)
+                {
+                    if (embarkCol.name == boatData.embarkColNamePlayer)
+                    {
+                        embarkCol.GetComponent<MeshCollider>().sharedMesh = boatData.embarkColMeshPlayer;
+                        embarkCol.GetComponent<MeshFilter>().sharedMesh = boatData.embarkColMeshPlayer;
+                        break;
+                    }
+                }
             }
 #if DEBUG
             Debug.Log("modParts.Count = " + modParts.Count);
@@ -294,12 +326,26 @@ namespace ShipyardExpansion
                 pump.damage = damage;
             }
 
-/*            foreach (var cladding in boatData.GetComponentsInChildren<SE_Cladding>())
+            foreach (var child in boatData.childOptions)
             {
-                //cladding.boatDamage = damage;
-                //cladding.cleanableObject = damage.GetComponent<SaveableObject>().GetCleanable();
-                Plugin.CopperPrice += (sender, args) => cladding.SetPriceModifier((SE_Cladding.Args)args);
-            }*/
+                if (!childOptions.ContainsKey(child.parentPart))
+                {
+                    childOptions.Add(child.parentPart, new List<GameObject>());
+                }
+                childOptions[child.parentPart].Add(child.gameObject);
+            }
+
+            foreach (var child in childOptions)
+            {
+                Util.AddChildOptions(partsList.availableParts[child.Key.x].partOptions[child.Key.y], child.Value.ToArray());
+            }
+
+
+            foreach (var clothCol in boatData.clothCols)
+            {
+                clothCol.boatRefs = boatRefs;
+                //Util.AddClothCol(boatRefs.masts[clothCol.colMast], clothCol.GetComponent<CapsuleCollider>());
+            }
 
             return modParts;
         }
