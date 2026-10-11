@@ -104,7 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
-    <Compile Include="Patches\SailPatch.cs" />
     <Compile Include="Patches\SailScalePatch.cs" />
     <Compile Include="Patches\SailAreaPatch.cs" />
     <Compile Include="Patches\SailConnectionPatch.cs" />
