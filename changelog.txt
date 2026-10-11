@@ -31,5 +31,16 @@ v0.12.0
 - added a hull cutaway view button in the shipyard
 - various internal changes
 
+v0.12.1
+- fixed hull cutaway showing things it shouldn't
+
+v0.12.2
+- added sail unlock button
+  - good for adjusting installed sails at shipyards that don't offer that type
+  - allows the sail to be repositioned on the mast
+  - allows the sail to be resized, but only smaller than it was
+- fixed missing rope attach point on dhow sprit
+- fixed missing sail texture options for certain sails
+
 v0.13 (upcoming)
 - add parts for BigBuq aka Baghlah
