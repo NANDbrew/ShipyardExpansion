@@ -110,7 +110,7 @@ namespace ShipyardExpansion
                     text += component2.GetScaleY().ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Angle.ToString(CultureInfo.InvariantCulture) + ",";
                     text += component.Flipped.ToString(CultureInfo.InvariantCulture) + ",";
-                    text += sail.GetComponent<SailTextureChanger>().textureIndex.ToString(CultureInfo.InvariantCulture);
+                    text += sail.GetComponent<SailTextureChanger>().textureName.ToString(CultureInfo.InvariantCulture);
                     text += "]";
                 }
                 text += ")";

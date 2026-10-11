@@ -32,7 +32,7 @@ namespace ShipyardExpansion.Scripts
 
         public static Dictionary<int, List<string>> allowedTexMap = new Dictionary<int, List<string>>
         {
-/*            { 6, new List<string>{ names[0], names[2] } },
+            { 6, new List<string>{ names[0], names[2] } },
             { 7, new List<string>{ names[0], names[2] } },
             { 8, new List<string>{ names[0], names[2] } },
             { 9, new List<string>{ names[0], names[2] } },
@@ -50,13 +50,13 @@ namespace ShipyardExpansion.Scripts
             { 130, new List<string>{ names[0], names[3] } },
             { 17, new List<string>{ names[0], names[3] } },
             { 18, new List<string>{ names[0], names[3] } },
-            { 107, new List<string>{ names[0], names[3] } },*/
-            //{ 12, new List<string>{ names[0], names[1] } },
+            { 107, new List<string>{ names[0], names[3] } },
+            { 12, new List<string>{ names[0], names[1] } },
 
         };
 
         //public static List<Texture> sailTextures = new List<Texture>();
-        public string textureIndex;
+        public string textureName;
         public SkinnedMeshRenderer cloth;
         public List<string> allowedTextures;
         private int currentAllowed;
@@ -69,16 +69,16 @@ namespace ShipyardExpansion.Scripts
             {
                 textures[cloth.sharedMaterial.mainTexture.name] = cloth.sharedMaterial.mainTexture;
 
-                textureIndex = cloth.sharedMaterial.mainTexture.name;
+                textureName = cloth.sharedMaterial.mainTexture.name;
             }
 
-            if (allowedTexMap.TryGetValue(sail.prefabIndex, out var output))
+            if (textureName == names[0] && allowedTexMap.TryGetValue(sail.prefabIndex, out var output))
             {
                 allowedTextures = output.ToList();
             }
             else
             {
-                allowedTextures = new List<string> { textureIndex, names[0] };
+                allowedTextures = new List<string> { textureName, names[0] };
             }
 
 #if DEBUG
@@ -86,15 +86,15 @@ namespace ShipyardExpansion.Scripts
 #endif
         }
 
-        public void SetTexture(string index)
+        public void SetTexture(string newTextureName)
         {
-            if (!textures.ContainsKey(index))
+            if (!textures.ContainsKey(newTextureName))
             {
-                Debug.LogError($"Sail texture dictionary does not contain \"{index}\"");
+                Debug.LogError($"Sail texture dictionary does not contain \"{newTextureName}\"");
                 return;
             }
-            currentAllowed = Math.Max(allowedTextures.IndexOf(index), 0);
-            textureIndex = index;
+            currentAllowed = Math.Max(allowedTextures.IndexOf(newTextureName), 0);
+            textureName = newTextureName;
             UpdateMaterial();
         }
 
@@ -102,18 +102,18 @@ namespace ShipyardExpansion.Scripts
         {
             currentAllowed++;
             if (currentAllowed >= allowedTextures.Count) currentAllowed = 0;
-            textureIndex = allowedTextures[currentAllowed];
+            textureName = allowedTextures[currentAllowed];
             UpdateMaterial();
-            return textureIndex;
+            return textureName;
         }
 
         public void UpdateMaterial()
         {
-            if (cloth != null && textures.TryGetValue(textureIndex, out Texture newTex))
+            if (cloth != null && textures.TryGetValue(textureName, out Texture newTex))
             {
                 if (newTex == null)
                 {
-                    Debug.LogError($"Sail texture \"{textureIndex}\" is null");
+                    Debug.LogError($"Sail texture \"{textureName}\" is null");
                     return;
                 }
                 cloth.material.mainTexture = newTex;
