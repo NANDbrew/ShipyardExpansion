@@ -19,6 +19,7 @@ namespace ShipyardExpansion.Patches
         static GameObject rotateBackwardButton;
         static GameObject flipButton;
         static GameObject textureButton;
+        static GameObject unlockButton;
 
         static int[] partCounts;
 
@@ -123,9 +124,6 @@ namespace ShipyardExpansion.Patches
         {
             GameObject scalingButtons = UnityEngine.GameObject.Instantiate(AssetTools.bundle2.LoadAsset("sail_buttons_new.prefab"), ___moveUpButton.transform.parent) as GameObject;
             
-#if DEBUG   // REMOVE THIS BEFORE RELEASE
-            scalingButtons.transform.Translate(-1f, 0, 0);
-#endif
             var buttonUp = scalingButtons.transform.Find("button scale sail up").gameObject;
             scaleUpButton = buttonUp.AddComponent<SailScaleButton>();
             scaleUpButton.buttonType = SailScaleButton.ButtonType.scaleUp;
@@ -157,6 +155,13 @@ namespace ShipyardExpansion.Patches
 
 
             var textureB1 = scalingButtons.transform.Find("button sail texture").gameObject;
+
+            unlockButton = scalingButtons.transform.Find("button unlock sail").gameObject;
+            //testButton = GameObject.Instantiate(textureB1, scalingButtons.transform);
+            //testButton.transform.Translate(-1f, 0f, 0f);
+            unlockButton.AddComponent<SailUnlockButton>();
+            //testButton.GetComponentInChildren<TextMesh>().text = "Unlock\nSail";
+
             var textureB2 = scalingButtons.transform.Find("button sail texture p2").gameObject;
             if (Chainloader.PluginInfos.ContainsKey("net.lilith.allsailcolors"))
             {
@@ -179,7 +184,7 @@ namespace ShipyardExpansion.Patches
         }
         [HarmonyPatch("UpdateMoveButtons")]
         [HarmonyPostfix]
-        public static void UpdateMoveButtonsPatch(GameObject ___scaleUpButton, GameObject ___scaleDownButton, GameObject ___widthUpButton, GameObject ___widthDownButton)
+        public static void UpdateMoveButtonsPatch(GameObject ___scaleUpButton, GameObject ___scaleDownButton, GameObject ___widthUpButton, GameObject ___widthDownButton, GameObject ___moveUpButton, GameObject ___moveDownButton)
         {
             bool active = GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && !GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled();
             SailScaler currentSail = active? GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>() : null;
@@ -188,6 +193,12 @@ namespace ShipyardExpansion.Patches
             bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
             bool flippable = active && currentSail != null && currentSail.flippable;
             
+/*            if (currentSail != null && currentSail.movable)
+            {
+                ___moveDownButton.SetActive(false);
+                ___moveUpButton.SetActive(false);
+            }*/
+
             scaleUpButton.gameObject.SetActive(active && Plugin.overrideScaling.Value);
             scaleDownButton.gameObject.SetActive(active && Plugin.overrideScaling.Value);
             if (Plugin.overrideScaling.Value)
@@ -198,6 +209,7 @@ namespace ShipyardExpansion.Patches
                 ___widthDownButton.SetActive(false);
 
             }
+
             scaleUpButton.buttonType = heightable ? SailScaleButton.ButtonType.increaseHeight : SailScaleButton.ButtonType.scaleUp;
             scaleDownButton.buttonType = heightable ? SailScaleButton.ButtonType.decreaseHeight : SailScaleButton.ButtonType.scaleDown;
             scaleUpButton.SetText("+\n" + (heightable ? "Height" : "Size"));
@@ -212,6 +224,8 @@ namespace ShipyardExpansion.Patches
             flipButton.SetActive(flippable);
 
             textureButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null);
+            unlockButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled() && GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>());
+
         }
     }
 

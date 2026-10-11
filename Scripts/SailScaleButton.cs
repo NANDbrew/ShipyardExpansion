@@ -50,7 +50,13 @@ namespace ShipyardExpansion
             UISoundPlayer.instance.PlayUISound(UISounds.buttonHover, 0.33f, 3f);
             Mast mast = GameState.currentShipyard.sailInstaller.GetCurrentMast();
             Sail sail = GameState.currentShipyard.sailInstaller.GetCurrentSail();
+            if (!sail || sail.IsInstalled())
+            {
+                ShipyardUI.instance.UpdateMoveButtons();
+                return;
+            }
             SailScaler scaler = sail.GetComponent<SailScaler>();
+            if (!scaler) return;
             if (buttonType == ButtonType.scaleUp)
             {
                 if (MastNotTallEnough(mast, sail))
