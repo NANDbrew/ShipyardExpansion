@@ -56,7 +56,7 @@ namespace ShipyardExpansion.Scripts
         };
 
         //public static List<Texture> sailTextures = new List<Texture>();
-        public string textureName;
+        public string textureIndex;
         public SkinnedMeshRenderer cloth;
         public List<string> allowedTextures;
         private int currentAllowed;
@@ -69,16 +69,16 @@ namespace ShipyardExpansion.Scripts
             {
                 textures[cloth.sharedMaterial.mainTexture.name] = cloth.sharedMaterial.mainTexture;
 
-                textureName = cloth.sharedMaterial.mainTexture.name;
+                textureIndex = cloth.sharedMaterial.mainTexture.name;
             }
 
-            if (textureName == names[0] && allowedTexMap.TryGetValue(sail.prefabIndex, out var output))
+            if (textureIndex == names[0] && allowedTexMap.TryGetValue(sail.prefabIndex, out var output))
             {
                 allowedTextures = output.ToList();
             }
             else
             {
-                allowedTextures = new List<string> { textureName, names[0] };
+                allowedTextures = new List<string> { textureIndex, names[0] };
             }
 
 #if DEBUG
@@ -94,7 +94,7 @@ namespace ShipyardExpansion.Scripts
                 return;
             }
             currentAllowed = Math.Max(allowedTextures.IndexOf(newTextureName), 0);
-            textureName = newTextureName;
+            textureIndex = newTextureName;
             UpdateMaterial();
         }
 
@@ -102,18 +102,18 @@ namespace ShipyardExpansion.Scripts
         {
             currentAllowed++;
             if (currentAllowed >= allowedTextures.Count) currentAllowed = 0;
-            textureName = allowedTextures[currentAllowed];
+            textureIndex = allowedTextures[currentAllowed];
             UpdateMaterial();
-            return textureName;
+            return textureIndex;
         }
 
         public void UpdateMaterial()
         {
-            if (cloth != null && textures.TryGetValue(textureName, out Texture newTex))
+            if (cloth != null && textures.TryGetValue(textureIndex, out Texture newTex))
             {
                 if (newTex == null)
                 {
-                    Debug.LogError($"Sail texture \"{textureName}\" is null");
+                    Debug.LogError($"Sail texture \"{textureIndex}\" is null");
                     return;
                 }
                 cloth.material.mainTexture = newTex;
