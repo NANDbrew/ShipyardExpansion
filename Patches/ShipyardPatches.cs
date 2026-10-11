@@ -41,7 +41,7 @@ namespace ShipyardExpansion.Patches
                 discharging = false;
             }
 
-            [HarmonyPatch("ActivateDocuments")]
+            [HarmonyPatch("Awake")]
             [HarmonyPostfix]
             public static void Patch5(ref GameObject[] ___sailPrefabs)
             {
