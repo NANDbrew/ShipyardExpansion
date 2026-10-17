@@ -9,28 +9,27 @@ namespace ShipyardExpansion.Scripts
 {
 
     public class SailTextureChanger : MonoBehaviour
-    {
-        public static string[] names = new string[]
+    { 
+        // vanilla sail textures for reference
+        public static readonly string[] names = new string[]
         {
-            "ParticleCloudWhite",
-            "dhow small cloth paint",
-            "medi small cloth paint Diffuse Color",
-            "junk small cloth paint Diffuse Color",
-            "sail junk medium paint Diffuse Color",
-            "medi medium sail paint Diffuse Color",
-            "dhow medium cloth paint"
-        };
-        public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>
-        {
-/*            { names[0], null },
-            { names[1], null },
-            { names[2], null },
-            { names[3], null },
-            { names[4], null },
-            { names[5], null },*/
+            "ParticleCloudWhite", // blank white
+            "dhow small cloth paint", // stripey lateens/jibs
+            "medi small cloth paint Diffuse Color", // stripey squares & fan-striped jibs
+            "junk small cloth paint Diffuse Color", // kakam junk sails
+            "sail junk medium paint Diffuse Color", // big & medium junk sails
+            "medi medium sail paint Diffuse Color", // brig sails
+            "dhow medium cloth paint" // sanbuq lateens
         };
 
-        public static Dictionary<int, List<string>> allowedTexMap = new Dictionary<int, List<string>>
+        public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+        public static void AddTexture(Texture texture)
+        {
+            textures[texture.name] = texture;
+        }
+
+        // vanilla sails that start white, but will work with other textures
+        internal static Dictionary<int, List<string>> allowedTexMap = new Dictionary<int, List<string>>
         {
             { 6, new List<string>{ names[0], names[2] } },
             { 7, new List<string>{ names[0], names[2] } },
@@ -55,12 +54,17 @@ namespace ShipyardExpansion.Scripts
 
         };
 
-        //public static List<Texture> sailTextures = new List<Texture>();
         public string textureIndex;
         public SkinnedMeshRenderer cloth;
         public List<string> allowedTextures;
         private int currentAllowed;
 
+        public void Awake()
+        {
+            cloth = GetComponent<Sail>().cloth.GetComponent<SkinnedMeshRenderer>();
+        }
+
+        // mostly used for registering default textures
         public void Setup()
         {
             var sail = GetComponent<Sail>();
@@ -85,7 +89,6 @@ namespace ShipyardExpansion.Scripts
             allowedTextures = names.ToList();
 #endif
         }
-
         public void SetTexture(string newTextureName)
         {
             if (!textures.ContainsKey(newTextureName))
@@ -98,6 +101,14 @@ namespace ShipyardExpansion.Scripts
             UpdateMaterial();
         }
 
+        public void SetTexture(int index)
+        {
+            if (index >= allowedTextures.Count) Debug.LogError("Texture index is out of range");
+            currentAllowed = index;
+            textureIndex = allowedTextures[currentAllowed];
+            UpdateMaterial();
+
+        }
         public string NextTexture()
         {
             currentAllowed++;
