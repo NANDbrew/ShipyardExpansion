@@ -24,15 +24,17 @@ namespace ShipyardExpansion
         public bool flippable = false;
         float jibStartAngle;
 
-        public ScaleType GetScaleType()
+        public void Awake()
         {
-            return scaleType;
-        }
-
-        private void Awake()
-        {
+            colChecker = GetComponent<SailConnections>().colChecker.transform;
             sail = GetComponent<Sail>();
             baseName = sail.sailName;
+
+        }
+
+        public void Setup()
+        {
+            sail = GetComponent<Sail>();
             scaleablePart = GetComponentInChildren<Animator>().transform;
             if (scaleablePart == null)
             {
@@ -41,7 +43,6 @@ namespace ShipyardExpansion
                 this.enabled = false;
             }
 
-            colChecker = GetComponent<SailConnections>().colChecker.transform;
             if (sail.category == SailCategory.lateen)
             {
                 rotatablePart = transform;
@@ -87,7 +88,7 @@ namespace ShipyardExpansion
             newAngle = (newAngle + 360) % 360;
             if (newAngle > angleLimits[1] && newAngle < 180) newAngle = angleLimits[1];
             else if (newAngle < angleLimits[0] && newAngle > 180) newAngle = angleLimits[0];
-            flippable = SailLimits.flippableSquares.Contains(sail.prefabIndex) || sail.category == SailCategory.staysail;
+            //flippable = SailLimits.flippableSquares.Contains(sail.prefabIndex) || sail.category == SailCategory.staysail;
 
             rotPart.gameObject.SetActive(false);
             rotPart.localEulerAngles = new Vector3(rotPart.localEulerAngles.x, newAngle, rotPart.localEulerAngles.z);

@@ -17,7 +17,8 @@ namespace ShipyardExpansion.Scripts
                 {
                     if (___sails[i].GetComponent<SailScaler>() == null)
                     {
-                        ___sails[i].gameObject.AddComponent<SailScaler>();
+                        var sc = ___sails[i].gameObject.AddComponent<SailScaler>();
+                        sc.Setup();
                     }
                     if (___sails[i].GetComponent<SailTextureChanger>() == null)
                     {

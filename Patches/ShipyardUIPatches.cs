@@ -189,8 +189,8 @@ namespace ShipyardExpansion.Patches
             bool active = GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && !GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled();
             SailScaler currentSail = active? GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>() : null;
             bool rotatable = active && currentSail != null && (currentSail.rotatablePart != null || GameState.currentShipyard.sailInstaller.GetCurrentMast().onlySquareSails);
-            bool heightable = active && currentSail != null && currentSail.GetScaleType().Equals(ScaleType.Square) && !Plugin.combinedScale.Value;
-            bool widthable = active && currentSail != null && (currentSail.GetScaleType().Equals(ScaleType.Jib) || currentSail.GetScaleType().Equals(ScaleType.Square));
+            bool heightable = active && currentSail != null && currentSail.scaleType.Equals(ScaleType.Square) && !Plugin.combinedScale.Value;
+            bool widthable = active && currentSail != null && (currentSail.scaleType.Equals(ScaleType.Jib) || currentSail.scaleType.Equals(ScaleType.Square));
             bool flippable = active && currentSail != null && currentSail.flippable;
             
 /*            if (currentSail != null && currentSail.movable)
