@@ -43,6 +43,7 @@ namespace ShipyardExpansion
         internal static ConfigEntry<bool> topsailPatch;
         internal static ConfigEntry<bool> combinedScale;
         internal static ConfigEntry<bool> overrideScaling;
+        internal static ConfigEntry<bool> autoRemoveSails;
 
         private void Awake()
         {
@@ -67,6 +68,7 @@ namespace ShipyardExpansion
             topsailPatch = Config.Bind("Settings", "Link topmasts", true, new ConfigDescription("Link square sail angles on topmasts to the ones on the mast below (requires a restart)"));
             combinedScale = Config.Bind("Settings", "Combined scaling", false, new ConfigDescription("scale square sails uniformly and by width (if disabled, scale height and width separately)\nRequires \"Override scaling\" to work"));
             overrideScaling = Config.Bind("Settings", "Override scaling", true, new ConfigDescription("Override the size up and down buttons with the mod's version"));
+            autoRemoveSails = Config.Bind("Settings", "Auto-remove sails", true, new ConfigDescription("Automatically remove sails when a mast is removed in the shipyard"));
 
             AssetTools.LoadAssetBundles();
         }
