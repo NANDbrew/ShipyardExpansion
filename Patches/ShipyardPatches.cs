@@ -43,10 +43,19 @@ namespace ShipyardExpansion.Patches
 
             [HarmonyPatch("Awake")]
             [HarmonyPostfix]
-            public static void Patch5(ref GameObject[] ___sailPrefabs)
+            public static void Patch5(Shipyard __instance, ref GameObject[] ___sailPrefabs)
             {
-                if (!___sailPrefabs.Contains(PrefabsDirectory.instance.sails[158]))
+                if (PrefabsDirectory.instance == null)
                 {
+                    Debug.LogError($"SE: Prefabs directory is null! Shipyard ({__instance.name}) is awake too early?");
+                    return;
+                }
+                if (___sailPrefabs != null && !___sailPrefabs.Contains(PrefabsDirectory.instance.sails[158]))
+                {
+/*                    if (PrefabsDirectory.instance.sails[156] == null || PrefabsDirectory.instance.sails[157] == null || PrefabsDirectory.instance.sails[158] == null)
+                    {
+                        Debug.LogError("SE: sails not initialized");
+                    }*/
                     ___sailPrefabs = ___sailPrefabs.AddRangeToArray(new GameObject[3] { PrefabsDirectory.instance.sails[156], PrefabsDirectory.instance.sails[157], PrefabsDirectory.instance.sails[158] });
 
                 }
