@@ -23,21 +23,61 @@ namespace ShipyardExpansion.Patches
 
         static int[] partCounts;
 
+        private static void AddPage(int currPage, Transform partsMenu, ref ShipyardButton[] leftButtons, ref ShipyardButton[] rightButtons, ref TextMesh[] optionTexts)
+        {
+            GameObject pageContainer = new GameObject($"PageContainer_{currPage}");
+            pageContainer.transform.SetParent(partsMenu, false);
+
+            ShipyardButton[] newLefts = new ShipyardButton[ShipyardPageButton.pageSize];
+            for (int j = 0; j < ShipyardPageButton.pageSize; j++)
+            {
+                newLefts[j] = UnityEngine.Object.Instantiate(leftButtons[j], pageContainer.transform);
+            }
+            leftButtons = leftButtons.Concat(newLefts).ToArray();
+
+            ShipyardButton[] newRights = new ShipyardButton[ShipyardPageButton.pageSize];
+            for (int j = 0; j < ShipyardPageButton.pageSize; j++)
+            {
+                newRights[j] = UnityEngine.Object.Instantiate(rightButtons[j], pageContainer.transform);
+            }
+            rightButtons = rightButtons.Concat(newRights).ToArray();
+
+            TextMesh[] newTexts = new TextMesh[ShipyardPageButton.pageSize];
+            for (int j = 0; j < ShipyardPageButton.pageSize; j++)
+            {
+                newTexts[j] = UnityEngine.Object.Instantiate(optionTexts[j], pageContainer.transform);
+            }
+            optionTexts = optionTexts.Concat(newTexts).ToArray();
+
+            ShipyardPageButton.pageContainers.Add(pageContainer);
+            Debug.Log("SE: added new part options page to shipyard");
+        }
+
         [HarmonyPatch("RefreshPartsPanel")]
         [HarmonyPrefix]
-        public static void RefreshPatch(int category, bool freshStart)
+        public static void RefreshPatch(int category, bool freshStart, ref ShipyardButton[] ___partOptionsLeftButtons, ref ShipyardButton[] ___partOptionsRightButtons, ref TextMesh[] ___partOptionsTexts, GameObject ___newPartsMenu)
         {
             if (freshStart)
             {
-                partCounts = new int[3];
+                partCounts = new int[8];
                 BoatCustomParts component = GameState.currentShipyard.GetCurrentBoat().GetComponent<BoatCustomParts>();
                 foreach (var part in component.availableParts)
                 {
                     partCounts[part.category]++;
                 }
+
             }
-            ShipyardPageButton.currentPageCount = Mathf.CeilToInt((float)partCounts[category] / ShipyardPageButton.pageSize);
-            if (ShipyardPageButton.currentPageCount == 0) ShipyardPageButton.currentPageCount = 1;
+            ShipyardPageButton.currentPageCount = Mathf.CeilToInt(Mathf.Max((float)partCounts[category] / ShipyardPageButton.pageSize, 1));
+
+            if (ShipyardPageButton.pageContainers.Count < ShipyardPageButton.currentPageCount)
+            {
+                Debug.Log("SE: page count = " + ShipyardPageButton.currentPageCount);
+                for (int i = ShipyardPageButton.pageContainers.Count; i < ShipyardPageButton.currentPageCount; i++)
+                {
+                    AddPage(i, ___newPartsMenu.transform, ref ___partOptionsLeftButtons, ref ___partOptionsRightButtons, ref ___partOptionsTexts);
+                }
+            }
+
             ShipyardPageButton.UpdatePage();
         }
 
@@ -87,35 +127,8 @@ namespace ShipyardExpansion.Patches
             }
 
             ShipyardPageButton.pageContainers.Add(cont0);
-            for (int i = 1; i < Plugin.maxPartsPages; i++) // starting at 1 because 0 is already created
-            {
-                GameObject pageContainer = new GameObject($"PageContainer_{i}");
-                pageContainer.transform.SetParent(___newPartsMenu.transform, false);
+            Debug.Log("SE: added initial page container to page buttons");
 
-                ShipyardButton[] newLefts = new ShipyardButton[ShipyardPageButton.pageSize];
-                for (int j = 0; j < ShipyardPageButton.pageSize; j++)
-                {
-                    newLefts[j] = UnityEngine.Object.Instantiate(___partOptionsLeftButtons[j], pageContainer.transform);
-                }
-                ___partOptionsLeftButtons = ___partOptionsLeftButtons.Concat(newLefts).ToArray();
-
-                ShipyardButton[] newRights = new ShipyardButton[ShipyardPageButton.pageSize];
-                for (int j = 0; j < ShipyardPageButton.pageSize; j++)
-                {
-                    newRights[j] = UnityEngine.Object.Instantiate(___partOptionsRightButtons[j], pageContainer.transform);
-                }
-                ___partOptionsRightButtons = ___partOptionsRightButtons.Concat(newRights).ToArray();
-
-                TextMesh[] newTexts = new TextMesh[ShipyardPageButton.pageSize];
-                for (int j = 0; j < ShipyardPageButton.pageSize; j++)
-                {
-                    newTexts[j] = UnityEngine.Object.Instantiate(___partOptionsTexts[j], pageContainer.transform);
-                }
-                ___partOptionsTexts = ___partOptionsTexts.Concat(newTexts).ToArray();
-
-                ShipyardPageButton.pageContainers.Add(pageContainer);
-
-            }
         }
 
         [HarmonyPatch("Awake")]
