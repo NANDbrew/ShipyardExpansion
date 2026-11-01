@@ -17,15 +17,67 @@ namespace ShipyardExpansion.Scripts
             "dhow small cloth paint", // stripey lateens/jibs
             "medi small cloth paint Diffuse Color", // stripey squares & fan-striped jibs
             "junk small cloth paint Diffuse Color", // kakam junk sails
-            "sail junk medium paint Diffuse Color", // big & medium junk sails
+            "sail junk medium paint Diffuse Color", // large & medium junk sails
             "medi medium sail paint Diffuse Color", // brig sails
             "dhow medium cloth paint" // sanbuq lateens
         };
 
         public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
-        public static void AddTexture(Texture texture)
+        
+        /// <summary>
+        /// add a texture to the dictionary. Texture must have a unique name
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <returns>Success</returns>
+        public static bool AddTexture(Texture texture)
         {
-            textures[texture.name] = texture;
+            if (textures.ContainsKey(texture.name))
+            {
+                Debug.LogError($"SE: Sail texture map already contains a texture named \"{texture.name}\"");
+                return false;
+            }
+            textures.Add(texture.name, texture);
+            return true;
+        }
+
+        /// <summary>
+        /// add a texture name to the allowed lists of the specified sail indexes
+        /// </summary>
+        /// <param name="textureName"></param>
+        /// <param name="sails"></param>
+        public static void AllowTexture(string textureName, int[] sails)
+        {
+            for (int i = 0; i < sails.Length; i++)
+            {
+                try
+                {
+                    PrefabsDirectory.instance.sails[sails[i]].GetComponent<SailTextureChanger>().allowedTextures.Add(textureName);
+                }
+                catch (Exception e){ Debug.Log($"SE: failed to add allowed texture to sail {sails[i]} because: {e.Message}"); }
+            }
+        }
+
+        /// <summary>
+        /// add a texture name to the allowed lists of ALL sails
+        /// </summary>
+        /// <param name="textureName"></param>
+        public static void AllowTextureToAll(string textureName)
+        {
+            for (int i = 0; i < PrefabsDirectory.instance.sails.Length; i++)
+            {
+                try
+                {
+                    PrefabsDirectory.instance.sails[i].GetComponent<SailTextureChanger>().allowedTextures.Add(textureName);
+                }
+                catch (Exception e) { Debug.Log($"SE: failed to add allowed texture to sail {i} because: {e.Message}"); }
+            }
+        }
+
+        public bool AllowTexture(Texture texture)
+        {
+            if (allowedTextures.Contains(texture.name)) return false;
+            allowedTextures.Add(texture.name);
+            return true;
         }
 
         // vanilla sails that start white, but will work with other textures
@@ -76,9 +128,16 @@ namespace ShipyardExpansion.Scripts
                 textureIndex = cloth.sharedMaterial.mainTexture.name;
             }
 
-            if (textureIndex == names[0] && allowedTexMap.TryGetValue(sail.prefabIndex, out var output))
+            if (textureIndex == names[0])
             {
-                allowedTextures = output.ToList();
+                if (allowedTexMap.TryGetValue(sail.prefabIndex, out var output))
+                {
+                    allowedTextures = output.ToList();
+                }
+                else
+                {
+                    allowedTextures = new List<string> { textureIndex };
+                }
             }
             else
             {

@@ -75,6 +75,42 @@ namespace ShipyardExpansion
 
         }
 
+        public static Dictionary<int, List<string>> LoadSailTextures()
+        {
+            Dictionary<int, List<string>> dict = new Dictionary<int, List<string>>();
+
+            string path = Path.Combine(Directory.GetParent(Plugin.instance.Info.Location).FullName, "SailTextures");
+
+            foreach (var metaPath in Directory.GetFiles(path, "*.csv"))
+            {
+                string imgPath = Path.Combine(path, Path.GetFileNameWithoutExtension(metaPath) + ".png");
+
+                if (File.Exists(imgPath))
+                {
+                    Texture2D tex = new Texture2D(1, 1);
+                    tex.LoadImage(File.ReadAllBytes(imgPath));
+                    tex.name = Path.GetFileNameWithoutExtension(imgPath);
+                    SailTextureChanger.AddTexture(tex);
+
+                    var metaData = File.ReadAllText(metaPath).Split(',');
+
+                    for (int i = 0; i < metaData.Length; i++)
+                    {
+                        int.TryParse(metaData[i].Trim(), out int index);
+                        if (dict.TryGetValue(index, out var val))
+                        {
+                            if (!val.Contains(tex.name)) dict[index].Add(tex.name);
+                        }
+                        else
+                        {
+                            dict.Add(index, new List<string> { tex.name });
+                        }
+                    }
+
+                }
+            }
+            return dict;
+        }
 
         public static GPButtonRopeWinch[] HandleWinches(GameObject[] data)
         {
