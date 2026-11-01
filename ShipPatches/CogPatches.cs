@@ -38,6 +38,7 @@ namespace ShipyardExpansion
             Debug.Log("SE: instantiated " + thing);
 
             modParts = AssetTools.HandleImports(thing, partsList);
+            GameObject.Destroy(prefab);
             //Debug.Log("modParts.Count = " + modParts.Count);
 
             BoatPartOption shrouds_back = modParts["shrouds_back"].partOptions[0];

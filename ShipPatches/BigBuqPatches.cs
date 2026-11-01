@@ -43,7 +43,7 @@ namespace ShipyardExpansion
             Debug.Log("SE: instantiated " + thing);
 
             modParts = AssetTools.HandleImports(thing, partsList);
-
+            GameObject.Destroy(prefab);
             //mainMast2.GetComponent<Mast>().mastCols = mainMast2.GetComponent<Mast>().mastCols.AddToArray(modParts["crowsnest_empty"].partOptions[2].GetComponentInChildren<CapsuleCollider>());
 
             var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;

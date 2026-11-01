@@ -78,6 +78,8 @@ namespace ShipyardExpansion
             Debug.Log("SE: instantiated " + thing);
 
             modParts = AssetTools.HandleImports(thing, partsList);
+            GameObject.Destroy(prefab);
+
             var modWalkCol = thing.GetComponent<SE_BoatCustomData>().walkCol;
             modWalkCol.SetParent(walkCol, false);
 
