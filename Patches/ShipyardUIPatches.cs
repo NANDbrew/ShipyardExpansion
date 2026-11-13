@@ -240,6 +240,17 @@ namespace ShipyardExpansion.Patches
             unlockButton.SetActive(GameState.currentShipyard.sailInstaller.GetCurrentSail() != null && GameState.currentShipyard.sailInstaller.GetCurrentSail().IsInstalled() && GameState.currentShipyard.sailInstaller.GetCurrentSail().GetComponent<SailScaler>());
 
         }
+
+        [HarmonyPatch("SailMastCompatible")]
+        [HarmonyPostfix]
+        public static void SailCompat(GameObject sailPrefab, ref bool __result)
+        {
+            SailCategory category = sailPrefab.GetComponent<Sail>().category;
+            if (GameState.currentShipyard.sailInstaller.GetCurrentMast().midAngleWinch.Length == 0 && category != SailCategory.square && category != SailCategory.staysail)
+            {
+                __result = false;
+            }
+        }
     }
 
     [HarmonyPatch(typeof(ShipyardButton), "SetText")]
